@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""A script for updating the Sphinx versions.json and the "latest" symlink.
+
+Usage:
+  update-versions DOCS_DIRECTORY
+
+This script assumes it's being run from the directory it is in; if it isn't,
+some paths may be wrong.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+def split_version_tag(version):
+    """Split a dot-separated version number into its integer components."""
+    try:
+        return tuple(map(int, version.lstrip("v").split(".")))
+    except ValueError:
+        return None
+
+def generate_versions_json(versions, path_prefix):
+    """Build a dictionary to be used as the versions.json content.
+
+    The order the versions show up in matters, and it should not just be alphabetical.
+    The versions are sorted as follows:
+    - "latest" is always first as long as there is any vX.Y version.
+    - Versions formatted like "vX.Y" are next, sorted newest-first using X.Y as a
+      version number.
+    - "dev", if present, is next
+    - Any remaining versions are included in alphabetical order. Generally there
+      aren't any.
+    In addition to the versions.json content, this function returns the tag
+    to use as "latest". This is the first vX.Y version in the above ordering.
+    """
+    sorted_versions = []
+    tag_versions = [
+        (v, split_version_tag(v))
+        for v in versions if v.startswith("v")
+        if split_version_tag(v) is not None
+    ]
+    tag_versions.sort(key=lambda v: v[1], reverse=True)
+    if tag_versions:
+        latest_tag = tag_versions[0][0]
+        sorted_versions.append("latest")
+    else:
+        latest_tag = None
+
+    for v in tag_versions:
+        versions.remove(v[0])
+        sorted_versions.append(v[0])
+
+    if "dev" in versions:
+        versions.remove("dev")
+        sorted_versions.append("dev")
+    sorted_versions.extend(sorted(versions))
+
+    return (
+        [{"version": v, "url": f"/{path_prefix}/{v}/"} for v in sorted_versions],
+        latest_tag
+    )
+
+def main():
+    try:
+        docs_dir = Path(sys.argv[1])
+    except IndexError:
+        print("Usage: update-versions DOCS_DIRECTORY")
+        sys.exit(1)
+    if not docs_dir.exists() or not docs_dir.is_dir():
+        print("Given docs directory does not exist, or is not a directory.")
+        sys.exit(1)
+
+    versions = [p.name for p in docs_dir.iterdir() if p.is_dir()]
+    print(f"Found versions for {docs_dir}: {', '.join(versions)}")
+
+    versions_json_content, latest_tag = generate_versions_json(
+        versions, "/".join(docs_dir.parts[1:])
+    )
+
+    if latest_tag:
+        print(f"Using {latest_tag} as latest version")
+        latest_link = (docs_dir / "latest").symlink_to(latest_tag)
+    else:
+        print("No latest version found")
+
+    versions_json_path = (docs_dir / "versions.json")
+    print(f"Writing {versions_json_path}")
+    json.dump(
+        versions_json_content, versions_json_path.open("w")
+    )
+
+if __name__ == '__main__':
+    main()
