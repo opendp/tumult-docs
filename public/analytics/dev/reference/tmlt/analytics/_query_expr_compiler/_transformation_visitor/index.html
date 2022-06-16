@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>_transformation_visitor &#8212; Tumult Analytics  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../additional-resources/index.html">
+  Additional resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        dev  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/analytics/_query_expr_compiler/_transformation_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': 'dev'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/_transformation_visitor/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/_transformation_visitor/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's dev variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "dev") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor">
+     TransformationVisitor
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.validate_transformation">
+       validate_transformation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_private_source">
+       visit_private_source
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_rename">
+       visit_rename
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_filter">
+       visit_filter
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_select">
+       visit_select
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_map">
+       visit_map
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.inner_metric">
+       inner_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_flat_map">
+       visit_flat_map
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_private">
+       visit_join_private
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_public">
+       visit_join_public
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_null_and_nan">
+       visit_replace_null_and_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_infinity">
+       visit_replace_infinity
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_infinity">
+       visit_drop_infinity
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_null_and_nan">
+       visit_drop_null_and_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count">
+       visit_groupby_count
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count_distinct">
+       visit_groupby_count_distinct
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_quantile">
+       visit_groupby_quantile
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_sum">
+       visit_groupby_bounded_sum
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_average">
+       visit_groupby_bounded_average
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_variance">
+       visit_groupby_bounded_variance
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_stdev">
+       visit_groupby_bounded_stdev
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.analytics._query_expr_compiler._transformation_visitor">
+<span id="transformation-visitor"></span><h1>_transformation_visitor<a class="headerlink" href="#module-tmlt.analytics._query_expr_compiler._transformation_visitor" title="Permalink to this headline">#</a></h1>
+<p>Defines a visitor for creating a transformation from a query expression.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformationVisitor</span></code></a></p></td>
+<td><p>A visitor to create a transformation from a query expression.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TransformationVisitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_expr.QueryExprVisitor</span></code></a></p>
+<p>A visitor to create a transformation from a query expression.</p>
+<table class="table" id="id1">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.validate_transformation" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.validate_transformation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">validate_transformation()</span></code></a></p></td>
+<td><p>Ensure that a query’s transformation is valid on a given catalog.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_private_source" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_private_source"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_private_source()</span></code></a></p></td>
+<td><p>Create a transformation from a PrivateSource query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_rename" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_rename()</span></code></a></p></td>
+<td><p>Create a transformation from a Rename query expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_filter" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_filter()</span></code></a></p></td>
+<td><p>Create a transformation from a FilterExpr query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_select" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_select()</span></code></a></p></td>
+<td><p>Create a transformation from a Select query expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_map" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_map()</span></code></a></p></td>
+<td><p>Create a transformation from a Map query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.inner_metric" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.inner_metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inner_metric()</span></code></a></p></td>
+<td><p>Get the inner metric used by this TransformationVisitor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_flat_map" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_flat_map()</span></code></a></p></td>
+<td><p>Create a transformation from a FlatMap query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_private" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_join_private()</span></code></a></p></td>
+<td><p>Create a transformation from a JoinPrivate query expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_public" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_join_public()</span></code></a></p></td>
+<td><p>Create a transformation from a JoinPublic query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_null_and_nan" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_replace_null_and_nan()</span></code></a></p></td>
+<td><p>Create a transformation from a ReplaceNullAndNan query expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_infinity" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_replace_infinity()</span></code></a></p></td>
+<td><p>Create a transformation from a ReplaceInfinity query expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_infinity" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_drop_infinity()</span></code></a></p></td>
+<td><p>Create a transformation from a DropInfinity expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_null_and_nan" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_drop_null_and_nan()</span></code></a></p></td>
+<td><p>Create a transformation from a DropNullAndNan expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count()</span></code></a></p></td>
+<td><p>Visit a GroupByCount query expression (raises an error).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count_distinct" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count_distinct()</span></code></a></p></td>
+<td><p>Visit a GroupByCountDistinct query expression (raises an error).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_quantile" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_quantile()</span></code></a></p></td>
+<td><p>Visit a GroupByQuantile query expression (raises an error).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_sum" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_sum()</span></code></a></p></td>
+<td><p>Visit a GroupByBoundedSum query expression (raises an error).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_average" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_average()</span></code></a></p></td>
+<td><p>Visit a GroupByBoundedAverage query expression (raises an error).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_variance" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_variance()</span></code></a></p></td>
+<td><p>Visit a GroupByBoundedVariance query expression (raises an error).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_stdev" title="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_stdev()</span></code></a></p></td>
+<td><p>Visit a GroupByBoundedSTDEV query expression (raises an error).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – </p></li>
+<li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – </p></li>
+<li><p><strong>mechanism</strong> (<em>tmlt.core.measurements.aggregations.NoiseMechanism</em>) – </p></li>
+<li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor for a TransformationVisitor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></span>) – The input domain that the transformation should have.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></span>) – The input metric that the transformation should have.</p></li>
+<li><p><strong>mechanism</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseMechanism</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseMechanism</span></code></span>) – The noise mechanism (only used for FlatMaps).</p></li>
+<li><p><strong>public_sources</strong> (<span class="annotation terse">{<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>: <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>}</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>]</span>) – Public sources to use for JoinPublic queries.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.validate_transformation">
+<span class="sig-name descname"><span class="pre">validate_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.validate_transformation" title="Permalink to this definition">#</a></dt>
+<dd><p>Ensure that a query’s transformation is valid on a given catalog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a>) – </p></li>
+<li><p><strong>transformation</strong> (<em>tmlt.core.transformations.base.Transformation</em>) – </p></li>
+<li><p><strong>catalog</strong> (<a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_private_source">
+<span class="sig-name descname"><span class="pre">visit_private_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_private_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a PrivateSource query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.PrivateSource" title="tmlt.analytics.query_expr.PrivateSource"><em>tmlt.analytics.query_expr.PrivateSource</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_rename">
+<span class="sig-name descname"><span class="pre">visit_rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a Rename query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Rename" title="tmlt.analytics.query_expr.Rename"><em>tmlt.analytics.query_expr.Rename</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_filter">
+<span class="sig-name descname"><span class="pre">visit_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a FilterExpr query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Filter" title="tmlt.analytics.query_expr.Filter"><em>tmlt.analytics.query_expr.Filter</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_select">
+<span class="sig-name descname"><span class="pre">visit_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_select" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a Select query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Select" title="tmlt.analytics.query_expr.Select"><em>tmlt.analytics.query_expr.Select</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_map">
+<span class="sig-name descname"><span class="pre">visit_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_map" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a Map query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Map" title="tmlt.analytics.query_expr.Map"><em>tmlt.analytics.query_expr.Map</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.inner_metric">
+<span class="sig-name descname"><span class="pre">inner_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.inner_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the inner metric used by this TransformationVisitor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[tmlt.core.metrics.SumOf, tmlt.core.metrics.RootSumOfSquared]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_flat_map">
+<span class="sig-name descname"><span class="pre">visit_flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_flat_map" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a FlatMap query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.FlatMap" title="tmlt.analytics.query_expr.FlatMap"><em>tmlt.analytics.query_expr.FlatMap</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_private">
+<span class="sig-name descname"><span class="pre">visit_join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_private" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a JoinPrivate query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.JoinPrivate" title="tmlt.analytics.query_expr.JoinPrivate"><em>tmlt.analytics.query_expr.JoinPrivate</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_public">
+<span class="sig-name descname"><span class="pre">visit_join_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_join_public" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a JoinPublic query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.JoinPublic" title="tmlt.analytics.query_expr.JoinPublic"><em>tmlt.analytics.query_expr.JoinPublic</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_null_and_nan">
+<span class="sig-name descname"><span class="pre">visit_replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_null_and_nan" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a ReplaceNullAndNan query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.ReplaceNullAndNan" title="tmlt.analytics.query_expr.ReplaceNullAndNan"><em>tmlt.analytics.query_expr.ReplaceNullAndNan</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_infinity">
+<span class="sig-name descname"><span class="pre">visit_replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_replace_infinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a ReplaceInfinity query expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.ReplaceInfinity" title="tmlt.analytics.query_expr.ReplaceInfinity"><em>tmlt.analytics.query_expr.ReplaceInfinity</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_infinity">
+<span class="sig-name descname"><span class="pre">visit_drop_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_infinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a DropInfinity expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.DropInfinity" title="tmlt.analytics.query_expr.DropInfinity"><em>tmlt.analytics.query_expr.DropInfinity</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_null_and_nan">
+<span class="sig-name descname"><span class="pre">visit_drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_drop_null_and_nan" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a transformation from a DropNullAndNan expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.DropNullAndNan" title="tmlt.analytics.query_expr.DropNullAndNan"><em>tmlt.analytics.query_expr.DropNullAndNan</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByCount query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><em>tmlt.analytics.query_expr.GroupByCount</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count_distinct">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_count_distinct" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByCountDistinct query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><em>tmlt.analytics.query_expr.GroupByCountDistinct</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_quantile">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_quantile" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByQuantile query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><em>tmlt.analytics.query_expr.GroupByQuantile</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_sum">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_bounded_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_sum" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByBoundedSum query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><em>tmlt.analytics.query_expr.GroupByBoundedSum</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_average">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_bounded_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_average" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByBoundedAverage query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><em>tmlt.analytics.query_expr.GroupByBoundedAverage</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_variance">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_bounded_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_variance" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByBoundedVariance query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><em>tmlt.analytics.query_expr.GroupByBoundedVariance</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_stdev">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_bounded_stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._transformation_visitor.TransformationVisitor.visit_groupby_bounded_stdev" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a GroupByBoundedSTDEV query expression (raises an error).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><em>tmlt.analytics.query_expr.GroupByBoundedSTDEV</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2022.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from 16c34029 at 2022-06-16 13:06.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

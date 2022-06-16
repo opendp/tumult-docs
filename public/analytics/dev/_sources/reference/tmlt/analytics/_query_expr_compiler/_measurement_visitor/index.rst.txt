@@ -1,0 +1,202 @@
+:orphan:
+
+
+
+***************************
+_measurement_visitor
+***************************
+
+.. py:module:: tmlt.analytics._query_expr_compiler._measurement_visitor
+
+.. autoapi-nested-parse::
+
+   Defines a visitor for creating noisy measurements from query expressions.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.MeasurementVisitor`
+     - A visitor to create a measurement from a query expression.
+
+   
+.. py:class:: MeasurementVisitor(per_query_privacy_budget, stability, input_domain, input_metric, output_measure, default_mechanism, public_sources, catalog)
+
+   Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
+
+   A visitor to create a measurement from a query expression.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.visit_groupby_count`
+        - Create a measurement from a GroupByCount query expression.
+      * - :meth:`.visit_groupby_count_distinct`
+        - Create a measurement from a GroupByCountDistinct query expression.
+      * - :meth:`.visit_groupby_quantile`
+        - Create a measurement from a GroupByQuantile query expression.
+      * - :meth:`.visit_groupby_bounded_sum`
+        - Create a measurement from a GroupByBoundedSum query expression.
+      * - :meth:`.visit_groupby_bounded_average`
+        - Create a measurement from a GroupByBoundedAverage query expression.
+      * - :meth:`.visit_groupby_bounded_variance`
+        - Create a measurement from a GroupByBoundedVariance query expression.
+      * - :meth:`.visit_groupby_bounded_stdev`
+        - Create a measurement from a GroupByBoundedStdev query expression.
+      * - :meth:`.visit_private_source`
+        - Visit a PrivateSource query expression (raises an error).
+      * - :meth:`.visit_rename`
+        - Visit a Rename query expression (raises an error).
+      * - :meth:`.visit_filter`
+        - Visit a Filter query expression (raises an error).
+      * - :meth:`.visit_select`
+        - Visit a Select query expression (raises an error).
+      * - :meth:`.visit_map`
+        - Visit a Map query expression (raises an error).
+      * - :meth:`.visit_flat_map`
+        - Visit a FlatMap query expression (raises an error).
+      * - :meth:`.visit_join_private`
+        - Visit a JoinPrivate query expression (raises an error).
+      * - :meth:`.visit_join_public`
+        - Visit a JoinPublic query expression (raises an error).
+      * - :meth:`.visit_replace_null_and_nan`
+        - Visit a ReplaceNullAndNan query expression (raises an error).
+      * - :meth:`.visit_replace_infinity`
+        - Visit a ReplaceInfinity query expression (raises an error).
+      * - :meth:`.visit_drop_infinity`
+        - Visit a DropInfinity query expression (raises an error).
+      * - :meth:`.visit_drop_null_and_nan`
+        - Visit a DropNullAndNan query expression (raises an error).
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: visit_groupby_count(self, query)
+
+      Create a measurement from a GroupByCount query expression.
+
+
+   .. py:method:: visit_groupby_count_distinct(self, query)
+
+      Create a measurement from a GroupByCountDistinct query expression.
+
+
+   .. py:method:: visit_groupby_quantile(self, query)
+
+      Create a measurement from a GroupByQuantile query expression.
+
+      This method also checks to see if the schema allows invalid values
+      (nulls, NaNs, and infinite values) on the measure column; if so,
+      the query has DropNullAndNan and/or DropInfinity queries
+      inserted immediately before it is executed.
+
+
+   .. py:method:: visit_groupby_bounded_sum(self, query)
+
+      Create a measurement from a GroupByBoundedSum query expression.
+
+
+   .. py:method:: visit_groupby_bounded_average(self, query)
+
+      Create a measurement from a GroupByBoundedAverage query expression.
+
+
+   .. py:method:: visit_groupby_bounded_variance(self, query)
+
+      Create a measurement from a GroupByBoundedVariance query expression.
+
+
+   .. py:method:: visit_groupby_bounded_stdev(self, query)
+
+      Create a measurement from a GroupByBoundedStdev query expression.
+
+
+   .. py:method:: visit_private_source(self, expr)
+      :abstractmethod:
+
+      Visit a PrivateSource query expression (raises an error).
+
+
+   .. py:method:: visit_rename(self, expr)
+      :abstractmethod:
+
+      Visit a Rename query expression (raises an error).
+
+
+   .. py:method:: visit_filter(self, expr)
+      :abstractmethod:
+
+      Visit a Filter query expression (raises an error).
+
+
+   .. py:method:: visit_select(self, expr)
+      :abstractmethod:
+
+      Visit a Select query expression (raises an error).
+
+
+   .. py:method:: visit_map(self, expr)
+      :abstractmethod:
+
+      Visit a Map query expression (raises an error).
+
+
+   .. py:method:: visit_flat_map(self, expr)
+      :abstractmethod:
+
+      Visit a FlatMap query expression (raises an error).
+
+
+   .. py:method:: visit_join_private(self, expr)
+      :abstractmethod:
+
+      Visit a JoinPrivate query expression (raises an error).
+
+
+   .. py:method:: visit_join_public(self, expr)
+      :abstractmethod:
+
+      Visit a JoinPublic query expression (raises an error).
+
+
+   .. py:method:: visit_replace_null_and_nan(self, expr)
+      :abstractmethod:
+
+      Visit a ReplaceNullAndNan query expression (raises an error).
+
+
+   .. py:method:: visit_replace_infinity(self, expr)
+      :abstractmethod:
+
+      Visit a ReplaceInfinity query expression (raises an error).
+
+
+   .. py:method:: visit_drop_infinity(self, expr)
+      :abstractmethod:
+
+      Visit a DropInfinity query expression (raises an error).
+
+
+   .. py:method:: visit_drop_null_and_nan(self, expr)
+      :abstractmethod:
+
+      Visit a DropNullAndNan query expression (raises an error).
+
+
+
+
+
+
