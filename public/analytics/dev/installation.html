@@ -291,6 +291,10 @@ function checkPageExistsAndRedirect(event) {
 <p>Tumult Analytics is built in <a class="reference external" href="https://www.python.org/">Python</a>, so a Python installation is required to use it.
 Only Python 3.7 is officially supported at present, though newer versions likely work.</p>
 <p>Because Tumult Analytics uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
+<p>Tumult Analytics uses <a class="reference external" href="https://github.com/fredrik-johansson/python-flint/">python-flint</a>
+for some mathematical functions, so <code class="docutils literal notranslate"><span class="pre">python-flint</span></code> is also required.
+Only Tumult’s wheels (located at <code class="docutils literal notranslate"><span class="pre">https://d3p0voevd56kj6.cloudfront.net</span></code>) are
+currently supported.</p>
 <p>Only the x86_64 processor architecture is officially supported at present.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -303,8 +307,8 @@ Not doing this before making calls to Tumult Analytics will result in Spark rais
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
 If you encounter any issues during the installation process, please let us know!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="2027f50d-31a7-4ca9-a389-e7f9d2556453" name="a90979f7-4891-4bcd-9662-027d6e370370" type="radio">
-</input><label class="tabbed-label" for="2027f50d-31a7-4ca9-a389-e7f9d2556453">
+<input checked="checked" id="796bea79-0b0a-4a4e-b3d9-d4e3ba794509" name="393775d4-dffc-4179-95a4-76afe3437003" type="radio">
+</input><label class="tabbed-label" for="796bea79-0b0a-4a4e-b3d9-d4e3ba794509">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -316,9 +320,13 @@ If it is not, install the Java Runtime Environment with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt install openjdk-8-jre-headless
 </pre></div>
 </div>
+<p>Then install python-flint with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+</pre></div>
 </div>
-<input id="5faebe0a-2915-40c2-ab53-763c97af4fbe" name="a90979f7-4891-4bcd-9662-027d6e370370" type="radio">
-</input><label class="tabbed-label" for="5faebe0a-2915-40c2-ab53-763c97af4fbe">
+</div>
+<input id="e8eebb46-a71c-4cdb-8dd6-0fd614cc6b1a" name="393775d4-dffc-4179-95a4-76afe3437003" type="radio">
+</input><label class="tabbed-label" for="e8eebb46-a71c-4cdb-8dd6-0fd614cc6b1a">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -331,11 +339,16 @@ To install Python 3, run:</p>
 </pre></div>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
+<p>Then install python-flint with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+</pre></div>
 </div>
-<input id="25db75b1-549f-4967-86b2-4f314dfd0c80" name="a90979f7-4891-4bcd-9662-027d6e370370" type="radio">
-</input><label class="tabbed-label" for="25db75b1-549f-4967-86b2-4f314dfd0c80">
-MacOS</label><div class="tabbed-content docutils">
-<p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
+</div>
+<input id="fec8b4fb-6989-4d2e-8c72-df015935ee5c" name="393775d4-dffc-4179-95a4-76afe3437003" type="radio">
+</input><label class="tabbed-label" for="fec8b4fb-6989-4d2e-8c72-df015935ee5c">
+macOS</label><div class="tabbed-content docutils">
+<blockquote>
+<div><p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
 <p>If you do not already have Homebrew, it can be installed with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
@@ -349,9 +362,14 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
 </pre></div>
 </div>
+</div></blockquote>
+<p>Then install python-flint with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+</pre></div>
 </div>
-<input id="cd2cc1e8-3a59-4740-85e4-b9dd9a43570c" name="a90979f7-4891-4bcd-9662-027d6e370370" type="radio">
-</input><label class="tabbed-label" for="cd2cc1e8-3a59-4740-85e4-b9dd9a43570c">
+</div>
+<input id="5e9a0d47-ebb5-4739-9bad-2a7b20abea40" name="393775d4-dffc-4179-95a4-76afe3437003" type="radio">
+</input><label class="tabbed-label" for="5e9a0d47-ebb5-4739-9bad-2a7b20abea40">
 Manual installation</label><div class="tabbed-content docutils">
 <p>If Python is not available through your system’s package manager, Python installers and source tarballs are available on the <a class="reference external" href="https://www.python.org/downloads/">Python downloads page</a>.</p>
 <p><a class="reference external" href="https://aws.amazon.com/corretto/">Amazon Corretto</a> and <a class="reference external" href="https://adoptium.net">Adoptium</a> (formerly AdoptOpenJDK) both provide Java distributions based on OpenJDK for a variety of platforms.
@@ -423,7 +441,7 @@ If you do not currently have these, contact <a class="reference external" href="
   </div>
   
   <div class="footer-item">
-    Built from e7cf2961 at 2022-06-17 22:36.
+    Built from f6257dfe at 2022-06-21 15:47.
   </div>
   
   <div class="footer-item">
