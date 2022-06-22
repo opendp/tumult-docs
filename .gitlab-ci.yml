@@ -2,8 +2,9 @@ pages:
   stage: deploy
   image: registry.gitlab.com/tumult-labs/ops/ci/ci-full:latest
   script:
-    - find public/ -mindepth 1 -maxdepth 1 -type d -exec ./update-versions {} \;
-    - find public/ -mindepth 1 -maxdepth 1 -type d
+    - find public/ -mindepth 1 -maxdepth 1 -type d -not -name "_static"
+        -exec ./update-versions {} \;
+    - find public/ -mindepth 1 -maxdepth 1 -type d -not -name "_static"
         -exec bash -c 'echo "Versions for {}:" ; cat {}/versions.json | jq' \;
   artifacts:
     paths:
