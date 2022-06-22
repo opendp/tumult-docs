@@ -1,0 +1,1171 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>spark_measurements &#8212; Tumult Core  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="measures" href="../../measures/index.html" />
+    <link rel="prev" title="postprocess" href="../postprocess/index.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../topic-guides/index.html">
+  Topic Guides
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../additional-resources/index.html">
+  Additional Resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.3.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/core/measurements/spark_measurements/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.3.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/core/measurements/spark_measurements/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/core/measurements/spark_measurements/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.3.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.3.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../domains/index.html">
+   domains
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   measurements
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aggregations/index.html">
+     aggregations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../base/index.html">
+     base
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chaining/index.html">
+     chaining
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../composition/index.html">
+     composition
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../converters/index.html">
+     converters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interactive_measurements/index.html">
+     interactive_measurements
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../noise_mechanisms/index.html">
+     noise_mechanisms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pandas_measurements/index.html">
+     pandas_measurements
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../postprocess/index.html">
+     postprocess
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     spark_measurements
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../measures/index.html">
+   measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../metrics/index.html">
+   metrics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../random/index.html">
+   random
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../transformations/index.html">
+   transformations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../utils/index.html">
+   utils
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement">
+     SparkMeasurement
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.call">
+       call
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.input_domain">
+       input_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.input_metric">
+       input_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.output_measure">
+       output_measure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.is_interactive">
+       is_interactive
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_function">
+       privacy_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_relation">
+       privacy_relation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn">
+     AddNoiseToColumn
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measure_column">
+       measure_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measurement">
+       measurement
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_function">
+       privacy_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.call">
+       call
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_domain">
+       input_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_metric">
+       input_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.output_measure">
+       output_measure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.is_interactive">
+       is_interactive
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_relation">
+       privacy_relation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas">
+     ApplyInPandas
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.aggregation_function">
+       aggregation_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.input_domain">
+       input_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_function">
+       privacy_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.call">
+       call
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.input_metric">
+       input_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.output_measure">
+       output_measure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.is_interactive">
+       is_interactive
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_relation">
+       privacy_relation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.core.measurements.spark_measurements">
+<span id="spark-measurements"></span><h1>spark_measurements<a class="headerlink" href="#module-tmlt.core.measurements.spark_measurements" title="Permalink to this headline">#</a></h1>
+<p>Measurements on Spark DataFrames.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement" title="tmlt.core.measurements.spark_measurements.SparkMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkMeasurement</span></code></a></p></td>
+<td><p>Base class that materializes output DataFrames before returning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn" title="tmlt.core.measurements.spark_measurements.AddNoiseToColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToColumn</span></code></a></p></td>
+<td><p>Adds noise to a single aggregated column of a Spark DataFrame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas" title="tmlt.core.measurements.spark_measurements.ApplyInPandas"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplyInPandas</span></code></a></p></td>
+<td><p>Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SparkMeasurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_interactive</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.measurements.base.Measurement</span></code></a></p>
+<p>Base class that materializes output DataFrames before returning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><em>tmlt.core.domains.base.Domain</em></a>) – </p></li>
+<li><p><strong>input_metric</strong> (<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><em>tmlt.core.metrics.Metric</em></a>) – </p></li>
+<li><p><strong>output_measure</strong> (<a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><em>tmlt.core.measures.Measure</em></a>) – </p></li>
+<li><p><strong>is_interactive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_interactive</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Domain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Domain</span></code></a></span>) – Domain of input datasets.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></span>) – Distance metric for input datasets.</p></li>
+<li><p><strong>output_measure</strong> (<span class="annotation terse"><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></span>) – Distance measure for measurement’s output.</p></li>
+<li><p><strong>is_interactive</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether the measurement is interactive.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.call">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.call" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs measurement.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Spark recomputes the output of this method (adding different noise
+each time) on every call to collect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs measurement and returns a DataFrame with additional protections.</p>
+<p>See <a class="reference internal" href="../../../../../topic-guides/privacy-guarantee.html#pseudo-side-channel-mitigations"><span class="std std-ref">Specific protections against pseudo-side channel leakage</span></a> for more details on the specific
+mitigations we apply here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.is_interactive" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><strong>NotImplementedError</strong></a> – If not overridden.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement.privacy_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <cite>input_metric</cite>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <cite>output_measure</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddNoiseToColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement" title="tmlt.core.measurements.spark_measurements.SparkMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkMeasurement</span></code></a></p>
+<p>Adds noise to a single aggregated column of a Spark DataFrame.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A   B  count</span>
+<span class="go">0  a1  b1      3</span>
+<span class="go">1  a1  b2      2</span>
+<span class="go">2  a2  b1      1</span>
+<span class="go">3  a2  b2      0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a measurement that can add noise to a pd.Series</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise</span> <span class="o">=</span> <span class="n">AddLaplaceNoise</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">NumpyIntegerDomain</span><span class="p">(),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a measurement that can add noise to a Spark DataFrame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise_to_column</span> <span class="o">=</span> <span class="n">AddNoiseToColumn</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">schema</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">measurement</span><span class="o">=</span><span class="n">AddNoiseToSeries</span><span class="p">(</span><span class="n">add_laplace_noise</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply measurement to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_spark_dataframe</span> <span class="o">=</span> <span class="n">add_laplace_noise_to_column</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">noisy_spark_dataframe</span><span class="p">)</span> 
+<span class="go">    A   B   count</span>
+<span class="go">0  a1  b1 ...</span>
+<span class="go">1  a1  b2 ...</span>
+<span class="go">2  a2  b1 ...</span>
+<span class="go">3  a2  b2 ...</span>
+</pre></div>
+</div>
+<dl>
+<dt>Measurement Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output type - Spark DataFrame</p></li>
+<li><p>Input metric - <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.OnColumn" title="tmlt.core.metrics.OnColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnColumn</span></code></a> with metric
+<cite>SumOf(SymmetricDifference())</cite> (for <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a>) or
+<cite>RootSumOfSquared(SymmetricDifference())</cite> (for <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a>) on each
+column.</p></li>
+<li><p>Output measure - <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a> or <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise_to_column</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;count&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise_to_column</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">OnColumn(column=&#39;count&#39;, metric=SumOf(inner_metric=AbsoluteDifference()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise_to_column</span><span class="o">.</span><span class="n">output_measure</span>
+<span class="go">PureDP()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Privacy Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn" title="tmlt.core.measurements.spark_measurements.AddNoiseToColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToColumn</span></code></a>’s <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_function" title="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">privacy_function()</span></code></a> returns the output of
+privacy function on the <a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a> measurement.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_laplace_noise_to_column</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – </p></li>
+<li><p><strong>measurement</strong> (<a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><em>tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries</em></a>) – </p></li>
+<li><p><strong>measure_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of input spark DataFrames.</p></li>
+<li><p><strong>measurement</strong> (<span class="annotation terse"><a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a></span><span class="annotation full"><a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a></span>) – <a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a> measurement for adding noise to
+<cite>measure_column</cite>.</p></li>
+<li><p><strong>measure_column</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column to add noise to.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The input metric of this measurement is derived from the <cite>measure_column</cite>
+and the input metric of the <cite>measurement</cite> to be applied. In particular, the
+input metric of this measurement is <cite>measurement.input_metric</cite> on the
+specified <cite>measure_column</cite>.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measure_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">measure_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measure_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the name of the column to add noise to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measurement">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.measurement" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the <a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a> measurement to apply to measure column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries">tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See the privacy and stability tutorial for more information. # TODO(#1320)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><strong>NotImplementedError</strong></a> – If the <a class="reference internal" href="../base/index.html#tmlt.core.measurements.base.Measurement.privacy_function" title="tmlt.core.measurements.base.Measurement.privacy_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">privacy_function()</span></code></a> of the
+<a class="reference internal" href="../pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a> measurement raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.call" title="Permalink to this definition">#</a></dt>
+<dd><p>Applies measurement to measure column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs measurement and returns a DataFrame with additional protections.</p>
+<p>See <a class="reference internal" href="../../../../../topic-guides/privacy-guarantee.html#pseudo-side-channel-mitigations"><span class="std std-ref">Specific protections against pseudo-side channel leakage</span></a> for more details on the specific
+mitigations we apply here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.is_interactive" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.AddNoiseToColumn.privacy_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <cite>input_metric</cite>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <cite>output_measure</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplyInPandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement" title="tmlt.core.measurements.spark_measurements.SparkMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkMeasurement</span></code></a></p>
+<p>Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain</em></a>) – </p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><em>tmlt.core.metrics.SumOf</em></a><em>, </em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><em>tmlt.core.metrics.RootSumOfSquared</em></a><em>]</em>) – </p></li>
+<li><p><strong>aggregation_function</strong> (<a class="reference internal" href="../pandas_measurements/dataframe/index.html#tmlt.core.measurements.pandas_measurements.dataframe.Aggregate" title="tmlt.core.measurements.pandas_measurements.dataframe.Aggregate"><em>tmlt.core.measurements.pandas_measurements.dataframe.Aggregate</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkGroupedDataFrameDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkGroupedDataFrameDomain</span></code></a></span>) – Domain of the input GroupedDataFrames.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> | <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a>, <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a>]</span>) – Distance metric on inputs. It must one of
+<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> or <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> with
+inner metric <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>.</p></li>
+<li><p><strong>aggregation_function</strong> (<span class="annotation terse"><a class="reference internal" href="../pandas_measurements/dataframe/index.html#tmlt.core.measurements.pandas_measurements.dataframe.Aggregate" title="tmlt.core.measurements.pandas_measurements.dataframe.Aggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregate</span></code></a></span><span class="annotation full"><a class="reference internal" href="../pandas_measurements/dataframe/index.html#tmlt.core.measurements.pandas_measurements.dataframe.Aggregate" title="tmlt.core.measurements.pandas_measurements.dataframe.Aggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregate</span></code></a></span>) – An Aggregation measurement to be applied to each
+group. The input domain of this measurement must be a
+<a class="reference internal" href="../../domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasDataFrameDomain" title="tmlt.core.domains.pandas_domains.PandasDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasDataFrameDomain</span></code></a> corresponding to a subset of the
+non-grouping columns in the <cite>input_domain</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.aggregation_function">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aggregation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.aggregation_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the aggregation function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../pandas_measurements/dataframe/index.html#tmlt.core.measurements.pandas_measurements.dataframe.Aggregate" title="tmlt.core.measurements.pandas_measurements.dataframe.Aggregate">tmlt.core.measurements.pandas_measurements.dataframe.Aggregate</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain">tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See the privacy and stability tutorial for more information. # TODO(#1320)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><strong>NotImplementedError</strong></a> – If self.aggregation_function.privacy_function(d_in)
+raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouped_dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.call" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns DataFrame obtained by applying pandas aggregation to each group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grouped_dataframe</strong> (<a class="reference internal" href="../../utils/grouped_dataframe/index.html#tmlt.core.utils.grouped_dataframe.GroupedDataFrame" title="tmlt.core.utils.grouped_dataframe.GroupedDataFrame"><em>tmlt.core.utils.grouped_dataframe.GroupedDataFrame</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs measurement and returns a DataFrame with additional protections.</p>
+<p>See <a class="reference internal" href="../../../../../topic-guides/privacy-guarantee.html#pseudo-side-channel-mitigations"><span class="std std-ref">Specific protections against pseudo-side channel leakage</span></a> for more details on the specific
+mitigations we apply here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.is_interactive" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.ApplyInPandas.privacy_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <cite>input_metric</cite>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <cite>output_measure</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../postprocess/index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">postprocess</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../../measures/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">measures</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2022.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from c78a9fc5 at 2022-06-22 01:23.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
