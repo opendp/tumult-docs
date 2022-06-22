@@ -291,6 +291,12 @@ function checkPageExistsAndRedirect(event) {
 <p>Tumult Core is built in <a class="reference external" href="https://www.python.org/">Python</a>, so a Python installation is required to use it.
 Only Python 3.7 is officially supported at present, though newer versions likely work.</p>
 <p>Because Tumult Core uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
+<p>You may also need to configure pyspark to use the intended Python installation. You can do this by setting the <cite>PYSPARK_PYTHON</cite> environment variable. For example:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PYSPARK_PYTHON</span><span class="o">=</span>/usr/bin/python3
+</pre></div>
+</div>
+</div></blockquote>
 <p>Tumult Core uses <a class="reference external" href="https://github.com/fredrik-johansson/python-flint/">python-flint</a>
 for some mathematical functions, so <code class="docutils literal notranslate"><span class="pre">python-flint</span></code> is also required.
 Only Tumult’s wheels (located at <code class="docutils literal notranslate"><span class="pre">https://d3p0voevd56kj6.cloudfront.net</span></code>) are
@@ -305,10 +311,10 @@ Not doing this before making calls to Tumult Core will result in Spark raising <
 </div>
 <p>Below are instructions for installing these prerequisites on several common platforms.
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
-If you encounter any issues during the installation process, please let us know!</p>
+If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/core/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="b77f9db7-e20b-4049-b428-b5748dce5513" name="1e15431f-0457-4d69-a472-c35f97b5b4e5" type="radio">
-</input><label class="tabbed-label" for="b77f9db7-e20b-4049-b428-b5748dce5513">
+<input checked="checked" id="4c626006-fa08-4312-8f34-c24d58c582ca" name="84ee4957-b418-474f-9d31-5eb5ded4aeae" type="radio">
+</input><label class="tabbed-label" for="4c626006-fa08-4312-8f34-c24d58c582ca">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -321,12 +327,12 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 <p>Then install python-flint with</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
 </pre></div>
 </div>
 </div>
-<input id="40c89fa8-ded6-4315-b686-33cd922f7b53" name="1e15431f-0457-4d69-a472-c35f97b5b4e5" type="radio">
-</input><label class="tabbed-label" for="40c89fa8-ded6-4315-b686-33cd922f7b53">
+<input id="9436aaff-cf7d-44b0-b248-5d770cb1716a" name="84ee4957-b418-474f-9d31-5eb5ded4aeae" type="radio">
+</input><label class="tabbed-label" for="9436aaff-cf7d-44b0-b248-5d770cb1716a">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -340,13 +346,13 @@ To install Python 3, run:</p>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
 <p>Then install python-flint with</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
 </pre></div>
 </div>
 </div>
-<input id="5004165f-2a7d-40cf-a8b8-6682c12045a4" name="1e15431f-0457-4d69-a472-c35f97b5b4e5" type="radio">
-</input><label class="tabbed-label" for="5004165f-2a7d-40cf-a8b8-6682c12045a4">
-MacOS</label><div class="tabbed-content docutils">
+<input id="1acf8eaf-1c7b-47e6-8199-3761a93c3b2f" name="84ee4957-b418-474f-9d31-5eb5ded4aeae" type="radio">
+</input><label class="tabbed-label" for="1acf8eaf-1c7b-47e6-8199-3761a93c3b2f">
+macOS</label><div class="tabbed-content docutils">
 <blockquote>
 <div><p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
@@ -368,8 +374,8 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 </pre></div>
 </div>
 </div>
-<input id="e688c185-c6cf-42ac-b089-4efeddb66ce6" name="1e15431f-0457-4d69-a472-c35f97b5b4e5" type="radio">
-</input><label class="tabbed-label" for="e688c185-c6cf-42ac-b089-4efeddb66ce6">
+<input id="ed4d6a74-d3b6-4915-9286-a5b36047fa14" name="84ee4957-b418-474f-9d31-5eb5ded4aeae" type="radio">
+</input><label class="tabbed-label" for="ed4d6a74-d3b6-4915-9286-a5b36047fa14">
 Manual installation</label><div class="tabbed-content docutils">
 <p>If Python is not available through your system’s package manager, Python installers and source tarballs are available on the <a class="reference external" href="https://www.python.org/downloads/">Python downloads page</a>.</p>
 <p><a class="reference external" href="https://aws.amazon.com/corretto/">Amazon Corretto</a> and <a class="reference external" href="https://adoptium.net">Adoptium</a> (formerly AdoptOpenJDK) both provide Java distributions based on OpenJDK for a variety of platforms.
@@ -383,13 +389,8 @@ Their installation instructions are available <a class="reference external" href
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In order to install Tumult Core, you will need a username and token to download it.
-If you do not currently have these, contact <a class="reference external" href="mailto:support&#37;&#52;&#48;tmlt&#46;io">support<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
-</div>
-<p>Once the above prerequisites are installed, Tumult Core can be installed using <code class="docutils literal notranslate"><span class="pre">pip</span></code> with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --extra-index-url https://&lt;token-username&gt;:&lt;token&gt;@gitlab.com/api/v4/projects/17405343/packages/pypi/simple tmlt.core
+<p>Once the above prerequisites are installed, Tumult Core can be installed using <code class="docutils literal notranslate"><span class="pre">pip3</span></code> with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install tmlt.core
 </pre></div>
 </div>
 <p>This will automatically install all of its Python dependencies as well.</p>
@@ -441,7 +442,7 @@ If you do not currently have these, contact <a class="reference external" href="
   </div>
   
   <div class="footer-item">
-    Built from 756e447d at 2022-06-22 21:17.
+    Built from 1f682d85 at 2022-06-22 21:25.
   </div>
   
   <div class="footer-item">
