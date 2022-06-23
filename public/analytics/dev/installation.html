@@ -291,6 +291,12 @@ function checkPageExistsAndRedirect(event) {
 <p>Tumult Analytics is built in <a class="reference external" href="https://www.python.org/">Python</a>, so a Python installation is required to use it.
 Only Python 3.7 is officially supported at present, though newer versions likely work.</p>
 <p>Because Tumult Analytics uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
+<p>You may also need to configure pyspark to use the intended Python installation. You can do this by setting the <cite>PYSPARK_PYTHON</cite> environment variable. For example:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PYSPARK_PYTHON</span><span class="o">=</span>/usr/bin/python3
+</pre></div>
+</div>
+</div></blockquote>
 <p>Tumult Analytics uses <a class="reference external" href="https://github.com/fredrik-johansson/python-flint/">python-flint</a>
 for some mathematical functions, so <code class="docutils literal notranslate"><span class="pre">python-flint</span></code> is also required.
 Only Tumult’s wheels (located at <code class="docutils literal notranslate"><span class="pre">https://d3p0voevd56kj6.cloudfront.net</span></code>) are
@@ -305,10 +311,10 @@ Not doing this before making calls to Tumult Analytics will result in Spark rais
 </div>
 <p>Below are instructions for installing these prerequisites on several common platforms.
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
-If you encounter any issues during the installation process, please let us know!</p>
+If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="0e55577c-ff8a-4938-bd06-528fb182861b" name="aeca6fa0-a6f6-4b4b-9643-59b2c77c6f53" type="radio">
-</input><label class="tabbed-label" for="0e55577c-ff8a-4938-bd06-528fb182861b">
+<input checked="checked" id="4c7f3081-1a94-4115-8b4e-41b05a39b8eb" name="5b21ba1d-2b18-40a2-9d5e-adea840a0d79" type="radio">
+</input><label class="tabbed-label" for="4c7f3081-1a94-4115-8b4e-41b05a39b8eb">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -321,12 +327,12 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 <p>Then install python-flint with</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
 </pre></div>
 </div>
 </div>
-<input id="25565ecc-933a-4799-a192-526ed7e5fa63" name="aeca6fa0-a6f6-4b4b-9643-59b2c77c6f53" type="radio">
-</input><label class="tabbed-label" for="25565ecc-933a-4799-a192-526ed7e5fa63">
+<input id="ee8c6c14-7b0a-41af-abba-876d8849462a" name="5b21ba1d-2b18-40a2-9d5e-adea840a0d79" type="radio">
+</input><label class="tabbed-label" for="ee8c6c14-7b0a-41af-abba-876d8849462a">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -340,26 +346,30 @@ To install Python 3, run:</p>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
 <p>Then install python-flint with</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
 </pre></div>
 </div>
 </div>
-<input id="40a03a45-765f-4efe-85cc-d9af3ec72f94" name="aeca6fa0-a6f6-4b4b-9643-59b2c77c6f53" type="radio">
-</input><label class="tabbed-label" for="40a03a45-765f-4efe-85cc-d9af3ec72f94">
+<input id="5a860b71-4059-4471-9159-b5da5b05385e" name="5b21ba1d-2b18-40a2-9d5e-adea840a0d79" type="radio">
+</input><label class="tabbed-label" for="5a860b71-4059-4471-9159-b5da5b05385e">
 macOS</label><div class="tabbed-content docutils">
-<blockquote>
-<div><p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
+<p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
 <p>If you do not already have Homebrew, it can be installed with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
+</div></blockquote>
 <p>Python may be installed with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install python@3.7
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install python@3.7
 </pre></div>
 </div>
+</div></blockquote>
 <p>And Java may be installed with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
 </pre></div>
 </div>
 </div></blockquote>
@@ -368,8 +378,8 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 </pre></div>
 </div>
 </div>
-<input id="4c683ca1-e477-4ca8-8178-b18f56b7101e" name="aeca6fa0-a6f6-4b4b-9643-59b2c77c6f53" type="radio">
-</input><label class="tabbed-label" for="4c683ca1-e477-4ca8-8178-b18f56b7101e">
+<input id="02d7cc0e-c5c3-406a-87cc-642d19cfafa3" name="5b21ba1d-2b18-40a2-9d5e-adea840a0d79" type="radio">
+</input><label class="tabbed-label" for="02d7cc0e-c5c3-406a-87cc-642d19cfafa3">
 Manual installation</label><div class="tabbed-content docutils">
 <p>If Python is not available through your system’s package manager, Python installers and source tarballs are available on the <a class="reference external" href="https://www.python.org/downloads/">Python downloads page</a>.</p>
 <p><a class="reference external" href="https://aws.amazon.com/corretto/">Amazon Corretto</a> and <a class="reference external" href="https://adoptium.net">Adoptium</a> (formerly AdoptOpenJDK) both provide Java distributions based on OpenJDK for a variety of platforms.
@@ -383,13 +393,8 @@ Their installation instructions are available <a class="reference external" href
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In order to install Tumult Analytics, you will need a username and token to download it.
-If you do not currently have these, contact <a class="reference external" href="mailto:support&#37;&#52;&#48;tmlt&#46;io">support<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
-</div>
-<p>Once the above prerequisites are installed, Tumult Analytics can be installed using <code class="docutils literal notranslate"><span class="pre">pip</span></code> with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --extra-index-url https://&lt;token-username&gt;:&lt;token&gt;@gitlab.com/api/v4/projects/17405343/packages/pypi/simple tmlt.analytics
+<p>Once the above prerequisites are installed, Tumult Analytics can be installed using <code class="docutils literal notranslate"><span class="pre">pip3</span></code> with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install tmlt.analytics
 </pre></div>
 </div>
 <p>This will automatically install all of its Python dependencies as well.</p>
@@ -441,7 +446,7 @@ If you do not currently have these, contact <a class="reference external" href="
   </div>
   
   <div class="footer-item">
-    Built from cc85cd88 at 2022-06-21 21:37.
+    Built from 6f6c9efe at 2022-06-23 05:14.
   </div>
   
   <div class="footer-item">
