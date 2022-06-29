@@ -615,6 +615,11 @@ function checkPageExistsAndRedirect(event) {
   <section id="module-tmlt.core.transformations.dictionary">
 <span id="dictionary"></span><h1>dictionary<a class="headerlink" href="#module-tmlt.core.transformations.dictionary" title="Permalink to this headline">#</a></h1>
 <p>Transformations and utilities for manipulating dictionaries.</p>
+<p>Note that while most transformations in this module (<a class="reference internal" href="#tmlt.core.transformations.dictionary.CreateDictFromValue" title="tmlt.core.transformations.dictionary.CreateDictFromValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">CreateDictFromValue</span></code></a>,
+<a class="reference internal" href="#tmlt.core.transformations.dictionary.Subset" title="tmlt.core.transformations.dictionary.Subset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subset</span></code></a>, and <a class="reference internal" href="#tmlt.core.transformations.dictionary.GetValue" title="tmlt.core.transformations.dictionary.GetValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">GetValue</span></code></a>) support the metric <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a>,
+<a class="reference internal" href="#tmlt.core.transformations.dictionary.AugmentDictTransformation" title="tmlt.core.transformations.dictionary.AugmentDictTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">AugmentDictTransformation</span></code></a> does not. Because of this, none of the included
+derived transformations (such as <a class="reference internal" href="#tmlt.core.transformations.dictionary.create_copy_and_transform_value" title="tmlt.core.transformations.dictionary.create_copy_and_transform_value"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_copy_and_transform_value()</span></code></a>) support
+<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a>. Instead, use transformations in <a class="reference internal" href="../spark_transformations/add_remove_keys/index.html#module-tmlt.core.transformations.spark_transformations.add_remove_keys" title="tmlt.core.transformations.spark_transformations.add_remove_keys"><code class="xref py py-mod docutils literal notranslate"><span class="pre">add_remove_keys</span></code></a>.</p>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h2>
 <table class="table">
@@ -806,7 +811,7 @@ transformation_dict.</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.transformations.dictionary.CreateDictFromValue">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreateDictFromValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.dictionary.CreateDictFromValue" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreateDictFromValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_add_remove_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.dictionary.CreateDictFromValue" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Create a dictionary from an object.</p>
 <dl class="field-list simple">
@@ -815,12 +820,13 @@ transformation_dict.</p></li>
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><em>tmlt.core.domains.base.Domain</em></a>) – </p></li>
 <li><p><strong>input_metric</strong> (<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><em>tmlt.core.metrics.Metric</em></a>) – </p></li>
 <li><p><strong>key</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>use_add_remove_keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.dictionary.CreateDictFromValue.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.dictionary.CreateDictFromValue.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_add_remove_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.dictionary.CreateDictFromValue.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -828,6 +834,8 @@ transformation_dict.</p></li>
 <li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Domain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Domain</span></code></a></span>) – Domain of input objects.</p></li>
 <li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></span>) – Distance metric on input objects.</p></li>
 <li><p><strong>key</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Key for constructing dictionary with given object.</p></li>
+<li><p><strong>use_add_remove_keys</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to use <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a> as the output
+metric instead of <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -854,7 +862,7 @@ transformation_dict.</p></li>
 <dd class="field-odd"><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[Any, Any]</p>
+<dd class="field-even"><p>Any</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1096,7 +1104,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><em>tmlt.core.domains.collections.DictDomain</em></a>) – </p></li>
-<li><p><strong>input_metric</strong> (<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><em>tmlt.core.metrics.DictMetric</em></a>) – </p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><em>tmlt.core.metrics.DictMetric</em></a><em>, </em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><em>tmlt.core.metrics.AddRemoveKeys</em></a><em>]</em>) – </p></li>
 <li><p><strong>keys</strong> (<em>List</em><em>[</em><em>Any</em><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -1109,7 +1117,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a></span>) – Domain of input dictionaries.</p></li>
-<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></span>) – Distance metric over input dictionaries.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a> | <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a>, <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a>]</span>) – Distance metric over input dictionaries.</p></li>
 <li><p><strong>keys</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – Keys to be used for extracting subset.</p></li>
 </ul>
 </dd>
@@ -1134,10 +1142,10 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <p>The returned d_out is {key: d_in[key] for key in self.keys}.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d_in</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em>) – Distance between inputs under input_metric.</p>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[Any, Any]</p>
+<dd class="field-even"><p>Any</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1148,10 +1156,10 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dd><p>Returns subset of dictionary specified by keys.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_dict</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>input_dict</strong> (<em>Any</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[Any, Any]</p>
+<dd class="field-even"><p>Any</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1237,7 +1245,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><em>tmlt.core.domains.collections.DictDomain</em></a>) – </p></li>
-<li><p><strong>input_metric</strong> (<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><em>tmlt.core.metrics.DictMetric</em></a>) – </p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><em>tmlt.core.metrics.DictMetric</em></a><em>, </em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><em>tmlt.core.metrics.AddRemoveKeys</em></a><em>]</em>) – </p></li>
 <li><p><strong>key</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
@@ -1250,7 +1258,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a></span>) – Domain of input dictionaries.</p></li>
-<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></span>) – Distance metric for input dictionaries.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a> | <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a>, <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a>]</span>) – Distance metric for input dictionaries.</p></li>
 <li><p><strong>key</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Key for retrieval.</p></li>
 </ul>
 </dd>
@@ -1275,7 +1283,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <p>The returned d_out is d_in[self.key].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d_in</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em>) – Distance between inputs under input_metric.</p>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Any</p>
@@ -1289,7 +1297,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
 <dd><p>Returns value for specified key.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_dict</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>input_dict</strong> (<em>Any</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Any</p>
@@ -1416,7 +1424,7 @@ raises <a class="reference external" href="https://docs.python.org/3/library/exc
   </div>
   
   <div class="footer-item">
-    Built from 936bfdef at 2022-06-27 21:36.
+    Built from 52e080fd at 2022-06-29 17:39.
   </div>
   
   <div class="footer-item">

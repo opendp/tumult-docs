@@ -30,7 +30,7 @@ Classes
      - Rename one or more columns in a Spark DataFrame.
 
    
-.. py:class:: Rename(input_domain, metric, rename_mapping)
+.. py:class:: Rename(input_domain, input_metric, rename_mapping)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -71,7 +71,7 @@ Classes
    ...             "B": SparkStringColumnDescriptor(),
    ...         }
    ...     ),
-   ...     metric=SymmetricDifference(),
+   ...     input_metric=SymmetricDifference(),
    ...     rename_mapping={"B": "C"},
    ... )
    >>> # Apply transformation to data
@@ -89,8 +89,8 @@ Classes
        * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
          or :class:`~.IfGroupedBy`
        * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
-         or :class:`~.IfGroupedBy`
-         (matches input metric)
+         or :class:`~.IfGroupedBy`. Matches input metric, unless :class:`~.IfGroupedBy`
+         and the grouping column is renamed.
 
        >>> rename_b_to_c.input_domain
        SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})

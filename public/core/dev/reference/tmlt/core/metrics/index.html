@@ -802,6 +802,48 @@ function checkPageExistsAndRedirect(event) {
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys">
+     AddRemoveKeys
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.column">
+       column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.validate">
+       validate
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.compare">
+       compare
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain">
+       supports_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.distance">
+       distance
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.__eq__">
+       __eq__
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -872,6 +914,9 @@ function checkPageExistsAndRedirect(event) {
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></p></td>
 <td><p>Distance between two dictionaries with identical sets of keys.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></p></td>
+<td><p>The number of keys that dictionaries of dataframe differ by.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2196,6 +2241,7 @@ to compute the distances of the components.</p>
 <p>This metric is an upper bound on the distance for any fixed set of grouping keys.
 This assumes that the distance between two empty groups is zero, and the inner
 metric must satisfy this property.</p>
+<p>The grouping column cannot contain floating point values.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -2527,6 +2573,196 @@ metric</p></li>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddRemoveKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></p>
+<p>The number of keys that dictionaries of dataframe differ by.</p>
+<p>This metric can be thought of as a extension of <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a> with inner
+metric <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, except it is applied to a dictionary of
+dataframes, instead of a single dataframe.</p>
+<p>Both <cite>IfGroupedBy(X, SymmetricDifference())</cite> and <cite>AddRemoveKeys(X)</cite> can be described
+in the following way:</p>
+<p>Sum over each key that appears in column <cite>X</cite> in either neighbor</p>
+<ul class="simple">
+<li><p>0 if both neighbors “match” for <cite>X = key</cite></p></li>
+<li><p>1 if only one neighbor has records for <cite>X = key</cite></p></li>
+<li><p>2 if both neighbor have records for <cite>X = key</cite>, but they don’t “match”</p></li>
+</ul>
+<p>The key column cannot containg floating point values, and all dataframes must
+have the same type for the key column.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.core.domains.spark_domains</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">SparkIntegerColumnDescriptor</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">SparkStringColumnDescriptor</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span>
+<span class="gp">... </span>        <span class="mi">1</span><span class="p">:</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="p">},</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="mi">2</span><span class="p">:</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>                <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="p">},</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">AddRemoveKeys</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A=1 matches, A=2 is only in value1, A=3 is only in value2, A=4 differs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">value1</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="mi">1</span><span class="p">:</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="mi">2</span><span class="p">:</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">value2</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="mi">1</span><span class="p">:</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="mi">2</span><span class="p">:</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The column defining the keys.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.column" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the key column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.validate" title="Permalink to this definition">#</a></dt>
+<dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
+<ul class="simple">
+<li><p><cite>value</cite> must be a nonnegative real or infinite</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – A distance between two datasets under this metric.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.compare" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value1</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – </p></li>
+<li><p><strong>value2</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.supports_domain">
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if the metric is implemented for the passed domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>domain</strong> (<a class="reference internal" href="../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><em>tmlt.core.domains.base.Domain</em></a>) – The domain to check against.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.distance" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the metric distance between two elements of a supported domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value1</strong> (<em>Any</em>) – An element of the domain.</p></li>
+<li><p><strong>value2</strong> (<em>Any</em>) – An element of the domain.</p></li>
+<li><p><strong>domain</strong> (<a class="reference internal" href="../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><em>tmlt.core.domains.base.Domain</em></a>) – A domain compatible with the metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if both metrics are equal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -2574,7 +2810,7 @@ metric</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 936bfdef at 2022-06-27 21:36.
+    Built from 52e080fd at 2022-06-29 17:39.
   </div>
   
   <div class="footer-item">

@@ -52,6 +52,8 @@ Classes
      - Distance between two DataFrames that shall be grouped by a given attribute.
    * - :class:`.DictMetric`
      - Distance between two dictionaries with identical sets of keys.
+   * - :class:`.AddRemoveKeys`
+     - The number of keys that dictionaries of dataframe differ by.
 
    
 .. py:class:: Metric
@@ -895,6 +897,8 @@ Classes
    This assumes that the distance between two empty groups is zero, and the inner
    metric must satisfy this property.
 
+   The grouping column cannot contain floating point values.
+
    .. rubric:: Examples
 
    >>> import pandas as pd
@@ -1081,6 +1085,143 @@ Classes
    .. py:method:: __len__(self)
 
       Returns number of keys in the metric.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both metrics are equal.
+
+
+
+   
+.. py:class:: AddRemoveKeys(column)
+
+   Bases: :class:`Metric`
+
+   The number of keys that dictionaries of dataframe differ by.
+
+   This metric can be thought of as a extension of :class:`IfGroupedBy` with inner
+   metric :class:`~SymmetricDifference`, except it is applied to a dictionary of
+   dataframes, instead of a single dataframe.
+
+   Both `IfGroupedBy(X, SymmetricDifference())` and `AddRemoveKeys(X)` can be described
+   in the following way:
+
+   Sum over each key that appears in column `X` in either neighbor
+
+   - 0 if both neighbors "match" for `X = key`
+   - 1 if only one neighbor has records for `X = key`
+   - 2 if both neighbor have records for `X = key`, but they don't "match"
+
+   The key column cannot containg floating point values, and all dataframes must
+   have the same type for the key column.
+
+   .. rubric:: Examples
+
+   >>> import pandas as pd
+   >>> from pyspark.sql import SparkSession
+   >>> from tmlt.core.domains.spark_domains import (
+   ...     SparkIntegerColumnDescriptor,
+   ...     SparkStringColumnDescriptor,
+   ... )
+   >>> spark = SparkSession.builder.getOrCreate()
+   >>> domain = DictDomain(
+   ...     {
+   ...         1: SparkDataFrameDomain(
+   ...             {
+   ...                 "A": SparkIntegerColumnDescriptor(),
+   ...                 "B": SparkIntegerColumnDescriptor(),
+   ...             },
+   ...         ),
+   ...         2: SparkDataFrameDomain(
+   ...             {
+   ...                 "A": SparkIntegerColumnDescriptor(),
+   ...                 "C": SparkStringColumnDescriptor(),
+   ...             },
+   ...         ),
+   ...     }
+   ... )
+   >>> metric = AddRemoveKeys("A")
+   >>> # A=1 matches, A=2 is only in value1, A=3 is only in value2, A=4 differs
+   >>> value1 = {
+   ...     1: spark.createDataFrame(
+   ...             pd.DataFrame(
+   ...             {
+   ...                 "A": [1, 1, 2],
+   ...                 "B": [1, 1, 1],
+   ...             }
+   ...         )
+   ...     ),
+   ...     2: spark.createDataFrame(
+   ...         pd.DataFrame(
+   ...             {
+   ...                 "A": [1, 4],
+   ...                 "C": ["1", "1"],
+   ...             }
+   ...         )
+   ...     )
+   ... }
+   >>> value2 = {
+   ...     1: spark.createDataFrame(
+   ...             pd.DataFrame(
+   ...             {
+   ...                 "A": [1, 1, 3],
+   ...                 "B": [1, 1, 1],
+   ...             }
+   ...         )
+   ...     ),
+   ...     2: spark.createDataFrame(
+   ...         pd.DataFrame(
+   ...             {
+   ...                 "A": [1, 4],
+   ...                 "C": ["1", "2"],
+   ...             }
+   ...         )
+   ...     )
+   ... }
+   >>> metric.distance(value1, value2, domain)
+   4
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: column(self)
+      :property:
+
+      Returns the key column.
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a nonnegative real or infinite
+
+      :param value: A distance between two datasets under this metric.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: supports_domain(self, domain)
+
+      Return True if the metric is implemented for the passed domain.
+
+      :param domain: The domain to check against.
+
+
+   .. py:method:: distance(self, value1, value2, domain)
+
+      Return the metric distance between two elements of a supported domain.
+
+      :param value1: An element of the domain.
+      :param value2: An element of the domain.
+      :param domain: A domain compatible with the metric.
 
 
    .. py:method:: __eq__(self, other)
