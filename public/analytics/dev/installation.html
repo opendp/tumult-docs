@@ -302,7 +302,7 @@ Only Python 3.7 is officially supported at present, though newer versions likely
 for some mathematical functions, so <code class="docutils literal notranslate"><span class="pre">python-flint</span></code> is also required.
 Only Tumult’s wheels (located at <code class="docutils literal notranslate"><span class="pre">https://d3p0voevd56kj6.cloudfront.net</span></code>) are
 currently supported.</p>
-<p>Only the x86_64 processor architecture is officially supported at present.</p>
+<p>Only the x86_64 processor architecture is officially supported at present. Apple silicon is supported through binary translation with Rosetta 2.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using Java 11, Spark requires that Java be passed the <code class="docutils literal notranslate"><span class="pre">-Dio.netty.tryReflectionSetAccessible=true</span></code> option.
@@ -314,8 +314,8 @@ Not doing this before making calls to Tumult Analytics will result in Spark rais
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="6f34b359-a89e-45eb-9795-354184ae0287" name="2ed4e374-2463-4466-ab65-037070a0096b" type="radio">
-</input><label class="tabbed-label" for="6f34b359-a89e-45eb-9795-354184ae0287">
+<input checked="checked" id="b71913cf-985b-4ea8-8032-bd5646e43aa1" name="065f364b-edfd-4a1d-9801-faed64de70da" type="radio">
+</input><label class="tabbed-label" for="b71913cf-985b-4ea8-8032-bd5646e43aa1">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -332,8 +332,8 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 </div>
-<input id="9c6b3798-695e-4886-8156-49f9efd387c7" name="2ed4e374-2463-4466-ab65-037070a0096b" type="radio">
-</input><label class="tabbed-label" for="9c6b3798-695e-4886-8156-49f9efd387c7">
+<input id="7265d6db-c532-427e-b52a-54e367b51c8e" name="065f364b-edfd-4a1d-9801-faed64de70da" type="radio">
+</input><label class="tabbed-label" for="7265d6db-c532-427e-b52a-54e367b51c8e">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -351,44 +351,58 @@ To install Python 3, run:</p>
 </pre></div>
 </div>
 </div>
-<input id="ebb4643d-fff4-46d8-bac0-81858f0988d1" name="2ed4e374-2463-4466-ab65-037070a0096b" type="radio">
-</input><label class="tabbed-label" for="ebb4643d-fff4-46d8-bac0-81858f0988d1">
-macOS</label><div class="tabbed-content docutils">
+<input id="83d0e897-af92-4ffe-8239-9458efc2af48" name="065f364b-edfd-4a1d-9801-faed64de70da" type="radio">
+</input><label class="tabbed-label" for="83d0e897-af92-4ffe-8239-9458efc2af48">
+macOS (Intel)</label><div class="tabbed-content docutils">
 <p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
 <p>If you do not already have Homebrew, it can be installed with:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>Python may be installed with:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install python@3.7
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install python@3.7
 </pre></div>
 </div>
-</div></blockquote>
 <p>And Java may be installed with:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
 </pre></div>
 </div>
-</div></blockquote>
-<p>Then install python-flint with</p>
+<p>Then install python-flint with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
 </pre></div>
 </div>
 </div>
-<input id="393fcce2-ece4-4a9d-b26a-03f31ca3bf11" name="2ed4e374-2463-4466-ab65-037070a0096b" type="radio">
-</input><label class="tabbed-label" for="393fcce2-ece4-4a9d-b26a-03f31ca3bf11">
-Manual installation</label><div class="tabbed-content docutils">
-<p>If Python is not available through your system’s package manager, Python installers and source tarballs are available on the <a class="reference external" href="https://www.python.org/downloads/">Python downloads page</a>.</p>
-<p><a class="reference external" href="https://aws.amazon.com/corretto/">Amazon Corretto</a> and <a class="reference external" href="https://adoptium.net">Adoptium</a> (formerly AdoptOpenJDK) both provide Java distributions based on OpenJDK for a variety of platforms.
-Their installation instructions are available <a class="reference external" href="https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/what-is-corretto-17.html">here</a> and <a class="reference external" href="https://adoptium.net/installation.html">here</a>, respectively, so pick one and get it set up before proceeding.</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>If you are installing on a Windows machine, please install <a class="reference external" href="https://fredrikj.net/python-flint/">python-flint</a> (see <a class="reference external" href="https://github.com/fredrik-johansson/python-flint/#installation">instructions</a>) before installing Tumult Analytics.</p>
+<input id="1707ba29-fee0-4d3e-bdc2-8213f6a51951" name="065f364b-edfd-4a1d-9801-faed64de70da" type="radio">
+</input><label class="tabbed-label" for="1707ba29-fee0-4d3e-bdc2-8213f6a51951">
+macOS (Apple silicon)</label><div class="tabbed-content docutils">
+<p>Since Python 3.7 is not supported on the Apple silicon processor architecture, you will need to first install <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> and the x86_64 version of Homebrew.</p>
+<p>If you do not already have Rosetta 2, it can be installed with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>softwareupdate --install-rosetta
+</pre></div>
 </div>
+<p>The x86_64 version of Homebrew can be installed with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>arch -x86_64 /bin/bash -c <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Now, you can install Python 3.7 with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>arch -x86_64 /usr/local/bin/brew install python@3.7
+</pre></div>
+</div>
+<p>And Java may be installed with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>arch -x86_64 /usr/local/bin/brew install python@3.7
+</pre></div>
+</div>
+<p>Then install python-flint with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install -i https://d3p0voevd56kj6.cloudfront.net python-flint
+</pre></div>
+</div>
+</div>
+<input id="c6996d73-6ec8-4ef3-985a-64e3bbb748bc" name="065f364b-edfd-4a1d-9801-faed64de70da" type="radio">
+</input><label class="tabbed-label" for="c6996d73-6ec8-4ef3-985a-64e3bbb748bc">
+Windows</label><div class="tabbed-content docutils">
+<p>The only supported way to install Tumult Analytics on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.</p>
+<p>Once you install your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core setup.</p>
 </div>
 </div>
 </section>
@@ -447,7 +461,7 @@ Their installation instructions are available <a class="reference external" href
   </div>
   
   <div class="footer-item">
-    Built from d780b524 at 2022-07-08 16:36.
+    Built from 139075bd at 2022-07-13 21:54.
   </div>
   
   <div class="footer-item">
