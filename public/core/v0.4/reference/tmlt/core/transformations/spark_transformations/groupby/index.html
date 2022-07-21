@@ -1,0 +1,1006 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>groupby &#8212; Tumult Core  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="id" href="../id/index.html" />
+    <link rel="prev" title="filter" href="../filter/index.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../topic-guides/index.html">
+  Topic Guides
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../additional-resources/index.html">
+  Additional Resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/core" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.4.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/core/transformations/spark_transformations/groupby/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.4.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/core/transformations/spark_transformations/groupby/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/core/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/core/transformations/spark_transformations/groupby/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.4.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.4.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../domains/index.html">
+   domains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../measurements/index.html">
+   measurements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../measures/index.html">
+   measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../metrics/index.html">
+   metrics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../random/index.html">
+   random
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   transformations
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../base/index.html">
+     base
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../chaining/index.html">
+     chaining
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../converters/index.html">
+     converters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../dictionary/index.html">
+     dictionary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../identity/index.html">
+     identity
+    </a>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     spark_transformations
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="../add_remove_keys/index.html">
+       add_remove_keys
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../agg/index.html">
+       agg
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../filter/index.html">
+       filter
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       groupby
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../id/index.html">
+       id
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../join/index.html">
+       join
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../map/index.html">
+       map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../nan/index.html">
+       nan
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../partition/index.html">
+       partition
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../persist/index.html">
+       persist
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../rename/index.html">
+       rename
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../select/index.html">
+       select
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../truncation/index.html">
+       truncation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../utils/index.html">
+   utils
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_column_domains">
+     create_groupby_from_column_domains
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_list_of_keys">
+     create_groupby_from_list_of_keys
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.compute_full_domain_df">
+     compute_full_domain_df
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy">
+     GroupBy
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.use_l2">
+       use_l2
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.group_keys">
+       group_keys
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.groupby_columns">
+       groupby_columns
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function">
+       stability_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_domain">
+       input_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_metric">
+       input_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_domain">
+       output_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_metric">
+       output_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_relation">
+       stability_relation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__or__">
+       __or__
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.core.transformations.spark_transformations.groupby">
+<span id="groupby"></span><h1>groupby<a class="headerlink" href="#module-tmlt.core.transformations.spark_transformations.groupby" title="Permalink to this headline">#</a></h1>
+<p>Transformations for performing groupby on Spark DataFrames.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_column_domains" title="tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_column_domains"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_groupby_from_column_domains()</span></code></a></p></td>
+<td><p>Returns GroupBy transformation with Cartesian product of column domains as keys.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_list_of_keys" title="tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_list_of_keys"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_groupby_from_list_of_keys()</span></code></a></p></td>
+<td><p>Returns a GroupBy transformation using user-supplied list of group keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.compute_full_domain_df" title="tmlt.core.transformations.spark_transformations.groupby.compute_full_domain_df"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_full_domain_df()</span></code></a></p></td>
+<td><p>Returns a DataFrame containing the Cartesian product of given column domains.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_column_domains">
+<span class="sig-name descname"><span class="pre">create_groupby_from_column_domains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_domains</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_column_domains" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns GroupBy transformation with Cartesian product of column domains as keys.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A   B   C</span>
+<span class="go">0  a1  b1  c1</span>
+<span class="go">1  a2  b1  c2</span>
+<span class="go">2  a3  b2  c1</span>
+<span class="go">3  a3  b2  c1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B_C</span> <span class="o">=</span> <span class="n">create_groupby_from_column_domains</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">use_l2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_domains</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grouped_dataframe</span> <span class="o">=</span> <span class="n">groupby_B_C</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groups_df</span> <span class="o">=</span> <span class="n">grouped_dataframe</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">groups_df</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">    B   C  count</span>
+<span class="go">0  b1  c1      1</span>
+<span class="go">1  b1  c2      1</span>
+<span class="go">2  b2  c1      2</span>
+<span class="go">3  b2  c2      0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Note that the group key (&quot;b2&quot;, &quot;c2&quot;) does not appear in the DataFrame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># but appears in the aggregation output with the given fill value.</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – Domain of input DataFrames.</p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>) – Metric on input DataFrames.</p></li>
+<li><p><strong>use_l2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, use <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> instead of <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a>
+in the output metric.</p></li>
+<li><p><strong>column_domains</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.10)"><em>datetime.date</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.10)"><em>datetime.date</em></a><em>]</em><em>]</em><em>]</em><em>]</em>) – Mapping from column name to list of distinct values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy">GroupBy</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>column_domains</cite> must be public.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_list_of_keys">
+<span class="sig-name descname"><span class="pre">create_groupby_from_list_of_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.create_groupby_from_list_of_keys" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a GroupBy transformation using user-supplied list of group keys.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A   B   C</span>
+<span class="go">0  a1  b1  c1</span>
+<span class="go">1  a2  b1  c2</span>
+<span class="go">2  a3  b2  c1</span>
+<span class="go">3  a3  b2  c1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B_C</span> <span class="o">=</span> <span class="n">create_groupby_from_list_of_keys</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">use_l2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">keys</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">)]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grouped_dataframe</span> <span class="o">=</span> <span class="n">groupby_B_C</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groups_df</span> <span class="o">=</span> <span class="n">grouped_dataframe</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">groups_df</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">    B   C  count</span>
+<span class="go">0  b1  c1      1</span>
+<span class="go">1  b2  c2      0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Note that there is no record corresponding to the key (&quot;b1&quot;, &quot;c2&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># since we did not specify this key while constructing the GroupBy even</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># though this key appears in the input DataFrame.</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – Domain of input DataFrames.</p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>) – Metric on input DataFrames.</p></li>
+<li><p><strong>use_l2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, use <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> instead of <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a>
+in the output metric.</p></li>
+<li><p><strong>groupby_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – List of column names to groupby.</p></li>
+<li><p><strong>keys</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>, </em><em>...</em><em>]</em><em>]</em>) – List of distinct tuples corresponding to group keys.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy">GroupBy</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>keys</cite> must be public list of tuples with no duplicates.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.compute_full_domain_df">
+<span class="sig-name descname"><span class="pre">compute_full_domain_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_domains</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.compute_full_domain_df" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a DataFrame containing the Cartesian product of given column domains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_domains</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.10)"><em>datetime.date</em></a><em>]</em><em>, </em><em>List</em><em>[</em><em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.10)"><em>datetime.date</em></a><em>]</em><em>]</em><em>]</em><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupBy</span></code></a></p></td>
+<td><p>Groups a Spark DataFrame by given group keys.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GroupBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Groups a Spark DataFrame by given group keys.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A   B</span>
+<span class="go">0  a1  b1</span>
+<span class="go">1  a2  b1</span>
+<span class="go">2  a3  b2</span>
+<span class="go">3  a3  b2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span> <span class="o">=</span> <span class="n">GroupBy</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">use_l2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">group_keys</span><span class="o">=</span><span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">]</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grouped_dataframe</span> <span class="o">=</span> <span class="n">groupby_B</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts_df</span> <span class="o">=</span> <span class="n">grouped_dataframe</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">counts_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">())</span>
+<span class="go">    B  count</span>
+<span class="go">0  b1      2</span>
+<span class="go">1  b2      2</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkGroupedDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>
+or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a> (with inner metric <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>)</p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> of
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False)}, group_keys=DataFrame[B: string])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SumOf(inner_metric=SymmetricDifference())</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupBy</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns the <cite>d_in</cite> if the
+<cite>input_metric</cite> is <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>, otherwise it returns <cite>d_in</cite> times <cite>2</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_B</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<table class="table" id="id1">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.use_l2" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.use_l2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">use_l2()</span></code></a></p></td>
+<td><p>Returns whether the output metric will use <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.group_keys" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.group_keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">group_keys()</span></code></a></p></td>
+<td><p>Returns DataFrame containing group keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.groupby_columns" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.groupby_columns"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby_columns()</span></code></a></p></td>
+<td><p>Returns list of columns to groupby.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a></p></td>
+<td><p>Returns the smallest d_out satisfied by the transformation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__call__" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a></p></td>
+<td><p>Performs groupby.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_domain" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_domain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">input_domain()</span></code></a></p></td>
+<td><p>Return input domain for the measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_metric" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">input_metric()</span></code></a></p></td>
+<td><p>Distance metric on input domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_domain" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_domain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">output_domain()</span></code></a></p></td>
+<td><p>Return input domain for the measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_metric" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">output_metric()</span></code></a></p></td>
+<td><p>Distance metric on input domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_relation" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_relation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_relation()</span></code></a></p></td>
+<td><p>Returns True only if close inputs produce close outputs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__or__" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy.__or__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__or__()</span></code></a></p></td>
+<td><p>Return this transformation chained with another component.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – </p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>) – </p></li>
+<li><p><strong>use_l2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
+<li><p><strong>group_keys</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_l2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Input domain.</p></li>
+<li><p><strong>input_metric</strong> (<span class="annotation terse"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>]</span>) – Input metric.</p></li>
+<li><p><strong>use_l2</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, use <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> instead of <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a>
+in the output metric.</p></li>
+<li><p><strong>group_keys</strong> (<span class="annotation terse"><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a></span><span class="annotation full"><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a></span>) – DataFrame where rows correspond to group keys.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>group_keys</cite> must be public.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.use_l2">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">use_l2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.use_l2" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether the output metric will use <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.group_keys">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">group_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.group_keys" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns DataFrame containing group keys.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.groupby_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groupby_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.groupby_columns" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns list of columns to groupby.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under <cite>input_metric</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs groupby.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/grouped_dataframe/index.html#tmlt.core.utils.grouped_dataframe.GroupedDataFrame" title="tmlt.core.utils.grouped_dataframe.GroupedDataFrame">tmlt.core.utils.grouped_dataframe.GroupedDataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.output_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.stability_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.groupby.GroupBy.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.groupby.GroupBy.__or__" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../filter/index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">filter</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../id/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">id</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2022.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from b7b90151 at 2022-07-21 19:25.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
