@@ -1,0 +1,118 @@
+
+
+
+*********************
+privacy_budget
+*********************
+
+.. py:module:: tmlt.analytics.privacy_budget
+
+.. autoapi-nested-parse::
+
+   Classes for specifying privacy budgets.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.PrivacyBudget`
+     - Base class for specifying privacy parameters.
+   * - :class:`.PureDPBudget`
+     - A privacy budget under Pure Differential Privacy.
+   * - :class:`.RhoZCDPBudget`
+     - A privacy budget under rho-Zero-Concentrated Differential Privacy.
+
+   
+.. py:class:: PrivacyBudget
+
+   Bases: :class:`abc.ABC`
+
+   Base class for specifying privacy parameters.
+
+   A PrivacyBudget associates a privacy definition with one or more numeric values.
+   This information ultimately governs the noise that is added when evaluating
+   queries, i.e., it controls how "private" the computation is.
+
+   Note: An "infinite" privacy budget means that the chosen DP algorithm will use
+   parameters that do not guarantee privacy. This is not always exactly equivalent
+   to evaluating the query without applying differential privacy.
+   Please see the individual subclasses of PrivacyBudget for details on how to
+   appropriately specify infinite budgets.
+
+
+
+
+
+
+
+   
+.. py:class:: PureDPBudget(epsilon)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under Pure Differential Privacy.
+
+   This privacy definition is also known as epsilon-differential privacy, and the
+   associated value is the epsilon privacy parameter. The privacy definition can
+   be found `here <https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy>`_
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: epsilon(self)
+      :property:
+
+      Returns the value of epsilon.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Returns whether or not two PureDPBudgets are equivalent.
+
+
+
+   
+.. py:class:: RhoZCDPBudget(rho)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under rho-Zero-Concentrated Differential Privacy.
+
+   The definition of rho-ZCDP can be found in
+   `this <https://arxiv.org/pdf/1605.02065.pdf>`_ paper under Definition 1.1.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: rho(self)
+      :property:
+
+      Returns the value of rho.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Returns whether or not two RhoZCDPBudgets are equivalent.
+
+
+
+
+
+
