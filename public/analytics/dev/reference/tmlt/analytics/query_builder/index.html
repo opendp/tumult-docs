@@ -317,6 +317,28 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor">
      ColumnDescriptor
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.column_type">
+       column_type
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_null">
+       allow_null
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_nan">
+       allow_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_inf">
+       allow_inf
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnType">
@@ -636,7 +658,31 @@ differentially private results to the query.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ColumnDescriptor</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="Permalink to this definition">#</a></dt>
 <dd><p>Information about a column.</p>
-<p>Currently contains the column’s type and whether the column is nullable.</p>
+<p>ColumnDescriptors have the following attributes:</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.column_type">
+<span class="sig-name descname"><span class="pre">column_type</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.column_type" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference internal" href="#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a>, specifying what type this column has.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_null">
+<span class="sig-name descname"><span class="pre">allow_null</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_null" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows null values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_nan">
+<span class="sig-name descname"><span class="pre">allow_nan</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_nan" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows NaN values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_inf">
+<span class="sig-name descname"><span class="pre">allow_inf</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_inf" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows infinite values.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1369,9 +1415,18 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>Row</em><em>]</em>) – The function to be applied to each row.</p></li>
+<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>Row</em><em>]</em>) – The function to be applied to each row.
+The function’s input is a dictionary matching each column name to
+its value for that row.
+This function should return a dictionary, which should always
+have the same keys regardless of input, and the values in that
+dictionary should match the column type specified in
+<cite>new_column_types</cite>. The function should not have any side effects
+(in particular, f cannot raise exceptions).</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
-produced by f. Using ColumnDescriptors is preferred.</p></li>
+produced by f. Using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>
+is preferred.</p></li>
 <li><p><strong>augment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, add new columns to the existing dataframe (so new
 schema = old schema + schema_new_columns).
 If False, make the new dataframe with schema = schema_new_columns</p></li>
@@ -1399,12 +1454,16 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{},</span> <span class="p">{}],</span>
-<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{},</span>
+<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span>
+<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">ColumnDescriptor</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">)},</span>
 <span class="gp">... </span>        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">grouping</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}))</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
@@ -1412,18 +1471,33 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   count</span>
-<span class="go">0      6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   B  count</span>
+<span class="go">0  0      1</span>
+<span class="go">1  1      2</span>
+<span class="go">2  2      3</span>
+<span class="go">3  3      3</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>List</em><em>[</em><em>Row</em><em>]</em><em>]</em>) – The function to apply to each row.</p></li>
-<li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).</p></li>
+<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>List</em><em>[</em><em>Row</em><em>]</em><em>]</em>) – The function to be applied to each row.
+The function’s input is a dictionary matching a column name to
+its value for that row.
+This function should return a list of dictionaries.
+Those dictionaries should always
+have the same keys regardless of input, and the values in those
+dictionaries should match the column type specified in
+<cite>new_column_types</cite>. The function should not have any side effects
+(in particular, f cannot raise exceptions).</p></li>
+<li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).
+If f produces more rows than this, only the first <cite>max_num_rows</cite>
+rows will be in the output.</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
-produced by f. Using ColumnDescriptors is preferred.</p></li>
+produced by f. Using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>
+is preferred.</p></li>
 <li><p><strong>augment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, add new columns to the existing dataframe (so new
 schema = old schema + schema_new_columns).
 If False, make the new dataframe with schema = schema_new_columns</p></li>
@@ -2765,7 +2839,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 31307a89 at 2022-07-29 19:19.
+    Built from 0932c842 at 2022-08-03 18:17.
   </div>
   
   <div class="footer-item">
