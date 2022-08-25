@@ -152,7 +152,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.4.0  <!-- this text may get changed later by javascript -->
+        0.4.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -162,7 +162,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/query_builder/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.4.0'}.
+     variables reference/tmlt/analytics/query_builder/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.4.1'}.
 -->
 
 <script type="text/javascript">
@@ -217,10 +217,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.4.0 variable.
+            // this version, rather than using sphinx's 0.4.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.4.0") {
+            if (entry.version == "0.4.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -317,6 +317,28 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor">
      ColumnDescriptor
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.column_type">
+       column_type
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_null">
+       allow_null
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_nan">
+       allow_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_inf">
+       allow_inf
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.ColumnType">
@@ -433,6 +455,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.QueryBuilder.bin_column">
        bin_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_builder.QueryBuilder.histogram">
+       histogram
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -631,7 +658,31 @@ differentially private results to the query.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ColumnDescriptor</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="Permalink to this definition">#</a></dt>
 <dd><p>Information about a column.</p>
-<p>Currently contains the column’s type and whether the column is nullable.</p>
+<p>ColumnDescriptors have the following attributes:</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.column_type">
+<span class="sig-name descname"><span class="pre">column_type</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.column_type" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference internal" href="#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a>, specifying what type this column has.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_null">
+<span class="sig-name descname"><span class="pre">allow_null</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_null" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows null values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_nan">
+<span class="sig-name descname"><span class="pre">allow_nan</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_nan" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows NaN values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_inf">
+<span class="sig-name descname"><span class="pre">allow_inf</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_inf" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows infinite values.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -752,37 +803,40 @@ The full graph of QueryBuilder objects can be traversed from root to a node.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.bin_column" title="tmlt.analytics.query_builder.QueryBuilder.bin_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bin_column()</span></code></a></p></td>
 <td><p>Create a new column by assigning the values in a given column to bins.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.groupby" title="tmlt.analytics.query_builder.QueryBuilder.groupby"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.histogram" title="tmlt.analytics.query_builder.QueryBuilder.histogram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">histogram()</span></code></a></p></td>
+<td><p>Returns a count query containing the frequency of values in specified column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.groupby" title="tmlt.analytics.query_builder.QueryBuilder.groupby"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby()</span></code></a></p></td>
 <td><p>Groups the query by the given set of keys, returning a GroupedQueryBuilder.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.count" title="tmlt.analytics.query_builder.QueryBuilder.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.count" title="tmlt.analytics.query_builder.QueryBuilder.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a></p></td>
 <td><p>Returns a count query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="tmlt.analytics.query_builder.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="tmlt.analytics.query_builder.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a></p></td>
 <td><p>Returns a count_distinct query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.quantile" title="tmlt.analytics.query_builder.QueryBuilder.quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quantile()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.quantile" title="tmlt.analytics.query_builder.QueryBuilder.quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quantile()</span></code></a></p></td>
 <td><p>Returns a quantile query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.min" title="tmlt.analytics.query_builder.QueryBuilder.min"><code class="xref py py-meth docutils literal notranslate"><span class="pre">min()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.min" title="tmlt.analytics.query_builder.QueryBuilder.min"><code class="xref py py-meth docutils literal notranslate"><span class="pre">min()</span></code></a></p></td>
 <td><p>Returns a quantile query requesting a minimum value, ready to be evaluated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.max" title="tmlt.analytics.query_builder.QueryBuilder.max"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.max" title="tmlt.analytics.query_builder.QueryBuilder.max"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max()</span></code></a></p></td>
 <td><p>Returns a quantile query requesting a maximum value, ready to be evaluated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.median" title="tmlt.analytics.query_builder.QueryBuilder.median"><code class="xref py py-meth docutils literal notranslate"><span class="pre">median()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.median" title="tmlt.analytics.query_builder.QueryBuilder.median"><code class="xref py py-meth docutils literal notranslate"><span class="pre">median()</span></code></a></p></td>
 <td><p>Returns a quantile query requesting a median value, ready to be evaluated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.sum" title="tmlt.analytics.query_builder.QueryBuilder.sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sum()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.sum" title="tmlt.analytics.query_builder.QueryBuilder.sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sum()</span></code></a></p></td>
 <td><p>Returns a sum query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.average" title="tmlt.analytics.query_builder.QueryBuilder.average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">average()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.average" title="tmlt.analytics.query_builder.QueryBuilder.average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">average()</span></code></a></p></td>
 <td><p>Returns an average query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.variance" title="tmlt.analytics.query_builder.QueryBuilder.variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">variance()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.variance" title="tmlt.analytics.query_builder.QueryBuilder.variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">variance()</span></code></a></p></td>
 <td><p>Returns a variance query that is ready to be evaluated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.stdev" title="tmlt.analytics.query_builder.QueryBuilder.stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stdev()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.stdev" title="tmlt.analytics.query_builder.QueryBuilder.stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stdev()</span></code></a></p></td>
 <td><p>Returns a standard deviation query that is ready to be evaluated.</p></td>
 </tr>
 </tbody>
@@ -1361,9 +1415,18 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>Row</em><em>]</em>) – The function to be applied to each row.</p></li>
+<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>Row</em><em>]</em>) – The function to be applied to each row.
+The function’s input is a dictionary matching each column name to
+its value for that row.
+This function should return a dictionary, which should always
+have the same keys regardless of input, and the values in that
+dictionary should match the column type specified in
+<cite>new_column_types</cite>. The function should not have any side effects
+(in particular, f cannot raise exceptions).</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
-produced by f. Using ColumnDescriptors is preferred.</p></li>
+produced by f. Using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>
+is preferred.</p></li>
 <li><p><strong>augment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, add new columns to the existing dataframe (so new
 schema = old schema + schema_new_columns).
 If False, make the new dataframe with schema = schema_new_columns</p></li>
@@ -1391,12 +1454,16 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{},</span> <span class="p">{}],</span>
-<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{},</span>
+<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span>
+<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">ColumnDescriptor</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">)},</span>
 <span class="gp">... </span>        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">grouping</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}))</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
@@ -1404,18 +1471,33 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   count</span>
-<span class="go">0      6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   B  count</span>
+<span class="go">0  0      1</span>
+<span class="go">1  1      2</span>
+<span class="go">2  2      3</span>
+<span class="go">3  3      3</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>List</em><em>[</em><em>Row</em><em>]</em><em>]</em>) – The function to apply to each row.</p></li>
-<li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).</p></li>
+<li><p><strong>f</strong> (<em>Callable</em><em>[</em><em>[</em><em>Row</em><em>]</em><em>, </em><em>List</em><em>[</em><em>Row</em><em>]</em><em>]</em>) – The function to be applied to each row.
+The function’s input is a dictionary matching a column name to
+its value for that row.
+This function should return a list of dictionaries.
+Those dictionaries should always
+have the same keys regardless of input, and the values in those
+dictionaries should match the column type specified in
+<cite>new_column_types</cite>. The function should not have any side effects
+(in particular, f cannot raise exceptions).</p></li>
+<li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).
+If f produces more rows than this, only the first <cite>max_num_rows</cite>
+rows will be in the output.</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
-produced by f. Using ColumnDescriptors is preferred.</p></li>
+produced by f. Using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>
+is preferred.</p></li>
 <li><p><strong>augment</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – If True, add new columns to the existing dataframe (so new
 schema = old schema + schema_new_columns).
 If False, make the new dataframe with schema = schema_new_columns</p></li>
@@ -1498,6 +1580,63 @@ the input column name with <code class="docutils literal notranslate"><span clas
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder">QueryBuilder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.histogram">
+<span class="sig-name descname"><span class="pre">histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.histogram" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a count query containing the frequency of values in specified column.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.binning_spec</span> <span class="kn">import</span> <span class="n">BinningSpec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>         <span class="s2">&quot;income_thousands&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">83</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="mi">74</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">97</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">private_data</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">income_binspec</span> <span class="o">=</span> <span class="n">BinningSpec</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bin_edges</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">10</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">include_both_endpoints</span><span class="o">=</span><span class="kc">False</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binned_income_count_query</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s2">&quot;income_thousands&quot;</span><span class="p">,</span> <span class="n">income_binspec</span><span class="p">,</span> <span class="s2">&quot;income_binned&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binned_income_counts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">binned_income_count_query</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">binned_income_counts</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;income_binned&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">())</span>
+<span class="go">  income_binned  count</span>
+<span class="go">0      (70, 80]      3</span>
+<span class="go">1      (80, 90]      5</span>
+<span class="go">2     (90, 100]      3</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Name of the column used to assign bins.</p></li>
+<li><p><strong>bin_edges</strong> (<em>Union</em><em>[</em><em>Sequence</em><em>[</em><em>tmlt.analytics.binning_spec.BinT</em><em>]</em><em>, </em><a class="reference internal" href="../binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><em>tmlt.analytics.binning_spec.BinningSpec</em></a><em>]</em>) – The bin edges for the histogram; provided as either a
+<a class="reference internal" href="../binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinningSpec</span></code></a> or as a list of
+<a class="reference internal" href="../session/index.html#tmlt.analytics.session.SUPPORTED_SPARK_TYPES" title="tmlt.analytics.session.SUPPORTED_SPARK_TYPES"><code class="xref py py-data docutils literal notranslate"><span class="pre">supported</span> <span class="pre">data</span> <span class="pre">types</span></code></a>.
+Values outside the range of the provided bins, <code class="docutils literal notranslate"><span class="pre">None</span></code> types,
+and NaN values are all mapped to <code class="docutils literal notranslate"><span class="pre">None</span></code> (<code class="docutils literal notranslate"><span class="pre">null</span></code> in Spark).</p></li>
+<li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – The name of the column that will be created. If None (the default),
+the input column name with <code class="docutils literal notranslate"><span class="pre">_binned</span></code> appended to it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr">tmlt.analytics.query_expr.QueryExpr</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2700,7 +2839,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from fc97021c at 2022-07-22 15:33.
+    Built from 0a733ca5 at 2022-08-25 18:19.
   </div>
   
   <div class="footer-item">

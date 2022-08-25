@@ -71,7 +71,23 @@ Classes
 
    Information about a column.
 
-   Currently contains the column's type and whether the column is nullable.
+   ColumnDescriptors have the following attributes:
+
+   .. attribute:: column_type
+
+      A :class:`ColumnType`, specifying what type this column has.
+
+   .. attribute:: allow_null
+
+      :class:`bool`. If `True`, this column allows null values.
+
+   .. attribute:: allow_nan
+
+      :class:`bool`. If `True`, this column allows NaN values.
+
+   .. attribute:: allow_inf
+
+      :class:`bool`. If `True`, this column allows infinite values.
 
 
 
@@ -200,6 +216,8 @@ Classes
         - Updates the current query to apply a flat map.
       * - :meth:`.bin_column`
         - Create a new column by assigning the values in a given column to bins.
+      * - :meth:`.histogram`
+        - Returns a count query containing the frequency of values in specified column.
       * - :meth:`.groupby`
         - Groups the query by the given set of keys, returning a GroupedQueryBuilder.
       * - :meth:`.count`
@@ -936,8 +954,17 @@ Classes
       4    4      1
 
       :param f: The function to be applied to each row.
+                The function's input is a dictionary matching each column name to
+                its value for that row.
+                This function should return a dictionary, which should always
+                have the same keys regardless of input, and the values in that
+                dictionary should match the column type specified in
+                `new_column_types`. The function should not have any side effects
+                (in particular, f cannot raise exceptions).
       :param new_column_types: Mapping from column names to types, for new columns
-                               produced by f. Using ColumnDescriptors is preferred.
+                               produced by f. Using
+                               :class:`tmlt.analytics.query_builder.ColumnDescriptor`
+                               is preferred.
       :param augment: If True, add new columns to the existing dataframe (so new
                       schema = old schema + schema_new_columns).
                       If False, make the new dataframe with schema = schema_new_columns
@@ -954,12 +981,14 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> import tmlt.analytics.session
+          >>> from tmlt.analytics.keyset import KeySet
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
           >>> private_data = spark.createDataFrame(
           ...     pd.DataFrame(
-          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1], ["1", 3, 1]],
+          ...         columns=["A", "B", "X"]
           ...     )
           ... )
           >>> budget = PureDPBudget(float("inf"))
@@ -979,12 +1008,16 @@ Classes
       >>> query = (
       ...     QueryBuilder("my_private_data")
       ...     .flat_map(
-      ...         lambda row: [{}, {}],
-      ...         max_num_rows=2,
-      ...         new_column_types={},
+      ...         lambda row: [{"i_B": i} for i in range(int(row["B"])+1)],
+      ...         max_num_rows=3,
+      ...         new_column_types={"i_B": ColumnDescriptor(
+      ...             ColumnType.INTEGER,
+      ...             allow_null=False,
+      ...         )},
       ...         augment=True,
       ...         grouping=False
       ...     )
+      ...     .groupby(KeySet.from_dict({"B": [0, 1, 2, 3]}))
       ...     .count()
       ... )
       >>> # Answering the query with infinite privacy budget
@@ -992,14 +1025,29 @@ Classes
       ...     query,
       ...     PureDPBudget(float("inf"))
       ... )
-      >>> answer.toPandas()
-         count
-      0      6
+      >>> answer.sort("B").toPandas()
+         B  count
+      0  0      1
+      1  1      2
+      2  2      3
+      3  3      3
 
-      :param f: The function to apply to each row.
+      :param f: The function to be applied to each row.
+                The function's input is a dictionary matching a column name to
+                its value for that row.
+                This function should return a list of dictionaries.
+                Those dictionaries should always
+                have the same keys regardless of input, and the values in those
+                dictionaries should match the column type specified in
+                `new_column_types`. The function should not have any side effects
+                (in particular, f cannot raise exceptions).
       :param max_num_rows: The enforced limit on the number of rows from each f(row).
+                           If f produces more rows than this, only the first `max_num_rows`
+                           rows will be in the output.
       :param new_column_types: Mapping from column names to types, for new columns
-                               produced by f. Using ColumnDescriptors is preferred.
+                               produced by f. Using
+                               :class:`tmlt.analytics.query_builder.ColumnDescriptor`
+                               is preferred.
       :param augment: If True, add new columns to the existing dataframe (so new
                       schema = old schema + schema_new_columns).
                       If False, make the new dataframe with schema = schema_new_columns
@@ -1076,6 +1124,64 @@ Classes
       :param column: Name of the column used to assign bins.
       :param spec: A :class:`~tmlt.analytics.binning_spec.BinningSpec` that defines the
                    binning operation to be performed.
+      :param name: The name of the column that will be created. If None (the default),
+                   the input column name with ``_binned`` appended to it.
+
+
+   .. py:method:: histogram(self, column, bin_edges, name = None)
+
+      Returns a count query containing the frequency of values in specified column.
+
+      ..
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> from tmlt.analytics.session import Session
+          >>> from tmlt.analytics.privacy_budget import PureDPBudget
+          >>> from tmlt.analytics.keyset import KeySet
+          >>> from pyspark.sql import SparkSession
+          >>> import pandas as pd
+          >>> spark = SparkSession.builder.getOrCreate()
+
+      .. rubric:: Example
+
+      >>> from tmlt.analytics.binning_spec import BinningSpec
+      >>> private_data = spark.createDataFrame(
+      ...     pd.DataFrame(
+      ...         {
+      ...          "income_thousands": [83, 85, 86, 73, 82, 95,
+      ...                               74, 92, 71, 86, 97]
+      ...         }
+      ...     )
+      ... )
+      >>> session = Session.from_dataframe(
+      ...     privacy_budget=PureDPBudget(epsilon=float('inf')),
+      ...     source_id="private_data",
+      ...     dataframe=private_data,
+      ... )
+      >>> income_binspec = BinningSpec(
+      ...     bin_edges=[i for i in range(70,110,10)],
+      ...     include_both_endpoints=False
+      ... )
+      >>> binned_income_count_query = (
+      ...     QueryBuilder("private_data")
+      ...     .histogram("income_thousands", income_binspec, "income_binned")
+      ... )
+      >>> binned_income_counts = session.evaluate(
+      ...     binned_income_count_query,
+      ...     privacy_budget=PureDPBudget(epsilon=10),
+      ... )
+      >>> print(binned_income_counts.sort("income_binned").toPandas())
+        income_binned  count
+      0      (70, 80]      3
+      1      (80, 90]      5
+      2     (90, 100]      3
+
+      :param column: Name of the column used to assign bins.
+      :param bin_edges: The bin edges for the histogram; provided as either a
+                        :class:`~tmlt.analytics.binning_spec.BinningSpec` or as a list of
+                        :data:`supported data types
+                        <tmlt.analytics.session.SUPPORTED_SPARK_TYPES>`.
+                        Values outside the range of the provided bins, ``None`` types,
+                        and NaN values are all mapped to ``None`` (``null`` in Spark).
       :param name: The name of the column that will be created. If None (the default),
                    the input column name with ``_binned`` appended to it.
 
