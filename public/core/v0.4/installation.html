@@ -47,8 +47,11 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tutorials" href="tutorials/index.html" />
     <link rel="prev" title="Tumult Core documentation" href="index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -151,7 +154,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.4.2  <!-- this text may get changed later by javascript -->
+        0.4.3  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -161,7 +164,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables installation and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.4.2'}.
+     variables installation and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.4.3'}.
 -->
 
 <script type="text/javascript">
@@ -216,10 +219,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.4.2 variable.
+            // this version, rather than using sphinx's 0.4.3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.4.2") {
+            if (entry.version == "0.4.3") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -306,16 +309,17 @@ currently supported.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using Java 11, Spark requires that Java be passed the <code class="docutils literal notranslate"><span class="pre">-Dio.netty.tryReflectionSetAccessible=true</span></code> option.
-This can be achieved by adding that option to Spark’s <code class="docutils literal notranslate"><span class="pre">spark.driver.extraJavaOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">spark.executor.extraJavaOptions</span></code> configurations.
-An example of how to set these values when initializing Spark is <a class="reference internal" href="tutorials/first-tutorial.html#java-11-configuration-example"><span class="std std-ref">included in the first tutorial</span></a>.
+This can be achieved by adding that option to Spark’s <code class="docutils literal notranslate"><span class="pre">spark.driver.extraJavaOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">spark.executor.extraJavaOptions</span></code> configurations.</p>
+<p>Core attempts to set these automatically by running <a class="reference internal" href="reference/tmlt/core/utils/configuration/index.html#tmlt.core.utils.configuration.check_java11" title="tmlt.core.utils.configuration.check_java11"><code class="xref py py-func docutils literal notranslate"><span class="pre">tmlt.core.utils.configuration.check_java11()</span></code></a>. You can also use the configuration provided by <a class="reference internal" href="reference/tmlt/core/utils/configuration/index.html#tmlt.core.utils.configuration.get_java11_config" title="tmlt.core.utils.configuration.get_java11_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">tmlt.core.utils.configuration.get_java11_config()</span></code></a> when initializing Spark.</p>
+<p>An example of how to set these values when initializing Spark is <a class="reference internal" href="tutorials/first-tutorial.html#java-11-configuration-example"><span class="std std-ref">included in the first tutorial</span></a>.
 Not doing this before making calls to Tumult Core will result in Spark raising <code class="docutils literal notranslate"><span class="pre">java.lang.UnsupportedOperationException:</span> <span class="pre">sun.misc.Unsafe</span> <span class="pre">or</span> <span class="pre">java.nio.DirectByteBuffer.(long,</span> <span class="pre">int)</span> <span class="pre">not</span> <span class="pre">available</span></code></p>
 </div>
 <p>Below are instructions for installing these prerequisites on several common platforms.
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/core/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="d785abf3-2be5-42dc-acff-000178d13832" name="f5e7366a-deef-432d-851b-34ce1341fad4" type="radio">
-</input><label class="tabbed-label" for="d785abf3-2be5-42dc-acff-000178d13832">
+<input checked="checked" id="75ddca7b-fdd2-4236-8267-61fcacadc6e2" name="65304005-de31-46cc-a485-0b81b3ceedd1" type="radio">
+</input><label class="tabbed-label" for="75ddca7b-fdd2-4236-8267-61fcacadc6e2">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -332,8 +336,8 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 </div>
-<input id="f1bafc09-6bf1-433d-9b4b-b5ea9dffb994" name="f5e7366a-deef-432d-851b-34ce1341fad4" type="radio">
-</input><label class="tabbed-label" for="f1bafc09-6bf1-433d-9b4b-b5ea9dffb994">
+<input id="6407736e-0a83-4fa5-a357-531b915b6c45" name="65304005-de31-46cc-a485-0b81b3ceedd1" type="radio">
+</input><label class="tabbed-label" for="6407736e-0a83-4fa5-a357-531b915b6c45">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -351,8 +355,8 @@ To install Python 3, run:</p>
 </pre></div>
 </div>
 </div>
-<input id="5aec97aa-15bc-4e62-8c6c-16ac5ba01673" name="f5e7366a-deef-432d-851b-34ce1341fad4" type="radio">
-</input><label class="tabbed-label" for="5aec97aa-15bc-4e62-8c6c-16ac5ba01673">
+<input id="58149b81-ba80-4936-900f-f2377f7ad1f1" name="65304005-de31-46cc-a485-0b81b3ceedd1" type="radio">
+</input><label class="tabbed-label" for="58149b81-ba80-4936-900f-f2377f7ad1f1">
 macOS (Intel)</label><div class="tabbed-content docutils">
 <p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
@@ -373,8 +377,8 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 </pre></div>
 </div>
 </div>
-<input id="8bc06582-d4a0-4d81-977f-b1bf676dcdcc" name="f5e7366a-deef-432d-851b-34ce1341fad4" type="radio">
-</input><label class="tabbed-label" for="8bc06582-d4a0-4d81-977f-b1bf676dcdcc">
+<input id="29b6ee72-bc76-46ad-87d7-3625c1e7a3dc" name="65304005-de31-46cc-a485-0b81b3ceedd1" type="radio">
+</input><label class="tabbed-label" for="29b6ee72-bc76-46ad-87d7-3625c1e7a3dc">
 macOS (Apple silicon)</label><div class="tabbed-content docutils">
 <p>Since Python 3.7 is not supported on the Apple silicon processor architecture, you will need to first install <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> and the x86_64 version of Homebrew.</p>
 <p>If you do not already have Rosetta 2, it can be installed with:</p>
@@ -398,8 +402,8 @@ macOS (Apple silicon)</label><div class="tabbed-content docutils">
 </pre></div>
 </div>
 </div>
-<input id="0eb409cf-c312-4e48-963e-02849b606780" name="f5e7366a-deef-432d-851b-34ce1341fad4" type="radio">
-</input><label class="tabbed-label" for="0eb409cf-c312-4e48-963e-02849b606780">
+<input id="ef4b60fb-672e-4eab-acd9-a539f88209b4" name="65304005-de31-46cc-a485-0b81b3ceedd1" type="radio">
+</input><label class="tabbed-label" for="ef4b60fb-672e-4eab-acd9-a539f88209b4">
 Windows</label><div class="tabbed-content docutils">
 <p>The only supported way to install Tumult Core on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.</p>
 <p>Once you install your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core setup.</p>
@@ -461,7 +465,7 @@ Windows</label><div class="tabbed-content docutils">
   </div>
   
   <div class="footer-item">
-    Built from 6356fd1b at 2022-08-24 13:25.
+    Built from a8ef15fc at 2022-09-01 13:53.
   </div>
   
   <div class="footer-item">
