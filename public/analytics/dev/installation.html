@@ -309,16 +309,16 @@ currently supported.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using Java 11, Spark requires that Java be passed the <code class="docutils literal notranslate"><span class="pre">-Dio.netty.tryReflectionSetAccessible=true</span></code> option.
-This can be achieved by adding that option to Spark’s <code class="docutils literal notranslate"><span class="pre">spark.driver.extraJavaOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">spark.executor.extraJavaOptions</span></code> configurations.
-An example of how to set these values when initializing Spark is <a class="reference internal" href="tutorials/first-steps.html#java-11-configuration-example"><span class="std std-ref">included in the first tutorial</span></a>.
+Analytics attempts to set these options automatically by running <code class="xref py py-func docutils literal notranslate"><span class="pre">tmlt.core.utils.configuration.check_java11()</span></code> (from <a class="reference external" href="https://docs.tmlt.dev/core/latest/reference/tmlt/core/utils/configuration/index.html">Tumult Core</a>). You can also use the configuration provided by <code class="xref py py-func docutils literal notranslate"><span class="pre">tmlt.core.utils.configuration.get_java11_config()</span></code> when initializing Spark.</p>
+<p>An example of how to set these values manually when initializing Spark is <a class="reference internal" href="tutorials/first-steps.html#java-11-configuration-example"><span class="std std-ref">included in the first tutorial</span></a>.
 Not doing this before making calls to Tumult Analytics will result in Spark raising <code class="docutils literal notranslate"><span class="pre">java.lang.UnsupportedOperationException:</span> <span class="pre">sun.misc.Unsafe</span> <span class="pre">or</span> <span class="pre">java.nio.DirectByteBuffer.(long,</span> <span class="pre">int)</span> <span class="pre">not</span> <span class="pre">available</span></code> when evaluating queries.</p>
 </div>
 <p>Below are instructions for installing these prerequisites on several common platforms.
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="aa71c8bd-ffd6-45ab-b44e-326c18e44739" name="20c0f44f-5aeb-443e-b012-ea9e5943cb52" type="radio">
-</input><label class="tabbed-label" for="aa71c8bd-ffd6-45ab-b44e-326c18e44739">
+<input checked="checked" id="e9163046-6b98-42f5-b762-85a2b3d10fb3" name="cf5696e1-dd2a-478f-a51c-497063ef3512" type="radio">
+</input><label class="tabbed-label" for="e9163046-6b98-42f5-b762-85a2b3d10fb3">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -335,8 +335,8 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 </div>
-<input id="b1c29af6-f247-4d47-b2be-34b892e90a00" name="20c0f44f-5aeb-443e-b012-ea9e5943cb52" type="radio">
-</input><label class="tabbed-label" for="b1c29af6-f247-4d47-b2be-34b892e90a00">
+<input id="5363fa6c-b922-4c4e-b976-2e14d2d3c43f" name="cf5696e1-dd2a-478f-a51c-497063ef3512" type="radio">
+</input><label class="tabbed-label" for="5363fa6c-b922-4c4e-b976-2e14d2d3c43f">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -354,8 +354,8 @@ To install Python 3, run:</p>
 </pre></div>
 </div>
 </div>
-<input id="a67062fe-19cf-422a-9527-4ce60ce3f16b" name="20c0f44f-5aeb-443e-b012-ea9e5943cb52" type="radio">
-</input><label class="tabbed-label" for="a67062fe-19cf-422a-9527-4ce60ce3f16b">
+<input id="6bd86631-b065-447b-ae4a-689565b175c6" name="cf5696e1-dd2a-478f-a51c-497063ef3512" type="radio">
+</input><label class="tabbed-label" for="6bd86631-b065-447b-ae4a-689565b175c6">
 macOS (Intel)</label><div class="tabbed-content docutils">
 <p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
@@ -376,8 +376,8 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 </pre></div>
 </div>
 </div>
-<input id="3178d7aa-b74f-47ab-8927-b55f9c1d40fa" name="20c0f44f-5aeb-443e-b012-ea9e5943cb52" type="radio">
-</input><label class="tabbed-label" for="3178d7aa-b74f-47ab-8927-b55f9c1d40fa">
+<input id="442d76cd-6c7a-4d6e-8b60-4f9853c8aada" name="cf5696e1-dd2a-478f-a51c-497063ef3512" type="radio">
+</input><label class="tabbed-label" for="442d76cd-6c7a-4d6e-8b60-4f9853c8aada">
 macOS (Apple silicon)</label><div class="tabbed-content docutils">
 <p>Since Python 3.7 is not supported on the Apple silicon processor architecture, you will need to first install <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> and the x86_64 version of Homebrew.</p>
 <p>If you do not already have Rosetta 2, it can be installed with:</p>
@@ -401,8 +401,8 @@ macOS (Apple silicon)</label><div class="tabbed-content docutils">
 </pre></div>
 </div>
 </div>
-<input id="cacc8c3f-688e-4211-86a0-62c77ee77e30" name="20c0f44f-5aeb-443e-b012-ea9e5943cb52" type="radio">
-</input><label class="tabbed-label" for="cacc8c3f-688e-4211-86a0-62c77ee77e30">
+<input id="8cc3fda2-c918-4e3c-845c-b04965914c0b" name="cf5696e1-dd2a-478f-a51c-497063ef3512" type="radio">
+</input><label class="tabbed-label" for="8cc3fda2-c918-4e3c-845c-b04965914c0b">
 Windows</label><div class="tabbed-content docutils">
 <p>The only supported way to install Tumult Analytics on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.</p>
 <p>Once you install your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core setup.</p>
@@ -472,7 +472,7 @@ Windows</label><div class="tabbed-content docutils">
   </div>
   
   <div class="footer-item">
-    Built from ec9a2485 at 2022-09-01 15:53.
+    Built from f8022db4 at 2022-09-02 17:57.
   </div>
   
   <div class="footer-item">
