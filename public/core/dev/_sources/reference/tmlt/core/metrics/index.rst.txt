@@ -1094,7 +1094,7 @@ Classes
 
 
    
-.. py:class:: AddRemoveKeys(column)
+.. py:class:: AddRemoveKeys(df_to_key_column)
 
    Bases: :class:`Metric`
 
@@ -1104,17 +1104,18 @@ Classes
    metric :class:`~SymmetricDifference`, except it is applied to a dictionary of
    dataframes, instead of a single dataframe.
 
-   Both `IfGroupedBy(X, SymmetricDifference())` and `AddRemoveKeys(X)` can be described
-   in the following way:
+   `AddRemoveKeys(X)` can be described in the following way:
 
-   Sum over each key that appears in column `X` in either neighbor
+   Sum over each key that appears in the key column in either
+   neighbor, where the key column for dataframe df is given by `X[df]`.
 
-   - 0 if both neighbors "match" for `X = key`
-   - 1 if only one neighbor has records for `X = key`
-   - 2 if both neighbor have records for `X = key`, but they don't "match"
+   - 0 if both neighbors "match" for `X[df] = key`
+   - 1 if only one neighbor has records for `X[df] = key`
+   - 2 if both neighbor have records for `X[df] = key`, but they don't "match"
 
-   The key column cannot containg floating point values, and all dataframes must
-   have the same type for the key column.
+   The key column cannot containg floating point values, and all dataframes must have
+   the same type for the key column. The key columns for the different dataframes may
+   have different names.
 
    .. rubric:: Examples
 
@@ -1135,14 +1136,15 @@ Classes
    ...         ),
    ...         2: SparkDataFrameDomain(
    ...             {
-   ...                 "A": SparkIntegerColumnDescriptor(),
-   ...                 "C": SparkStringColumnDescriptor(),
+   ...                 "C": SparkIntegerColumnDescriptor(),
+   ...                 "D": SparkStringColumnDescriptor(),
    ...             },
    ...         ),
    ...     }
    ... )
-   >>> metric = AddRemoveKeys("A")
-   >>> # A=1 matches, A=2 is only in value1, A=3 is only in value2, A=4 differs
+   >>> metric = AddRemoveKeys({1: "A", 2: "C"})
+   >>> # key=1 matches, key=2 is only in value1, key=3 is only in value2, key=4
+   >>> # differs
    >>> value1 = {
    ...     1: spark.createDataFrame(
    ...             pd.DataFrame(
@@ -1155,8 +1157,8 @@ Classes
    ...     2: spark.createDataFrame(
    ...         pd.DataFrame(
    ...             {
-   ...                 "A": [1, 4],
-   ...                 "C": ["1", "1"],
+   ...                 "C": [1, 4],
+   ...                 "D": ["1", "1"],
    ...             }
    ...         )
    ...     )
@@ -1173,8 +1175,8 @@ Classes
    ...     2: spark.createDataFrame(
    ...         pd.DataFrame(
    ...             {
-   ...                 "A": [1, 4],
-   ...                 "C": ["1", "2"],
+   ...                 "C": [1, 4],
+   ...                 "D": ["1", "2"],
    ...             }
    ...         )
    ...     )
@@ -1188,7 +1190,7 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: column(self)
+   .. py:method:: df_to_key_column(self)
       :property:
 
       Returns the key column.
