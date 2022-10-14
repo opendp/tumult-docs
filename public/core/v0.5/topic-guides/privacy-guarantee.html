@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tumult Core Privacy Guarantee &#8212; Tumult Core  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Known Vulnerabilities" href="known-vulnerabilities.html" />
+    <link rel="prev" title="Handling Real Numbers" href="real-numbers.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Topic Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/core/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../additional-resources/index.html">
+  Additional Resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/core" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.5.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables topic-guides/privacy-guarantee and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.5.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "topic-guides/privacy-guarantee.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/core/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "topic-guides/privacy-guarantee.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.5.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.5.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="architecture.html">
+   Tumult Core Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="real-numbers.html">
+   Handling Real Numbers
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Tumult Core Privacy Guarantee
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="known-vulnerabilities.html">
+   Known Vulnerabilities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="special-values.html">
+   NaNs, nulls, and infs
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pseudo-side-channel-information">
+   Pseudo-side channel information
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#specific-protections-against-pseudo-side-channel-leakage">
+     Specific protections against pseudo-side channel leakage
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#postprocessing-udfs-and-pseudo-side-channel-information">
+     Postprocessing udfs and pseudo-side channel information
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#side-channel-information">
+   Side channel information
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="tumult-core-privacy-guarantee">
+<span id="privacy-guarantee"></span><h1>Tumult Core Privacy Guarantee<a class="headerlink" href="#tumult-core-privacy-guarantee" title="Permalink to this headline">#</a></h1>
+<p>The privacy guarantee of a Core <a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>, <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> is
+the following. Let <span class="math notranslate nohighlight">\(r\)</span> denote the privacy relation of <span class="math notranslate nohighlight">\(\mathcal{M}\)</span>,
+<span class="math notranslate nohighlight">\(I\)</span> denote the input domain, and <span class="math notranslate nohighlight">\(d\)</span> denote the input metric, and
+let <span class="math notranslate nohighlight">\(D\)</span> denote the output measure. Then, for any pair of elements
+<span class="math notranslate nohighlight">\(x, y \in I\)</span> and for all distances <span class="math notranslate nohighlight">\(\alpha\)</span> such that <span class="math notranslate nohighlight">\(d(x,y)
+\le \alpha\)</span>, <span class="math notranslate nohighlight">\(r(\alpha, \beta) = True\)</span> implies
+<span class="math notranslate nohighlight">\(D(\mathcal{M}(x), \mathcal{M}(y)) \le \beta\)</span>.</p>
+<p>This privacy guarantee generalizes <span class="math notranslate nohighlight">\(\epsilon\)</span>-differential privacy, and we
+can get the standard <span class="math notranslate nohighlight">\(\epsilon\)</span>-differential privacy guarantee for
+specific settings of the parameters. Suppose the input metric is
+<a class="reference internal" href="../reference/tmlt/core/metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> and the output measure is defined as
+<span class="math notranslate nohighlight">\(D(X, Y) = \epsilon\)</span> if <span class="math notranslate nohighlight">\(D_{\infty}(X \| Y) = \epsilon\)</span> (in Core,
+this is when output measure of the <a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a> is <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a>).
+Then, <span class="math notranslate nohighlight">\(r(1, \epsilon) = True\)</span> implies that the mechanism satisfies
+<span class="math notranslate nohighlight">\(\epsilon\)</span>-differential privacy.</p>
+<p>The rest of this section discusses qualifications to the privacy guarantee with
+respect to side channel information. In addition, see
+<a class="reference internal" href="known-vulnerabilities.html#known-vulnerabilities"><span class="std std-ref">Known Vulnerabilities</span></a> for vulnerabilities in Tumult Core that may affect
+the privacy guarantee.</p>
+<section id="pseudo-side-channel-information">
+<span id="pseudo-side-channel"></span><h2>Pseudo-side channel information<a class="headerlink" href="#pseudo-side-channel-information" title="Permalink to this headline">#</a></h2>
+<p>The privacy guarantee in the previous section applies to the abstract outputs of
+the mechanism. That is, the output of <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> may be a list of
+numbers, or a multiset of records. However, the implementations in Tumult Core
+are python objects that may contain additional information that could leak
+private data. An example of pseudo-side channel information is the ordering of
+records in Spark DataFrame, which is meant to represent an unordered multiset of
+records.</p>
+<p>We call pseudo-side channel information <em>distinguishing</em> if it can be used to
+learn about the private input.  In Tumult Core, protecting against leakage of
+distinguishing pseudo-side channel information is not part of the privacy guarantee.
+However, we make a best-effort attempt to make sure that all pseudo-side channel
+information released by measurements is not distinguishing.</p>
+<section id="specific-protections-against-pseudo-side-channel-leakage">
+<span id="pseudo-side-channel-mitigations"></span><h3>Specific protections against pseudo-side channel leakage<a class="headerlink" href="#specific-protections-against-pseudo-side-channel-leakage" title="Permalink to this headline">#</a></h3>
+<p>For Spark DataFrame outputs, we perform the following mitigations against leaking
+distinguishing pseudo-side channel information.</p>
+<ul class="simple">
+<li><p><strong>Materialize the DataFrame</strong>: Spark DataFrames are computed lazily, and
+Spark DataFrame with random noise will compute a new sample of the noise
+each time an action is performed (e.g. printing the DataFrame). To prevent
+this, we eagerly compute the DataFrame and save it.</p></li>
+<li><p><strong>Repartition the DataFrame</strong>: Spark DataFrames are partitioned, and the number
+and content of these partitions are potentially distinguishing pseudo-side channel
+information. To prevent this, we randomly repartition the output DataFrame.</p></li>
+<li><p><strong>Sorting each partition</strong>: The records in a Spark DataFrame have an order, but our
+privacy guarantee is on the unordered multiset of records that this DataFrame
+represents. To prevent the ordering from leaking private data, after repartitioning
+the DataFrame as described above, we sort each partition.</p></li>
+</ul>
+</section>
+<section id="postprocessing-udfs-and-pseudo-side-channel-information">
+<span id="postprocessing-udf-assumptions"></span><h3>Postprocessing udfs and pseudo-side channel information<a class="headerlink" href="#postprocessing-udfs-and-pseudo-side-channel-information" title="Permalink to this headline">#</a></h3>
+<p>Some parts of the Tumult Core code accept user code when constructing
+pre/postprocessing functions (<a class="reference internal" href="../reference/tmlt/core/measurements/postprocess/index.html#tmlt.core.measurements.postprocess.PostProcess" title="tmlt.core.measurements.postprocess.PostProcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">PostProcess</span></code></a>,
+<a class="reference internal" href="../reference/tmlt/core/measurements/postprocess/index.html#tmlt.core.measurements.postprocess.NonInteractivePostProcess" title="tmlt.core.measurements.postprocess.NonInteractivePostProcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonInteractivePostProcess</span></code></a>, <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.DecorateQueryable" title="tmlt.core.measurements.interactive_measurements.DecorateQueryable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecorateQueryable</span></code></a>). For these
+measurements, our privacy guarantee relies on the assumption that these
+functions do not use distinguishing pseudo-side channel information. Tumult Core
+makes a best effort attempt to make sure all pseudo-side channel information is
+not distinguishing, see <a class="reference internal" href="#pseudo-side-channel-mitigations"><span class="std std-ref">Specific protections against pseudo-side channel leakage</span></a> for details.</p>
+<p>More formally, our privacy guarantee is based on the assumption that these
+functions are well defined on the abstract domains.  Let <span class="math notranslate nohighlight">\(f\)</span> be the
+function. Let <span class="math notranslate nohighlight">\(A\)</span> be abstract input domain of <span class="math notranslate nohighlight">\(f\)</span>.  That is,
+<span class="math notranslate nohighlight">\(A\)</span> contains the abstract elements represented by objects passed to the
+implementation of <span class="math notranslate nohighlight">\(f\)</span>. (in the case of a Spark DataFrame, these elements
+are unordered multisets of records).  Likewise, let <span class="math notranslate nohighlight">\(B\)</span> be the abstract
+output domain of <cite>f</cite>. Then for any <span class="math notranslate nohighlight">\(x,y \in A\)</span> such that <span class="math notranslate nohighlight">\(x = y\)</span>, it
+must be the case that <span class="math notranslate nohighlight">\(f(x) = f(y)\)</span>.</p>
+<p>Suppose, for example, that Tumult core did not protect against information
+leakage via the ordering of the records in the Spark DataFrame, and the ordering
+revealed something about the private data. Then for some record <span class="math notranslate nohighlight">\(r\)</span>,
+consider a postprocessing function on a Spark DataFrame that outputs 1 if the
+first record of the DataFrame is <span class="math notranslate nohighlight">\(r\)</span>, and 0 otherwise. Such a function
+would break the Tumult Core privacy guarantee, because it uses distinguishing
+pseudo-side channel information.  This function is also not well defined on the
+abstract input domain.  There exist two DataFrames <span class="math notranslate nohighlight">\(D,D'\)</span> that represent
+the same multiset of records (and are therefore equal in the abstract domain),
+but <span class="math notranslate nohighlight">\(f(D) \ne f(D')\)</span> because <span class="math notranslate nohighlight">\(r\)</span> is the first record of <span class="math notranslate nohighlight">\(D\)</span> but
+not <span class="math notranslate nohighlight">\(D'\)</span>. This is example is hypothetical since Tumult Core <em>does</em> protect
+against information leakage via the ordering.</p>
+</section>
+</section>
+<section id="side-channel-information">
+<span id="side-channel"></span><h2>Side channel information<a class="headerlink" href="#side-channel-information" title="Permalink to this headline">#</a></h2>
+<p>Side channel information includes any information that can be learned from
+running a measurement that is not explicitly part of the output of the
+measurement. Examples include the amount of time it takes for a measurement to
+run, or the amount of memory consumed when running the measurement. Note that
+the amount of time the measurement takes to run could be measured indirectly by
+the user: if user code adds timestamped entries to a logfile at different points
+in the measurement, the resulting logfile could leak private data and this is not
+protected by the Tumult Core guarantee.</p>
+<p>The privacy guarantee of Core Measurements applies only to the explicit output,
+it does not extend to any side channel information. Additionally, Tumult Core
+makes no attempt to make side channel information non-distinguishing.</p>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="real-numbers.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Handling Real Numbers</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="known-vulnerabilities.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Known Vulnerabilities</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2022.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from c27a7639 at 2022-10-14 16:02.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

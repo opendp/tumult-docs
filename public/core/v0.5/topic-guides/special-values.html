@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NaNs, nulls, and infs &#8212; Tumult Core  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../reference/tmlt/core/index.html" />
+    <link rel="prev" title="Known Vulnerabilities" href="known-vulnerabilities.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Topic Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/core/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../additional-resources/index.html">
+  Additional Resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/core" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.5.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables topic-guides/special-values and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.5.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "topic-guides/special-values.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/core/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "topic-guides/special-values.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.5.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.5.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="architecture.html">
+   Tumult Core Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="real-numbers.html">
+   Handling Real Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-guarantee.html">
+   Tumult Core Privacy Guarantee
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="known-vulnerabilities.html">
+   Known Vulnerabilities
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   NaNs, nulls, and infs
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preliminaries">
+   Preliminaries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparison-operators">
+   Comparison Operators
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nulls">
+     Nulls
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nans-and-infs">
+     NaNs and infs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter">
+   Filter
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#partitionbykeys">
+   PartitionByKeys
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quantile">
+   Quantile
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#groupby">
+   GroupBy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#joins">
+   Joins
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#removing-nans-nulls-and-infs">
+   Removing NaNs, nulls, and infs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sum-and-sumgrouped">
+   Sum and SumGrouped
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#countdistinct">
+   CountDistinct
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="nans-nulls-and-infs">
+<span id="special-values"></span><h1>NaNs, nulls, and infs<a class="headerlink" href="#nans-nulls-and-infs" title="Permalink to this headline">#</a></h1>
+<p>This page describes how Tumult Core handles NaNs, nulls, and infs.</p>
+<section id="preliminaries">
+<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a>s are constructed by specifying column constraints using <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkColumnDescriptor</span></code></a>s that describe the data type as well as some metadata about what special values are
+permitted on each column. In particular, all <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkColumnDescriptor</span></code></a>s allow
+specifying a flag <code class="code docutils literal notranslate"><span class="pre">allow_null</span></code> to indicate if null (<code class="code docutils literal notranslate"><span class="pre">None</span></code>) values  are permitted
+in a column; additionally, <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkFloatColumnDescriptor</span></code></a> allows specifying
+<code class="code docutils literal notranslate"><span class="pre">allow_inf</span></code> and <code class="code docutils literal notranslate"><span class="pre">allow_nan</span></code> to indicate if a column with floating
+point values can contain (+/-)<code class="code docutils literal notranslate"><span class="pre">inf</span></code> or <code class="code docutils literal notranslate"><span class="pre">NaN</span></code> respectively.</p>
+<p>Tumult Core also supports transformations and measurements on Pandas DataFrames and Series using <a class="reference internal" href="../reference/tmlt/core/domains/pandas_domains/index.html#module-tmlt.core.domains.pandas_domains" title="tmlt.core.domains.pandas_domains"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_domains</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#module-tmlt.core.domains.numpy_domains" title="tmlt.core.domains.numpy_domains"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy_domains</span></code></a>. <a class="reference internal" href="../reference/tmlt/core/domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasDataFrameDomain" title="tmlt.core.domains.pandas_domains.PandasDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasDataFrameDomain</span></code></a>s are constructed by specifying a <a class="reference internal" href="../reference/tmlt/core/domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasSeriesDomain" title="tmlt.core.domains.pandas_domains.PandasSeriesDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasSeriesDomain</span></code></a> for each column, which in turn is specified by a <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyDomain" title="tmlt.core.domains.numpy_domains.NumpyDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyDomain</span></code></a>. Unlike <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkIntegerColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkIntegerColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkIntegerColumnDescriptor</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkFloatColumnDescriptor</span></code></a>, <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyIntegerDomain" title="tmlt.core.domains.numpy_domains.NumpyIntegerDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyIntegerDomain</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyFloatDomain" title="tmlt.core.domains.numpy_domains.NumpyFloatDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyFloatDomain</span></code></a> do not permit <code class="code docutils literal notranslate"><span class="pre">null</span></code> values. Pandas domains are only used for Quantiles (discussed <a class="reference external" href="#quantile">below</a>) currently.</p>
+</section>
+<section id="comparison-operators">
+<h2>Comparison Operators<a class="headerlink" href="#comparison-operators" title="Permalink to this headline">#</a></h2>
+<p>This section summarizes the behavior of comparison operators in Spark when one or both of the operands are special (null, NaN or inf). We will reference these operators to explain how our components handle these values.</p>
+<section id="nulls">
+<h3>Nulls<a class="headerlink" href="#nulls" title="Permalink to this headline">#</a></h3>
+<p>Comparisons (using <code class="code docutils literal notranslate"><span class="pre">&lt;,</span> <span class="pre">&gt;,</span> <span class="pre">=,</span> <span class="pre">&lt;=,</span> <span class="pre">&gt;=</span></code>) between a null value and any other value evaluates to null.
+Spark’s null-safe equality operator <code class="code docutils literal notranslate"><span class="pre">&lt;=&gt;</span></code> allows safely comparing potentially null values such that
+<code class="code docutils literal notranslate"><span class="pre">X</span> <span class="pre">&lt;=&gt;</span> <span class="pre">Y</span></code> evaluates to True if <code class="code docutils literal notranslate"><span class="pre">X</span></code> and <code class="code docutils literal notranslate"><span class="pre">Y</span></code> are both non-null values and <code class="code docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">Y</span></code>, or <code class="code docutils literal notranslate"><span class="pre">X</span></code> and <code class="code docutils literal notranslate"><span class="pre">Y</span></code> are both nulls.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Python’s <code class="code docutils literal notranslate"><span class="pre">==</span></code> operator is equivalent to <code class="code docutils literal notranslate"><span class="pre">=</span></code> in Spark. For example, <code class="code docutils literal notranslate"><span class="pre">df1</span></code> and <code class="code docutils literal notranslate"><span class="pre">df2</span></code> are equivalent below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;D = E&quot;</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="o">==</span> <span class="n">col</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The null-safe equality operator <code class="code docutils literal notranslate"><span class="pre">&lt;=&gt;</span></code> corresponds to <code class="code docutils literal notranslate"><span class="pre">eqNullSafe</span></code> <a class="reference external" href="https://spark.apache.org/docs/3.0.1/api/python/pyspark.sql.html#pyspark.sql.Column.eqNullSafe">method</a> . Concretely, <code class="code docutils literal notranslate"><span class="pre">df3</span></code> and <code class="code docutils literal notranslate"><span class="pre">df4</span></code> are equivalent below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df3</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;D &lt;=&gt; E&quot;</span><span class="p">)</span>
+<span class="n">df4</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">eqNullSafe</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="n">E</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="nans-and-infs">
+<h3>NaNs and infs<a class="headerlink" href="#nans-and-infs" title="Permalink to this headline">#</a></h3>
+<ol class="arabic simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">inf</span> <span class="pre">=</span> <span class="pre">inf</span></code> evaluates to True. Consequently, <code class="code docutils literal notranslate"><span class="pre">inf</span> <span class="pre">&lt;=</span> <span class="pre">inf</span></code> and <code class="code docutils literal notranslate"><span class="pre">inf</span> <span class="pre">&gt;=</span> <span class="pre">inf</span></code> also evaluate to True.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">NaN</span> <span class="pre">=</span> <span class="pre">NaN</span></code> evaluates to True (unlike standard floating point implementations including python’s). For any non-null numeric value (including <code class="code docutils literal notranslate"><span class="pre">inf</span></code>) <code class="code docutils literal notranslate"><span class="pre">X</span></code>  (incl. <code class="code docutils literal notranslate"><span class="pre">inf</span></code>), <code class="code docutils literal notranslate"><span class="pre">NaN</span> <span class="pre">&gt;</span> <span class="pre">X</span></code> evaluates to True and <code class="code docutils literal notranslate"><span class="pre">X</span> <span class="pre">&gt;</span> <span class="pre">NaN</span></code> evaluates to False. <code class="code docutils literal notranslate"><span class="pre">NaN</span> <span class="pre">=</span> <span class="pre">X</span></code> evaluates to False for all non-null values except <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">inf</span> <span class="pre">&gt;</span> <span class="pre">X</span></code> evaluates to True for all non-null numeric values (except <code class="code docutils literal notranslate"><span class="pre">inf</span></code> and <code class="code docutils literal notranslate"><span class="pre">nan</span></code>). <code class="code docutils literal notranslate"><span class="pre">-inf</span> <span class="pre">&lt;</span> <span class="pre">X</span></code> evaluates to True for all non-null numeric values (except <code class="code docutils literal notranslate"><span class="pre">-inf</span></code>).</p></li>
+</ol>
+</section>
+</section>
+<section id="filter">
+<h2>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">#</a></h2>
+<p>A <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/filter/index.html#tmlt.core.transformations.spark_transformations.filter.Filter" title="tmlt.core.transformations.spark_transformations.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a> transformation can be constructed with a SQL filter expression that may refer to one or more columns in the input domain and contain comparison operators (<code class="code docutils literal notranslate"><span class="pre">&lt;,</span> <span class="pre">&lt;=,</span> <span class="pre">&gt;,</span> <span class="pre">&gt;=,</span> <span class="pre">=,</span> <span class="pre">&lt;=&gt;</span></code>) and logical operators (<code class="code docutils literal notranslate"><span class="pre">AND,</span> <span class="pre">OR</span> <span class="pre">or</span> <span class="pre">NOT</span></code>).</p>
+<p>The following table describes how the logical operators behave when one or both values are <code class="code docutils literal notranslate"><span class="pre">null</span></code> (note that <code class="code docutils literal notranslate"><span class="pre">AND</span></code> and <code class="code docutils literal notranslate"><span class="pre">OR</span></code> are commutative):</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Logical Operators and NULLs</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>X</p></th>
+<th class="head"><p>Y</p></th>
+<th class="head"><p>X AND Y</p></th>
+<th class="head"><p>X OR Y</p></th>
+<th class="head"><p>NOT X</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>True</p></td>
+<td><p>NULL</p></td>
+<td><p>True</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-odd"><td><p>NULL</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>NULL</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>NULL</p></td>
+<td><p>NULL</p></td>
+<td><p>NULL</p></td>
+<td><p>NULL</p></td>
+</tr>
+</tbody>
+</table>
+<p>Comparison between two columns work according to the <a class="reference external" href="#comparison-operators">comparison semantics</a> described above. The following expressions demonstrate how a column can be compared against a special literal value:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">&quot;X</span> <span class="pre">=</span> <span class="pre">'INF'&quot;</span></code> evaluates to True only if X is <code class="code docutils literal notranslate"><span class="pre">inf</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&quot;X</span> <span class="pre">=</span> <span class="pre">'-INF'&quot;</span></code> evaluates to True only if X is <code class="code docutils literal notranslate"><span class="pre">-inf</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&quot;X</span> <span class="pre">=</span> <span class="pre">'NaN'&quot;</span></code> evaluates to True only if X is <code class="code docutils literal notranslate"><span class="pre">NaN</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&quot;X</span> <span class="pre">&lt;=&gt;</span> <span class="pre">NULL&quot;</span></code> evaluates to True only if X is <code class="code docutils literal notranslate"><span class="pre">null</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since <code class="code docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">NULL</span></code> evaluates to <code class="code docutils literal notranslate"><span class="pre">NULL</span></code> for any value of <code class="code docutils literal notranslate"><span class="pre">X</span></code>, using the  filter expression <code class="code docutils literal notranslate"><span class="pre">&quot;NOT</span> <span class="pre">X</span> <span class="pre">=</span> <span class="pre">NULL&quot;</span></code> results in an empty DataFrame. In order to filter out rows where <code class="code docutils literal notranslate"><span class="pre">X</span></code> is null, filtering with <code class="code docutils literal notranslate"><span class="pre">&quot;NOT</span> <span class="pre">X</span> <span class="pre">&lt;=&gt;</span> <span class="pre">NULL&quot;</span></code> would work; however, <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a> is better suited for this since it also modifies the domain to indicate that nulls are absent from column <code class="code docutils literal notranslate"><span class="pre">X</span></code> in the output.</p>
+</div>
+</section>
+<section id="partitionbykeys">
+<h2>PartitionByKeys<a class="headerlink" href="#partitionbykeys" title="Permalink to this headline">#</a></h2>
+<p>For a <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/partition/index.html#tmlt.core.transformations.spark_transformations.partition.PartitionByKeys" title="tmlt.core.transformations.spark_transformations.partition.PartitionByKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartitionByKeys</span></code></a> transformation, the <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/partition/index.html#tmlt.core.transformations.spark_transformations.partition.PartitionByKeys.list_values" title="tmlt.core.transformations.spark_transformations.partition.PartitionByKeys.list_values"><code class="xref py py-attr docutils literal notranslate"><span class="pre">list_values</span></code></a> corresponding to partition keys can contain <code class="code docutils literal notranslate"><span class="pre">Inf</span></code>, <code class="code docutils literal notranslate"><span class="pre">NaN</span></code> or <code class="code docutils literal notranslate"><span class="pre">null</span></code>. A partition corresponding to a particular key is obtained by comparing row values in key columns with the key values.</p>
+</section>
+<section id="quantile">
+<h2>Quantile<a class="headerlink" href="#quantile" title="Permalink to this headline">#</a></h2>
+<p>A <a class="reference internal" href="../reference/tmlt/core/measurements/pandas_measurements/series/index.html#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile" title="tmlt.core.measurements.pandas_measurements.series.NoisyQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoisyQuantile</span></code></a> measurement requires a <a class="reference internal" href="../reference/tmlt/core/domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasSeriesDomain" title="tmlt.core.domains.pandas_domains.PandasSeriesDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasSeriesDomain</span></code></a> (over <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyIntegerDomain" title="tmlt.core.domains.numpy_domains.NumpyIntegerDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyIntegerDomain</span></code></a> or <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyFloatDomain" title="tmlt.core.domains.numpy_domains.NumpyFloatDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyFloatDomain</span></code></a>) as its input domain. Additionally, if the input domain is a <a class="reference internal" href="../reference/tmlt/core/domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasSeriesDomain" title="tmlt.core.domains.pandas_domains.PandasSeriesDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasSeriesDomain</span></code></a> over <a class="reference internal" href="../reference/tmlt/core/domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyFloatDomain" title="tmlt.core.domains.numpy_domains.NumpyFloatDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyFloatDomain</span></code></a>, it should also disallow <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>s.</p>
+<p>When constructing quantile measurements that work on <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a>s (with <a class="reference internal" href="../reference/tmlt/core/measurements/aggregations/index.html#tmlt.core.measurements.aggregations.create_quantile_measurement" title="tmlt.core.measurements.aggregations.create_quantile_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_quantile_measurement()</span></code></a> for example), the input domain must disallow <code class="code docutils literal notranslate"><span class="pre">nulls</span></code> and <code class="code docutils literal notranslate"><span class="pre">NaNs</span></code> on the measure column. More generally, <a class="reference internal" href="../reference/tmlt/core/measurements/spark_measurements/index.html#tmlt.core.measurements.spark_measurements.ApplyInPandas" title="tmlt.core.measurements.spark_measurements.ApplyInPandas"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplyInPandas</span></code></a> does not support <a class="reference internal" href="../reference/tmlt/core/measurements/spark_measurements/index.html#tmlt.core.measurements.spark_measurements.ApplyInPandas.aggregation_function" title="tmlt.core.measurements.spark_measurements.ApplyInPandas.aggregation_function"><code class="xref py py-attr docutils literal notranslate"><span class="pre">aggregation_function</span></code></a>s that operate on numeric nullable columns.</p>
+</section>
+<section id="groupby">
+<h2>GroupBy<a class="headerlink" href="#groupby" title="Permalink to this headline">#</a></h2>
+<p>For a <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/groupby/index.html#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupBy</span></code></a> transformation, a group key can contain a null
+only if the input domain permits nulls in the corresponding <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkColumnDescriptor</span></code></a>.
+A group key containing a null (or one that is a null – when grouping by a single column) is treated
+like any other value - i.e. all rows with this key are grouped together.
+Since <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/groupby/index.html#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupBy</span></code></a> does not permit grouping on <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkFloatColumnDescriptor</span></code></a>
+columns, group keys cannot contain NaNs or infs.</p>
+</section>
+<section id="joins">
+<h2>Joins<a class="headerlink" href="#joins" title="Permalink to this headline">#</a></h2>
+<p>Both <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/join/index.html#tmlt.core.transformations.spark_transformations.join.PrivateJoin" title="tmlt.core.transformations.spark_transformations.join.PrivateJoin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoin</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/join/index.html#tmlt.core.transformations.spark_transformations.join.PublicJoin" title="tmlt.core.transformations.spark_transformations.join.PublicJoin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PublicJoin</span></code></a> use the <code class="code docutils literal notranslate"><span class="pre">=</span></code> semantics described above by default.
+Consequently, all null values on the join columns are dropped. In order to join on nulls, construct the transformation with <code class="code docutils literal notranslate"><span class="pre">join_on_nulls=True</span></code> to use the <code class="code docutils literal notranslate"><span class="pre">&lt;=&gt;</span></code> semantics.</p>
+</section>
+<section id="removing-nans-nulls-and-infs">
+<h2>Removing NaNs, nulls, and infs<a class="headerlink" href="#removing-nans-nulls-and-infs" title="Permalink to this headline">#</a></h2>
+<p>Tumult Core provides transformations to drop or replace NaNs, nulls, and infs. In particular,
+<a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceNulls</span></code></a>, <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceNaNs</span></code></a>, and <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs" title="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceInfs</span></code></a> allow replacing these values on one or more columns; <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a>, <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.DropNaNs" title="tmlt.core.transformations.spark_transformations.nan.DropNaNs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNaNs</span></code></a>, and <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/nan/index.html#tmlt.core.transformations.spark_transformations.nan.DropInfs" title="tmlt.core.transformations.spark_transformations.nan.DropInfs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropInfs</span></code></a> allow dropping rows containing these values in one or more columns.</p>
+</section>
+<section id="sum-and-sumgrouped">
+<h2>Sum and SumGrouped<a class="headerlink" href="#sum-and-sumgrouped" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.Sum" title="tmlt.core.transformations.spark_transformations.agg.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.SumGrouped" title="tmlt.core.transformations.spark_transformations.agg.SumGrouped"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumGrouped</span></code></a> aggregations require NaNs and nulls to be disallowed
+from the measure column. Consequently, derived measurements (requiring sums) like <a class="reference internal" href="../reference/tmlt/core/measurements/aggregations/index.html#tmlt.core.measurements.aggregations.create_average_measurement" title="tmlt.core.measurements.aggregations.create_average_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_average_measurement()</span></code></a>, <a class="reference internal" href="../reference/tmlt/core/measurements/aggregations/index.html#tmlt.core.measurements.aggregations.create_standard_deviation_measurement" title="tmlt.core.measurements.aggregations.create_standard_deviation_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_standard_deviation_measurement()</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/measurements/aggregations/index.html#tmlt.core.measurements.aggregations.create_variance_measurement" title="tmlt.core.measurements.aggregations.create_variance_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_variance_measurement()</span></code></a> also require that the measure column disallow NaNs and nulls.</p>
+<p>+/- <code class="code docutils literal notranslate"><span class="pre">inf</span></code> values are correctly clipped to the upper and lower clipping bounds specified
+on the aggregations.</p>
+</section>
+<section id="countdistinct">
+<h2>CountDistinct<a class="headerlink" href="#countdistinct" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.CountDistinct" title="tmlt.core.transformations.spark_transformations.agg.CountDistinct"><code class="xref py py-class docutils literal notranslate"><span class="pre">CountDistinct</span></code></a> uses the <code class="code docutils literal notranslate"><span class="pre">&lt;=&gt;</span></code> semantics <a class="reference external" href="#comparison-operators">described above</a> . For example, the following rows are considered identical by this transformation:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">(NULL,</span> <span class="pre">NaN,</span> <span class="pre">Inf)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">(NULL,</span> <span class="pre">NaN,</span> <span class="pre">Inf)</span></code></p></li>
+</ul>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="known-vulnerabilities.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Known Vulnerabilities</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../reference/tmlt/core/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">API Reference</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2022.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from c27a7639 at 2022-10-14 16:02.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

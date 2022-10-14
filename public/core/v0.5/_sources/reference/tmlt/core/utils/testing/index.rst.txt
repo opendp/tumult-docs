@@ -1,0 +1,1417 @@
+
+
+
+**************
+testing
+**************
+
+.. py:module:: tmlt.core.utils.testing
+
+.. autoapi-nested-parse::
+
+   Utilities for testing.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.get_all_props`
+     - Returns all properties of a component.
+   * - :func:`.assert_property_immutability`
+     - Raises error if property is mutable.
+   * - :func:`.create_mock_transformation`
+     - Returns a mocked Transformation with the given properties.
+   * - :func:`.create_mock_queryable`
+     - Returns a mocked Queryable.
+   * - :func:`.create_mock_measurement`
+     - Returns a mocked Measurement with the given properties.
+   * - :func:`.skip`
+     - Skips tests and allows override using '--no-skip' flag.
+   * - :func:`.run_test_using_ks_test`
+     - Runs given :class:`~.KSTestCase`.
+   * - :func:`.run_test_using_chi_squared_test`
+     - Runs given :class:`~.ChiSquaredTestCase`.
+   * - :func:`.get_values_summing_to_loc`
+     - Returns a list of n values that sum to loc.
+   * - :func:`.get_sampler`
+     - Returns a sampler function.
+   * - :func:`.get_noise_scales`
+     - Get noise scale per output column for an aggregation.
+   * - :func:`.get_prob_functions`
+     - Returns probability mass/density functions for different noise mechanisms.
+
+.. py:function:: get_all_props(Component)
+
+   Returns all properties of a component.
+
+
+
+.. py:function:: assert_property_immutability(component, prop_name)
+
+   Raises error if property is mutable.
+
+   :param component: Privacy framework component whose attribute is to be checked.
+   :param prop_name: Name of property to be checked.
+
+
+
+.. py:function:: create_mock_transformation(input_domain = NumpyIntegerDomain(), input_metric = AbsoluteDifference(), output_domain = NumpyIntegerDomain(), output_metric = AbsoluteDifference(), return_value = 0, stability_function_implemented = False, stability_function_return_value = ExactNumber(1), stability_relation_return_value = True)
+
+   Returns a mocked Transformation with the given properties.
+
+   :param input_domain: Input domain for the mock.
+   :param input_metric: Input metric for the mock.
+   :param output_domain: Output domain for the mock.
+   :param output_metric: Output metric for the mock.
+   :param return_value: Return value for the Transformation's __call__.
+   :param stability_function_implemented: If False, raises a :class:`NotImplementedError`
+                                          with the message "TEST" when the stability function is called.
+   :param stability_function_return_value: Return value for the Transformation's stability
+                                           function.
+   :param stability_relation_return_value: Return value for the Transformation's stability
+                                           relation.
+
+
+
+.. py:function:: create_mock_queryable(return_value = 0)
+
+   Returns a mocked Queryable.
+
+   :param return_value: Return value for the Queryable's __call__.
+
+
+
+.. py:function:: create_mock_measurement(input_domain = NumpyIntegerDomain(), input_metric = AbsoluteDifference(), output_measure = PureDP(), is_interactive = False, return_value = np.int64(0), privacy_function_implemented = False, privacy_function_return_value = ExactNumber(1), privacy_relation_return_value = True)
+
+   Returns a mocked Measurement with the given properties.
+
+   :param input_domain: Input domain for the mock.
+   :param input_metric: Input metric for the mock.
+   :param output_measure: Output measure for the mock.
+   :param is_interactive: Whether the mock should be interactive.
+   :param return_value: Return value for the Measurement's __call__.
+   :param privacy_function_implemented: If True, raises a :class:`NotImplementedError`
+                                        with the message "TEST" when the privacy function is called.
+   :param privacy_function_return_value: Return value for the Measurement's privacy
+                                         function.
+   :param privacy_relation_return_value: Return value for the Measurement's privacy
+                                         relation.
+
+
+
+.. py:function:: skip(reason)
+
+   Skips tests and allows override using '--no-skip' flag.
+
+
+
+.. py:function:: run_test_using_ks_test(case, p_threshold, noise_scale_fudge_factor)
+
+   Runs given :class:`~.KSTestCase`.
+
+
+
+.. py:function:: run_test_using_chi_squared_test(case, p_threshold, noise_scale_fudge_factor)
+
+   Runs given :class:`~.ChiSquaredTestCase`.
+
+
+
+.. py:function:: get_values_summing_to_loc(loc: int, n: int) -> List[int]
+              get_values_summing_to_loc(loc: float, n: int) -> List[float]
+
+   Returns a list of n values that sum to loc.
+
+   :param loc: Value to which the return list adds up to. If this is a float,
+               a list of floats will be returned, otherwise this must be an int,
+               and a list of ints will be returned.
+   :param n: Desired list size.
+
+
+
+.. py:function:: get_sampler(measurement, dataset, post_processor, iterations = 1)
+
+   Returns a sampler function.
+
+   A sampler function takes 0 arguments and produces a numpy array containing samples
+   obtaining by performing groupby-agg on the given dataset.
+
+   :param measurement: Measurement to sample from.
+   :param dataset: FixedGroupDataSet object containing DataFrame to perform measurement
+                   on.
+   :param post_processor: Function to process measurement's output DataFrame and select
+                          relevant columns.
+   :param iterations: Number of iterations of groupby-agg.
+
+
+
+.. py:function:: get_noise_scales(agg, budget, dataset, noise_mechanism)
+
+   Get noise scale per output column for an aggregation.
+
+
+
+.. py:function:: get_prob_functions(noise_mechanism, locations)
+
+   Returns probability mass/density functions for different noise mechanisms.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.FakeAggregate`
+     - Dummy Pandas Series aggregation for testing purposes.
+   * - :class:`.PySparkTest`
+     - Create a pyspark testing base class for all tests.
+   * - :class:`.TestComponent`
+     - Helper class for component tests.
+   * - :class:`.FixedGroupDataSet`
+     - Encapsulates a Spark DataFrame with specified number of identical groups.
+   * - :class:`.KSTestCase`
+     - Test case for :func:`run_test_using_chi_squared_test`.
+   * - :class:`.ChiSquaredTestCase`
+     - Test case for :func:`run_test_using_ks_test`.
+
+   
+.. py:class:: FakeAggregate
+
+   Bases: :class:`tmlt.core.measurements.pandas_measurements.dataframe.Aggregate`
+
+   Dummy Pandas Series aggregation for testing purposes.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: privacy_relation(self, _, __)
+
+      Returns False always for testing purposes.
+
+
+   .. py:method:: __call__(self, data)
+
+      Perform dummy measurement.
+
+
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_schema(self)
+      :property:
+
+      Return the output schema.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure(self)
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive(self)
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+
+   
+.. py:class:: PySparkTest(methodName='runTest')
+
+   Bases: :class:`unittest.TestCase`
+
+   Create a pyspark testing base class for all tests.
+
+   All the unit test methods in the same test class
+   can share or reuse the same spark context.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.spark`
+        - Returns the spark session.
+      * - :meth:`.suppress_py4j_logging`
+        - Remove noise in the logs irrelevant to testing.
+      * - :meth:`.setUpClass`
+        - Setup SparkSession.
+      * - :meth:`.tearDownClass`
+        - Tears down SparkSession.
+      * - :meth:`.assert_frame_equal_with_sort`
+        - Asserts that the two data frames are equal.
+      * - :meth:`.addTypeEqualityFunc`
+        - Add a type specific assertEqual style function to compare a type.
+      * - :meth:`.addCleanup`
+        - Add a function, with arguments, to be called when the test is
+      * - :meth:`.setUp`
+        - Hook method for setting up the test fixture before exercising it.
+      * - :meth:`.tearDown`
+        - Hook method for deconstructing the test fixture after testing it.
+      * - :meth:`.shortDescription`
+        - Returns a one-line description of the test, or None if no
+      * - :meth:`.__eq__`
+        - Return self==value.
+      * - :meth:`.subTest`
+        - Return a context manager that will return the enclosed block
+      * - :meth:`.doCleanups`
+        - Execute all cleanup functions. Normally called for you after
+      * - :meth:`.debug`
+        - Run the test without collecting errors in a TestResult
+      * - :meth:`.skipTest`
+        - Skip this test.
+      * - :meth:`.fail`
+        - Fail immediately, with the given message.
+      * - :meth:`.assertFalse`
+        - Check that the expression is false.
+      * - :meth:`.assertTrue`
+        - Check that the expression is true.
+      * - :meth:`.assertRaises`
+        - Fail unless an exception of class expected_exception is raised
+      * - :meth:`.assertWarns`
+        - Fail unless a warning of class warnClass is triggered
+      * - :meth:`.assertLogs`
+        - Fail unless a log message of level *level* or higher is emitted
+      * - :meth:`.assertEqual`
+        - Fail if the two objects are unequal as determined by the '=='
+      * - :meth:`.assertNotEqual`
+        - Fail if the two objects are equal as determined by the '!='
+      * - :meth:`.assertAlmostEqual`
+        - Fail if the two objects are unequal as determined by their
+      * - :meth:`.assertNotAlmostEqual`
+        - Fail if the two objects are equal as determined by their
+      * - :meth:`.assertSequenceEqual`
+        - An equality assertion for ordered sequences (like lists and tuples).
+      * - :meth:`.assertListEqual`
+        - A list-specific equality assertion.
+      * - :meth:`.assertTupleEqual`
+        - A tuple-specific equality assertion.
+      * - :meth:`.assertSetEqual`
+        - A set-specific equality assertion.
+      * - :meth:`.assertIn`
+        - Just like self.assertTrue(a in b), but with a nicer default message.
+      * - :meth:`.assertNotIn`
+        - Just like self.assertTrue(a not in b), but with a nicer default message.
+      * - :meth:`.assertIs`
+        - Just like self.assertTrue(a is b), but with a nicer default message.
+      * - :meth:`.assertIsNot`
+        - Just like self.assertTrue(a is not b), but with a nicer default message.
+      * - :meth:`.assertDictContainsSubset`
+        - Checks whether dictionary is a superset of subset.
+      * - :meth:`.assertCountEqual`
+        - An unordered sequence comparison asserting that the same elements,
+      * - :meth:`.assertMultiLineEqual`
+        - Assert that two multi-line strings are equal.
+      * - :meth:`.assertLess`
+        - Just like self.assertTrue(a < b), but with a nicer default message.
+      * - :meth:`.assertLessEqual`
+        - Just like self.assertTrue(a <= b), but with a nicer default message.
+      * - :meth:`.assertGreater`
+        - Just like self.assertTrue(a > b), but with a nicer default message.
+      * - :meth:`.assertGreaterEqual`
+        - Just like self.assertTrue(a >= b), but with a nicer default message.
+      * - :meth:`.assertIsNone`
+        - Same as self.assertTrue(obj is None), with a nicer default message.
+      * - :meth:`.assertIsNotNone`
+        - Included for symmetry with assertIsNone.
+      * - :meth:`.assertIsInstance`
+        - Same as self.assertTrue(isinstance(obj, cls)), with a nicer
+      * - :meth:`.assertNotIsInstance`
+        - Included for symmetry with assertIsInstance.
+      * - :meth:`.assertRaisesRegex`
+        - Asserts that the message in a raised exception matches a regex.
+      * - :meth:`.assertWarnsRegex`
+        - Asserts that the message in a triggered warning matches a regexp.
+      * - :meth:`.assertRegex`
+        - Fail the test unless the text matches the regular expression.
+      * - :meth:`.assertNotRegex`
+        - Fail the test if the text matches the regular expression.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: spark(self)
+      :property:
+
+      Returns the spark session.
+
+
+   .. py:method:: suppress_py4j_logging(cls)
+      :classmethod:
+
+      Remove noise in the logs irrelevant to testing.
+
+
+   .. py:method:: setUpClass(cls)
+      :classmethod:
+
+      Setup SparkSession.
+
+
+   .. py:method:: tearDownClass(cls)
+      :classmethod:
+
+      Tears down SparkSession.
+
+
+   .. py:method:: assert_frame_equal_with_sort(cls, first_df, second_df, sort_columns = None, **kwargs)
+      :classmethod:
+
+      Asserts that the two data frames are equal.
+
+      Wrapper around pandas test function. Both dataframes are sorted
+      since the ordering in Spark is not guaranteed.
+
+      :param first_df: First dataframe to compare.
+      :param second_df: Second dataframe to compare.
+      :param sort_columns: Names of column to sort on. By default sorts by all columns.
+      :param \*\*kwargs: Keyword arguments that will be passed to assert_frame_equal().
+
+
+   .. py:method:: addTypeEqualityFunc(self, typeobj, function)
+
+      Add a type specific assertEqual style function to compare a type.
+
+      This method is for use by TestCase subclasses that need to register
+      their own type equality functions to provide nicer error messages.
+
+      :param typeobj: The data type to call this function on when both values
+                      are of the same type in assertEqual().
+      :param function: The callable taking two arguments and an optional
+                       msg= argument that raises self.failureException with a
+                       useful error message when the two arguments are not equal.
+
+
+   .. py:method:: addCleanup(*args, **kwargs)
+
+      Add a function, with arguments, to be called when the test is
+      completed. Functions added are called on a LIFO basis and are
+      called after tearDown on test failure or success.
+
+      Cleanup items are called even if setUp fails (unlike tearDown).
+
+
+   .. py:method:: setUp(self)
+
+      Hook method for setting up the test fixture before exercising it.
+
+
+   .. py:method:: tearDown(self)
+
+      Hook method for deconstructing the test fixture after testing it.
+
+
+   .. py:method:: shortDescription(self)
+
+      Returns a one-line description of the test, or None if no
+      description has been provided.
+
+      The default implementation of this method returns the first line of
+      the specified test method's docstring.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return self==value.
+
+
+   .. py:method:: subTest(self, msg=_subtest_msg_sentinel, **params)
+
+      Return a context manager that will return the enclosed block
+      of code in a subtest identified by the optional message and
+      keyword parameters.  A failure in the subtest marks the test
+      case as failed but resumes execution at the end of the enclosed
+      block, allowing further test code to be executed.
+
+
+   .. py:method:: doCleanups(self)
+
+      Execute all cleanup functions. Normally called for you after
+      tearDown.
+
+
+   .. py:method:: debug(self)
+
+      Run the test without collecting errors in a TestResult
+
+
+   .. py:method:: skipTest(self, reason)
+
+      Skip this test.
+
+
+   .. py:method:: fail(self, msg=None)
+
+      Fail immediately, with the given message.
+
+
+   .. py:method:: assertFalse(self, expr, msg=None)
+
+      Check that the expression is false.
+
+
+   .. py:method:: assertTrue(self, expr, msg=None)
+
+      Check that the expression is true.
+
+
+   .. py:method:: assertRaises(self, expected_exception, *args, **kwargs)
+
+      Fail unless an exception of class expected_exception is raised
+      by the callable when invoked with specified positional and
+      keyword arguments. If a different type of exception is
+      raised, it will not be caught, and the test case will be
+      deemed to have suffered an error, exactly as for an
+      unexpected exception.
+
+      If called with the callable and arguments omitted, will return a
+      context object used like this::
+
+           with self.assertRaises(SomeException):
+               do_something()
+
+      An optional keyword argument 'msg' can be provided when assertRaises
+      is used as a context object.
+
+      The context manager keeps a reference to the exception as
+      the 'exception' attribute. This allows you to inspect the
+      exception after the assertion::
+
+          with self.assertRaises(SomeException) as cm:
+              do_something()
+          the_exception = cm.exception
+          self.assertEqual(the_exception.error_code, 3)
+
+
+   .. py:method:: assertWarns(self, expected_warning, *args, **kwargs)
+
+      Fail unless a warning of class warnClass is triggered
+      by the callable when invoked with specified positional and
+      keyword arguments.  If a different type of warning is
+      triggered, it will not be handled: depending on the other
+      warning filtering rules in effect, it might be silenced, printed
+      out, or raised as an exception.
+
+      If called with the callable and arguments omitted, will return a
+      context object used like this::
+
+           with self.assertWarns(SomeWarning):
+               do_something()
+
+      An optional keyword argument 'msg' can be provided when assertWarns
+      is used as a context object.
+
+      The context manager keeps a reference to the first matching
+      warning as the 'warning' attribute; similarly, the 'filename'
+      and 'lineno' attributes give you information about the line
+      of Python code from which the warning was triggered.
+      This allows you to inspect the warning after the assertion::
+
+          with self.assertWarns(SomeWarning) as cm:
+              do_something()
+          the_warning = cm.warning
+          self.assertEqual(the_warning.some_attribute, 147)
+
+
+   .. py:method:: assertLogs(self, logger=None, level=None)
+
+      Fail unless a log message of level *level* or higher is emitted
+      on *logger_name* or its children.  If omitted, *level* defaults to
+      INFO and *logger* defaults to the root logger.
+
+      This method must be used as a context manager, and will yield
+      a recording object with two attributes: `output` and `records`.
+      At the end of the context manager, the `output` attribute will
+      be a list of the matching formatted log messages and the
+      `records` attribute will be a list of the corresponding LogRecord
+      objects.
+
+      Example::
+
+          with self.assertLogs('foo', level='INFO') as cm:
+              logging.getLogger('foo').info('first message')
+              logging.getLogger('foo.bar').error('second message')
+          self.assertEqual(cm.output, ['INFO:foo:first message',
+                                       'ERROR:foo.bar:second message'])
+
+
+   .. py:method:: assertEqual(self, first, second, msg=None)
+
+      Fail if the two objects are unequal as determined by the '=='
+      operator.
+
+
+   .. py:method:: assertNotEqual(self, first, second, msg=None)
+
+      Fail if the two objects are equal as determined by the '!='
+      operator.
+
+
+   .. py:method:: assertAlmostEqual(self, first, second, places=None, msg=None, delta=None)
+
+      Fail if the two objects are unequal as determined by their
+      difference rounded to the given number of decimal places
+      (default 7) and comparing to zero, or by comparing that the
+      difference between the two objects is more than the given
+      delta.
+
+      Note that decimal places (from zero) are usually not the same
+      as significant digits (measured from the most significant digit).
+
+      If the two objects compare equal then they will automatically
+      compare almost equal.
+
+
+   .. py:method:: assertNotAlmostEqual(self, first, second, places=None, msg=None, delta=None)
+
+      Fail if the two objects are equal as determined by their
+      difference rounded to the given number of decimal places
+      (default 7) and comparing to zero, or by comparing that the
+      difference between the two objects is less than the given delta.
+
+      Note that decimal places (from zero) are usually not the same
+      as significant digits (measured from the most significant digit).
+
+      Objects that are equal automatically fail.
+
+
+   .. py:method:: assertSequenceEqual(self, seq1, seq2, msg=None, seq_type=None)
+
+      An equality assertion for ordered sequences (like lists and tuples).
+
+      For the purposes of this function, a valid ordered sequence type is one
+      which can be indexed, has a length, and has an equality operator.
+
+      :param seq1: The first sequence to compare.
+      :param seq2: The second sequence to compare.
+      :param seq_type: The expected datatype of the sequences, or None if no
+                       datatype should be enforced.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertListEqual(self, list1, list2, msg=None)
+
+      A list-specific equality assertion.
+
+      :param list1: The first list to compare.
+      :param list2: The second list to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertTupleEqual(self, tuple1, tuple2, msg=None)
+
+      A tuple-specific equality assertion.
+
+      :param tuple1: The first tuple to compare.
+      :param tuple2: The second tuple to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertSetEqual(self, set1, set2, msg=None)
+
+      A set-specific equality assertion.
+
+      :param set1: The first set to compare.
+      :param set2: The second set to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+      assertSetEqual uses ducktyping to support different types of sets, and
+      is optimized for sets specifically (parameters must support a
+      difference method).
+
+
+   .. py:method:: assertIn(self, member, container, msg=None)
+
+      Just like self.assertTrue(a in b), but with a nicer default message.
+
+
+   .. py:method:: assertNotIn(self, member, container, msg=None)
+
+      Just like self.assertTrue(a not in b), but with a nicer default message.
+
+
+   .. py:method:: assertIs(self, expr1, expr2, msg=None)
+
+      Just like self.assertTrue(a is b), but with a nicer default message.
+
+
+   .. py:method:: assertIsNot(self, expr1, expr2, msg=None)
+
+      Just like self.assertTrue(a is not b), but with a nicer default message.
+
+
+   .. py:method:: assertDictContainsSubset(self, subset, dictionary, msg=None)
+
+      Checks whether dictionary is a superset of subset.
+
+
+   .. py:method:: assertCountEqual(self, first, second, msg=None)
+
+      An unordered sequence comparison asserting that the same elements,
+      regardless of order.  If the same element occurs more than once,
+      it verifies that the elements occur the same number of times.
+
+          self.assertEqual(Counter(list(first)),
+                           Counter(list(second)))
+
+       Example:
+          - [0, 1, 1] and [1, 0, 1] compare equal.
+          - [0, 0, 1] and [0, 1] compare unequal.
+
+
+
+   .. py:method:: assertMultiLineEqual(self, first, second, msg=None)
+
+      Assert that two multi-line strings are equal.
+
+
+   .. py:method:: assertLess(self, a, b, msg=None)
+
+      Just like self.assertTrue(a < b), but with a nicer default message.
+
+
+   .. py:method:: assertLessEqual(self, a, b, msg=None)
+
+      Just like self.assertTrue(a <= b), but with a nicer default message.
+
+
+   .. py:method:: assertGreater(self, a, b, msg=None)
+
+      Just like self.assertTrue(a > b), but with a nicer default message.
+
+
+   .. py:method:: assertGreaterEqual(self, a, b, msg=None)
+
+      Just like self.assertTrue(a >= b), but with a nicer default message.
+
+
+   .. py:method:: assertIsNone(self, obj, msg=None)
+
+      Same as self.assertTrue(obj is None), with a nicer default message.
+
+
+   .. py:method:: assertIsNotNone(self, obj, msg=None)
+
+      Included for symmetry with assertIsNone.
+
+
+   .. py:method:: assertIsInstance(self, obj, cls, msg=None)
+
+      Same as self.assertTrue(isinstance(obj, cls)), with a nicer
+      default message.
+
+
+   .. py:method:: assertNotIsInstance(self, obj, cls, msg=None)
+
+      Included for symmetry with assertIsInstance.
+
+
+   .. py:method:: assertRaisesRegex(self, expected_exception, expected_regex, *args, **kwargs)
+
+      Asserts that the message in a raised exception matches a regex.
+
+      :param expected_exception: Exception class expected to be raised.
+      :param expected_regex: Regex (re.Pattern object or string) expected
+                             to be found in error message.
+      :param args: Function to be called and extra positional args.
+      :param kwargs: Extra kwargs.
+      :param msg: Optional message used in case of failure. Can only be used
+                  when assertRaisesRegex is used as a context manager.
+
+
+   .. py:method:: assertWarnsRegex(self, expected_warning, expected_regex, *args, **kwargs)
+
+      Asserts that the message in a triggered warning matches a regexp.
+      Basic functioning is similar to assertWarns() with the addition
+      that only warnings whose messages also match the regular expression
+      are considered successful matches.
+
+      :param expected_warning: Warning class expected to be triggered.
+      :param expected_regex: Regex (re.Pattern object or string) expected
+                             to be found in error message.
+      :param args: Function to be called and extra positional args.
+      :param kwargs: Extra kwargs.
+      :param msg: Optional message used in case of failure. Can only be used
+                  when assertWarnsRegex is used as a context manager.
+
+
+   .. py:method:: assertRegex(self, text, expected_regex, msg=None)
+
+      Fail the test unless the text matches the regular expression.
+
+
+   .. py:method:: assertNotRegex(self, text, unexpected_regex, msg=None)
+
+      Fail the test if the text matches the regular expression.
+
+
+
+   
+.. py:class:: TestComponent(methodName='runTest')
+
+   Bases: :class:`PySparkTest`
+
+   Helper class for component tests.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.setUp`
+        - Common setup for all component tests.
+      * - :meth:`.spark`
+        - Returns the spark session.
+      * - :meth:`.suppress_py4j_logging`
+        - Remove noise in the logs irrelevant to testing.
+      * - :meth:`.setUpClass`
+        - Setup SparkSession.
+      * - :meth:`.tearDownClass`
+        - Tears down SparkSession.
+      * - :meth:`.assert_frame_equal_with_sort`
+        - Asserts that the two data frames are equal.
+      * - :meth:`.addTypeEqualityFunc`
+        - Add a type specific assertEqual style function to compare a type.
+      * - :meth:`.addCleanup`
+        - Add a function, with arguments, to be called when the test is
+      * - :meth:`.tearDown`
+        - Hook method for deconstructing the test fixture after testing it.
+      * - :meth:`.shortDescription`
+        - Returns a one-line description of the test, or None if no
+      * - :meth:`.__eq__`
+        - Return self==value.
+      * - :meth:`.subTest`
+        - Return a context manager that will return the enclosed block
+      * - :meth:`.doCleanups`
+        - Execute all cleanup functions. Normally called for you after
+      * - :meth:`.debug`
+        - Run the test without collecting errors in a TestResult
+      * - :meth:`.skipTest`
+        - Skip this test.
+      * - :meth:`.fail`
+        - Fail immediately, with the given message.
+      * - :meth:`.assertFalse`
+        - Check that the expression is false.
+      * - :meth:`.assertTrue`
+        - Check that the expression is true.
+      * - :meth:`.assertRaises`
+        - Fail unless an exception of class expected_exception is raised
+      * - :meth:`.assertWarns`
+        - Fail unless a warning of class warnClass is triggered
+      * - :meth:`.assertLogs`
+        - Fail unless a log message of level *level* or higher is emitted
+      * - :meth:`.assertEqual`
+        - Fail if the two objects are unequal as determined by the '=='
+      * - :meth:`.assertNotEqual`
+        - Fail if the two objects are equal as determined by the '!='
+      * - :meth:`.assertAlmostEqual`
+        - Fail if the two objects are unequal as determined by their
+      * - :meth:`.assertNotAlmostEqual`
+        - Fail if the two objects are equal as determined by their
+      * - :meth:`.assertSequenceEqual`
+        - An equality assertion for ordered sequences (like lists and tuples).
+      * - :meth:`.assertListEqual`
+        - A list-specific equality assertion.
+      * - :meth:`.assertTupleEqual`
+        - A tuple-specific equality assertion.
+      * - :meth:`.assertSetEqual`
+        - A set-specific equality assertion.
+      * - :meth:`.assertIn`
+        - Just like self.assertTrue(a in b), but with a nicer default message.
+      * - :meth:`.assertNotIn`
+        - Just like self.assertTrue(a not in b), but with a nicer default message.
+      * - :meth:`.assertIs`
+        - Just like self.assertTrue(a is b), but with a nicer default message.
+      * - :meth:`.assertIsNot`
+        - Just like self.assertTrue(a is not b), but with a nicer default message.
+      * - :meth:`.assertDictContainsSubset`
+        - Checks whether dictionary is a superset of subset.
+      * - :meth:`.assertCountEqual`
+        - An unordered sequence comparison asserting that the same elements,
+      * - :meth:`.assertMultiLineEqual`
+        - Assert that two multi-line strings are equal.
+      * - :meth:`.assertLess`
+        - Just like self.assertTrue(a < b), but with a nicer default message.
+      * - :meth:`.assertLessEqual`
+        - Just like self.assertTrue(a <= b), but with a nicer default message.
+      * - :meth:`.assertGreater`
+        - Just like self.assertTrue(a > b), but with a nicer default message.
+      * - :meth:`.assertGreaterEqual`
+        - Just like self.assertTrue(a >= b), but with a nicer default message.
+      * - :meth:`.assertIsNone`
+        - Same as self.assertTrue(obj is None), with a nicer default message.
+      * - :meth:`.assertIsNotNone`
+        - Included for symmetry with assertIsNone.
+      * - :meth:`.assertIsInstance`
+        - Same as self.assertTrue(isinstance(obj, cls)), with a nicer
+      * - :meth:`.assertNotIsInstance`
+        - Included for symmetry with assertIsInstance.
+      * - :meth:`.assertRaisesRegex`
+        - Asserts that the message in a raised exception matches a regex.
+      * - :meth:`.assertWarnsRegex`
+        - Asserts that the message in a triggered warning matches a regexp.
+      * - :meth:`.assertRegex`
+        - Fail the test unless the text matches the regular expression.
+      * - :meth:`.assertNotRegex`
+        - Fail the test if the text matches the regular expression.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: setUp(self)
+
+      Common setup for all component tests.
+
+
+   .. py:method:: spark(self)
+      :property:
+
+      Returns the spark session.
+
+
+   .. py:method:: suppress_py4j_logging(cls)
+      :classmethod:
+
+      Remove noise in the logs irrelevant to testing.
+
+
+   .. py:method:: setUpClass(cls)
+      :classmethod:
+
+      Setup SparkSession.
+
+
+   .. py:method:: tearDownClass(cls)
+      :classmethod:
+
+      Tears down SparkSession.
+
+
+   .. py:method:: assert_frame_equal_with_sort(cls, first_df, second_df, sort_columns = None, **kwargs)
+      :classmethod:
+
+      Asserts that the two data frames are equal.
+
+      Wrapper around pandas test function. Both dataframes are sorted
+      since the ordering in Spark is not guaranteed.
+
+      :param first_df: First dataframe to compare.
+      :param second_df: Second dataframe to compare.
+      :param sort_columns: Names of column to sort on. By default sorts by all columns.
+      :param \*\*kwargs: Keyword arguments that will be passed to assert_frame_equal().
+
+
+   .. py:method:: addTypeEqualityFunc(self, typeobj, function)
+
+      Add a type specific assertEqual style function to compare a type.
+
+      This method is for use by TestCase subclasses that need to register
+      their own type equality functions to provide nicer error messages.
+
+      :param typeobj: The data type to call this function on when both values
+                      are of the same type in assertEqual().
+      :param function: The callable taking two arguments and an optional
+                       msg= argument that raises self.failureException with a
+                       useful error message when the two arguments are not equal.
+
+
+   .. py:method:: addCleanup(*args, **kwargs)
+
+      Add a function, with arguments, to be called when the test is
+      completed. Functions added are called on a LIFO basis and are
+      called after tearDown on test failure or success.
+
+      Cleanup items are called even if setUp fails (unlike tearDown).
+
+
+   .. py:method:: tearDown(self)
+
+      Hook method for deconstructing the test fixture after testing it.
+
+
+   .. py:method:: shortDescription(self)
+
+      Returns a one-line description of the test, or None if no
+      description has been provided.
+
+      The default implementation of this method returns the first line of
+      the specified test method's docstring.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return self==value.
+
+
+   .. py:method:: subTest(self, msg=_subtest_msg_sentinel, **params)
+
+      Return a context manager that will return the enclosed block
+      of code in a subtest identified by the optional message and
+      keyword parameters.  A failure in the subtest marks the test
+      case as failed but resumes execution at the end of the enclosed
+      block, allowing further test code to be executed.
+
+
+   .. py:method:: doCleanups(self)
+
+      Execute all cleanup functions. Normally called for you after
+      tearDown.
+
+
+   .. py:method:: debug(self)
+
+      Run the test without collecting errors in a TestResult
+
+
+   .. py:method:: skipTest(self, reason)
+
+      Skip this test.
+
+
+   .. py:method:: fail(self, msg=None)
+
+      Fail immediately, with the given message.
+
+
+   .. py:method:: assertFalse(self, expr, msg=None)
+
+      Check that the expression is false.
+
+
+   .. py:method:: assertTrue(self, expr, msg=None)
+
+      Check that the expression is true.
+
+
+   .. py:method:: assertRaises(self, expected_exception, *args, **kwargs)
+
+      Fail unless an exception of class expected_exception is raised
+      by the callable when invoked with specified positional and
+      keyword arguments. If a different type of exception is
+      raised, it will not be caught, and the test case will be
+      deemed to have suffered an error, exactly as for an
+      unexpected exception.
+
+      If called with the callable and arguments omitted, will return a
+      context object used like this::
+
+           with self.assertRaises(SomeException):
+               do_something()
+
+      An optional keyword argument 'msg' can be provided when assertRaises
+      is used as a context object.
+
+      The context manager keeps a reference to the exception as
+      the 'exception' attribute. This allows you to inspect the
+      exception after the assertion::
+
+          with self.assertRaises(SomeException) as cm:
+              do_something()
+          the_exception = cm.exception
+          self.assertEqual(the_exception.error_code, 3)
+
+
+   .. py:method:: assertWarns(self, expected_warning, *args, **kwargs)
+
+      Fail unless a warning of class warnClass is triggered
+      by the callable when invoked with specified positional and
+      keyword arguments.  If a different type of warning is
+      triggered, it will not be handled: depending on the other
+      warning filtering rules in effect, it might be silenced, printed
+      out, or raised as an exception.
+
+      If called with the callable and arguments omitted, will return a
+      context object used like this::
+
+           with self.assertWarns(SomeWarning):
+               do_something()
+
+      An optional keyword argument 'msg' can be provided when assertWarns
+      is used as a context object.
+
+      The context manager keeps a reference to the first matching
+      warning as the 'warning' attribute; similarly, the 'filename'
+      and 'lineno' attributes give you information about the line
+      of Python code from which the warning was triggered.
+      This allows you to inspect the warning after the assertion::
+
+          with self.assertWarns(SomeWarning) as cm:
+              do_something()
+          the_warning = cm.warning
+          self.assertEqual(the_warning.some_attribute, 147)
+
+
+   .. py:method:: assertLogs(self, logger=None, level=None)
+
+      Fail unless a log message of level *level* or higher is emitted
+      on *logger_name* or its children.  If omitted, *level* defaults to
+      INFO and *logger* defaults to the root logger.
+
+      This method must be used as a context manager, and will yield
+      a recording object with two attributes: `output` and `records`.
+      At the end of the context manager, the `output` attribute will
+      be a list of the matching formatted log messages and the
+      `records` attribute will be a list of the corresponding LogRecord
+      objects.
+
+      Example::
+
+          with self.assertLogs('foo', level='INFO') as cm:
+              logging.getLogger('foo').info('first message')
+              logging.getLogger('foo.bar').error('second message')
+          self.assertEqual(cm.output, ['INFO:foo:first message',
+                                       'ERROR:foo.bar:second message'])
+
+
+   .. py:method:: assertEqual(self, first, second, msg=None)
+
+      Fail if the two objects are unequal as determined by the '=='
+      operator.
+
+
+   .. py:method:: assertNotEqual(self, first, second, msg=None)
+
+      Fail if the two objects are equal as determined by the '!='
+      operator.
+
+
+   .. py:method:: assertAlmostEqual(self, first, second, places=None, msg=None, delta=None)
+
+      Fail if the two objects are unequal as determined by their
+      difference rounded to the given number of decimal places
+      (default 7) and comparing to zero, or by comparing that the
+      difference between the two objects is more than the given
+      delta.
+
+      Note that decimal places (from zero) are usually not the same
+      as significant digits (measured from the most significant digit).
+
+      If the two objects compare equal then they will automatically
+      compare almost equal.
+
+
+   .. py:method:: assertNotAlmostEqual(self, first, second, places=None, msg=None, delta=None)
+
+      Fail if the two objects are equal as determined by their
+      difference rounded to the given number of decimal places
+      (default 7) and comparing to zero, or by comparing that the
+      difference between the two objects is less than the given delta.
+
+      Note that decimal places (from zero) are usually not the same
+      as significant digits (measured from the most significant digit).
+
+      Objects that are equal automatically fail.
+
+
+   .. py:method:: assertSequenceEqual(self, seq1, seq2, msg=None, seq_type=None)
+
+      An equality assertion for ordered sequences (like lists and tuples).
+
+      For the purposes of this function, a valid ordered sequence type is one
+      which can be indexed, has a length, and has an equality operator.
+
+      :param seq1: The first sequence to compare.
+      :param seq2: The second sequence to compare.
+      :param seq_type: The expected datatype of the sequences, or None if no
+                       datatype should be enforced.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertListEqual(self, list1, list2, msg=None)
+
+      A list-specific equality assertion.
+
+      :param list1: The first list to compare.
+      :param list2: The second list to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertTupleEqual(self, tuple1, tuple2, msg=None)
+
+      A tuple-specific equality assertion.
+
+      :param tuple1: The first tuple to compare.
+      :param tuple2: The second tuple to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+
+   .. py:method:: assertSetEqual(self, set1, set2, msg=None)
+
+      A set-specific equality assertion.
+
+      :param set1: The first set to compare.
+      :param set2: The second set to compare.
+      :param msg: Optional message to use on failure instead of a list of
+                  differences.
+
+      assertSetEqual uses ducktyping to support different types of sets, and
+      is optimized for sets specifically (parameters must support a
+      difference method).
+
+
+   .. py:method:: assertIn(self, member, container, msg=None)
+
+      Just like self.assertTrue(a in b), but with a nicer default message.
+
+
+   .. py:method:: assertNotIn(self, member, container, msg=None)
+
+      Just like self.assertTrue(a not in b), but with a nicer default message.
+
+
+   .. py:method:: assertIs(self, expr1, expr2, msg=None)
+
+      Just like self.assertTrue(a is b), but with a nicer default message.
+
+
+   .. py:method:: assertIsNot(self, expr1, expr2, msg=None)
+
+      Just like self.assertTrue(a is not b), but with a nicer default message.
+
+
+   .. py:method:: assertDictContainsSubset(self, subset, dictionary, msg=None)
+
+      Checks whether dictionary is a superset of subset.
+
+
+   .. py:method:: assertCountEqual(self, first, second, msg=None)
+
+      An unordered sequence comparison asserting that the same elements,
+      regardless of order.  If the same element occurs more than once,
+      it verifies that the elements occur the same number of times.
+
+          self.assertEqual(Counter(list(first)),
+                           Counter(list(second)))
+
+       Example:
+          - [0, 1, 1] and [1, 0, 1] compare equal.
+          - [0, 0, 1] and [0, 1] compare unequal.
+
+
+
+   .. py:method:: assertMultiLineEqual(self, first, second, msg=None)
+
+      Assert that two multi-line strings are equal.
+
+
+   .. py:method:: assertLess(self, a, b, msg=None)
+
+      Just like self.assertTrue(a < b), but with a nicer default message.
+
+
+   .. py:method:: assertLessEqual(self, a, b, msg=None)
+
+      Just like self.assertTrue(a <= b), but with a nicer default message.
+
+
+   .. py:method:: assertGreater(self, a, b, msg=None)
+
+      Just like self.assertTrue(a > b), but with a nicer default message.
+
+
+   .. py:method:: assertGreaterEqual(self, a, b, msg=None)
+
+      Just like self.assertTrue(a >= b), but with a nicer default message.
+
+
+   .. py:method:: assertIsNone(self, obj, msg=None)
+
+      Same as self.assertTrue(obj is None), with a nicer default message.
+
+
+   .. py:method:: assertIsNotNone(self, obj, msg=None)
+
+      Included for symmetry with assertIsNone.
+
+
+   .. py:method:: assertIsInstance(self, obj, cls, msg=None)
+
+      Same as self.assertTrue(isinstance(obj, cls)), with a nicer
+      default message.
+
+
+   .. py:method:: assertNotIsInstance(self, obj, cls, msg=None)
+
+      Included for symmetry with assertIsInstance.
+
+
+   .. py:method:: assertRaisesRegex(self, expected_exception, expected_regex, *args, **kwargs)
+
+      Asserts that the message in a raised exception matches a regex.
+
+      :param expected_exception: Exception class expected to be raised.
+      :param expected_regex: Regex (re.Pattern object or string) expected
+                             to be found in error message.
+      :param args: Function to be called and extra positional args.
+      :param kwargs: Extra kwargs.
+      :param msg: Optional message used in case of failure. Can only be used
+                  when assertRaisesRegex is used as a context manager.
+
+
+   .. py:method:: assertWarnsRegex(self, expected_warning, expected_regex, *args, **kwargs)
+
+      Asserts that the message in a triggered warning matches a regexp.
+      Basic functioning is similar to assertWarns() with the addition
+      that only warnings whose messages also match the regular expression
+      are considered successful matches.
+
+      :param expected_warning: Warning class expected to be triggered.
+      :param expected_regex: Regex (re.Pattern object or string) expected
+                             to be found in error message.
+      :param args: Function to be called and extra positional args.
+      :param kwargs: Extra kwargs.
+      :param msg: Optional message used in case of failure. Can only be used
+                  when assertWarnsRegex is used as a context manager.
+
+
+   .. py:method:: assertRegex(self, text, expected_regex, msg=None)
+
+      Fail the test unless the text matches the regular expression.
+
+
+   .. py:method:: assertNotRegex(self, text, unexpected_regex, msg=None)
+
+      Fail the test if the text matches the regular expression.
+
+
+
+   
+.. py:class:: FixedGroupDataSet
+
+   Encapsulates a Spark DataFrame with specified number of identical groups.
+
+   The DataFrame contains columns A and B -- column 'A' corresponds to group index
+   and column 'B' corresponds to the measure column (to be aggregated).
+
+
+
+
+
+   .. py:attribute:: group_vals
+      :annotation: :Union[List[float], List[int]]
+
+      Values for each group.
+
+   .. py:attribute:: num_groups
+      :annotation: :int
+
+      Number of identical groups.
+
+   .. py:attribute:: float_measure_column
+      :annotation: :bool = False
+
+      If True, measure column has floating point values.
+
+
+   .. py:method:: groupby(self, noise_mechanism)
+
+      Returns appropriate GroupBy transformation.
+
+
+   .. py:method:: domain(self)
+      :property:
+
+      Return dataframe domain.
+
+
+   .. py:method:: lower(self)
+      :property:
+
+      Returns a lower bound on the values in B.
+
+
+   .. py:method:: upper(self)
+      :property:
+
+      Returns an upper bound on the values in B.
+
+
+   .. py:method:: get_dataframe(self)
+
+      Returns dataframe.
+
+
+
+   
+.. py:class:: KSTestCase(sampler=None, locations=None, scales=None, cdfs=None)
+
+   Test case for :func:`run_test_using_chi_squared_test`.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: from_dict(cls, d)
+      :classmethod:
+
+      Transform a dictionary into an KSTestCase.
+
+
+
+   
+.. py:class:: ChiSquaredTestCase(sampler=None, locations=None, scales=None, cmfs=None, pmfs=None)
+
+   Test case for :func:`run_test_using_ks_test`.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: from_dict(cls, d)
+      :classmethod:
+
+      Turns a dictionary into a ChiSquaredTestCase.
+
+
+
+
+
+
