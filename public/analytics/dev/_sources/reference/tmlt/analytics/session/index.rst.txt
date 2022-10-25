@@ -481,7 +481,7 @@ Classes
       :param source_id: The name of the view.
 
 
-   .. py:method:: partition_and_create(self, source_id, privacy_budget, attr_name, splits)
+   .. py:method:: partition_and_create(self, source_id, privacy_budget, column = None, splits = None, attr_name = None)
 
       Returns new sessions from a partition mapped to split name/`source_id`.
 
@@ -526,7 +526,7 @@ Classes
       >>> new_sessions = sess.partition_and_create(
       ...     "my_private_data",
       ...     privacy_budget=PureDPBudget(0.75),
-      ...     attr_name="A",
+      ...     column="A",
       ...     splits={"part0":"0", "part1":"1"}
       ... )
       >>> sess.remaining_privacy_budget
@@ -561,9 +561,11 @@ Classes
 
       :param source_id: The private source to partition.
       :param privacy_budget: Amount of privacy budget to pass to each new session.
-      :param attr_name: The name of the column partitioning on.
+      :param column: The name of the column partitioning on.
       :param splits: Mapping of split name to value of partition.
                      Split name is `source_id` in new session.
+      :param attr_name: Deprecated synonym for `column`. Using the `column` argument
+                        is preferred.
 
 
    .. py:method:: stop(self)
