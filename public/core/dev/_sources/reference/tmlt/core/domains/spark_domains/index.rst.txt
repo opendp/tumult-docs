@@ -393,7 +393,7 @@ Classes
 
 
    
-.. py:class:: SparkRowDomain
+.. py:class:: SparkRowDomain(schema)
 
    Bases: :class:`tmlt.core.domains.base.Domain`
 
@@ -403,10 +403,12 @@ Classes
 
 
 
-   .. py:attribute:: schema
-      :annotation: :SparkColumnsDescriptor
 
-      Mapping from column name to column descriptors.
+   .. automethod:: __init__
+   .. py:method:: schema(self)
+      :property:
+
+      Returns mapping from column names to column descriptors.
 
 
    .. py:method:: validate(self, value)
@@ -434,7 +436,7 @@ Classes
 
 
    
-.. py:class:: SparkDataFrameDomain
+.. py:class:: SparkDataFrameDomain(schema)
 
    Bases: :class:`tmlt.core.domains.base.Domain`
 
@@ -444,10 +446,12 @@ Classes
 
 
 
-   .. py:attribute:: schema
-      :annotation: :SparkColumnsDescriptor
 
-      Mapping from column name to column descriptors.
+   .. automethod:: __init__
+   .. py:method:: schema(self)
+      :property:
+
+      Returns mapping from column names to column descriptors.
 
 
    .. py:method:: validate(self, value)
@@ -512,7 +516,7 @@ Classes
 
 
    
-.. py:class:: SparkGroupedDataFrameDomain
+.. py:class:: SparkGroupedDataFrameDomain(schema, group_keys)
 
    Bases: :class:`tmlt.core.domains.base.Domain`
 
@@ -522,15 +526,18 @@ Classes
 
 
 
-   .. py:attribute:: schema
-      :annotation: :SparkColumnsDescriptor
 
-      Mapping from column name to column descriptors for all columns.
+   .. automethod:: __init__
+   .. py:method:: group_keys(self)
+      :property:
 
-   .. py:attribute:: group_keys
-      :annotation: :pyspark.sql.DataFrame
+      Returns DataFrame containing group keys as rows.
 
-      DataFrame containing group keys as rows.
+
+   .. py:method:: schema(self)
+      :property:
+
+      Returns mapping from column names to column descriptors.
 
 
    .. py:method:: carrier_type(self)
