@@ -1512,6 +1512,91 @@ function checkPageExistsAndRedirect(event) {
 <li><p><a class="reference internal" href="../../dictionary/index.html#tmlt.core.transformations.dictionary.GetValue" title="tmlt.core.transformations.dictionary.GetValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">GetValue</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../dictionary/index.html#tmlt.core.transformations.dictionary.Subset" title="tmlt.core.transformations.dictionary.Subset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subset</span></code></a></p></li>
 </ul>
+<p>The transformations defined in this module are required because
+<a class="reference internal" href="../../dictionary/index.html#tmlt.core.transformations.dictionary.AugmentDictTransformation" title="tmlt.core.transformations.dictionary.AugmentDictTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">AugmentDictTransformation</span></code></a> is not stable under <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a> for
+all transformations.</p>
+<p>For example, consider the following example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transformation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_domain</span> <span class="o">=</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">SymmetricDifference</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span> <span class="o">=</span> <span class="n">LimitRowsPerGroup</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">input_domain</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rename</span> <span class="o">=</span> <span class="n">Rename</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">input_domain</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">rename_mapping</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_unique_column</span> <span class="o">=</span> <span class="n">AddUniqueColumn</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">rename</span><span class="o">.</span><span class="n">output_domain</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformation</span> <span class="o">=</span> <span class="n">truncate</span> <span class="o">|</span> <span class="n">rename</span> <span class="o">|</span> <span class="n">create_unique_column</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  a  1</span>
+<span class="go">1  b  2</span>
+<span class="go">2  c  3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  b  2</span>
+<span class="go">1  c  3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y1</span> <span class="o">=</span> <span class="n">transformation</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y2</span> <span class="o">=</span> <span class="n">transformation</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">y1</span><span class="p">)</span>  <span class="c1"># Note that the values below are in fact unique (after the 5B226)</span>
+<span class="go">   C  D                           A</span>
+<span class="go">0  a  1  5B2261222C2231222C2231225D</span>
+<span class="go">1  b  2  5B2262222C2232222C2231225D</span>
+<span class="go">2  c  3  5B2263222C2233222C2231225D</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">y2</span><span class="p">)</span>
+<span class="go">   C  D                           A</span>
+<span class="go">0  b  2  5B2262222C2232222C2231225D</span>
+<span class="go">1  c  3  5B2263222C2233222C2231225D</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check stability</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">input_domain</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">transformation</span><span class="o">.</span><span class="n">output_domain</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check stability as if it was Augmented using AugmentDictTransformation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x1</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">y1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x2</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">y2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_metric</span> <span class="o">=</span> <span class="n">AddRemoveKeys</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">transformation</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_metric</span> <span class="o">=</span> <span class="n">AddRemoveKeys</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Naively you would expect the stability to be 1, but in this example it is 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">dict_x1</span><span class="p">,</span> <span class="n">dict_x2</span><span class="p">,</span> <span class="n">dict_input_domain</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">dict_y1</span><span class="p">,</span> <span class="n">dict_y2</span><span class="p">,</span> <span class="n">dict_output_domain</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Conceptually, what is happening in the example above is that the transformation is
+changing the meaning of the key column. The column “A” that is in the input data is
+not the same as the column “A” that is in the output data, so removing one value, “a”,
+in the input dictionary results in both “a” and “a,1” being removed in the output
+dictionary.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
 <table class="table">
@@ -5079,7 +5164,7 @@ be in the input domain.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 8daf8e7c at 2022-11-02 22:29.
+    Built from dd04f76b at 2022-11-03 21:40.
   </div>
   
   <div class="footer-item">

@@ -32,6 +32,8 @@ Classes
      - Enumerating truncation strategies for PrivateJoin.
    * - :class:`.PrivateJoin`
      - Join two private SparkDataFrames.
+   * - :class:`.PrivateJoinOnKey`
+     - Join two private SparkDataFrames including a key column.
 
    
 .. py:class:: PublicJoin(input_domain, metric, public_df, public_df_domain = None, join_cols = None, join_on_nulls = False)
@@ -551,6 +553,8 @@ Classes
         - Returns the threshold for truncating the right DataFrame.
       * - :meth:`.join_cols`
         - Returns list of column names to join on.
+      * - :meth:`.join_on_nulls`
+        - Returns whether to consider null equal to null.
       * - :meth:`.truncation_strategy_stability`
         - Returns the stability for the given truncation strategy.
       * - :meth:`.stability_function`
@@ -616,10 +620,297 @@ Classes
       Returns list of column names to join on.
 
 
+   .. py:method:: join_on_nulls(self)
+      :property:
+
+      Returns whether to consider null equal to null.
+
+
    .. py:method:: truncation_strategy_stability(truncation_strategy, threshold)
       :staticmethod:
 
       Returns the stability for the given truncation strategy.
+
+
+   .. py:method:: stability_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial for more information. # TODO(#1320)
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(self, dfs)
+
+      Perform join.
+
+
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(self, d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(self, other: Transformation) -> Transformation
+               __or__(self, other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: PrivateJoinOnKey(input_domain, input_metric, left_key, right_key, new_key, join_cols = None, join_on_nulls = False)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Join two private SparkDataFrames including a key column.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> left_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a1", "a1", "a1", "a2"],
+       ...             "B": ["b1", "b1", "b1", "b2", "b2", "b1"],
+       ...             "X": [2, 3, 5, -1, 4, -5],
+       ...         }
+       ...     )
+       ... )
+       >>> right_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "B": ["b1", "b2", "b2"],
+       ...             "C": ["c1", "c2", "c3"],
+       ...         }
+       ...     )
+       ... )
+       >>> # This input dataframe is not involved in the join but will be included in the output
+       >>> ignored_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "B": ["b1", "b2", "b2"],
+       ...             "D": ["d1", "d1", "d2"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(left_spark_dataframe)
+       A   B  X
+   0  a1  b1  2
+   1  a1  b1  3
+   2  a1  b1  5
+   3  a1  b2 -1
+   4  a1  b2  4
+   5  a2  b1 -5
+   >>> print_sdf(right_spark_dataframe)
+       B   C
+   0  b1  c1
+   1  b2  c2
+   2  b2  c3
+   >>> print_sdf(ignored_dataframe)
+       B   D
+   0  b1  d1
+   1  b2  d1
+   2  b2  d2
+   >>> # Create transformation
+   >>> left_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "A": SparkStringColumnDescriptor(),
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "X": SparkIntegerColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert left_spark_dataframe in left_domain
+   >>> right_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "C": SparkStringColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert right_spark_dataframe in right_domain
+   >>> ignored_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "D": SparkStringColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert ignored_dataframe in ignored_domain
+   >>> private_join = PrivateJoinOnKey(
+   ...     input_domain=DictDomain(
+   ...         {
+   ...             "left": left_domain,
+   ...             "right": right_domain,
+   ...             "ignored": ignored_domain,
+   ...         }
+   ...     ),
+   ...     input_metric=AddRemoveKeys(
+   ...         {
+   ...            "left": "B",
+   ...            "right": "B",
+   ...            "ignored": "B",
+   ...         }
+   ...     ),
+   ...     left_key="left",
+   ...     right_key="right",
+   ...     new_key="joined",
+   ... )
+   >>> input_dictionary = {
+   ...     "left": left_spark_dataframe,
+   ...     "right": right_spark_dataframe,
+   ...     "ignored": ignored_dataframe,
+   ... }
+   >>> # Apply transformation to data
+   >>> output_dictionary = private_join(input_dictionary)
+   >>> assert left_spark_dataframe is output_dictionary["left"]
+   >>> assert right_spark_dataframe is output_dictionary["right"]
+   >>> assert ignored_dataframe is output_dictionary["ignored"]
+   >>> joined_dataframe = output_dictionary["joined"]
+   >>> print_sdf(joined_dataframe)
+       B   A  X   C
+   0  b1  a1  2  c1
+   1  b1  a1  3  c1
+   2  b1  a1  5  c1
+   3  b1  a2 -5  c1
+   4  b2  a1 -1  c2
+   5  b2  a1 -1  c3
+   6  b2  a1  4  c2
+   7  b2  a1  4  c3
+
+   .. Note:
+       This join works similarly to :class:`~.PublicJoin`, see it for more examples.
+
+   .. Note:
+       Unlike :class:`~.PrivateJoin`, this join allows for other dataframes to be present in the input dictionary, and
+       will output a dictionary containing all of the input dataframes along with the joined dataframe.
+       This is because of the stability analysis for AddRemoveKeys. See :mod:`~.add_remove_keys` for more details.
+
+   Transformation Contract:
+       * Input domain - :class:`~.DictDomain` containing two or more SparkDataFrame domains.
+       * Output domain - The same as the input :class:`~.DictDomain` with the addition of a new
+         :class:`~.SparkDataFrameDomain` for the joined table.
+       * Input metric - :class:`~.AddRemoveKeys`
+       * Output metric - :class:`~.AddRemoveKeys`
+
+   >>> private_join.input_domain
+   DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)})})
+   >>> private_join.output_domain
+   DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)}), 'joined': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64), 'C': SparkStringColumnDescriptor(allow_null=False)})})
+   >>> private_join.input_metric
+   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B'})
+   >>> private_join.output_metric
+   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B', 'joined': 'B'})
+
+   Stability Guarantee:
+       :class:`~.PrivateJoinOnKey`'s :meth:`~.stability_function` returns `d_in`
+
+       >>> private_join.stability_function(1)
+       1
+       >>> private_join.stability_function(2)
+       2
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.left_key`
+        - Returns key to left DataFrame.
+      * - :meth:`.right_key`
+        - Returns key to right DataFrame.
+      * - :meth:`.new_key`
+        - Returns key to output DataFrame.
+      * - :meth:`.join_cols`
+        - Returns list of column names to join on.
+      * - :meth:`.join_on_nulls`
+        - Returns whether to consider null equal to null.
+      * - :meth:`.stability_function`
+        - Returns the smallest d_out satisfied by the transformation.
+      * - :meth:`.__call__`
+        - Perform join.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.output_metric`
+        - Distance metric on input domain.
+      * - :meth:`.stability_relation`
+        - Returns True only if close inputs produce close outputs.
+      * - :meth:`.__or__`
+        - Return this transformation chained with another component.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: left_key(self)
+      :property:
+
+      Returns key to left DataFrame.
+
+
+   .. py:method:: right_key(self)
+      :property:
+
+      Returns key to right DataFrame.
+
+
+   .. py:method:: new_key(self)
+      :property:
+
+      Returns key to output DataFrame.
+
+
+   .. py:method:: join_cols(self)
+      :property:
+
+      Returns list of column names to join on.
+
+
+   .. py:method:: join_on_nulls(self)
+      :property:
+
+      Returns whether to consider null equal to null.
 
 
    .. py:method:: stability_function(self, d_in)
