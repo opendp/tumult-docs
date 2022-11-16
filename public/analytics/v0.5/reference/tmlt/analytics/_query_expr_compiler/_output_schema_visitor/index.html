@@ -155,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.5.0  <!-- this text may get changed later by javascript -->
+        0.5.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -165,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/_query_expr_compiler/_output_schema_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.5.0'}.
+     variables reference/tmlt/analytics/_query_expr_compiler/_output_schema_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.5.1'}.
 -->
 
 <script type="text/javascript">
@@ -220,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.5.0 variable.
+            // this version, rather than using sphinx's 0.5.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.5.0") {
+            if (entry.version == "0.5.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -508,8 +508,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -535,8 +535,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Rename</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -562,8 +562,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="s1">&#39;B &gt; 10&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -589,8 +589,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -626,8 +626,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span> <span class="c1"># Augment = True example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">},</span>
@@ -636,8 +636,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -669,8 +669,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;C&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;C&#39;: &#39;INTEGER&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Augment = True example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
@@ -678,8 +678,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Grouping example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
@@ -689,8 +689,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}, grouping_column=&#39;C&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -745,8 +745,8 @@ columns are included with _left and _right suffixes.</p></li>
 <span class="gp">... </span>    <span class="n">truncation_strategy_left</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;common1&#39;: &#39;INTEGER&#39;, &#39;common2&#39;: &#39;VARCHAR&#39;, &#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;common1&#39;: &#39;INTEGER&#39;, &#39;common2&#39;: &#39;VARCHAR&#39;, &#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">JoinPrivate</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;left_source&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">right_operand_expr</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;right_source&quot;</span><span class="p">),</span>
@@ -754,8 +754,8 @@ columns are included with _left and _right suffixes.</p></li>
 <span class="gp">... </span>    <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;common3&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;common1_left&#39;: &#39;INTEGER&#39;, &#39;common2_left&#39;: &#39;VARCHAR&#39;, &#39;common1_right&#39;: &#39;INTEGER&#39;, &#39;common2_right&#39;: &#39;VARCHAR&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;common1_left&#39;: &#39;INTEGER&#39;, &#39;common2_left&#39;: &#39;VARCHAR&#39;, &#39;common1_right&#39;: &#39;INTEGER&#39;, &#39;common2_right&#39;: &#39;VARCHAR&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -788,8 +788,8 @@ where the private table is the left table.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">JoinPublic</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="n">public_table</span><span class="o">=</span><span class="s2">&quot;public&quot;</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;B&#39;: &#39;INTEGER&#39;, &#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;DECIMAL&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;B&#39;: &#39;INTEGER&#39;, &#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;DECIMAL&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -875,8 +875,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -906,8 +906,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;count_distinct&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count_distinct&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count_distinct&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -941,8 +941,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;quantile&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;quantile&#39;: &#39;DECIMAL&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;quantile&#39;: &#39;DECIMAL&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -975,8 +975,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;sum&#39;: &#39;INTEGER&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;sum&#39;: &#39;INTEGER&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1009,8 +1009,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;average&#39;: &#39;DECIMAL&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;average&#39;: &#39;DECIMAL&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1043,8 +1043,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;variance&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;variance&#39;: &#39;DECIMAL&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;variance&#39;: &#39;DECIMAL&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1077,8 +1077,8 @@ where the private table is the left table.</p>
 <span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;stdev&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span>
-<span class="go">Schema({&#39;A&#39;: &#39;VARCHAR&#39;, &#39;stdev&#39;: &#39;DECIMAL&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;stdev&#39;: &#39;DECIMAL&#39;}</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1126,7 +1126,7 @@ where the private table is the left table.</p>
   </div>
   
   <div class="footer-item">
-    Built from 619bd48c at 2022-10-17 15:29.
+    Built from 8ed86bd7 at 2022-11-16 23:06.
   </div>
   
   <div class="footer-item">

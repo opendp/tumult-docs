@@ -155,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.5.0  <!-- this text may get changed later by javascript -->
+        0.5.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -165,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/_schema/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.5.0'}.
+     variables reference/tmlt/analytics/_schema/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.5.1'}.
 -->
 
 <script type="text/javascript">
@@ -220,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.5.0 variable.
+            // this version, rather than using sphinx's 0.5.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.5.0") {
+            if (entry.version == "0.5.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -269,6 +269,11 @@ function checkPageExistsAndRedirect(event) {
    Classes
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._schema.column_type_to_py_type">
+     column_type_to_py_type
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics._schema.analytics_to_py_types">
      analytics_to_py_types
@@ -464,23 +469,40 @@ for seamless transitions of the data representation type.</p>
 <col style="width: 50%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_py_types" title="tmlt.analytics._schema.analytics_to_py_types"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_py_types()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.column_type_to_py_type" title="tmlt.analytics._schema.column_type_to_py_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">column_type_to_py_type()</span></code></a></p></td>
+<td><p>Converts a ColumnType to a python type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_py_types" title="tmlt.analytics._schema.analytics_to_py_types"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_py_types()</span></code></a></p></td>
 <td><p>Returns the mapping from column names to supported python types.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_spark_schema" title="tmlt.analytics._schema.analytics_to_spark_schema"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_spark_schema()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_spark_schema" title="tmlt.analytics._schema.analytics_to_spark_schema"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_spark_schema()</span></code></a></p></td>
 <td><p>Convert an Analytics schema to a Spark schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_spark_columns_descriptor" title="tmlt.analytics._schema.analytics_to_spark_columns_descriptor"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_spark_columns_descriptor()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._schema.analytics_to_spark_columns_descriptor" title="tmlt.analytics._schema.analytics_to_spark_columns_descriptor"><code class="xref py py-func docutils literal notranslate"><span class="pre">analytics_to_spark_columns_descriptor()</span></code></a></p></td>
 <td><p>Convert a schema in Analytics representation to a Spark columns descriptor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._schema.spark_schema_to_analytics_columns" title="tmlt.analytics._schema.spark_schema_to_analytics_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">spark_schema_to_analytics_columns()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.spark_schema_to_analytics_columns" title="tmlt.analytics._schema.spark_schema_to_analytics_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">spark_schema_to_analytics_columns()</span></code></a></p></td>
 <td><p>Convert Spark schema to Analytics columns.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._schema.spark_dataframe_domain_to_analytics_columns" title="tmlt.analytics._schema.spark_dataframe_domain_to_analytics_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">spark_dataframe_domain_to_analytics_columns()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._schema.spark_dataframe_domain_to_analytics_columns" title="tmlt.analytics._schema.spark_dataframe_domain_to_analytics_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">spark_dataframe_domain_to_analytics_columns()</span></code></a></p></td>
 <td><p>Convert a Spark dataframe domain to Analytics columns.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics._schema.column_type_to_py_type">
+<span class="sig-name descname"><span class="pre">column_type_to_py_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._schema.column_type_to_py_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a ColumnType to a python type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_type</strong> (<a class="reference internal" href="#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>ColumnType</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.11)">type</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.analytics_to_py_types">
 <span class="sig-name descname"><span class="pre">analytics_to_py_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analytics_schema</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._schema.analytics_to_py_types" title="Permalink to this definition">#</a></dt>
@@ -490,7 +512,7 @@ for seamless transitions of the data representation type.</p>
 <dd class="field-odd"><p><strong>analytics_schema</strong> (<a class="reference internal" href="#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema"><em>Schema</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.10)">type</a>]</p>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.11)">type</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -532,7 +554,7 @@ for seamless transitions of the data representation type.</p>
 <dd class="field-odd"><p><strong>spark_schema</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.types.StructType" title="(in PySpark vmaster)"><em>pyspark.sql.types.StructType</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -546,7 +568,7 @@ for seamless transitions of the data representation type.</p>
 <dd class="field-odd"><p><strong>domain</strong> (<em>tmlt.core.domains.base.Domain</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -574,7 +596,7 @@ for seamless transitions of the data representation type.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.ColumnType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ColumnType</span></span><a class="headerlink" href="#tmlt.analytics._schema.ColumnType" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>The supported SQL92 column types for Analytics data.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.ColumnType.INTEGER">
@@ -634,19 +656,19 @@ for seamless transitions of the data representation type.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.ColumnDescriptor.allow_null">
 <span class="sig-name descname"><span class="pre">allow_null</span></span><a class="headerlink" href="#tmlt.analytics._schema.ColumnDescriptor.allow_null" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows null values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows null values.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.ColumnDescriptor.allow_nan">
 <span class="sig-name descname"><span class="pre">allow_nan</span></span><a class="headerlink" href="#tmlt.analytics._schema.ColumnDescriptor.allow_nan" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows NaN values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows NaN values.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.ColumnDescriptor.allow_inf">
 <span class="sig-name descname"><span class="pre">allow_inf</span></span><a class="headerlink" href="#tmlt.analytics._schema.ColumnDescriptor.allow_inf" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows infinite values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows infinite values.</p>
 </dd></dl>
 
 </dd></dl>
@@ -654,7 +676,7 @@ for seamless transitions of the data representation type.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics._schema.Schema">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_descs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_allow_null</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_allow_inf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._schema.Schema" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></a></p>
 <p>Schema class describing the column information of the data.</p>
 <dl class="simple">
 <dt>The following SQL92 types are currently supported:</dt><dd><p>INTEGER, DECIMAL, VARCHAR, DATE, TIMESTAMP</p>
@@ -705,11 +727,11 @@ for seamless transitions of the data representation type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>column_descs</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>ColumnType</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>ColumnDescriptor</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>default_allow_null</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
-<li><p><strong>default_allow_nan</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
-<li><p><strong>default_allow_inf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
+<li><p><strong>column_descs</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>ColumnType</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>ColumnDescriptor</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>default_allow_null</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
+<li><p><strong>default_allow_nan</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
+<li><p><strong>default_allow_inf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -720,15 +742,15 @@ for seamless transitions of the data representation type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>column_descs</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnDescriptor</span></code></a>]]</span>) – Mapping from column names to supported types.</p></li>
-<li><p><strong>grouping_column</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – Optional column that must be grouped by in this query.</p></li>
-<li><p><strong>default_allow_null</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
+<li><p><strong>column_descs</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnDescriptor</span></code></a>]]</span>) – Mapping from column names to supported types.</p></li>
+<li><p><strong>grouping_column</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – Optional column that must be grouped by in this query.</p></li>
+<li><p><strong>default_allow_null</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
 in the ColumnDescriptors mapping, the column will allow_null if
 default_allow_null is True.</p></li>
-<li><p><strong>default_allow_nan</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
+<li><p><strong>default_allow_nan</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
 in the ColumnDescriptors mapping, the column will allow_nan if
 default_allow_nan is True.</p></li>
-<li><p><strong>default_allow_inf</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
+<li><p><strong>default_allow_inf</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – When a ColumnType or string is used as the value
 in the ColumnDescriptors mapping, the column will allow_inf if
 default_allow_inf is True.</p></li>
 </ul>
@@ -742,7 +764,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Returns a mapping from column name to column descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -753,7 +775,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Returns a mapping from column name to column type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -764,7 +786,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Returns the optional column that must be grouped by.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -775,10 +797,10 @@ default_allow_inf is True.</p></li>
 <dd><p>Returns True if schemas are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><em>object</em></a>) – Schema to check against.</p>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><em>object</em></a>) – Schema to check against.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -789,7 +811,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Returns the data type for the given column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The column to get the data type for.</p>
+<dd class="field-odd"><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to get the data type for.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor">ColumnDescriptor</a></p>
@@ -803,7 +825,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Return an iterator over the columns in the schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Iterator[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>Iterator[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -814,7 +836,7 @@ default_allow_inf is True.</p></li>
 <dd><p>Return the number of columns in the schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -878,7 +900,7 @@ default_allow_inf is True.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 619bd48c at 2022-10-17 15:29.
+    Built from 8ed86bd7 at 2022-11-16 23:06.
   </div>
   
   <div class="footer-item">
