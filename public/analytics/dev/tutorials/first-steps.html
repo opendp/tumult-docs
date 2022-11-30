@@ -348,6 +348,7 @@ parameter setting and mechanism design, you can consult our <a class="reference 
 <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 </pre></div>
@@ -379,7 +380,8 @@ instantiates a Session on a Spark DataFrame with our private data, using the
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
-    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -390,9 +392,11 @@ Session builder with a couple of additional pieces of information.</p>
 provide. We will discuss this in more detail in the next tutorial.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">source_id</span></code> is the identifier for the DataFrame. We will then use it to
 refer to this DataFrame when constructing queries.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> for this dataset, which defines what unit of data the differential privacy guarantee holds for.
+Here, <code class="docutils literal notranslate"><span class="pre">AddOneRow()</span></code> corresponds to protecting individual rows in the dataset.</p></li>
 </ul>
-<p>For a more complete description of the various ways a Session can be
-initialized, you can consult the relevant <a class="reference internal" href="../topic-guides/working-with-sessions.html#working-with-sessions"><span class="std std-ref">topic guide</span></a>.</p>
+<p>For a more complete description of the various ways a Session can be initialized, you can consult the relevant <a class="reference internal" href="../topic-guides/working-with-sessions.html#working-with-sessions"><span class="std std-ref">topic guide</span></a>.
+For more complex values for the <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> parameter, see the <a class="reference internal" href="../topic-guides/privacy-promise.html#privacy-promise-unit-of-protection"><span class="std std-ref">privacy promise topic guide</span></a> and the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected_change</span></code></a> API documentation.</p>
 </section>
 <section id="evaluating-queries-in-a-session">
 <h2>Evaluating queries in a Session<a class="headerlink" href="#evaluating-queries-in-a-session" title="Permalink to this headline">#</a></h2>
@@ -509,7 +513,7 @@ practice, and evaluate some more complicated queries.</p>
   </div>
   
   <div class="footer-item">
-    Built from e2bd50fb at 2022-11-29 14:06.
+    Built from 2db7c6ae at 2022-11-30 18:34.
   </div>
   
   <div class="footer-item">

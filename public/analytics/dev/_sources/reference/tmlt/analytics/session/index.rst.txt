@@ -158,7 +158,7 @@ Classes
          :param privacy_budget: Privacy Budget to be allocated to Session.
 
 
-      .. py:method:: with_private_dataframe(self, source_id, dataframe, stability = 1, grouping_column = None)
+      .. py:method:: with_private_dataframe(self, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
 
          Adds a Spark DataFrame as a private source.
 
@@ -168,17 +168,15 @@ Classes
 
          :param source_id: Source id for the private source dataframe.
          :param dataframe: Private source dataframe to perform queries on,
-                           corresponding to the `source_id`.
-         :param stability: Maximum number of rows that may be added or removed
-                           if a single individual is added or removed. If using RhoZCDP
-                           and a grouping column, this should instead be the maximum
-                           number of rows that an individual can contribute to each
-                           group times the *square root* of the maximum number of
-                           groups each user can contribute to.
-         :param grouping_column: An input column that must be grouped on, like
-                                 those generated when calling
-                                 :meth:`~tmlt.analytics.query_builder.QueryBuilder.flat_map`
-                                 with the ``grouping`` option set.
+                           corresponding to the ``source_id``.
+         :param stability: Use ``protected_change`` instead, see
+                           :ref:`changelog<changelog#protected-change>`.
+         :param grouping_column: Use ``protected_change`` instead, see
+                                 :ref:`changelog<changelog#protected-change>`.
+         :param protected_change: A
+                                  :class:`~tmlt.analytics.protected_change.ProtectedChange`
+                                  specifying what changes to the input data the resulting
+                                  :class:`Session` should protect.
 
 
       .. py:method:: with_public_dataframe(self, source_id, dataframe)
@@ -197,7 +195,7 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: from_dataframe(cls, privacy_budget, source_id, dataframe, stability = 1, grouping_column = None)
+   .. py:method:: from_dataframe(cls, privacy_budget, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
       :classmethod:
 
       Initializes a DP session from a Spark dataframe.
@@ -233,6 +231,7 @@ Classes
       ...     privacy_budget=session_budget,
       ...     source_id="my_private_data",
       ...     dataframe=spark_data,
+      ...     protected_change=AddOneRow(),
       ... )
       >>> sess.private_sources
       ['my_private_data']
@@ -243,16 +242,14 @@ Classes
       :param source_id: The source id for the private source dataframe.
       :param dataframe: The private source dataframe to perform queries on,
                         corresponding to the `source_id`.
-      :param stability: Maximum number of rows that may be added or removed if a
-                        single individual is added or removed. If using RhoZCDP and a
-                        grouping column, this should instead be the maximum number of
-                        rows that an individual can contribute to each group times the
-                        *square root* of the maximum number of groups each user can
-                        contribute to.
-      :param grouping_column: An input column that must be grouped on, like those
-                              generated when calling
-                              :meth:`~tmlt.analytics.query_builder.QueryBuilder.flat_map` with
-                              the ``grouping`` option set.
+      :param stability: Use ``protected_change`` instead, see
+                        :ref:`changelog<changelog#protected-change>`
+      :param grouping_column: Use ``protected_change`` instead, see
+                              :ref:`changelog<changelog#protected-change>`
+      :param protected_change: A
+                               :class:`~tmlt.analytics.protected_change.ProtectedChange`
+                               specifying what changes to the input data the resulting
+                               :class:`Session` should protect.
 
 
    .. py:method:: private_sources(self)
@@ -336,6 +333,7 @@ Classes
           ...     privacy_budget=PureDPBudget(1),
           ...     source_id="my_private_data",
           ...     dataframe=private_data,
+          ...     protected_change=AddOneRow(),
           ... )
 
       .. rubric:: Example
@@ -381,6 +379,7 @@ Classes
           ...     privacy_budget=PureDPBudget(1),
           ...     source_id="my_private_data",
           ...     dataframe=data,
+          ...     protected_change=AddOneRow(),
           ... )
 
       .. rubric:: Example
@@ -434,6 +433,7 @@ Classes
           ...     privacy_budget=PureDPBudget(1),
           ...     source_id="my_private_data",
           ...     dataframe=private_data,
+          ...     protected_change=AddOneRow(),
           ... )
 
       .. rubric:: Example
@@ -505,6 +505,7 @@ Classes
           ...     privacy_budget=PureDPBudget(1),
           ...     source_id="my_private_data",
           ...     dataframe=data,
+          ...     protected_change=AddOneRow(),
           ... )
           >>> import doctest
           >>> doctest.ELLIPSIS_MARKER = '...'

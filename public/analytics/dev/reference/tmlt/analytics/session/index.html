@@ -260,6 +260,11 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../protected_change/index.html">
+   protected_change
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../query_builder/index.html">
    query_builder
   </a>
@@ -653,7 +658,7 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.Builder.with_private_dataframe">
-<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.Builder.with_private_dataframe" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.Builder.with_private_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a Spark DataFrame as a private source.</p>
 <p>Not all Spark column types are supported in private sources; see
 <a class="reference internal" href="#tmlt.analytics.session.SUPPORTED_SPARK_TYPES" title="tmlt.analytics.session.SUPPORTED_SPARK_TYPES"><code class="xref py py-data docutils literal notranslate"><span class="pre">SUPPORTED_SPARK_TYPES</span></code></a> for information about which types are
@@ -663,17 +668,15 @@ supported.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Source id for the private source dataframe.</p></li>
 <li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – Private source dataframe to perform queries on,
-corresponding to the <cite>source_id</cite>.</p></li>
-<li><p><strong>stability</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – Maximum number of rows that may be added or removed
-if a single individual is added or removed. If using RhoZCDP
-and a grouping column, this should instead be the maximum
-number of rows that an individual can contribute to each
-group times the <em>square root</em> of the maximum number of
-groups each user can contribute to.</p></li>
-<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – An input column that must be grouped on, like
-those generated when calling
-<a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>
-with the <code class="docutils literal notranslate"><span class="pre">grouping</span></code> option set.</p></li>
+corresponding to the <code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></li>
+<li><p><strong>stability</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../additional-resources/changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a>.</p></li>
+<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../additional-resources/changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a>.</p></li>
+<li><p><strong>protected_change</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>]</em>) – A
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>
+specifying what changes to the input data the resulting
+<a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> should protect.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -726,7 +729,7 @@ supported.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.from_dataframe">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.from_dataframe" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.from_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a DP session from a Spark dataframe.</p>
 <p>Only one private data source is supported with this initialization
 method; if you need multiple data sources, use
@@ -747,6 +750,7 @@ supported.</p>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">session_budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
 <span class="go">[&#39;my_private_data&#39;]</span>
@@ -761,16 +765,14 @@ supported.</p>
 <li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The source id for the private source dataframe.</p></li>
 <li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The private source dataframe to perform queries on,
 corresponding to the <cite>source_id</cite>.</p></li>
-<li><p><strong>stability</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – Maximum number of rows that may be added or removed if a
-single individual is added or removed. If using RhoZCDP and a
-grouping column, this should instead be the maximum number of
-rows that an individual can contribute to each group times the
-<em>square root</em> of the maximum number of groups each user can
-contribute to.</p></li>
-<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – An input column that must be grouped on, like those
-generated when calling
-<a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a> with
-the <code class="docutils literal notranslate"><span class="pre">grouping</span></code> option set.</p></li>
+<li><p><strong>stability</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../additional-resources/changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a></p></li>
+<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../additional-resources/changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a></p></li>
+<li><p><strong>protected_change</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>]</em>) – A
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>
+specifying what changes to the input data the resulting
+<a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> should protect.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1147,7 +1149,7 @@ is preferred.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from e2bd50fb at 2022-11-29 14:06.
+    Built from 2db7c6ae at 2022-11-30 18:34.
   </div>
   
   <div class="footer-item">

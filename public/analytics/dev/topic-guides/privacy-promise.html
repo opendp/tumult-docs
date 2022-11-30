@@ -295,8 +295,8 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#subtlety-1-unit-of-privacy">
-   Subtlety 1: unit of privacy
+  <a class="reference internal nav-link" href="#subtlety-1-unit-of-protection">
+   Subtlety 1: unit of protection
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -358,22 +358,15 @@ using the specified parameters. For example, a Session initialized with
 <code class="code docutils literal notranslate"><span class="pre">PureDPBudget(1)</span></code> provides <span class="math notranslate nohighlight">\({\varepsilon}\)</span>-differential privacy with
 <span class="math notranslate nohighlight">\({\varepsilon}=1\)</span>.</p>
 </section>
-<section id="subtlety-1-unit-of-privacy">
-<h2>Subtlety 1: unit of privacy<a class="headerlink" href="#subtlety-1-unit-of-privacy" title="Permalink to this headline">#</a></h2>
-<p>By default, the privacy guarantee prevents an attacker for learning whether <em>one
-individual row</em> was added or removed in each private dataset. If the data of a
-single individual can span multiple rows in the same private dataset, then this
-individual is not covered by the privacy promise, only individual rows are.</p>
-<p>If you know that a single individual can appear in at most <em>k</em> rows in an input
-dataset, you can load it into a Session using the optional <code class="docutils literal notranslate"><span class="pre">stability=k</span></code>
-parameter. Then, Tumult Analytics will hide the addition or removal of up to <em>k</em>
-rows at once from the corresponding private dataset, providing individual-level
-protection.</p>
-<p>For this reason, you should be careful of what kind of pre-processing is done to
-the private data before loading it into a Session. If you start from a DataFrame
-where each individual appears in a single record, but this property stops being
-true before the data is loaded into a Session, then you might not get the
-expected privacy guarantees.</p>
+<section id="subtlety-1-unit-of-protection">
+<span id="privacy-promise-unit-of-protection"></span><h2>Subtlety 1: unit of protection<a class="headerlink" href="#subtlety-1-unit-of-protection" title="Permalink to this headline">#</a></h2>
+<p>In the simplest case, the privacy guarantee from a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> prevents an attacker from learning whether <em>one individual row</em> was added or removed in each private dataset – the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change.
+If the data of a single individual can span multiple rows in the same private dataset, then this individual is not covered by the privacy promise, only individual rows are.</p>
+<p>If you know that a single individual can appear in at most <em>k</em> rows in an input dataset, you can load that dataset into a Session using a different value for the <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> parameter.
+For example, using <code class="docutils literal notranslate"><span class="pre">AddMaxRows(k)</span></code> will cause Tumult Analytics to hide the addition or removal of up to <em>k</em> rows at once from the corresponding private dataset, providing individual-level protection.
+Other possible protected changes are also available, though they are typically only needed for advanced use cases.</p>
+<p>Because the privacy of individuals depends on how often they appear in a dataset, you should be careful of what kind of pre-processing is done to the private data before loading it into a Session.
+If you start from a DataFrame where each individual appears in a single record, but this property stops being true before the data is loaded into a Session, then you might not get the expected privacy guarantees.</p>
 </section>
 <section id="subtlety-2-covered-inputs-outputs">
 <h2>Subtlety 2: covered inputs &amp; outputs<a class="headerlink" href="#subtlety-2-covered-inputs-outputs" title="Permalink to this headline">#</a></h2>
@@ -459,7 +452,7 @@ against such side-channels is important.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from e2bd50fb at 2022-11-29 14:06.
+    Built from 2db7c6ae at 2022-11-30 18:34.
   </div>
   
   <div class="footer-item">
