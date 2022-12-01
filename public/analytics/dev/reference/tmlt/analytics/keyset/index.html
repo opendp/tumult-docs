@@ -394,8 +394,8 @@ function checkPageExistsAndRedirect(event) {
   <section id="module-tmlt.analytics.keyset">
 <span id="keyset"></span><h1>keyset<a class="headerlink" href="#module-tmlt.analytics.keyset" title="Permalink to this headline">#</a></h1>
 <p>A KeySet specifies a list of values for one or more columns.</p>
-<p>For example, a KeySet could specify the values <cite>[“a1”, “a2”]</cite> for column A
-and the values <cite>[0, 1, 2, 3]</cite> for column B.</p>
+<p>For example, a KeySet could specify the values <code class="docutils literal notranslate"><span class="pre">[&quot;a1&quot;,</span> <span class="pre">&quot;a2&quot;]</span></code> for column A
+and the values <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> for column B.</p>
 <p>Currently, KeySets are used as a simpler way to specify domains for groupby
 transformations.</p>
 <section id="classes">
@@ -415,9 +415,12 @@ transformations.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet" title="Permalink to this definition">#</a></dt>
 <dd><p>A class containing a set of values for specific columns.</p>
-<p>Note that if a column has null values dropped or replaced, then Analytics
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If a column has null values dropped or replaced, then Analytics
 will raise an error if you use a KeySet that contains a null value for
 that column.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>, </em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em>) – </p>
@@ -565,7 +568,7 @@ in Spark SQL. Examples of valid predicates include:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__getitem__">
 <span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__getitem__" title="Permalink to this definition">#</a></dt>
-<dd><p><cite>KeySet[col, col, …]</cite> returns a KeySet with those columns only.</p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">KeySet[col,</span> <span class="pre">col,</span> <span class="pre">...]</span></code> returns a KeySet with those columns only.</p>
 <p>The returned KeySet contains all unique combinations of values in the
 given columns that were present in the original KeySet.</p>
 <p class="rubric">Example</p>
@@ -610,7 +613,7 @@ given columns that were present in the original KeySet.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__mul__">
 <span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__mul__" title="Permalink to this definition">#</a></dt>
-<dd><p>A product (<cite>KeySet * KeySet</cite>) returns the cross-product of both KeySets.</p>
+<dd><p>A product (<code class="docutils literal notranslate"><span class="pre">KeySet</span> <span class="pre">*</span> <span class="pre">KeySet</span></code>) returns the cross-product of both KeySets.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">]})</span>
@@ -734,7 +737,7 @@ the same columns (in any order).</p>
   </div>
   
   <div class="footer-item">
-    Built from 2db7c6ae at 2022-11-30 18:34.
+    Built from 0c5e8a69 at 2022-12-01 16:16.
   </div>
   
   <div class="footer-item">

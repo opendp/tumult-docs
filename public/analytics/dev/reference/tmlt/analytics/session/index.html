@@ -611,7 +611,7 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 <td><p>Deletes a view and decaches it if it was cached.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.partition_and_create" title="tmlt.analytics.session.Session.partition_and_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_and_create()</span></code></a></p></td>
-<td><p>Returns new sessions from a partition mapped to split name/<cite>source_id</cite>.</p></td>
+<td><p>Returns new sessions from a partition mapped to split name/<code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.stop" title="tmlt.analytics.session.Session.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p></td>
 <td><p>Close out this session, allowing other sessions to become active.</p></td>
@@ -712,7 +712,7 @@ supported.</p>
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a DP session from a queryable.</p>
 <p>This constructor is not intended to be used directly. Use
-<a class="reference internal" href="#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a> or <cite>from_</cite> constructors instead.</p>
+<a class="reference internal" href="#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a> or <code class="docutils literal notranslate"><span class="pre">from_</span></code> constructors instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -818,7 +818,7 @@ specifying what changes to the input data the resulting
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.remaining_privacy_budget">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remaining_privacy_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.remaining_privacy_budget" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the remaining privacy_budget left in the session.</p>
-<p>The type of the budget (e.g., PureDP or RhoZCDP) will be the same as
+<p>The type of the budget (e.g., PureDP or rho-zCDP) will be the same as
 the type of the budget the Session was initialized with.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -903,7 +903,7 @@ supported.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the public data source.</p></li>
-<li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The public data source corresponding to the <cite>source_id</cite>.</p></li>
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The public data source corresponding to the <code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -914,7 +914,7 @@ supported.</p>
 <span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.evaluate" title="Permalink to this definition">#</a></dt>
 <dd><p>Answers a query within the given privacy budget and returns a Spark dataframe.</p>
 <p>The type of privacy budget that you use must match the type your Session was
-initialized with (i.e., you cannot evaluate a query using RhoZCDPBudget if
+initialized with (i.e., you cannot evaluate a query using rho-zCDPBudget if
 the Session was initialized with a PureDPBudget, and vice versa).</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
@@ -1016,7 +1016,7 @@ the Session was initialized with a PureDPBudget, and vice versa).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.partition_and_create">
 <span class="sig-name descname"><span class="pre">partition_and_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.partition_and_create" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns new sessions from a partition mapped to split name/<cite>source_id</cite>.</p>
+<dd><p>Returns new sessions from a partition mapped to split name/<code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p>
 <p>The type of privacy budget that you use must match the type your Session was
 initialized with (i.e., you cannot use a RhoZCDPBudget to partition your
 Session if the Session was created using a PureDPBudget, and vice versa).</p>
@@ -1078,8 +1078,8 @@ session.</p>
 <li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – Amount of privacy budget to pass to each new session.</p></li>
 <li><p><strong>column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name of the column partitioning on.</p></li>
 <li><p><strong>splits</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em><em>]</em><em>]</em>) – Mapping of split name to value of partition.
-Split name is <cite>source_id</cite> in new session.</p></li>
-<li><p><strong>attr_name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Deprecated synonym for <cite>column</cite>. Using the <cite>column</cite> argument
+Split name is <code class="docutils literal notranslate"><span class="pre">source_id</span></code> in new session.</p></li>
+<li><p><strong>attr_name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Deprecated synonym for <code class="docutils literal notranslate"><span class="pre">column</span></code>. Using the <code class="docutils literal notranslate"><span class="pre">column</span></code> argument
 is preferred.</p></li>
 </ul>
 </dd>
@@ -1149,7 +1149,7 @@ is preferred.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 2db7c6ae at 2022-11-30 18:34.
+    Built from 0c5e8a69 at 2022-12-01 16:16.
   </div>
   
   <div class="footer-item">

@@ -1855,7 +1855,7 @@ column B.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.Map.schema_new_columns">
 <span class="sig-name descname"><span class="pre">schema_new_columns</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics._schema.Schema</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.Map.schema_new_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>The expected schema for new columns produced by <cite>f</cite>.</p>
+<dd><p>The expected schema for new columns produced by <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1924,8 +1924,8 @@ functions are equal.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.FlatMap.schema_new_columns">
 <span class="sig-name descname"><span class="pre">schema_new_columns</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics._schema.Schema</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.FlatMap.schema_new_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>The expected schema for new columns produced by <cite>f</cite>.</p>
-<p>If the <cite>schema_new_columns</cite> has a <cite>grouping_column</cite>, that means this FlatMap
+<dd><p>The expected schema for new columns produced by <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">schema_new_columns</span></code> has a <code class="docutils literal notranslate"><span class="pre">grouping_column</span></code>, that means this FlatMap
 produces a column that must be grouped by eventually. It also must be the only
 column in the schema.</p>
 </dd></dl>
@@ -2108,14 +2108,14 @@ recommended.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.AnalyticsDefault.DATE">
 <span class="sig-name descname"><span class="pre">DATE</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.AnalyticsDefault.DATE" title="Permalink to this definition">#</a></dt>
-<dd><p>The default value used for dates (<cite>datetime.date.fromtimestamp(0)</cite>).</p>
+<dd><p>The default value used for dates (<code class="docutils literal notranslate"><span class="pre">datetime.date.fromtimestamp(0)</span></code>).</p>
 <p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date.fromtimestamp" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.AnalyticsDefault.TIMESTAMP">
 <span class="sig-name descname"><span class="pre">TIMESTAMP</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.AnalyticsDefault.TIMESTAMP" title="Permalink to this definition">#</a></dt>
-<dd><p>The defauLt value used for timestamps (<cite>datetime.datetime.fromtimestamp(0)</cite>).</p>
+<dd><p>The defauLt value used for timestamps (<code class="docutils literal notranslate"><span class="pre">datetime.datetime.fromtimestamp(0)</span></code>).</p>
 <p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.fromtimestamp" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
 </dd></dl>
 
@@ -2126,9 +2126,13 @@ recommended.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReplaceNullAndNan</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
 <p>Returns data with null and NaN expressions replaced by a default.</p>
-<p>Note that after a <cite>ReplaceNullAndNan</cite> query has been performed for a column,
-Analytics will raise an error if you use a <cite>KeySet</cite> for that column
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>after a <code class="docutils literal notranslate"><span class="pre">ReplaceNullAndNan</span></code> query has been performed for a column,
+Analytics will raise an error if you use a
+<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> for that column
 that contains null values.</p>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.ReplaceNullAndNan.child">
 <span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan.child" title="Permalink to this definition">#</a></dt>
@@ -2140,8 +2144,8 @@ that contains null values.</p>
 <span class="sig-name descname"><span class="pre">replace_with</span></span><em class="property"><span class="w"> </span><span class="pre">:Mapping[str,</span> <span class="pre">Union[int,</span> <span class="pre">float,</span> <span class="pre">str,</span> <span class="pre">datetime.date,</span> <span class="pre">datetime.datetime]]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan.replace_with" title="Permalink to this definition">#</a></dt>
 <dd><p>New values to replace with, by column.</p>
 <p>If this dictionary is empty, <em>all</em> columns will be changed, with values
-replaced by a default value for each column’s type (see the <cite>AnalyticsDefault</cite>
-class variables).</p>
+replaced by a default value for each column’s type (see the
+<a class="reference internal" href="#tmlt.analytics.query_expr.AnalyticsDefault" title="tmlt.analytics.query_expr.AnalyticsDefault"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyticsDefault</span></code></a> class variables).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2178,8 +2182,8 @@ class variables).</p>
 will be used to replace -infinity, and the second value will be used to
 replace +infinity.</p>
 <p>If this dictionary is empty, <em>all</em> columns of type DECIMAL will be changed,
-with infinite values replaced with a default value (see the <cite>AnalyticsDefault</cite>
-class variables).</p>
+with infinite values replaced with a default value (see the
+<a class="reference internal" href="#tmlt.analytics.query_expr.AnalyticsDefault" title="tmlt.analytics.query_expr.AnalyticsDefault"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyticsDefault</span></code></a> class variables).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2203,9 +2207,13 @@ class variables).</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropNullAndNan</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.DropNullAndNan" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
 <p>Returns data with rows that contain null or NaN value dropped.</p>
-<p>Note that after a <cite>DropNullAndNan</cite> query has been performed for a column,
-Analytics will raise an error if you use a <cite>KeySet</cite> for that column
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>After a <code class="docutils literal notranslate"><span class="pre">DropNullAndNan</span></code> query has been performed for a column,
+Analytics will raise an error if you use a
+<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> for that column
 that contains null values.</p>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.DropNullAndNan.child">
 <span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.DropNullAndNan.child" title="Permalink to this definition">#</a></dt>
@@ -2407,13 +2415,13 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByQuantile.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByQuantile.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByQuantile.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByQuantile.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2468,13 +2476,13 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSum.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSum.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSum.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSum.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2537,13 +2545,13 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedAverage.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedAverage.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedAverage.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedAverage.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2606,13 +2614,13 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedVariance.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedVariance.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedVariance.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedVariance.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2675,13 +2683,13 @@ standard deviation is calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSTDEV.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSTDEV.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -3100,7 +3108,7 @@ appropriate mechanism.</p>
   </div>
   
   <div class="footer-item">
-    Built from 2db7c6ae at 2022-11-30 18:34.
+    Built from 0c5e8a69 at 2022-12-01 16:16.
   </div>
   
   <div class="footer-item">

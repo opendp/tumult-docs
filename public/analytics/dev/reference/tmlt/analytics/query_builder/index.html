@@ -684,19 +684,19 @@ differentially private results to the query.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_null">
 <span class="sig-name descname"><span class="pre">allow_null</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_null" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows null values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, this column allows null values.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_nan">
 <span class="sig-name descname"><span class="pre">allow_nan</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_nan" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows NaN values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, this column allows NaN values.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.ColumnDescriptor.allow_inf">
 <span class="sig-name descname"><span class="pre">allow_inf</span></span><a class="headerlink" href="#tmlt.analytics.query_builder.ColumnDescriptor.allow_inf" title="Permalink to this definition">#</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <cite>True</cite>, this column allows infinite values.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, this column allows infinite values.</p>
 </dd></dl>
 
 </dd></dl>
@@ -911,10 +911,13 @@ table with columns <code class="docutils literal notranslate"><span class="pre">
 when performing this join, the resulting table would have columns
 <code class="docutils literal notranslate"><span class="pre">A_left,A_right,B,C,D</span></code>. The order of columns in the resulting table is
 not guaranteed.</p>
-<p>Note that columns must share both names and data types for them to be used in
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Columns must share both names and data types for them to be used in
 joining. If this condition is not met, one of the data sources must be
 transformed to be eligible for joining (e.g., by using <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.rename" title="tmlt.analytics.query_builder.QueryBuilder.rename"><code class="xref py py-func docutils literal notranslate"><span class="pre">rename()</span></code></a>
 or <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.map" title="tmlt.analytics.query_builder.QueryBuilder.map"><code class="xref py py-func docutils literal notranslate"><span class="pre">map()</span></code></a>).</p>
+</div>
 <p>Every row within a join group (i.e., every row that shares values in the join
 columns) from the private table will be joined with every row from that same
 group in the public table. For example, if a group has <span class="math notranslate nohighlight">\(X\)</span> rows in the
@@ -1090,8 +1093,11 @@ the tables will be joined on all common columns.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan">
 <span class="sig-name descname"><span class="pre">replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_with</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to replace null and NaN values in some columns.</p>
-<p>Note: if null values are replaced in a column, then Analytics will raise
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If null values are replaced in a column, then Analytics will raise
 an error if you use a KeySet with a null value for that column.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1209,9 +1215,12 @@ values replaced with Analytics defaults; see
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan">
 <span class="sig-name descname"><span class="pre">drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to drop rows containing null or NaN values.</p>
-<p>Note: if null and NaN values are dropped from a column, then Analytics will
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If null and NaN values are dropped from a column, then Analytics will
 raise an error if you use a KeySet that contains a null value for
 that column.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1556,7 +1565,7 @@ its value for that row.
 This function should return a dictionary, which should always
 have the same keys regardless of input, and the values in that
 dictionary should match the column type specified in
-<cite>new_column_types</cite>. The function should not have any side effects
+<code class="docutils literal notranslate"><span class="pre">new_column_types</span></code>. The function should not have any side effects
 (in particular, f cannot raise exceptions).</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
 produced by f. Using
@@ -1637,10 +1646,10 @@ This function should return a list of dictionaries.
 Those dictionaries should always
 have the same keys regardless of input, and the values in those
 dictionaries should match the column type specified in
-<cite>new_column_types</cite>. The function should not have any side effects
+<code class="docutils literal notranslate"><span class="pre">new_column_types</span></code>. The function should not have any side effects
 (in particular, f cannot raise exceptions).</p></li>
 <li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).
-If f produces more rows than this, only the first <cite>max_num_rows</cite>
+If f produces more rows than this, only the first <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>
 rows will be in the output.</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
 produced by f. Using
@@ -1937,9 +1946,12 @@ performing an aggregation.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.count">
 <span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CountMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.count" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a count query that is ready to be evaluated.</p>
-<p>Note that differentially-private counts may return values that are not
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Differentially private counts may return values that are not
 possible for a non-DP query - including negative values. You can enforce
 non-negativity once the query returns its results; see the example below.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2000,9 +2012,12 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.count_distinct">
 <span class="sig-name descname"><span class="pre">count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CountDistinctMechanism.DEFAULT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a count_distinct query that is ready to be evaluated.</p>
-<p>Note that differentially-private counts may returns values that are not
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Differentially private counts may returns values that are not
 possible for a non-DP query - including negative values. You can enforce
 non-negativity once the query returns its results; see the example below.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2058,7 +2073,7 @@ the query will count every distinct row.</p></li>
 “count_distinct(A, B, C)” if the provided columns are A, B, and C.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.CountDistinctMechanism" title="tmlt.analytics.query_expr.CountDistinctMechanism"><em>tmlt.analytics.query_expr.CountDistinctMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
-<li><p><strong>cols</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – Deprecated; use <cite>columns</cite> instead.</p></li>
+<li><p><strong>cols</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – Deprecated; use <code class="docutils literal notranslate"><span class="pre">columns</span></code> instead.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2071,10 +2086,13 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.quantile">
 <span class="sig-name descname"><span class="pre">quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.quantile" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2114,9 +2132,10 @@ performed first.</p>
 <li><p><strong>quantile</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – A number between 0 and 1 specifying the quantile to compute.
 For example, 0.5 would compute the median.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code> is
+less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_quantile({quantile})”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_quantile({quantile})&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2129,10 +2148,13 @@ f”{column}_quantile({quantile})”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.min">
 <span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.min" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a minimum value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2170,9 +2192,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code> is
+less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_min”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_min&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2185,10 +2208,13 @@ f”{column}_min”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.max">
 <span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.max" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a maximum value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2226,9 +2252,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_max”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_max&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2241,10 +2268,13 @@ f”{column}_max”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.median">
 <span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.median" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a median value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2282,9 +2312,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_median”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_median&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2297,15 +2328,18 @@ f”{column}_median”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.sum">
 <span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SumMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.sum" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a sum query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
-performed first.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
+performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -2348,9 +2382,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the sum over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_sum”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_sum&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.SumMechanism" title="tmlt.analytics.query_expr.SumMechanism"><em>tmlt.analytics.query_expr.SumMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -2365,15 +2400,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.average">
 <span class="sig-name descname"><span class="pre">average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AverageMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.average" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an average query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
-performed first.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
+performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -2416,9 +2454,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the average over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_average”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_average&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.AverageMechanism" title="tmlt.analytics.query_expr.AverageMechanism"><em>tmlt.analytics.query_expr.AverageMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -2433,15 +2472,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.variance">
 <span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">VarianceMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.variance" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a variance query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
-performed first.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
+performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -2484,9 +2526,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the variance over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_variance”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_variance&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.VarianceMechanism" title="tmlt.analytics.query_expr.VarianceMechanism"><em>tmlt.analytics.query_expr.VarianceMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -2501,15 +2544,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.stdev">
 <span class="sig-name descname"><span class="pre">stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StdevMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.stdev" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a standard deviation query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
-performed first.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
+performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -2552,9 +2598,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the stdev over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_stdev”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_stdev&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.StdevMechanism" title="tmlt.analytics.query_expr.StdevMechanism"><em>tmlt.analytics.query_expr.StdevMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -2679,7 +2726,7 @@ the query will count every distinct row.</p></li>
 “count_distinct(A, B, C)” if the provided columns are A, B, and C.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.CountDistinctMechanism" title="tmlt.analytics.query_expr.CountDistinctMechanism"><em>tmlt.analytics.query_expr.CountDistinctMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
-<li><p><strong>cols</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – Deprecated; use <cite>columns</cite> instead.</p></li>
+<li><p><strong>cols</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – Deprecated; use <code class="docutils literal notranslate"><span class="pre">columns</span></code> instead.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2692,10 +2739,13 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.quantile">
 <span class="sig-name descname"><span class="pre">quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.quantile" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2737,9 +2787,10 @@ performed first.</p>
 <li><p><strong>quantile</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – A number between 0 and 1 specifying the quantile to compute.
 For example, 0.5 would compute the median.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_quantile({quantile})”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_quantile({quantile})&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2752,10 +2803,13 @@ f”{column}_quantile({quantile})”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.min">
 <span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.min" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a minimum value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2795,9 +2849,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_min”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_min&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2810,10 +2865,13 @@ f”{column}_min”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.max">
 <span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.max" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a maximum value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2853,9 +2911,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_max”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_max&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2868,10 +2927,13 @@ f”{column}_max”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.median">
 <span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.median" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a quantile query requesting a median value, ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
 performed first.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -2911,9 +2973,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the quantile over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_median”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_median&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2926,15 +2989,18 @@ f”{column}_median”.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.sum">
 <span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SumMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.sum" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a sum query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
-a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
-measured contains infinite values, a <cite>drop_infinity</cite> query will be
-performed first.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>If the column being measured contains NaN or null values,
+a <code class="docutils literal notranslate"><span class="pre">drop_null_and_nan</span></code> query will be performed first. If the column being
+measured contains infinite values, a <code class="docutils literal notranslate"><span class="pre">drop_infinity</span></code> query will be
+performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -2979,9 +3045,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the sum over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_sum”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_sum&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.SumMechanism" title="tmlt.analytics.query_expr.SumMechanism"><em>tmlt.analytics.query_expr.SumMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -2996,15 +3063,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.average">
 <span class="sig-name descname"><span class="pre">average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AverageMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.average" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an average query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
 a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
 measured contains infinite values, a <cite>drop_infinity</cite> query will be
 performed first.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -3049,9 +3119,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the average over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_average”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_average&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.AverageMechanism" title="tmlt.analytics.query_expr.AverageMechanism"><em>tmlt.analytics.query_expr.AverageMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -3066,15 +3137,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.variance">
 <span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">VarianceMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.variance" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a variance query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
 a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
 measured contains infinite values, a <cite>drop_infinity</cite> query will be
 performed first.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -3119,9 +3193,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the variance over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_variance”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_variance&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.VarianceMechanism" title="tmlt.analytics.query_expr.VarianceMechanism"><em>tmlt.analytics.query_expr.VarianceMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -3136,15 +3211,18 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.stdev">
 <span class="sig-name descname"><span class="pre">stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StdevMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.stdev" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a standard deviation query that is ready to be evaluated.</p>
-<p>Note that if the column being measured contains NaN or null values,
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values,
 a <cite>drop_null_and_nan</cite> query will be performed first. If the column being
 measured contains infinite values, a <cite>drop_infinity</cite> query will be
 performed first.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Regarding the clamping params:</p>
+<p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
-<li><p>The values for <cite>low</cite> and <cite>high</cite> are a choice the caller must make.</p></li>
+<li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
 <li><p>All data will be clamped to lie within this range.</p></li>
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
@@ -3189,9 +3267,10 @@ performed first.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The column to compute the stdev over.</p></li>
 <li><p><strong>low</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The lower bound for clamping.</p></li>
-<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <cite>low</cite> &lt; <cite>high</cite>.</p></li>
+<li><p><strong>high</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The upper bound for clamping. Must be such that <code class="docutils literal notranslate"><span class="pre">low</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name to give the resulting aggregation column. Defaults to
-f”{column}_stdev”.</p></li>
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_stdev&quot;</span></code>.</p></li>
 <li><p><strong>mechanism</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.StdevMechanism" title="tmlt.analytics.query_expr.StdevMechanism"><em>tmlt.analytics.query_expr.StdevMechanism</em></a>) – Choice of noise mechanism. By DEFAULT, the framework
 automatically selects an appropriate mechanism.</p></li>
 </ul>
@@ -3251,7 +3330,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 2db7c6ae at 2022-11-30 18:34.
+    Built from 0c5e8a69 at 2022-12-01 16:16.
   </div>
   
   <div class="footer-item">

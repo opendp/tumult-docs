@@ -79,15 +79,15 @@ Classes
 
    .. attribute:: allow_null
 
-      :class:`bool`. If `True`, this column allows null values.
+      :class:`bool`. If ``True``, this column allows null values.
 
    .. attribute:: allow_nan
 
-      :class:`bool`. If `True`, this column allows NaN values.
+      :class:`bool`. If ``True``, this column allows NaN values.
 
    .. attribute:: allow_inf
 
-      :class:`bool`. If `True`, this column allows infinite values.
+      :class:`bool`. If ``True``, this column allows infinite values.
 
 
 
@@ -280,10 +280,11 @@ Classes
       ``A_left,A_right,B,C,D``. The order of columns in the resulting table is
       not guaranteed.
 
-      Note that columns must share both names and data types for them to be used in
-      joining. If this condition is not met, one of the data sources must be
-      transformed to be eligible for joining (e.g., by using :func:`rename`
-      or :func:`map`).
+      .. note::
+          Columns must share both names and data types for them to be used in
+          joining. If this condition is not met, one of the data sources must be
+          transformed to be eligible for joining (e.g., by using :func:`rename`
+          or :func:`map`).
 
       Every row within a join group (i.e., every row that shares values in the join
       columns) from the private table will be joined with every row from that same
@@ -475,8 +476,9 @@ Classes
 
       Updates the current query to replace null and NaN values in some columns.
 
-      Note: if null values are replaced in a column, then Analytics will raise
-      an error if you use a KeySet with a null value for that column.
+      .. warning::
+          If null values are replaced in a column, then Analytics will raise
+          an error if you use a KeySet with a null value for that column.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -613,9 +615,10 @@ Classes
 
       Updates the current query to drop rows containing null or NaN values.
 
-      Note: if null and NaN values are dropped from a column, then Analytics will
-      raise an error if you use a KeySet that contains a null value for
-      that column.
+      .. warning::
+          If null and NaN values are dropped from a column, then Analytics will
+          raise an error if you use a KeySet that contains a null value for
+          that column.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1024,7 +1027,7 @@ Classes
                 This function should return a dictionary, which should always
                 have the same keys regardless of input, and the values in that
                 dictionary should match the column type specified in
-                `new_column_types`. The function should not have any side effects
+                ``new_column_types``. The function should not have any side effects
                 (in particular, f cannot raise exceptions).
       :param new_column_types: Mapping from column names to types, for new columns
                                produced by f. Using
@@ -1112,10 +1115,10 @@ Classes
                 Those dictionaries should always
                 have the same keys regardless of input, and the values in those
                 dictionaries should match the column type specified in
-                `new_column_types`. The function should not have any side effects
+                ``new_column_types``. The function should not have any side effects
                 (in particular, f cannot raise exceptions).
       :param max_num_rows: The enforced limit on the number of rows from each f(row).
-                           If f produces more rows than this, only the first `max_num_rows`
+                           If f produces more rows than this, only the first ``max_num_rows``
                            rows will be in the output.
       :param new_column_types: Mapping from column names to types, for new columns
                                produced by f. Using
@@ -1416,9 +1419,10 @@ Classes
 
       Returns a count query that is ready to be evaluated.
 
-      Note that differentially-private counts may return values that are not
-      possible for a non-DP query - including negative values. You can enforce
-      non-negativity once the query returns its results; see the example below.
+      .. note::
+          Differentially private counts may return values that are not
+          possible for a non-DP query - including negative values. You can enforce
+          non-negativity once the query returns its results; see the example below.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1484,9 +1488,10 @@ Classes
 
       Returns a count_distinct query that is ready to be evaluated.
 
-      Note that differentially-private counts may returns values that are not
-      possible for a non-DP query - including negative values. You can enforce
-      non-negativity once the query returns its results; see the example below.
+      .. note::
+          Differentially private counts may returns values that are not
+          possible for a non-DP query - including negative values. You can enforce
+          non-negativity once the query returns its results; see the example below.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1554,17 +1559,18 @@ Classes
                    "count_distinct(A, B, C)" if the provided columns are A, B, and C.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
-      :param cols: Deprecated; use `columns` instead.
+      :param cols: Deprecated; use ``columns`` instead.
 
 
    .. py:method:: quantile(self, column, quantile, low, high, name = None)
 
       Returns a quantile query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
 
       ..
@@ -1618,19 +1624,21 @@ Classes
       :param quantile: A number between 0 and 1 specifying the quantile to compute.
                        For example, 0.5 would compute the median.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low`` is
+                   less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_quantile({quantile})".
+                   ``f"{column}_quantile({quantile})"``.
 
 
    .. py:method:: min(self, column, low, high, name = None)
 
       Returns a quantile query requesting a minimum value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1681,19 +1689,21 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low`` is
+                   less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_min".
+                   ``f"{column}_min"``.
 
 
    .. py:method:: max(self, column, low, high, name = None)
 
       Returns a quantile query requesting a maximum value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1744,19 +1754,21 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_max".
+                   ``f"{column}_max"``.
 
 
    .. py:method:: median(self, column, low, high, name = None)
 
       Returns a quantile query requesting a median value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1807,28 +1819,29 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_median".
+                   ``f"{column}_median"``.
 
 
    .. py:method:: sum(self, column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
       Returns a sum query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1877,9 +1890,10 @@ Classes
 
       :param column: The column to compute the sum over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_sum".
+                   ``f"{column}_sum"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -1888,19 +1902,19 @@ Classes
 
       Returns an average query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -1949,9 +1963,10 @@ Classes
 
       :param column: The column to compute the average over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_average".
+                   ``f"{column}_average"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -1960,19 +1975,19 @@ Classes
 
       Returns a variance query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2021,9 +2036,10 @@ Classes
 
       :param column: The column to compute the variance over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_variance".
+                   ``f"{column}_variance"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -2032,19 +2048,19 @@ Classes
 
       Returns a standard deviation query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2093,9 +2109,10 @@ Classes
 
       :param column: The column to compute the stdev over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_stdev".
+                   ``f"{column}_stdev"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -2228,17 +2245,18 @@ Classes
                    "count_distinct(A, B, C)" if the provided columns are A, B, and C.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
-      :param cols: Deprecated; use `columns` instead.
+      :param cols: Deprecated; use ``columns`` instead.
 
 
    .. py:method:: quantile(self, column, quantile, low, high, name = None)
 
       Returns a quantile query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2293,19 +2311,21 @@ Classes
       :param quantile: A number between 0 and 1 specifying the quantile to compute.
                        For example, 0.5 would compute the median.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_quantile({quantile})".
+                   ``f"{column}_quantile({quantile})"``.
 
 
    .. py:method:: min(self, column, low, high, name = None)
 
       Returns a quantile query requesting a minimum value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2362,19 +2382,21 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_min".
+                   ``f"{column}_min"``.
 
 
    .. py:method:: max(self, column, low, high, name = None)
 
       Returns a quantile query requesting a maximum value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2431,19 +2453,21 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_max".
+                   ``f"{column}_max"``.
 
 
    .. py:method:: median(self, column, low, high, name = None)
 
       Returns a quantile query requesting a median value, ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2496,28 +2520,29 @@ Classes
 
       :param column: The column to compute the quantile over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_median".
+                   ``f"{column}_median"``.
 
 
    .. py:method:: sum(self, column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
       Returns a sum query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a ``drop_null_and_nan`` query will be performed first. If the column being
+          measured contains infinite values, a ``drop_infinity`` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2568,9 +2593,10 @@ Classes
 
       :param column: The column to compute the sum over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_sum".
+                   ``f"{column}_sum"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -2579,19 +2605,19 @@ Classes
 
       Returns an average query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a `drop_null_and_nan` query will be performed first. If the column being
+          measured contains infinite values, a `drop_infinity` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2642,9 +2668,10 @@ Classes
 
       :param column: The column to compute the average over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_average".
+                   ``f"{column}_average"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -2653,19 +2680,19 @@ Classes
 
       Returns a variance query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a `drop_null_and_nan` query will be performed first. If the column being
+          measured contains infinite values, a `drop_infinity` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2716,9 +2743,10 @@ Classes
 
       :param column: The column to compute the variance over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_variance".
+                   ``f"{column}_variance"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
@@ -2727,19 +2755,19 @@ Classes
 
       Returns a standard deviation query that is ready to be evaluated.
 
-      Note that if the column being measured contains NaN or null values,
-      a `drop_null_and_nan` query will be performed first. If the column being
-      measured contains infinite values, a `drop_infinity` query will be
-      performed first.
+      .. note::
+          If the column being measured contains NaN or null values,
+          a `drop_null_and_nan` query will be performed first. If the column being
+          measured contains infinite values, a `drop_infinity` query will be
+          performed first.
 
       .. note::
+          Regarding the clamping bounds:
 
-         Regarding the clamping params:
-         
-         #. The values for `low` and `high` are a choice the caller must make.
-         #. All data will be clamped to lie within this range.
-         #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
-         #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
+          #. The values for ``low`` and ``high`` are a choice the caller must make.
+          #. All data will be clamped to lie within this range.
+          #. The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.
+          #. The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2790,9 +2818,10 @@ Classes
 
       :param column: The column to compute the stdev over.
       :param low: The lower bound for clamping.
-      :param high: The upper bound for clamping. Must be such that `low` < `high`.
+      :param high: The upper bound for clamping. Must be such that ``low``
+                   is less than ``high``.
       :param name: The name to give the resulting aggregation column. Defaults to
-                   f"{column}_stdev".
+                   ``f"{column}_stdev"``.
       :param mechanism: Choice of noise mechanism. By DEFAULT, the framework
                         automatically selects an appropriate mechanism.
 
