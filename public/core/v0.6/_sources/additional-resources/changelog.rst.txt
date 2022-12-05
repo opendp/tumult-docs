@@ -1,7 +1,22 @@
-.. _Changelog:
+.. _core-changelog:
 
 Changelog
 =========
+
+0.6.1 - 2022-12-05
+------------------
+
+Added
+~~~~~
+
+-  Added approximate DP support to interactive mechanisms.
+-  Added support for Spark 3.1 through 3.3, in addition to existing support for Spark 3.0.
+
+Fixed
+~~~~~
+
+-  Validation for ``SparkedGroupDataFrameDomain``\ s used to fail with a Spark ``AnalysisException`` in some environments.
+   That should no longer happen.
 
 0.6.0 - 2022-11-14
 ------------------
@@ -9,10 +24,8 @@ Changelog
 Added
 ~~~~~
 
--  Added new ``PrivateJoinOnKey`` transformation that works with ``AddRemoveKeys``
+-  Added new ``PrivateJoinOnKey`` transformation that works with ``AddRemoveKeys``.
 -  Added inverse CDF methods to noise mechanisms.
-
-.. _section-1:
 
 0.5.1 - 2022-11-03
 ------------------
@@ -21,8 +34,6 @@ Fixed
 ~~~~~
 
 -  Domains and metrics make copies of mutable constructor arguments and return copies of mutable properties.
-
-.. _section-2:
 
 0.5.0 - 2022-10-14
 ------------------
@@ -33,8 +44,6 @@ Changed
 -  Core no longer depends on the ``python-flint`` package, and instead packages libflint and libarb itself.
    Binary wheels are available, and the source distribution includes scripting to build these dependencies from source.
 
-.. _fixed-1:
-
 Fixed
 ~~~~~
 
@@ -42,31 +51,21 @@ Fixed
    That should no longer happen.
 -  ``AddRemoveKeys`` now allows different names for the key column in each dataframe.
 
-.. _section-3:
-
 0.4.3 - 2022-09-01
 ------------------
 
 -  Core now checks to see if the user is running Java 11 or higher. If they are, Core either sets the appropriate Spark options (if Spark is not yet running) or raises an informative exception (if Spark is running and configured incorrectly).
 
-.. _section-4:
-
 0.4.2 - 2022-08-24
 ------------------
-
-.. _changed-1:
 
 Changed
 ~~~~~~~
 
 -  Replaced uses of PySpark DataFrame’s ``intersect`` with inner joins. See https://issues.apache.org/jira/browse/SPARK-40181 for background.
 
-.. _section-5:
-
 0.4.1 - 2022-07-25
 ------------------
-
-.. _added-1:
 
 Added
 ~~~~~
@@ -76,32 +75,22 @@ Added
 -  Add new ``TransformValue`` base class for wrapping transformations to support ``AddRemoveKeys``.
 -  Add many new transformations using ``TransformValue``: ``FilterValue``, ``PublicJoinValue``, ``FlatMapValue``, ``MapValue``, ``DropInfsValue``, ``DropNaNsValue``, ``DropNullsValue``, ``ReplaceInfsValue``, ``ReplaceNaNsValue``, ``ReplaceNullsValue``, ``PersistValue``, ``UnpersistValue``, ``SparkActionValue``, ``RenameValue``, ``SelectValue``.
 
-.. _changed-2:
-
 Changed
 ~~~~~~~
 
--  Fixed bug in ``ReplaceNulls`` to not allow replacing values for grouping column in ``IfGroupedBy``
--  Changed ``ReplaceNulls``, ``ReplaceNaNs``, and ``ReplaceInfs`` to only support specific ``IfGroupedBy`` metrics
-
-.. _section-6:
+-  Fixed bug in ``ReplaceNulls`` to not allow replacing values for grouping column in ``IfGroupedBy``.
+-  Changed ``ReplaceNulls``, ``ReplaceNaNs``, and ``ReplaceInfs`` to only support specific ``IfGroupedBy`` metrics.
 
 0.3.2 - 2022-06-23
 ------------------
 
-.. _changed-3:
-
 Changed
 ~~~~~~~
 
--  Moved ``IMMUTABLE_TYPES`` from utils/testing.py to utils/type_utils to avoid importing nose when accessing ``IMMUTABLE_TYPES``
-
-.. _section-7:
+-  Moved ``IMMUTABLE_TYPES`` from ``utils/testing.py`` to ``utils/type_utils.py`` to avoid importing nose when accessing ``IMMUTABLE_TYPES``.
 
 0.3.1 - 2022-06-23
 ------------------
-
-.. _changed-4:
 
 Changed
 ~~~~~~~
@@ -110,12 +99,8 @@ Changed
 -  Reverted change from 0.3.0 “Add checks in ``ParallelComposition`` constructor to only permit L1/L2 over SymmetricDifference or AbsoluteDifference.”
 -  Temporarily disabled flaky statistical tests.
 
-.. _section-8:
-
 0.3.0 - 2022-06-22
 ------------------
-
-.. _added-2:
 
 Added
 ~~~~~
@@ -128,8 +113,6 @@ Added
 -  Added new truncation transformations for ``IfGroupedBy(X, SymmetricDifference())``: ``LimitRowsPerGroup``, ``LimitKeysPerGroup``
 -  Added ``AddUniqueColumn`` for switching from ``SymmetricDifference`` to ``IfGroupedBy(X, SymmetricDifference())``.
 -  Added a topic guide around NaNs, nulls and infinities.
-
-.. _changed-5:
 
 Changed
 ~~~~~~~
@@ -155,8 +138,6 @@ Removed
 0.2.0 - 2022-04-12 (internal release)
 -------------------------------------
 
-.. _added-3:
-
 Added
 ~~~~~
 
@@ -166,12 +147,8 @@ Added
 -  Added ``cleanup.remove_all_temp_tables()`` function, which will remove all temporary tables created by Core.
 -  Added new components ``DropNaNs``, ``DropNulls``, ``ReplaceNulls``, and ``ReplaceNaNs``.
 
-.. _internal-release-1:
-
 0.1.1 - 2022-02-24 (internal release)
 -------------------------------------
-
-.. _added-4:
 
 Added
 ~~~~~
@@ -181,8 +158,6 @@ Added
 -  Added PrivacyAccountant.
 -  Installation on Python 3.7.1 through 3.7.3 is now allowed.
 -  Added ``DecorateQueryable``, ``DecoratedQueryable`` and ``create_adaptive_composition`` components.
-
-.. _changed-6:
 
 Changed
 ~~~~~~~
@@ -196,8 +171,6 @@ Changed
 -  Changed quantile implementation to use arblib.
 -  Changed Laplace implementation to use arblib.
 
-.. _removed-1:
-
 Removed
 ~~~~~~~
 
@@ -206,12 +179,8 @@ Removed
 -  Removed ``SequentialComposition``, ``ParallelComposition`` and corresponding Queryables from ``tmlt.core.measurements.composition``.
 -  Removed ``tmlt.core.transformations.cache``.
 
-.. _internal-release-2:
-
 0.1.0 - 2022-02-14 (internal release)
 -------------------------------------
-
-.. _added-5:
 
 Added
 ~~~~~
