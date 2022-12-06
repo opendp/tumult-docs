@@ -421,8 +421,10 @@ information, consult the <a class="reference internal" href="../topic-guides/pri
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
 
 <span class="k">def</span> <span class="nf">age_joined</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="n">year_joined</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">age_at_joining</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">year_joined</span><span class="p">))</span>
+    <span class="n">date_joined</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_joined</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">date_joined</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">date_joined</span><span class="p">)</span>
+    <span class="n">age_at_joining</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">date_joined</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age_joined&quot;</span><span class="p">:</span> <span class="n">age_at_joining</span><span class="p">}</span>
 
 <span class="n">example_row</span> <span class="o">=</span> <span class="p">{</span>
@@ -791,7 +793,7 @@ zero for some of the population counts. We will replace the NaN values with zero
   </div>
   
   <div class="footer-item">
-    Built from aebbd570 at 2022-12-06 00:36.
+    Built from 64492a0c at 2022-12-06 16:37.
   </div>
   
   <div class="footer-item">
