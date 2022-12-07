@@ -154,7 +154,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.6.1  <!-- this text may get changed later by javascript -->
+        0.6.2  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -164,7 +164,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables installation and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.6.1'}.
+     variables installation and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.6.2'}.
 -->
 
 <script type="text/javascript">
@@ -219,10 +219,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.6.1 variable.
+            // this version, rather than using sphinx's 0.6.2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.6.1") {
+            if (entry.version == "0.6.2") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -293,21 +293,16 @@ function checkPageExistsAndRedirect(event) {
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>Tumult Core is built in <a class="reference external" href="https://www.python.org/">Python</a>, so a Python installation is required to use it.
-Only Python 3.7 is officially supported at present, though newer versions likely work.</p>
-<p>Because Tumult Core uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
-<p>You may also need to configure pyspark to use the intended Python installation. You can do this by setting the <cite>PYSPARK_PYTHON</cite> environment variable. For example:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PYSPARK_PYTHON</span><span class="o">=</span>/usr/bin/python3
-</pre></div>
-</div>
-</div></blockquote>
-<p>Only the x86_64 processor architecture is officially supported at present. Apple silicon is supported through binary translation with Rosetta 2.</p>
+It is compatible with Python 3.7, 3.8, and 3.9.
+Because Tumult Analytics uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
+<p>Only the x86_64 processor architecture is officially supported at present.
+Apple silicon is supported through binary translation with <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a>.</p>
 <p>Below are instructions for installing these prerequisites on several common platforms.
 If none of these apply to you, install Python 3 and Java from your OS package manager, or use the “Manual Installation” section to obtain installers or source distributions and build instructions for your platform.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/core/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="51018900-79d8-4fba-8a6f-5f467f482441" name="ec0d9951-29c8-4c2d-a33b-a0997b14fb5f" type="radio">
-</input><label class="tabbed-label" for="51018900-79d8-4fba-8a6f-5f467f482441">
+<input checked="checked" id="312782e2-5172-408e-b3f6-8d82f68f2e99" name="3718cc81-bd9e-49cf-9b6c-3d3e2a5931b3" type="radio">
+</input><label class="tabbed-label" for="312782e2-5172-408e-b3f6-8d82f68f2e99">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -316,12 +311,12 @@ If they are not, install them with:</p>
 </div>
 <p>Java may already be installed as well.
 If it is not, install the Java Runtime Environment with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt install openjdk-8-jre-headless
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt install default-jre-headless
 </pre></div>
 </div>
 </div>
-<input id="b5fd5dd4-51c7-470b-9a5d-73f7f38e37cc" name="ec0d9951-29c8-4c2d-a33b-a0997b14fb5f" type="radio">
-</input><label class="tabbed-label" for="b5fd5dd4-51c7-470b-9a5d-73f7f38e37cc">
+<input id="694f9ecb-d7b3-4af4-8371-3c9d01816adc" name="3718cc81-bd9e-49cf-9b6c-3d3e2a5931b3" type="radio">
+</input><label class="tabbed-label" for="694f9ecb-d7b3-4af4-8371-3c9d01816adc">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -335,8 +330,8 @@ To install Python 3, run:</p>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
 </div>
-<input id="72f85d02-88ce-4ce8-8d52-66ead7e03583" name="ec0d9951-29c8-4c2d-a33b-a0997b14fb5f" type="radio">
-</input><label class="tabbed-label" for="72f85d02-88ce-4ce8-8d52-66ead7e03583">
+<input id="440d790b-5f65-48ed-8b9f-6595bbb59709" name="3718cc81-bd9e-49cf-9b6c-3d3e2a5931b3" type="radio">
+</input><label class="tabbed-label" for="440d790b-5f65-48ed-8b9f-6595bbb59709">
 macOS (Intel)</label><div class="tabbed-content docutils">
 <p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not wish to use Homebrew for this, use the “Manual Installation” instructions instead.</p>
@@ -352,9 +347,11 @@ If you do not wish to use Homebrew for this, use the “Manual Installation” i
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install openjdk@8
 </pre></div>
 </div>
+<p>You may need to explicitly add this OpenJDK installation to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> for it to be detected and usable by Spark.
+This can be done by, for example, adding <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;/usr/local/opt/openjdk/bin:$PATH&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> and then restarting your shell.</p>
 </div>
-<input id="dd1812b7-16df-444d-8fc9-3667eca63e60" name="ec0d9951-29c8-4c2d-a33b-a0997b14fb5f" type="radio">
-</input><label class="tabbed-label" for="dd1812b7-16df-444d-8fc9-3667eca63e60">
+<input id="992dc195-de4e-47da-af64-c930c1c4be83" name="3718cc81-bd9e-49cf-9b6c-3d3e2a5931b3" type="radio">
+</input><label class="tabbed-label" for="992dc195-de4e-47da-af64-c930c1c4be83">
 macOS (Apple silicon)</label><div class="tabbed-content docutils">
 <p>Since Python 3.7 is not supported on the Apple silicon processor architecture, you will need to first install <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> and the x86_64 version of Homebrew.</p>
 <p>If you do not already have Rosetta 2, it can be installed with:</p>
@@ -374,11 +371,11 @@ macOS (Apple silicon)</label><div class="tabbed-content docutils">
 </pre></div>
 </div>
 </div>
-<input id="bcf2b34a-9ed1-4607-af18-dc17effa5b80" name="ec0d9951-29c8-4c2d-a33b-a0997b14fb5f" type="radio">
-</input><label class="tabbed-label" for="bcf2b34a-9ed1-4607-af18-dc17effa5b80">
+<input id="1a75bbe5-bfdd-4070-ae8e-77f5addc3d24" name="3718cc81-bd9e-49cf-9b6c-3d3e2a5931b3" type="radio">
+</input><label class="tabbed-label" for="1a75bbe5-bfdd-4070-ae8e-77f5addc3d24">
 Windows</label><div class="tabbed-content docutils">
-<p>The only supported way to install Tumult Core on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.</p>
-<p>Once you install your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core setup.</p>
+<p>The only supported way to install Tumult Core on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.
+Once you have installed your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core set up.</p>
 </div>
 </div>
 </section>
@@ -437,7 +434,7 @@ Windows</label><div class="tabbed-content docutils">
   </div>
   
   <div class="footer-item">
-    Built from 04e44dd2 at 2022-12-05 21:01.
+    Built from eca72734 at 2022-12-07 22:32.
   </div>
   
   <div class="footer-item">
