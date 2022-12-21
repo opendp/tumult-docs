@@ -42,6 +42,8 @@ Functions
      - Returns a noisy quantile measurement.
    * - :func:`.get_midpoint`
      - Returns the midpoint of lower and upper.
+   * - :func:`.create_partition_selection_measurement`
+     - Returns a partition selection measurement.
 
 .. py:function:: create_count_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, d_in = 1, groupby_transformation = None, count_column = None)
 
@@ -373,6 +375,27 @@ Functions
    (0.25, 1/4)
    >>> get_midpoint(1, 9, integer_midpoint=True)
    (5, 5)
+
+
+
+.. py:function:: create_partition_selection_measurement(input_domain, epsilon, delta, d_in = 1, count_column = None)
+
+   Returns a partition selection measurement.
+
+   A partition selection measurement created by this function will have a
+   privacy guarantee such that
+   ``measurement.privacy_function(d_in) = (epsilon, delta)``.
+
+   :param input_domain: Domain of the input Spark DataFrames. Input cannot contain
+                        floating point columns.
+   :param epsilon: The epsilon portion of the (epsilon, delta) privacy budget that
+                   you want this measurement to satisfy.
+   :param delta: The delta portion of the (epsilon, delta) privacy budget that
+                 you want this measurement to satisfy.
+   :param d_in: The given d_in such that
+                ``measurement.privacy_function(d_in) = (epsilon, delta)``.
+   :param count_column: Column name for output group counts. If None, output column
+                        will be named "count".
 
 
 
