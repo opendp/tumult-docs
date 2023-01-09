@@ -95,10 +95,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = PrivateSource("private")
@@ -117,10 +116,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = Rename(PrivateSource("private"), {"B": "C"})
@@ -139,10 +137,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = Filter(PrivateSource("private"), 'B > 10')
@@ -161,10 +158,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = Select(PrivateSource("private"), ["A"])
@@ -183,13 +179,12 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={
       ...         "A": ColumnType.VARCHAR,
       ...         "B": ColumnType.INTEGER,
       ...     },
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query1 = Map( # Augment = False example
@@ -225,10 +220,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query1 = FlatMap( # Augment = False example
@@ -284,7 +278,7 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="left_source",
       ...     col_types={
       ...         "left_only": ColumnType.DECIMAL,
@@ -292,9 +286,8 @@ Classes
       ...         "common2": ColumnType.VARCHAR,
       ...         "common3": ColumnType.INTEGER
       ...     },
-      ...     stability=1,
       ... )
-      >>> catalog.add_private_view(
+      >>> catalog.add_private_table(
       ...     source_id="right_source",
       ...     col_types={
       ...         "common1": ColumnType.INTEGER,
@@ -302,7 +295,6 @@ Classes
       ...         "common3": ColumnType.INTEGER,
       ...         "right_only": ColumnType.VARCHAR,
       ...    },
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> # join_columns default behavior is ["common1", "common2", "common3"]
@@ -339,13 +331,12 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
-      >>> catalog.add_public_source(
+      >>> catalog.add_public_table(
       ...     "public", {"B": ColumnType.INTEGER, "C": ColumnType.DECIMAL}
       ... )
       >>> query = JoinPublic(
@@ -387,10 +378,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByCount(
@@ -414,10 +404,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByCountDistinct(
@@ -441,10 +430,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByQuantile(
@@ -472,10 +460,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByBoundedSum(
@@ -502,10 +489,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByBoundedAverage(
@@ -532,10 +518,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByBoundedAverage(
@@ -562,10 +547,9 @@ Classes
       .. rubric:: Example
 
       >>> catalog = Catalog()
-      >>> catalog.add_private_source(
+      >>> catalog.add_private_table(
       ...     source_id="private",
       ...     col_types={"A": ColumnType.VARCHAR, "B": ColumnType.INTEGER},
-      ...     stability=1,
       ... )
       >>> output_schema_visitor = OutputSchemaVisitor(catalog)
       >>> query = GroupByBoundedSTDEV(
