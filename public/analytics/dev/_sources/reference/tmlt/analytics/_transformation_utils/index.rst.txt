@@ -1,0 +1,64 @@
+:orphan:
+
+
+
+****************************
+_transformation_utils
+****************************
+
+.. py:module:: tmlt.analytics._transformation_utils
+
+.. autoapi-nested-parse::
+
+   Useful functions to be used with transfomations.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.generate_nested_transformation`
+     - Generate a nested transformation.
+   * - :func:`.get_table_from_ref`
+     - Returns a GetValue transformation, finding the referenced table.
+
+.. py:function:: generate_nested_transformation(base_transformation, parent_reference, generator_dict)
+
+   Generate a nested transformation.
+
+   At a high level, this function chooses an appropriate transformation
+   by keying into the generator dictionary at the parent_reference's Metric,
+   then applies the selected transformation at parent_reference in the output
+   of base_transformation.
+
+   :param base_transformation: Transformation to be used as a starting point.
+   :param parent_reference: The parent TableReference of base_transformation's associated
+                            TableReference.
+   :param generator_dict: a dictionary of the form { Metric : generator() },
+                          where generator() is a function which takes the associated domain and metric
+                          of the parent_reference and generates a transormation using the
+                          Metric, e.g. generator(parent_domain, parent_metric, target_identifier)
+
+
+
+.. py:function:: get_table_from_ref(transformation, ref)
+
+   Returns a GetValue transformation, finding the referenced table.
+
+
+
+
+
+
+
+
