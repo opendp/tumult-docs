@@ -44,6 +44,7 @@ add_remove_keys
    >>> input_metric = IfGroupedBy("A", SymmetricDifference())
    >>> truncate = LimitRowsPerGroup(
    ...     input_domain=input_domain,
+   ...     output_metric=SymmetricDifference(),
    ...     grouping_column="A",
    ...     threshold=1,
    ... )
@@ -132,6 +133,8 @@ Classes
 
    * - :class:`.TransformValue`
      - Base class transforming a specified key using an existing transformation.
+   * - :class:`.LimitRowsPerGroupValue`
+     - Applies a :class:`~.LimitRowsPerGroup` to the specified key.
    * - :class:`.FilterValue`
      - Applies a :class:`~.Filter` to create a new element from specified value.
    * - :class:`.PublicJoinValue`
@@ -174,6 +177,124 @@ Classes
    Transformation (like :class:`~.Filter`) can be applied to a DataFrame and augment
    the input dictionary with the output without violating the closeness of neighboring
    dataframes with :class:`~.AddRemoveKeys`.
+
+   NOTE: This class cannot be instantiated directly.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.transformation`
+        - Returns the transformation that will be applied to create the new element.
+      * - :meth:`.key`
+        - Returns the key for the DataFrame to transform.
+      * - :meth:`.new_key`
+        - Returns the new key for the transformed DataFrame.
+      * - :meth:`.stability_function`
+        - Returns the smallest d_out satisfied by the transformation.
+      * - :meth:`.__call__`
+        - Returns a new dictionary augmented with the transformed DataFrame.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.output_metric`
+        - Distance metric on input domain.
+      * - :meth:`.stability_relation`
+        - Returns True only if close inputs produce close outputs.
+      * - :meth:`.__or__`
+        - Return this transformation chained with another component.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: transformation(self)
+      :property:
+
+      Returns the transformation that will be applied to create the new element.
+
+
+   .. py:method:: key(self)
+      :property:
+
+      Returns the key for the DataFrame to transform.
+
+
+   .. py:method:: new_key(self)
+      :property:
+
+      Returns the new key for the transformed DataFrame.
+
+
+   .. py:method:: stability_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: __call__(self, data)
+
+      Returns a new dictionary augmented with the transformed DataFrame.
+
+
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(self, d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(self, other: Transformation) -> Transformation
+               __or__(self, other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: LimitRowsPerGroupValue(input_domain, input_metric, key, new_key, threshold)
+
+   Bases: :class:`TransformValue`
+
+   Applies a :class:`~.LimitRowsPerGroup` to the specified key.
+
+   See :class:`~.TransformValue` and :class:`~.LimitRowsPerGroup` for more
+   information.
 
 
 

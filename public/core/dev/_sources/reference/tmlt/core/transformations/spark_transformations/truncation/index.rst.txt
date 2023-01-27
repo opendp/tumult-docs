@@ -32,7 +32,7 @@ Classes
      - Keep at most k keys per group.
 
    
-.. py:class:: LimitRowsPerGroup(input_domain, grouping_column, threshold)
+.. py:class:: LimitRowsPerGroup(input_domain, output_metric, grouping_column, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -80,6 +80,7 @@ Classes
    ...             "B": SparkStringColumnDescriptor(),
    ...         }
    ...     ),
+   ...     output_metric=SymmetricDifference(),
    ...     grouping_column="A",
    ...     threshold=2,
    ... )
@@ -99,7 +100,8 @@ Classes
        * Output domain - :class:`~.SparkDataFrameDomain` (matches input domain)
        * Input metric - :class:`~.IfGroupedBy` on the grouping column, with inner
          metric :class:`~.SymmetricDifference`
-       * Output metric - :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+         on the grouping column, with inner metric :class:`~.SymmetricDifference`
 
        >>> truncate.input_domain
        SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
@@ -112,7 +114,8 @@ Classes
 
        Stability Guarantee:
            :class:`~.LimitRowsPerGroup`'s :meth:`~.stability_function` returns
-           `threshold * d_in`.
+           `threshold * d_in` if `output_metric` is `SymmetricDifference()` and `d_in`
+           otherwise.
 
            >>> truncate.stability_function(1)
            2
