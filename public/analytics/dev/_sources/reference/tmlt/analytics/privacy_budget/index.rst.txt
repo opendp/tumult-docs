@@ -33,6 +33,8 @@ Classes
      - Base class for specifying privacy parameters.
    * - :class:`.PureDPBudget`
      - A privacy budget under pure differential privacy.
+   * - :class:`.ApproxDPBudget`
+     - A privacy budget under approximate differential privacy.
    * - :class:`.RhoZCDPBudget`
      - A privacy budget under rho-zero-concentrated differential privacy.
 
@@ -70,7 +72,7 @@ Classes
 
    This privacy definition is also known as epsilon-differential privacy, and the
    associated value is the epsilon privacy parameter. The privacy definition can
-   be found `here <https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy>`_
+   be found `here <https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy>`__.
 
 
 
@@ -87,6 +89,50 @@ Classes
    .. py:method:: __eq__(self, other)
 
       Returns whether or not two PureDPBudgets are equivalent.
+
+
+
+   
+.. py:class:: ApproxDPBudget(epsilon, delta)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under approximate differential privacy.
+
+   This privacy definition is also known as (ε, δ)-differential privacy, and the
+   associated privacy parameters are epsilon and delta. The formal definition can
+   be found `here <https://desfontain.es/privacy/almost-differential-privacy.html#formal-definition>`__.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: epsilon(self)
+      :property:
+
+      Returns the value of epsilon.
+
+
+   .. py:method:: delta(self)
+      :property:
+
+      Returns the value of delta.
+
+
+   .. py:method:: is_infinite(self)
+      :property:
+
+      Returns true if epsilon is float('inf') or delta is 1.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Returns whether two ApproxDPBudgets are equivalent.
+
+      ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
+      epsilon of float('inf') and the other has a delta of 1).
 
 
 
