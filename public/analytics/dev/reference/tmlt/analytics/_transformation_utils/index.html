@@ -289,6 +289,11 @@ function checkPageExistsAndRedirect(event) {
      unpersist_table
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._transformation_utils.get_table_from_ref">
+     get_table_from_ref
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -336,6 +341,9 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._transformation_utils.unpersist_table" title="tmlt.analytics._transformation_utils.unpersist_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">unpersist_table()</span></code></a></p></td>
 <td><p>Unpersists tables.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._transformation_utils.get_table_from_ref" title="tmlt.analytics._transformation_utils.get_table_from_ref"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_table_from_ref()</span></code></a></p></td>
+<td><p>Returns a GetValue transformation finding the table specified.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -370,6 +378,8 @@ table in case of delete/persist/unpersist</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics._transformation_utils.rename_table">
 <span class="sig-name descname"><span class="pre">rename_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_transformation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_table_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._transformation_utils.rename_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Renames tables.</p>
+<p>A single value is transformed and added to the dictionary at a new key.
+Note that the original value is left unchanged in the dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -403,14 +413,14 @@ table in case of delete/persist/unpersist</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.analytics._transformation_utils.persist_table">
-<span class="sig-name descname"><span class="pre">persist_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_transformation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_table_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._transformation_utils.persist_table" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">persist_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_transformation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_table_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._transformation_utils.persist_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Persists tables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>base_transformation</strong> (<em>tmlt.core.transformations.base.Transformation</em>) – </p></li>
 <li><p><strong>base_ref</strong> (<a class="reference internal" href="../_table_reference/index.html#tmlt.analytics._table_reference.TableReference" title="tmlt.analytics._table_reference.TableReference"><em>tmlt.analytics._table_reference.TableReference</em></a>) – </p></li>
-<li><p><strong>new_table_id</strong> (<a class="reference internal" href="../_table_identifier/index.html#tmlt.analytics._table_identifier.Identifier" title="tmlt.analytics._table_identifier.Identifier"><em>tmlt.analytics._table_identifier.Identifier</em></a>) – </p></li>
+<li><p><strong>new_table_id</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../_table_identifier/index.html#tmlt.analytics._table_identifier.Identifier" title="tmlt.analytics._table_identifier.Identifier"><em>tmlt.analytics._table_identifier.Identifier</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -428,6 +438,23 @@ table in case of delete/persist/unpersist</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>base_transformation</strong> (<em>tmlt.core.transformations.base.Transformation</em>) – </p></li>
 <li><p><strong>base_ref</strong> (<a class="reference internal" href="../_table_reference/index.html#tmlt.analytics._table_reference.TableReference" title="tmlt.analytics._table_reference.TableReference"><em>tmlt.analytics._table_reference.TableReference</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.transformations.base.Transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics._transformation_utils.get_table_from_ref">
+<span class="sig-name descname"><span class="pre">get_table_from_ref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._transformation_utils.get_table_from_ref" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a GetValue transformation finding the table specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transformation</strong> (<em>tmlt.core.transformations.base.Transformation</em>) – </p></li>
+<li><p><strong>ref</strong> (<a class="reference internal" href="../_table_reference/index.html#tmlt.analytics._table_reference.TableReference" title="tmlt.analytics._table_reference.TableReference"><em>tmlt.analytics._table_reference.TableReference</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -469,7 +496,7 @@ table in case of delete/persist/unpersist</p></li>
   </div>
   
   <div class="footer-item">
-    Built from df0ce0f4 at 2023-02-02 21:52.
+    Built from e5b6b846 at 2023-02-08 17:05.
   </div>
   
   <div class="footer-item">

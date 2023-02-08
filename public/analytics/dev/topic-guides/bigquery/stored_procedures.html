@@ -404,44 +404,44 @@ use <code class="docutils literal notranslate"><span class="pre">us-docker.pkg.d
 the path to the script stored in the Google Cloud Storage bucket in
 <a class="reference internal" href="inputs_outputs.html#bigquery-inputs-and-outputs"><span class="std std-ref">the first part</span></a> of this topic guide.</p></li>
 </ul>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"></span>
-<span class="w">    </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">DATASET</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="p">([</span><span class="k">PARAMETERS</span><span class="p">])</span><span class="w"></span>
-<span class="k">WITH</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">CONNECTOR</span><span class="w"> </span><span class="n">REGION</span><span class="p">].[</span><span class="n">CONNECTOR</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;SPARK&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">container_image</span><span class="o">=</span><span class="s1">&#39;us-docker.pkg.dev/tumult-labs/analytics/tutorial:demo&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">main_file_uri</span><span class="o">=</span><span class="s1">&#39;[SCRIPT PATH]&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">python</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">PROCEDURE</span>
+<span class="w">    </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">DATASET</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="k">PROCEDURE</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="p">([</span><span class="k">PARAMETERS</span><span class="p">])</span>
+<span class="k">WITH</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">CONNECTOR</span><span class="w"> </span><span class="n">REGION</span><span class="p">].[</span><span class="n">CONNECTOR</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;SPARK&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">container_image</span><span class="o">=</span><span class="s1">&#39;us-docker.pkg.dev/tumult-labs/analytics/tutorial:demo&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">main_file_uri</span><span class="o">=</span><span class="s1">&#39;[SCRIPT PATH]&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">python</span>
 </pre></div>
 </div>
 <p>With the sample values used throughout this topic guide, and choosing
 <code class="docutils literal notranslate"><span class="pre">count_members</span></code> as the name of our stored procedure, we end up with
 the following query.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">PROCEDURE</span><span class="w"></span>
-<span class="w">  </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">analytics_tutorial</span><span class="p">.</span><span class="n">count_members</span><span class="o">`</span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">bucket</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">project</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">dataset</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="k">table</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"></span>
-<span class="k">WITH</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">us</span><span class="p">.</span><span class="n">bigspark</span><span class="o">`</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;SPARK&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">container_image</span><span class="o">=</span><span class="s1">&#39;us-docker.pkg.dev/tumult-labs/analytics/tutorial:demo&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">main_file_uri</span><span class="o">=</span><span class="s1">&#39;gs://tumult-labs/analytics/library_members.py&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">python</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">PROCEDURE</span>
+<span class="w">  </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">analytics_tutorial</span><span class="p">.</span><span class="n">count_members</span><span class="o">`</span><span class="p">(</span>
+<span class="w">    </span><span class="n">bucket</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="w">    </span><span class="n">project</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="w">    </span><span class="n">dataset</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="w">    </span><span class="k">table</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span>
+<span class="k">WITH</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">us</span><span class="p">.</span><span class="n">bigspark</span><span class="o">`</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">engine</span><span class="o">=</span><span class="s1">&#39;SPARK&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">container_image</span><span class="o">=</span><span class="s1">&#39;us-docker.pkg.dev/tumult-labs/analytics/tutorial:demo&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">main_file_uri</span><span class="o">=</span><span class="s1">&#39;gs://tumult-labs/analytics/library_members.py&#39;</span><span class="p">)</span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="n">python</span>
 </pre></div>
 </div>
 <p>This creates a stored procedure that exists in
 <code class="docutils literal notranslate"><span class="pre">[PROJECT</span> <span class="pre">NAME].[DATASET</span> <span class="pre">NAME].[FUNCTION</span> <span class="pre">NAME]</span></code>, akin to defining a function.
 Later you will be “calling” this function.</p>
 <p>Finally you can run the function by calling it with the appropriate parameters.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CALL</span><span class="w"> </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">DATASET</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="p">([</span><span class="k">PARAMETERS</span><span class="p">])</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CALL</span><span class="w"> </span><span class="o">`</span><span class="p">[</span><span class="n">PROJECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="n">DATASET</span><span class="w"> </span><span class="n">NAME</span><span class="p">].[</span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">NAME</span><span class="p">]</span><span class="o">`</span><span class="p">([</span><span class="k">PARAMETERS</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>In our prior example, we would call the function like this:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CALL</span><span class="w"> </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">analytics_tutorial</span><span class="p">.</span><span class="n">count_members</span><span class="o">`</span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="ss">&quot;bucket&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="ss">&quot;tumult-labs&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="ss">&quot;analytics_tutorial&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="ss">&quot;library_members&quot;</span><span class="w"></span>
-<span class="p">)</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CALL</span><span class="w"> </span><span class="o">`</span><span class="n">tumult</span><span class="o">-</span><span class="n">labs</span><span class="p">.</span><span class="n">analytics_tutorial</span><span class="p">.</span><span class="n">count_members</span><span class="o">`</span><span class="p">(</span>
+<span class="w">    </span><span class="ss">&quot;bucket&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;tumult-labs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;analytics_tutorial&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;library_members&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>If successful, our script should produce a BigQuery table, which we can
@@ -494,7 +494,7 @@ the Cloud Logging API as well.</p>
   </div>
   
   <div class="footer-item">
-    Built from df0ce0f4 at 2023-02-02 21:52.
+    Built from e5b6b846 at 2023-02-08 17:05.
   </div>
   
   <div class="footer-item">

@@ -439,15 +439,15 @@ You will need to replace <code class="docutils literal notranslate"><span class=
 buckets are securely configured and that unauthorized users
 cannot access them.</p>
 </div>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark = SparkSession.builder.getOrCreate()</span><span class="w"></span>
-<span class="gi">+BUCKET = &quot;my-gcs-bucket&quot;</span><span class="w"></span>
-<span class="gi">+spark = (</span><span class="w"></span>
-<span class="gi">+  SparkSession</span><span class="w"></span>
-<span class="gi">+  .builder</span><span class="w"></span>
-<span class="gi">+  .config(&quot;spark.sql.warehouse.dir&quot;, os.path.join(&quot;gs://&quot;, BUCKET, &quot;/spark-warehouse/&quot;))</span><span class="w"></span>
-<span class="gi">+  .config(&quot;temporaryGcsBucket&quot;, BUCKET)</span><span class="w"></span>
-<span class="gi">+  .getOrCreate()</span><span class="w"></span>
-<span class="gi">+)</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark = SparkSession.builder.getOrCreate()</span>
+<span class="gi">+BUCKET = &quot;my-gcs-bucket&quot;</span>
+<span class="gi">+spark = (</span>
+<span class="gi">+  SparkSession</span>
+<span class="gi">+  .builder</span>
+<span class="gi">+  .config(&quot;spark.sql.warehouse.dir&quot;, os.path.join(&quot;gs://&quot;, BUCKET, &quot;/spark-warehouse/&quot;))</span>
+<span class="gi">+  .config(&quot;temporaryGcsBucket&quot;, BUCKET)</span>
+<span class="gi">+  .getOrCreate()</span>
+<span class="gi">+)</span>
 </pre></div>
 </div>
 </section>
@@ -460,20 +460,20 @@ each table path.</p>
 <p>Here is a code snippet for reading a BigQuery input.
 You will need to replace <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATASET</span></code>, and <code class="docutils literal notranslate"><span class="pre">TABLE</span></code> with
 your own values.</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark.sparkContext.addFile(</span><span class="w"></span>
-<span class="gd">-    &quot;https://tumult-public.s3.amazonaws.com/library-members.csv&quot;</span><span class="w"></span>
-<span class="gd">-)</span><span class="w"></span>
-<span class="gd">-members_df = spark.read.csv(</span><span class="w"></span>
-<span class="gd">-    SparkFiles.get(&quot;library-members.csv&quot;), header=True, inferSchema=True</span><span class="w"></span>
-<span class="gd">-)</span><span class="w"></span>
-<span class="gi">+PROJECT = &quot;tumult-labs&quot;</span><span class="w"></span>
-<span class="gi">+DATASET = &quot;analytics_tutorial&quot;</span><span class="w"></span>
-<span class="gi">+TABLE   = &quot;library_members&quot;</span><span class="w"></span>
-<span class="gi">+members_df = (</span><span class="w"></span>
-<span class="gi">+  spark.read.format(&quot;bigquery&quot;)</span><span class="w"></span>
-<span class="gi">+  .option(&quot;table&quot;, f&quot;{PROJECT}:{DATASET}.{TABLE}&quot;)</span><span class="w"></span>
-<span class="gi">+  .load()</span><span class="w"></span>
-<span class="gi">+)</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark.sparkContext.addFile(</span>
+<span class="gd">-    &quot;https://tumult-public.s3.amazonaws.com/library-members.csv&quot;</span>
+<span class="gd">-)</span>
+<span class="gd">-members_df = spark.read.csv(</span>
+<span class="gd">-    SparkFiles.get(&quot;library-members.csv&quot;), header=True, inferSchema=True</span>
+<span class="gd">-)</span>
+<span class="gi">+PROJECT = &quot;tumult-labs&quot;</span>
+<span class="gi">+DATASET = &quot;analytics_tutorial&quot;</span>
+<span class="gi">+TABLE   = &quot;library_members&quot;</span>
+<span class="gi">+members_df = (</span>
+<span class="gi">+  spark.read.format(&quot;bigquery&quot;)</span>
+<span class="gi">+  .option(&quot;table&quot;, f&quot;{PROJECT}:{DATASET}.{TABLE}&quot;)</span>
+<span class="gi">+  .load()</span>
+<span class="gi">+)</span>
 </pre></div>
 </div>
 <p>And here is a snippet to write to a BigQuery table. Here we write our
@@ -618,7 +618,7 @@ we will see how to create a GCP-compatible Analytics Docker image.</p>
   </div>
   
   <div class="footer-item">
-    Built from df0ce0f4 at 2023-02-02 21:52.
+    Built from e5b6b846 at 2023-02-08 17:05.
   </div>
   
   <div class="footer-item">
