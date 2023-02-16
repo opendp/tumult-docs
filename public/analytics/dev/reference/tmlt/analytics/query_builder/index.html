@@ -997,10 +997,20 @@ the tables will be joined on all common columns.</p></li>
 <span class="sig-name descname"><span class="pre">join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_operand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.join_private" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to join with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p>
 <p>This operation is a natural join, with the same behavior and
-requirements as <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>. However, there is a key difference:
-before the join is performed, each table is <em>truncated</em> based on the
-corresponding
+requirements as <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>.</p>
+<p>For operations on tables with a
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> that protects
+adding or removing rows
+(e.g., <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>), there is a key
+difference: before the join is performed, each table is <em>truncated</em> based on
+the corresponding
 <a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>.</p>
+<p>In contrast, operations on tables with a
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> which protects
+the addition/removal of a specified identifier
+do not require a
+<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>,
+as no truncation is necessary while performing the join.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1074,8 +1084,8 @@ corresponding
 When calling <code class="docutils literal notranslate"><span class="pre">query_a.join_private(query_b,</span> <span class="pre">...)</span></code>, we
 refer to <code class="docutils literal notranslate"><span class="pre">query_a</span></code> as the <em>left table</em> and <code class="docutils literal notranslate"><span class="pre">query_b</span></code> as
 the <em>right table</em>.</p></li>
-<li><p><strong>truncation_strategy_left</strong> (<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="tmlt.analytics.truncation_strategy.TruncationStrategy.Type"><em>tmlt.analytics.truncation_strategy.TruncationStrategy.Type</em></a>) – Strategy for truncation of the left table.</p></li>
-<li><p><strong>truncation_strategy_right</strong> (<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="tmlt.analytics.truncation_strategy.TruncationStrategy.Type"><em>tmlt.analytics.truncation_strategy.TruncationStrategy.Type</em></a>) – Strategy for truncation of the right table.</p></li>
+<li><p><strong>truncation_strategy_left</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="tmlt.analytics.truncation_strategy.TruncationStrategy.Type"><em>tmlt.analytics.truncation_strategy.TruncationStrategy.Type</em></a><em>]</em>) – Strategy for truncation of the left table.</p></li>
+<li><p><strong>truncation_strategy_right</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="tmlt.analytics.truncation_strategy.TruncationStrategy.Type"><em>tmlt.analytics.truncation_strategy.TruncationStrategy.Type</em></a><em>]</em>) – Strategy for truncation of the right table.</p></li>
 <li><p><strong>join_columns</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – The columns to join on. If <code class="docutils literal notranslate"><span class="pre">join_columns</span></code> is not specified,
 the tables will be joined on all common columns.</p></li>
 </ul>
@@ -3327,7 +3337,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from ddfcf1fd at 2023-02-15 11:26.
+    Built from a115cff4 at 2023-02-16 19:05.
   </div>
   
   <div class="footer-item">
