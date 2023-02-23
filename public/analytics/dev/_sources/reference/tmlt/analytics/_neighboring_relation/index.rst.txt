@@ -33,6 +33,8 @@ Classes
      - A relation of tables differing by a limited number of rows.
    * - :class:`.AddRemoveRowsAcrossGroups`
      - A relation of tables differing by a limited number of groups.
+   * - :class:`.AddRemoveKeys`
+     - A relation of tables differing by a certain number of keys.
    * - :class:`.Conjunction`
      - A conjunction composed of other neighboring relations.
    * - :class:`.NeighboringRelationVisitor`
@@ -93,7 +95,7 @@ Classes
    .. py:attribute:: n
       :annotation: :int
 
-      The max number of rows wich may be differ for two instances of the table to
+      The max number of rows which may be differ for two instances of the table to
       be neighbors.
 
 
@@ -145,6 +147,54 @@ Classes
 
       The max number of rows in any single group that may differ for two instances of
       the table to be neighbors.
+
+
+   .. py:method:: validate_input(self, dfs)
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+      Used only for top-level validation.
+
+
+   .. py:method:: accept(self, visitor)
+
+      Visit this NeighboringRelation with a Visitor.
+
+
+
+   
+.. py:class:: AddRemoveKeys
+
+   Bases: :class:`NeighboringRelation`
+
+   A relation of tables differing by a certain number of keys.
+
+   Two tables are considered neighbors under this definition if they
+   differ only by the addition/removal of all rows with max_keys distinct values under
+   the columns indicated.
+
+   Note that AddRemoveKeys is a neighboring relation that covers *multiple*
+   tables.
+
+
+
+
+
+   .. py:attribute:: primary_id
+      :annotation: :str
+
+      The id protected in the relation.
+
+   .. py:attribute:: table_to_key_column
+      :annotation: :Dict[str, str]
+
+      A dictionary mapping table names to key columns.
+
+   .. py:attribute:: max_keys
+      :annotation: :int
+
+      The maximum number of keys which may differ for two instances of the table
+      to be neighbors.
 
 
    .. py:method:: validate_input(self, dfs)
@@ -214,6 +264,12 @@ Classes
       :abstractmethod:
 
       Visit a :class:`AddRemoveRowsAcrossGroups`.
+
+
+   .. py:method:: visit_add_remove_keys(self, relation)
+      :abstractmethod:
+
+      Visit a :class:`AddRemoveKeys`.
 
 
    .. py:method:: visit_conjunction(self, relation)

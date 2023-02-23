@@ -34,6 +34,8 @@ Classes
      - A shorthand for the common case of :class:`AddMaxRows` with ``max_rows = 1``.
    * - :class:`.AddMaxRowsInMaxGroups`
      - Protect the addition or removal of rows across a finite number of groups.
+   * - :class:`.AddRowsWithID`
+     - Protect the addition or removal of rows with a specific identifier.
 
    
 .. py:class:: ProtectedChange
@@ -116,6 +118,14 @@ Classes
    accuracy when used with zCDP -- with pure DP, it is equivalent to using
    :class:`AddMaxRows` with the same total number of rows to be added/removed.
 
+   The most common case where :class:`AddMaxRowsInMaxGroups` is useful is for
+   dealing with datasets that have already undergone some type of preprocessing
+   before being turned over to an analyst. Where possible, it is preferred to
+   do such processing inside of Tumult Analytics instead, as it allows
+   specifying a simpler protected change (e.g. :class:`AddRowsWithID`)
+   and relying on Analytics' privacy tracking to handle the complex parts
+   of the analysis.
+
 
 
 
@@ -134,6 +144,37 @@ Classes
       :annotation: :Union[int, float]
 
       The maximum number of rows which may be added to or removed from each group.
+
+
+
+   
+.. py:class:: AddRowsWithID
+
+   Bases: :class:`ProtectedChange`
+
+   Protect the addition or removal of rows with a specific identifier.
+
+   Instead of limiting the number of rows that may be added or removed,
+   :class:`AddRowsWithID` hides the addition or removal of *all rows*
+   with the same value in the specified column.
+
+   The id column *must* be a string, integer (or long), or date; it cannot
+   be a float or a timestamp.
+
+
+
+
+
+   .. py:attribute:: id_column
+      :annotation: :str
+
+      The name of the column containing the identifier.
+
+   .. py:attribute:: identifier
+      :annotation: :str = primary_id
+
+      The identifier of the rows that may be added or removed. If not specified,
+      a default identifier will be assigned.
 
 
 
