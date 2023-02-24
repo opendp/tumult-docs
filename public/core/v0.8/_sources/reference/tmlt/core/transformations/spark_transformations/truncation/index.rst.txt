@@ -30,6 +30,8 @@ Classes
      - Keep at most k rows per group.
    * - :class:`.LimitKeysPerGroup`
      - Keep at most k keys per group.
+   * - :class:`.LimitRowsPerKeyPerGroup`
+     - For each group, limit k rows per key.
 
    
 .. py:class:: LimitRowsPerGroup(input_domain, output_metric, grouping_column, threshold)
@@ -346,6 +348,209 @@ Classes
       :property:
 
       Returns whether the output metric will use :class:`~.RootSumOfSquared`.
+
+
+   .. py:method:: stability_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial for more information. # TODO(#1320)
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(self, sdf)
+
+      Returns a truncated dataframe.
+
+
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(self, d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(self, other: Transformation) -> Transformation
+               __or__(self, other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: LimitRowsPerKeyPerGroup(input_domain, input_metric, grouping_column, key_column, threshold)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   For each group, limit k rows per key.
+
+   See :func:`~.truncate_large_groups` for more information about truncation.
+
+   .. rubric:: Example
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3", "a3", "a4", "a4", "a4", "a4"],
+       ...             "B": ["b1", "b1", "b2", "b2", "b2", "b1", "b2", "b3", "b4"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b2
+   5  a4  b1
+   6  a4  b2
+   7  a4  b3
+   8  a4  b4
+   >>> truncate = LimitRowsPerKeyPerGroup(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     input_metric=IfGroupedBy("B", SumOf(IfGroupedBy("A", SymmetricDifference()))),
+   ...     grouping_column="A",
+   ...     key_column="B",
+   ...     threshold=2,
+   ... )
+   >>> # Apply transformation to data
+   >>> truncated_spark_dataframe = truncate(spark_dataframe)
+   >>> print_sdf(truncated_spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a4  b1
+   5  a4  b2
+   6  a4  b3
+   7  a4  b4
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain` (matches input domain)
+       * Input metric - :class:`~.IfGroupedBy` on the grouping column, with inner
+         metric :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy` on the key column, with inner
+         metric as a :class:`~.SumOf` or :class:`~.RootSumOfSquared` over a
+         :class:`~.IfGroupedBy` on the grouping column, with inner metric
+         :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+         on the key column, with inner metric as a :class:`~.RootSumOfSquared`,
+         with inner metric :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+         on the grouping column, with inner metric :class:`~.SymmetricDifference`
+
+       >>> truncate.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
+       >>> truncate.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
+       >>> truncate.input_metric
+       IfGroupedBy(column='B', inner_metric=SumOf(inner_metric=IfGroupedBy(column='A', inner_metric=SymmetricDifference())))
+       >>> truncate.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.LimitRowsPerKeyPerGroup`'s :meth:`~.stability_function` returns
+           `d_in` if `input_metric` is `IfGroupedBy(grouping_column, SymmetricDifference())`
+           and `threshold * d_in` otherwise.
+
+           >>> truncate.stability_function(1)
+           2
+           >>> truncate.stability_function(2)
+           4
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.grouping_column`
+        - Returns the column defining the groups to truncate.
+      * - :meth:`.key_column`
+        - Returns the column defining the keys.
+      * - :meth:`.threshold`
+        - Returns the maximum number of rows each unique (key, grouping column value) pair may appear in after truncation.
+      * - :meth:`.stability_function`
+        - Returns the smallest d_out satisfied by the transformation.
+      * - :meth:`.__call__`
+        - Returns a truncated dataframe.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.output_metric`
+        - Distance metric on input domain.
+      * - :meth:`.stability_relation`
+        - Returns True only if close inputs produce close outputs.
+      * - :meth:`.__or__`
+        - Return this transformation chained with another component.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: grouping_column(self)
+      :property:
+
+      Returns the column defining the groups to truncate.
+
+
+   .. py:method:: key_column(self)
+      :property:
+
+      Returns the column defining the keys.
+
+
+   .. py:method:: threshold(self)
+      :property:
+
+      Returns the maximum number of rows each unique (key, grouping column value) pair may appear in after truncation.
 
 
    .. py:method:: stability_function(self, d_in)
