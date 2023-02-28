@@ -82,6 +82,8 @@ Classes
      - Returns data with rows that contain null or NaN value dropped.
    * - :class:`.DropInfinity`
      - Returns data with rows that contain +inf/-inf dropped.
+   * - :class:`.EnforceConstraint`
+     - Enforces a constraint on the data.
    * - :class:`.GroupByCount`
      - Returns the count of each combination of the groupby domains.
    * - :class:`.GroupByCountDistinct`
@@ -888,6 +890,42 @@ Classes
 
 
    
+.. py:class:: EnforceConstraint
+
+   Bases: :class:`QueryExpr`
+
+   Enforces a constraint on the data.
+
+
+
+
+
+   .. py:attribute:: child
+      :annotation: :QueryExpr
+
+      The QueryExpr to which the constraint will be applied.
+
+   .. py:attribute:: constraint
+      :annotation: :tmlt.analytics.constraints.Constraint
+
+      A constraint to be enforced.
+
+   .. py:attribute:: options
+      :annotation: :Dict[str, Any]
+
+      Options to be used when enforcing the constraint.
+
+      Appropriate values here vary depending on the constraint. These options are
+      to support advanced use cases, and generally should not be used.
+
+
+   .. py:method:: accept(self, visitor)
+
+      Visit this QueryExpr with visitor.
+
+
+
+   
 .. py:class:: GroupByCount
 
    Bases: :class:`QueryExpr`
@@ -1322,6 +1360,8 @@ Classes
         - Visit a :class:`DropNullAndNan`.
       * - :meth:`.visit_drop_infinity`
         - Visit a :class:`DropInfinity`.
+      * - :meth:`.visit_enforce_constraint`
+        - Visit a :class:`EnforceConstraint`.
       * - :meth:`.visit_groupby_count`
         - Visit a :class:`GroupByCount`.
       * - :meth:`.visit_groupby_count_distinct`
@@ -1410,6 +1450,12 @@ Classes
       :abstractmethod:
 
       Visit a :class:`DropInfinity`.
+
+
+   .. py:method:: visit_enforce_constraint(self, expr)
+      :abstractmethod:
+
+      Visit a :class:`EnforceConstraint`.
 
 
    .. py:method:: visit_groupby_count(self, expr)

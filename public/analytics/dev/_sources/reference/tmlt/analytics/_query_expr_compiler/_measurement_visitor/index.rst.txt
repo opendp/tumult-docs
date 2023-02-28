@@ -31,7 +31,7 @@ Classes
      - A visitor to create a measurement from a query expression.
 
    
-.. py:class:: MeasurementVisitor(per_query_privacy_budget, stability, input_domain, input_metric, output_measure, default_mechanism, public_sources, catalog)
+.. py:class:: MeasurementVisitor(per_query_privacy_budget, stability, input_domain, input_metric, output_measure, default_mechanism, public_sources, catalog, table_constraints)
 
    Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
 
@@ -79,6 +79,8 @@ Classes
         - Visit a DropInfinity query expression (raises an error).
       * - :meth:`.visit_drop_null_and_nan`
         - Visit a DropNullAndNan query expression (raises an error).
+      * - :meth:`.visit_enforce_constraint`
+        - Visit an EnforceConstraint query expression (raises an error).
 
 
 
@@ -194,6 +196,12 @@ Classes
       :abstractmethod:
 
       Visit a DropNullAndNan query expression (raises an error).
+
+
+   .. py:method:: visit_enforce_constraint(self, expr)
+      :abstractmethod:
+
+      Visit an EnforceConstraint query expression (raises an error).
 
 
 

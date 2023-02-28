@@ -31,13 +31,18 @@ Classes
      - A visitor to create a transformation from a query expression.
 
    
-.. py:class:: TransformationVisitor(input_domain, input_metric, mechanism, public_sources)
+.. py:class:: TransformationVisitor(input_domain, input_metric, mechanism, public_sources, table_constraints)
 
    Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
 
    A visitor to create a transformation from a query expression.
 
 
+
+   .. list-table:: Classes
+
+      * - :class:`.Output`
+        - A container for the outputs of the visitor.
 
    .. list-table:: Methods
 
@@ -69,6 +74,8 @@ Classes
         - Create a transformation from a DropInfinity query expression.
       * - :meth:`.visit_drop_null_and_nan`
         - Create a transformation from a DropNullAndNan query expression.
+      * - :meth:`.visit_enforce_constraint`
+        - Create a transformation from an EnforceConstraint query expression.
       * - :meth:`.visit_groupby_count`
         - Visit a GroupByCount query expression (raises an error).
       * - :meth:`.visit_groupby_count_distinct`
@@ -83,6 +90,19 @@ Classes
         - Visit a GroupByBoundedVariance query expression (raises an error).
       * - :meth:`.visit_groupby_bounded_stdev`
         - Visit a GroupByBoundedSTDEV query expression (raises an error).
+
+
+   
+   .. py:class:: Output
+
+      Bases: :class:`NamedTuple`
+
+      A container for the outputs of the visitor.
+
+
+
+
+
 
 
 
@@ -156,6 +176,11 @@ Classes
    .. py:method:: visit_drop_null_and_nan(self, expr)
 
       Create a transformation from a DropNullAndNan query expression.
+
+
+   .. py:method:: visit_enforce_constraint(self, expr)
+
+      Create a transformation from an EnforceConstraint query expression.
 
 
    .. py:method:: visit_groupby_count(self, expr)
