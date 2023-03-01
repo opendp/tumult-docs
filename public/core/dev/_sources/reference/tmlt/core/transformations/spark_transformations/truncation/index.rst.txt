@@ -198,7 +198,7 @@ Classes
 
 
    
-.. py:class:: LimitKeysPerGroup(input_domain, grouping_column, key_column, threshold, use_l2)
+.. py:class:: LimitKeysPerGroup(input_domain, output_metric, grouping_column, key_column, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -246,10 +246,10 @@ Classes
    ...             "B": SparkStringColumnDescriptor(),
    ...         }
    ...     ),
+   ...     output_metric=IfGroupedBy("B", SumOf(IfGroupedBy("A", SymmetricDifference()))),
    ...     grouping_column="A",
    ...     key_column="B",
    ...     threshold=2,
-   ...     use_l2=False,
    ... )
    >>> # Apply transformation to data
    >>> truncated_spark_dataframe = truncate(spark_dataframe)
@@ -268,9 +268,9 @@ Classes
        * Output domain - :class:`~.SparkDataFrameDomain` (matches input domain)
        * Input metric - :class:`~.IfGroupedBy` on the grouping column, with inner
          metric :class:`~.SymmetricDifference`
-       * Output metric - :class:`~.IfGroupedBy` on the key column, with inner
-         metric as a :class:`~.SumOf` (`use_l2` is `False`) or
-         :class:`~.RootSumOfSquared` (`use_l2` is `True`) over a
+       * Output metric - :class:`~.IfGroupedBy` on the grouping column, with inner
+         metric :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy` on the key column, with inner
+         metric as a :class:`~.SumOf` or :class:`~.RootSumOfSquared` over a
          :class:`~.IfGroupedBy` on the grouping column, with inner metric
          :class:`~.SymmetricDifference`
 
@@ -285,8 +285,10 @@ Classes
 
        Stability Guarantee:
            :class:`~.LimitKeysPerGroup`'s :meth:`~.stability_function` returns
-           `threshold * d_in` if `use_l2` is `False` and `sqrt(threshold) * d_in`
-           otherwise.
+           `d_in` if `output_metric` is IfGroupedBy(grouping_column, SymmetricDifference()),
+           `sqrt(threshold) * d_in` if `output_metric` is
+           `IfGroupedBy(key_column, RootSumOfSquared(IfGroupedBy(grouping_column, SymmetricDifference())))`,
+           and `threshold * d_in` otherwise.
 
            >>> truncate.stability_function(1)
            2
@@ -303,8 +305,6 @@ Classes
         - Returns the column defining the keys.
       * - :meth:`.threshold`
         - Returns the maximum number of keys per group after truncation.
-      * - :meth:`.use_l2`
-        - Returns whether the output metric will use :class:`~.RootSumOfSquared`.
       * - :meth:`.stability_function`
         - Returns the smallest d_out satisfied by the transformation.
       * - :meth:`.__call__`
@@ -342,12 +342,6 @@ Classes
       :property:
 
       Returns the maximum number of keys per group after truncation.
-
-
-   .. py:method:: use_l2(self)
-      :property:
-
-      Returns whether the output metric will use :class:`~.RootSumOfSquared`.
 
 
    .. py:method:: stability_function(self, d_in)
