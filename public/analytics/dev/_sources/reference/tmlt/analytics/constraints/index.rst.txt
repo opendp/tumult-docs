@@ -47,6 +47,8 @@ Classes
 
    * - :class:`.Constraint`
      - A known, enforceable fact about a table.
+   * - :class:`.MaxGroupsPerID`
+     - A constraint limiting the number of distinct groups per ID.
    * - :class:`.MaxRowsPerID`
      - A constraint limiting the number of rows associated with each ID in a table.
 
@@ -69,6 +71,35 @@ Classes
 
 
 
+
+
+
+   
+.. py:class:: MaxGroupsPerID
+
+   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+
+   A constraint limiting the number of distinct groups per ID.
+
+   This constraint limits how many times a distinct value may appear in the grouping
+   column for each distinct value in the table's ID column. For example,
+   ``MaxGroupsPerID("grouping_column", 4)`` guarantees that there are at most four
+   distinct values of ``grouping_column`` for each distinct value of ``ID_column``.
+
+
+
+
+
+   .. py:attribute:: grouping_column
+      :annotation: :str
+
+      The name of the grouping column.
+
+   .. py:attribute:: max
+      :annotation: :int
+
+      The maximum number of distinct values in the grouping column
+      for each distinct value in the ID column.
 
 
 

@@ -286,6 +286,23 @@ function checkPageExistsAndRedirect(event) {
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID">
+     MaxGroupsPerID
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID.grouping_column">
+       grouping_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID.max">
+       max
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -352,6 +369,9 @@ column.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.constraints._truncation.MaxRowsPerID" title="tmlt.analytics.constraints._truncation.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a></p></td>
 <td><p>A constraint limiting the number of rows associated with each ID in a table.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID" title="tmlt.analytics.constraints._truncation.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a></p></td>
+<td><p>A constraint limiting the number of distinct groups per ID.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
@@ -368,6 +388,30 @@ at most five rows. It cannot be applied to tables with other protected changes.<
 <dt class="sig sig-object py" id="tmlt.analytics.constraints._truncation.MaxRowsPerID.max">
 <span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.constraints._truncation.MaxRowsPerID.max" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of times each distinct value may appear in the column.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.constraints._truncation.MaxGroupsPerID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaxGroupsPerID</span></span><a class="headerlink" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../_base/index.html#tmlt.analytics.constraints._base.Constraint" title="tmlt.analytics.constraints._base.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.constraints._base.Constraint</span></code></a></p>
+<p>A constraint limiting the number of distinct groups per ID.</p>
+<p>This constraint limits how many times a distinct value may appear in the grouping
+column for each distinct value in the table’s ID column. For example,
+<code class="docutils literal notranslate"><span class="pre">MaxGroupsPerID(&quot;grouping_column&quot;,</span> <span class="pre">4)</span></code> guarantees that there are at most four
+distinct values of <code class="docutils literal notranslate"><span class="pre">grouping_column</span></code> for each distinct value of <code class="docutils literal notranslate"><span class="pre">ID_column</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.constraints._truncation.MaxGroupsPerID.grouping_column">
+<span class="sig-name descname"><span class="pre">grouping_column</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID.grouping_column" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the grouping column.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.constraints._truncation.MaxGroupsPerID.max">
+<span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.constraints._truncation.MaxGroupsPerID.max" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of distinct values in the grouping column
+for each distinct value in the ID column.</p>
 </dd></dl>
 
 </dd></dl>
@@ -405,7 +449,7 @@ at most five rows. It cannot be applied to tables with other protected changes.<
   </div>
   
   <div class="footer-item">
-    Built from ff54ba88 at 2023-03-01 16:39.
+    Built from db03e67e at 2023-03-02 21:59.
   </div>
   
   <div class="footer-item">
