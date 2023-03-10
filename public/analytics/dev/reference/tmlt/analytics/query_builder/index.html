@@ -1009,21 +1009,19 @@ the tables will be joined on all common columns.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.join_private">
 <span class="sig-name descname"><span class="pre">join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_operand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.join_private" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to join with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p>
-<p>This operation is a natural join, with the same behavior and
-requirements as <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>.</p>
+<p>This operation is a natural join, with the same behavior and requirements as
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>.</p>
 <p>For operations on tables with a
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> that protects
-adding or removing rows
-(e.g., <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>), there is a key
-difference: before the join is performed, each table is <em>truncated</em> based on
-the corresponding
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> that protects adding or
+removing rows (e.g., <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>),
+there is a key difference: before the join is performed, each table is
+<em>truncated</em> based on the corresponding
 <a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>.</p>
 <p>In contrast, operations on tables with a
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> which protects
-the addition/removal of a specified identifier
-do not require a
-<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>,
-as no truncation is necessary while performing the join.</p>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.AddRowsWithID</span></code></a>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> do not require a
+<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, as no
+truncation is necessary while performing the join.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1604,11 +1602,16 @@ If False, make the new dataframe with schema = schema_new_columns</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.flat_map">
-<span class="sig-name descname"><span class="pre">flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to apply a flat map.</p>
 <p>If you provide only a ColumnType for the new column types, Analytics
 assumes that all new columns created may contain null values (and that
 DECIMAL columns may contain NaN or infinite values).</p>
+<p>Operations on tables with a
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.AddRowsWithID</span></code></a>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.protected_change.ProtectedChange</span></code></a> do not require a
+<code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code> argument, since it is not necessary to impose a limit on
+the number of new rows.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1632,13 +1635,13 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span>
-<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;i_B&quot;</span><span class="p">:</span> <span class="n">ColumnDescriptor</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">)},</span>
 <span class="gp">... </span>        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">grouping</span><span class="o">=</span><span class="kc">False</span>
+<span class="gp">... </span>        <span class="n">grouping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}))</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -1668,9 +1671,6 @@ have the same keys regardless of input, and the values in those
 dictionaries should match the column type specified in
 <code class="docutils literal notranslate"><span class="pre">new_column_types</span></code>. The function should not have any side effects
 (in particular, f cannot raise exceptions).</p></li>
-<li><p><strong>max_num_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The enforced limit on the number of rows from each f(row).
-If f produces more rows than this, only the first <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>
-rows will be in the output.</p></li>
 <li><p><strong>new_column_types</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><em>tmlt.analytics._schema.ColumnDescriptor</em></a><em>, </em><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.ColumnType" title="tmlt.analytics._schema.ColumnType"><em>tmlt.analytics._schema.ColumnType</em></a><em>]</em><em>]</em>) – Mapping from column names to types, for new columns
 produced by f. Using
 <a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>
@@ -1683,6 +1683,9 @@ If True, this requires that any groupby aggregations following this
 query include the new column as a groupby column. Only one new column
 is supported, and the new column must have distinct values for each
 input row.</p></li>
+<li><p><strong>max_num_rows</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The enforced limit on the number of rows from each f(row).
+If f produces more rows than this, only the first <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>
+rows will be in the output.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -3367,7 +3370,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 7c29b41f at 2023-03-09 22:20.
+    Built from 745a519e at 2023-03-10 18:49.
   </div>
   
   <div class="footer-item">

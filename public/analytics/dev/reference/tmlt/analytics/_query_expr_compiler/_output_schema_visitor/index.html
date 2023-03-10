@@ -667,29 +667,29 @@ function checkPageExistsAndRedirect(event) {
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Augment = False example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
-<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
 <span class="go">{&#39;C&#39;: &#39;INTEGER&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Augment = True example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
-<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
 <span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Grouping example</span>
 <span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
-<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span> <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
 <span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
@@ -1132,7 +1132,7 @@ where the private table is the left table.</p>
   </div>
   
   <div class="footer-item">
-    Built from 7c29b41f at 2023-03-09 22:20.
+    Built from 745a519e at 2023-03-10 18:49.
   </div>
   
   <div class="footer-item">
