@@ -768,6 +768,14 @@ function checkPageExistsAndRedirect(event) {
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RowToRowTransformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.RowToRowTransformation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Transforms a single row into a different row using a user defined function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transformation function must not contain any objects that
+directly or indirectly reference Spark DataFrames or Spark contexts.
+If the function does contain an object that directly or indirectly
+references a Spark DataFrame or a Spark context, an
+error will occur when the RowToRowTransformation is called on a row.</p>
+</div>
 <p class="rubric">Examples</p>
 <p>augment=False:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
@@ -1012,6 +1020,14 @@ exists, the original value is used.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RowToRowsTransformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Transforms a single row into multiple rows using a user defined function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transformation function must not contain any objects that
+directly or indirectly reference Spark DataFrames or Spark contexts.
+If the function does contain an object that directly or indirectly
+references a Spark DataFrame or a Spark context, an
+error will occur when the RowToRowTransformation is called on a row</p>
+</div>
 <p class="rubric">Examples</p>
 <p>augment=False:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
@@ -1262,6 +1278,14 @@ original value is used.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FlatMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowToRowsTransformation</span></code></a> to each row and flattens the result.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transformation function must not contain any objects that
+directly or indirectly reference Spark DataFrames or Spark contexts.
+If the function does contain an object that directly or indirectly
+references a Spark DataFrame or a Spark context, an
+error will occur when the RowToRowTransformation is called on a row</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
@@ -1497,6 +1521,14 @@ for a tighter stability analysis.</p>
 <li><p>For each input row, the values in the created column are distinct (This is
 enforced by the implementation).</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transformation function must not contain any objects that
+directly or indirectly reference Spark DataFrames or Spark contexts.
+If the function does contain an object that directly or indirectly
+references a Spark DataFrame or a Spark context, an
+error will occur when the RowToRowTransformation is called on a row</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
@@ -1719,6 +1751,14 @@ enforced by the implementation).</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.Map" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowToRowTransformation" title="tmlt.core.transformations.spark_transformations.map.RowToRowTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowToRowTransformation</span></code></a> to each row in a Spark DataFrame.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transformation function must not contain any objects that
+directly or indirectly reference Spark DataFrames or Spark contexts.
+If the function does contain an object that directly or indirectly
+references a Spark DataFrame or a Spark context, an
+error will occur when the RowToRowTransformation is called on a row</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
@@ -1956,7 +1996,7 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
   </div>
   
   <div class="footer-item">
-    Built from 63c1cbf7 at 2023-03-14 20:10.
+    Built from ddff3bcd at 2023-03-15 17:29.
   </div>
   
   <div class="footer-item">
