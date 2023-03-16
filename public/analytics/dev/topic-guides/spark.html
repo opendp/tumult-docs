@@ -269,6 +269,11 @@ function checkPageExistsAndRedirect(event) {
    Using Tumult Analytics on BigQuery
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   Troubleshooting
+  </a>
+ </li>
 </ul>
 
   </div>
@@ -326,6 +331,18 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#performance-and-profiling">
    Performance and profiling
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ram-usage">
+     RAM usage
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#saving-results-to-csv-or-other-formats">
+     Saving results (to CSV or other formats)
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -472,6 +489,42 @@ Deleting the folder will delete the database.</p>
 <p>All queries made with Analytics are executed by Spark. If you are having
 performance problems, you will probably want to look at
 <a class="reference external" href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">Spark performance-tuning options</a>.</p>
+<section id="ram-usage">
+<h3>RAM usage<a class="headerlink" href="#ram-usage" title="Permalink to this headline">#</a></h3>
+<p>By default, Spark allocates itself 1GB of RAM
+(see <a class="reference external" href="https://spark.apache.org/docs/latest/configuration.html#application-properties">Spark’s configuration documentation</a>).
+Analytics programs often need more RAM than this.
+Usually, a program needs more RAM because:</p>
+<ul class="simple">
+<li><p>the input data is large (10M rows or more)</p></li>
+<li><p>a keyset used for a grouping operation is large (10k rows or more)</p></li>
+<li><p>the output data is large (10M rows or more)</p></li>
+</ul>
+<p>You can adjust the amount of memory available to Spark when creating your
+Spark session. For example, to configure Spark with 8 gigabytes of RAM, you
+can run this code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s1">&#39;spark.driver.memory&#39;</span><span class="p">,</span> <span class="s1">&#39;8gb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This only applies when running Spark on a single, local node; see Spark’s
+documentation for how to configure Spark to use more RAM across a cluster.</p>
+</section>
+<section id="saving-results-to-csv-or-other-formats">
+<h3>Saving results (to CSV or other formats)<a class="headerlink" href="#saving-results-to-csv-or-other-formats" title="Permalink to this headline">#</a></h3>
+<p>Converting large Spark dataframes (10M rows or more) to Pandas dataframes can
+be very resource-intensive. We recommend using
+<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.write" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.write()</span></code></a> to save results
+to file, instead of using
+<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.toPandas" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.toPandas()</span></code></a> and then saving the Pandas
+dataframe.</p>
+<p>For example, to save a dataframe as CSV, you can do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(),</span> <span class="s1">&#39;data&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -519,7 +572,7 @@ performance problems, you will probably want to look at
   </div>
   
   <div class="footer-item">
-    Built from f0ad0370 at 2023-03-14 20:49.
+    Built from 19d56b6d at 2023-03-16 20:27.
   </div>
   
   <div class="footer-item">
