@@ -392,7 +392,7 @@ as well as the library members dataset used in all other tutorials:</p>
 <span class="p">)</span>
 <span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
     <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;member_id&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -420,7 +420,7 @@ This is done as follows.</p>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
         <span class="s2">&quot;members&quot;</span><span class="p">,</span>
         <span class="n">members_df</span><span class="p">,</span>
-        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="p">)</span>
@@ -498,21 +498,36 @@ stage.</p>
 members data and get counts of books read, by genre, for members of each
 education level.</p>
 <p>First, we join the dataframes, and hold the result in another in-session view:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use rename once analytics functionality is in</span>
-<span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)),</span>
     <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
     <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-
+</pre></div>
+</div>
+<p>The join produces an error, because the ID columns in the two tables have different names:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+ValueError: Private joins between tables with the AddRowsWithID protected change are
+only possible when the ID columns of the two tables have the same name
+</pre></div>
+</div>
+<p>To fix this, we can use the <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.rename" title="tmlt.analytics.query_builder.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.rename</span></code></a>
+method to rename the ID column in the members table to match the ID column in the checkouts table:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;member_id&quot;</span><span class="p">})),</span>
+    <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: [&#39;checkouts_joined&#39;, &#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Private dataframes: [&#39;checkouts_joined&#39;, &#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">Joins</span></code> on two private tables in the same ID space work seamlessly, as long as the ID
-columns are part of the join. Like with <code class="docutils literal notranslate"><span class="pre">flat_maps</span></code>, no truncation is necessary.</p>
+<p>Using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a> on two private tables in the same ID space works seamlessly as long as the ID
+columns are part of the join and have the same name in both tables. Like with
+<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>, no truncation is necessary.</p>
 </section>
 <section id="computing-the-statistic">
 <h3>Computing the statistic<a class="headerlink" href="#computing-the-statistic" title="Permalink to this headline">#</a></h3>
@@ -644,7 +659,7 @@ truncation parameters for each.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 94ff4ecc at 2023-04-13 19:18.
+    Built from 0c03a7f1 at 2023-04-17 17:16.
   </div>
   
   <div class="footer-item">
