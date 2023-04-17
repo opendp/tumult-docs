@@ -123,6 +123,8 @@ Classes
         - Returns an optional column that must be grouped by in this query.
       * - :meth:`.get_id_column`
         - Returns the ID column of a table, if it has one.
+      * - :meth:`.get_id_space`
+        - Returns the ID space of a table, if it has one.
       * - :meth:`.add_public_dataframe`
         - Adds a public data source to the session.
       * - :meth:`.evaluate`
@@ -135,6 +137,8 @@ Classes
         - Returns new sessions from a partition mapped to split name/``source_id``.
       * - :meth:`.stop`
         - Close out this session, allowing other sessions to become active.
+      * - :meth:`.describe`
+        - Describe this session, or a query, or a table.
 
 
    
@@ -325,6 +329,13 @@ Classes
       Returns the ID column of a table, if it has one.
 
       :param source_id: The name of the table whose ID column is being retrieved.
+
+
+   .. py:method:: get_id_space(self, source_id)
+
+      Returns the ID space of a table, if it has one.
+
+      :param source_id: The name of the table whose ID space is being retrieved.
 
 
    .. py:method:: add_public_dataframe(self, source_id, dataframe)
@@ -592,6 +603,28 @@ Classes
    .. py:method:: stop(self)
 
       Close out this session, allowing other sessions to become active.
+
+
+   .. py:method:: describe(self, x = None)
+
+      Describe this session, or a query, or a table.
+
+      If ``x`` is ``None``, ``session._describe(x)`` will describe the session.
+
+      If ``x`` is a
+      :class:`~tmlt.analytics.query_expr.QueryExpr`,
+      ``session._describe(x)`` will describe
+      the schema resulting from that query expression.
+
+      If x is a
+      :class:`~tmlt.analytics.query_builder.QueryBuilder`,
+      ``session._describe(x) will describe the query constructed by the
+      query builder. This is equivalent to calling
+      ``session._describe(x.query_expr)``.
+
+      If x is a string, x is assumed to be a table name. In this case,
+      ``session._describe(x)`` is equivalent to
+      ``session._describe(QueryBuilder(x))``.
 
 
 

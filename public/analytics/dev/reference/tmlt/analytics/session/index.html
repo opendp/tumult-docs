@@ -421,6 +421,11 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.get_id_space">
+       get_id_space
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.add_public_dataframe">
        add_public_dataframe
       </a>
@@ -448,6 +453,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.stop">
        stop
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.describe">
+       describe
       </a>
      </li>
     </ul>
@@ -611,23 +621,29 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_id_column" title="tmlt.analytics.session.Session.get_id_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_id_column()</span></code></a></p></td>
 <td><p>Returns the ID column of a table, if it has one.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.add_public_dataframe" title="tmlt.analytics.session.Session.add_public_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_public_dataframe()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_id_space" title="tmlt.analytics.session.Session.get_id_space"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_id_space()</span></code></a></p></td>
+<td><p>Returns the ID space of a table, if it has one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.add_public_dataframe" title="tmlt.analytics.session.Session.add_public_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_public_dataframe()</span></code></a></p></td>
 <td><p>Adds a public data source to the session.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a></p></td>
 <td><p>Answers a query within the given privacy budget and returns a Spark dataframe.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.create_view" title="tmlt.analytics.session.Session.create_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_view()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.create_view" title="tmlt.analytics.session.Session.create_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_view()</span></code></a></p></td>
 <td><p>Create a new view from a transformation and possibly cache it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.delete_view" title="tmlt.analytics.session.Session.delete_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_view()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.delete_view" title="tmlt.analytics.session.Session.delete_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_view()</span></code></a></p></td>
 <td><p>Deletes a view and decaches it if it was cached.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.partition_and_create" title="tmlt.analytics.session.Session.partition_and_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_and_create()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.partition_and_create" title="tmlt.analytics.session.Session.partition_and_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_and_create()</span></code></a></p></td>
 <td><p>Returns new sessions from a partition mapped to split name/<code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.stop" title="tmlt.analytics.session.Session.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.stop" title="tmlt.analytics.session.Session.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p></td>
 <td><p>Close out this session, allowing other sessions to become active.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.describe" title="tmlt.analytics.session.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe()</span></code></a></p></td>
+<td><p>Describe this session, or a query, or a table.</p></td>
 </tr>
 </tbody>
 </table>
@@ -920,6 +936,20 @@ is being retrieved.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.get_id_space">
+<span class="sig-name descname"><span class="pre">get_id_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.get_id_space" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the ID space of a table, if it has one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the table whose ID space is being retrieved.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.add_public_dataframe">
 <span class="sig-name descname"><span class="pre">add_public_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.add_public_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a public data source to the session.</p>
@@ -1144,6 +1174,33 @@ is preferred.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Describe this session, or a query, or a table.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">session._describe(x)</span></code> will describe the session.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a
+<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>,
+<code class="docutils literal notranslate"><span class="pre">session._describe(x)</span></code> will describe
+the schema resulting from that query expression.</p>
+<p>If x is a
+<a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>,
+<code class="docutils literal notranslate"><span class="pre">session._describe(x)</span> <span class="pre">will</span> <span class="pre">describe</span> <span class="pre">the</span> <span class="pre">query</span> <span class="pre">constructed</span> <span class="pre">by</span> <span class="pre">the</span>
+<span class="pre">query</span> <span class="pre">builder.</span> <span class="pre">This</span> <span class="pre">is</span> <span class="pre">equivalent</span> <span class="pre">to</span> <span class="pre">calling</span>
+<span class="pre">``session._describe(x.query_expr)</span></code>.</p>
+<p>If x is a string, x is assumed to be a table name. In this case,
+<code class="docutils literal notranslate"><span class="pre">session._describe(x)</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">session._describe(QueryBuilder(x))</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>, </em><a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><em>tmlt.analytics.query_builder.QueryBuilder</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1193,7 +1250,7 @@ is preferred.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 0c03a7f1 at 2023-04-17 17:16.
+    Built from e8a119f2 at 2023-04-17 18:35.
   </div>
   
   <div class="footer-item">
