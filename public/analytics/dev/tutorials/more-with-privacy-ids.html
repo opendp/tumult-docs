@@ -525,6 +525,30 @@ method to rename the ID column in the members table to match the ID column in th
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Private dataframes: [&#39;checkouts_joined&#39;, &#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
 </pre></div>
 </div>
+<p>Let’s inspect the result of the join to make sure it looks right:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">&quot;checkouts_joined&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Columns:
+    - &#39;member_id&#39;         INTEGER, ID column (in ID space member_id_space)
+    - &#39;checkout_date&#39;     TIMESTAMP
+    - &#39;title&#39;             VARCHAR
+    - &#39;author&#39;            VARCHAR
+    - &#39;isbn&#39;              VARCHAR
+    - &#39;publication_date&#39;  INTEGER
+    - &#39;publisher&#39;         VARCHAR
+    - &#39;genres&#39;            VARCHAR
+    - &#39;genre&#39;             VARCHAR
+    - &#39;name&#39;              VARCHAR
+    - &#39;age&#39;               INTEGER
+    - &#39;gender&#39;            VARCHAR
+    - &#39;education_level&#39;   VARCHAR
+    - &#39;zip_code&#39;          VARCHAR
+    - &#39;books_borrowed&#39;    INTEGER
+    - &#39;favorite_genres&#39;   VARCHAR
+    - &#39;date_joined&#39;       TIMESTAMP
+</pre></div>
+</div>
 <p>Using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a> on two private tables in the same ID space works seamlessly as long as the ID
 columns are part of the join and have the same name in both tables. Like with
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>, no truncation is necessary.</p>
@@ -659,7 +683,7 @@ truncation parameters for each.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 19b2c045 at 2023-04-18 19:41.
+    Built from c8adf00f at 2023-04-19 14:58.
   </div>
   
   <div class="footer-item">
