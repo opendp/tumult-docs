@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>BigQuery inputs and outputs &#8212; Tumult Analytics  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Calling Tumult Analytics from a BigQuery stored procedure" href="running-the-program.html" />
+    <link rel="prev" title="Introduction to BigQuery" href="bigquery-setup.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../reference/tmlt/analytics/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        dev  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables howto-guides/bigquery/inputs-outputs and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': 'dev'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "howto-guides/bigquery/inputs-outputs.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "howto-guides/bigquery/inputs-outputs.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's dev variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "dev") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../installation.html">
+   Installation instructions
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Using Tumult Analytics on BigQuery
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="setup.html">
+     GCP setup
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bigquery-setup.html">
+     Introduction to BigQuery
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     BigQuery inputs and outputs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="running-the-program.html">
+     Calling Tumult Analytics from a BigQuery stored procedure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="parameters.html">
+     Passing parameters to a stored procedure
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="docker-image.html">
+     Creating a Docker image for GCP
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../troubleshooting.html">
+   Troubleshooting
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-the-spark-session">
+   Creating the Spark Session
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#specifying-bigquery-inputs-and-outputs">
+   Specifying BigQuery inputs and outputs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#full-example">
+   Full example
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="bigquery-inputs-and-outputs">
+<span id="id1"></span><h1>BigQuery inputs and outputs<a class="headerlink" href="#bigquery-inputs-and-outputs" title="Permalink to this headline">#</a></h1>
+<p>In this section, we will show how to adapt a Tumult Analytics
+program to use BigQuery inputs and outputs, and provide a minimal
+example of a BigQuery-compatible program.</p>
+<p>We will use the simple program from <a class="reference internal" href="../../tutorials/first-steps.html#first-steps"><span class="std std-ref">the first tutorial</span></a>
+which constructs a differentially private count of the number of
+members in a fake dataset containing members of a public library
+<code class="docutils literal notranslate"><span class="pre">library-members</span></code>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/library-members.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span>
+<span class="p">)</span>
+
+<span class="n">count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">count_query</span><span class="p">,</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">total_count</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We will explain what needs to change to adapt this program to work on
+BigQuery.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<p>To be able to write to BigQuery, we need to create a Google Cloud
+Storage bucket to store the intermediate results and our programs.</p>
+<ol class="arabic simple">
+<li><p>Go to the <a class="reference external" href="https://console.cloud.google.com/storage">Cloud Storage interface</a></p></li>
+<li><p>Create a new bucket by clicking on <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">CREATE</span></code></p></li>
+</ol>
+<p>In this topic guide, we will create two buckets. One to house our
+programs, and the other for intermediate materialization. For this
+topic guide, we will be calling ours <code class="docutils literal notranslate"><span class="pre">tumult-shared-procedures</span></code>
+and <code class="docutils literal notranslate"><span class="pre">tumult-warehouse</span></code> respectively. Since buckets use a global
+namespace, you will need to choose a unique name for your bucket.</p>
+</section>
+<section id="creating-the-spark-session">
+<h2>Creating the Spark Session<a class="headerlink" href="#creating-the-spark-session" title="Permalink to this headline">#</a></h2>
+<p>Our Spark session will use a <a class="reference external" href="https://cloud.google.com/storage">Google Cloud Storage</a> bucket to store
+intermediate results that are generated and used by Tumult Analytics
+to compute the differentially private results. This is done by setting
+the <code class="docutils literal notranslate"><span class="pre">spark.sql.warehouse.dir</span></code> configuration option.</p>
+<p>Additionally, writing to BigQuery tables requires an intermediate
+buffer to write to, which is also stored in a Google Cloud Storage
+bucket. In this case, we can use the same bucket for both purposes.
+You will need to replace <code class="docutils literal notranslate"><span class="pre">BUCKET</span></code> with your own bucket name.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Whenever working with sensitive data, make sure that these
+buckets are securely configured and that unauthorized users
+cannot access them.</p>
+</div>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark = SparkSession.builder.getOrCreate()</span>
+<span class="gi">+BUCKET = &quot;my-gcs-bucket&quot;</span>
+<span class="gi">+spark = (</span>
+<span class="gi">+    SparkSession</span>
+<span class="gi">+    .builder</span>
+<span class="gi">+    .config(&quot;spark.sql.warehouse.dir&quot;, os.path.join(&quot;gs://&quot;, BUCKET, &quot;/spark-warehouse/&quot;))</span>
+<span class="gi">+    .config(&quot;temporaryGcsBucket&quot;, BUCKET)</span>
+<span class="gi">+    .getOrCreate()</span>
+<span class="gi">+)</span>
+</pre></div>
+</div>
+</section>
+<section id="specifying-bigquery-inputs-and-outputs">
+<h2>Specifying BigQuery inputs and outputs<a class="headerlink" href="#specifying-bigquery-inputs-and-outputs" title="Permalink to this headline">#</a></h2>
+<p>Then, using BigQuery for inputs/outputs is straightforward. Instead of
+reading from a CSV file, we specify that the format we’re reading from is
+<code class="docutils literal notranslate"><span class="pre">BigQuery</span></code>, with additional <code class="docutils literal notranslate"><span class="pre">option</span></code> properties that we set to indicate
+each table path.</p>
+<p>Here is a code snippet for reading a BigQuery input.
+You will need to replace <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATASET</span></code>, and <code class="docutils literal notranslate"><span class="pre">TABLE</span></code> with
+your own values.</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-spark.sparkContext.addFile(</span>
+<span class="gd">-    &quot;https://tumult-public.s3.amazonaws.com/library-members.csv&quot;</span>
+<span class="gd">-)</span>
+<span class="gd">-members_df = spark.read.csv(</span>
+<span class="gd">-    SparkFiles.get(&quot;library-members.csv&quot;), header=True, inferSchema=True</span>
+<span class="gd">-)</span>
+<span class="gi">+PROJECT = &quot;tumult-labs&quot;</span>
+<span class="gi">+DATASET = &quot;analytics_tutorial&quot;</span>
+<span class="gi">+TABLE   = &quot;library_members&quot;</span>
+<span class="gi">+members_df = (</span>
+<span class="gi">+  spark.read.format(&quot;bigquery&quot;)</span>
+<span class="gi">+  .option(&quot;table&quot;, f&quot;{PROJECT}:{DATASET}.{TABLE}&quot;)</span>
+<span class="gi">+  .load()</span>
+<span class="gi">+)</span>
+</pre></div>
+</div>
+<p>And here is a snippet to write to a BigQuery table. Here we write our
+counts to <code class="docutils literal notranslate"><span class="pre">tumult-labs.analytics_tutorial.library_counts</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">total_count</span>
+    <span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;bigquery&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;tumult-labs:analytics_tutorial.library_counts&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The format for table names is <code class="docutils literal notranslate"><span class="pre">[PROJECT]:[DATASET].[TABLE]</span></code>.</p>
+</section>
+<section id="full-example">
+<h2>Full example<a class="headerlink" href="#full-example" title="Permalink to this headline">#</a></h2>
+<p>In the end, your program should look structually similar to this final program.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="n">BUCKET</span> <span class="o">=</span> <span class="s2">&quot;tumult-warehouse&quot;</span>
+<span class="n">INPUT_TABLE</span> <span class="o">=</span> <span class="s2">&quot;tumult-labs.analytics_tutorial.library_members&quot;</span>
+<span class="n">OUTPUT_TABLE</span> <span class="o">=</span> <span class="s2">&quot;tumult-labs.analytics_tutorial.member_counts&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span>
+    <span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.warehouse.dir&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;gs://&quot;</span><span class="p">,</span> <span class="n">BUCKET</span><span class="p">,</span> <span class="s2">&quot;/spark-warehouse/&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;temporaryGcsBucket&quot;</span><span class="p">,</span> <span class="n">BUCKET</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">members_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;bigquery&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">INPUT_TABLE</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span>
+<span class="p">)</span>
+
+<span class="n">count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">count_query</span><span class="p">,</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="p">(</span>
+    <span class="n">total_count</span>
+    <span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;bigquery&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">OUTPUT_TABLE</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In the <a class="reference internal" href="running-the-program.html#running-the-program"><span class="std std-ref">next part of this topic guide</span></a>,
+we will run this script to see it materialize our results in BigQuery.</p>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="bigquery-setup.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Introduction to BigQuery</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="running-the-program.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Calling Tumult Analytics from a BigQuery stored procedure</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2023.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    Built from d6bdc0e5 at 2023-04-20 15:22.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
