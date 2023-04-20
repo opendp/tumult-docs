@@ -41,6 +41,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -154,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.9.0  <!-- this text may get changed later by javascript -->
+        0.9.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -164,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/measures/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.9.0'}.
+     variables reference/tmlt/core/measures/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.9.1'}.
 -->
 
 <script type="text/javascript">
@@ -219,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.9.0 variable.
+            // this version, rather than using sphinx's 0.9.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.9.0") {
+            if (entry.version == "0.9.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -607,13 +608,13 @@ function checkPageExistsAndRedirect(event) {
 <td><p>Base class for output measures.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a></p></td>
-<td><p>Pure DP measure.</p></td>
+<td><p>The distance between distributions in “pure” differential privacy.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measures.ApproxDP" title="tmlt.core.measures.ApproxDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code></a></p></td>
-<td><p>Approximate DP measure.</p></td>
+<td><p>The distance between distributions in approximate differential privacy.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a></p></td>
-<td><p>ρ-zCDP measure.</p></td>
+<td><p>The distance between distributions in ρ-Zero Concentrated Differential Privacy.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measures.PrivacyBudget" title="tmlt.core.measures.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a></p></td>
 <td><p>An abstract class for representing a privacy budget.</p></td>
@@ -634,6 +635,9 @@ function checkPageExistsAndRedirect(event) {
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Measure</span></span><a class="headerlink" href="#tmlt.core.measures.Measure" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>Base class for output measures.</p>
+<p>Each measure defines a way of measuring “distance” between two distributions
+that corresponds to a te guarantees of a variant of differential privacy. Note
+that these “distances” are not metrics.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measures.Measure.__eq__">
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.Measure.__eq__" title="Permalink to this definition">#</a></dt>
@@ -682,7 +686,14 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="tmlt.core.measures.PureDP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PureDP</span></span><a class="headerlink" href="#tmlt.core.measures.PureDP" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></p>
-<p>Pure DP measure.</p>
+<p>The distance between distributions in “pure” differential privacy.</p>
+<p>As in Definition 1 of <a class="bibtex reference internal" href="../../../../zcitations.html#dworkmns06" id="id1">[DMNS06]</a>.</p>
+<p>In particular, under this measure the distance <span class="math notranslate nohighlight">\(\epsilon\)</span> between two
+distributions <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> with the same range is:</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = max_{S \subseteq Range(X)}\left(max\left(
+    ln\left(\frac{Pr[X \in S]}{Pr[Y \in S]}\right),
+    ln\left(\frac{Pr[Y \in S]}{Pr[X \in S]}\right)\right)\right)\]</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measures.PureDP.validate">
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.PureDP.validate" title="Permalink to this definition">#</a></dt>
@@ -734,7 +745,15 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="tmlt.core.measures.ApproxDP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApproxDP</span></span><a class="headerlink" href="#tmlt.core.measures.ApproxDP" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></p>
-<p>Approximate DP measure.</p>
+<p>The distance between distributions in approximate differential privacy.</p>
+<p>As introduced in <a class="bibtex reference internal" href="../../../../zcitations.html#dworkkmmn06" id="id2">[DKM+06]</a>.</p>
+<p>In particular, under this measure valid distances <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span>
+between two distributions <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> with the same range are those
+<span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span> satisfying:</p>
+<div class="math notranslate nohighlight">
+\[\epsilon = max_{S \subseteq Range(X)}\left(max\left(
+    ln\left(\frac{Pr[X \in S] - \delta}{Pr[Y \in S]}\right),
+    ln\left(\frac{Pr[Y \in S] - \delta}{Pr[X \in S]}\right)\right)\right)\]</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measures.ApproxDP.validate">
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.ApproxDP.validate" title="Permalink to this definition">#</a></dt>
@@ -788,9 +807,15 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="tmlt.core.measures.RhoZCDP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RhoZCDP</span></span><a class="headerlink" href="#tmlt.core.measures.RhoZCDP" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a></p>
-<p>ρ-zCDP measure.</p>
-<p>See the definition of ρ-zCDP in <a class="reference external" href="https://arxiv.org/pdf/1605.02065.pdf">this</a> paper
-under Definition 1.1.</p>
+<p>The distance between distributions in ρ-Zero Concentrated Differential Privacy.</p>
+<p>As in Definition 1.1 of <a class="bibtex reference internal" href="../../../../zcitations.html#buns16" id="id3">[BS16]</a>.</p>
+<p>In particular, under this measure the distance <span class="math notranslate nohighlight">\(\rho\)</span>
+between two distributions <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> with the same range is:</p>
+<div class="math notranslate nohighlight">
+\[\rho = max_{\alpha \in (1, \infty)}\left(max\left(
+    \frac{D_{\alpha}(X||Y)}{\alpha},
+    \frac{D_{\alpha}(Y||X)}{\alpha}\right)\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(D_{\alpha}(X||Y)\)</span> is the α-Rényi divergence between X and Y.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measures.RhoZCDP.validate">
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.RhoZCDP.validate" title="Permalink to this definition">#</a></dt>
@@ -1360,7 +1385,7 @@ the budget is infinite) without needing to know the type of the budget.</p>
   </div>
   
   <div class="footer-item">
-    Built from f7fd175c at 2023-04-14 16:59.
+    Built from fa477dba at 2023-04-20 17:01.
   </div>
   
   <div class="footer-item">
