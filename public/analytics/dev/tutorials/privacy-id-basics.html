@@ -513,18 +513,20 @@ number of <em>groups</em> that each ID can appear in, and limit the number of
 by computing how many patrons have checked out each of our top five books.</p>
 <p>For this query, we will combine two constraints to truncate our data:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a>: limiting
-the number of groups (here, distinct books) that any library patron can contribute to</p></li>
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>:
-limiting the number of rows that any library patron can provide for each group.</p></li>
+<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a>: limiting the number of
+groups (here, distinct books) that any library patron can contribute to; and</p></li>
+<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>: limiting the number
+of rows that any library patron can provide for each group.</p></li>
 </ul>
-<p>We will limit each patron to 5 groups (we only consider the 5 most popular books) and have
-patrons only appear once per group (we don’t want to count the same patron twice for the same book).</p>
+<p>We will limit each patron to 5 groups (we only consider the 5 most popular
+books) and have patrons only appear once per group (we don’t want to count the
+same patron twice for the same book).</p>
 <p>Then, we will create a keyset from our top 5 books and perform a count query:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_five_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
     <span class="n">top_five</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn&quot;</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">count_distinct_query</span> <span class="o">=</span> <span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span>
+<span class="n">count_distinct_query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxGroupsPerID</span><span class="p">(</span><span class="s2">&quot;isbn&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
     <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerGroupPerID</span><span class="p">(</span><span class="s2">&quot;isbn&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">top_five_keyset</span><span class="p">)</span>
@@ -545,7 +547,30 @@ patrons only appear once per group (we don’t want to count the same patron twi
 <span class="o">+--------------------+--------------------+----------+-----+</span>
 </pre></div>
 </div>
-<p>We can display this data as a graph:</p>
+<p>We could also express this query using
+<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="tmlt.analytics.query_builder.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a>: limiting each
+ID to a single row per library member (per ISBN) is the same as counting
+distinct IDs.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_five_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">top_five</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;isbn&quot;</span><span class="p">))</span>
+<span class="n">count_distinct_query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxGroupsPerID</span><span class="p">(</span><span class="s2">&quot;isbn&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">top_five_keyset</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">count_distinct</span><span class="p">([</span><span class="s2">&quot;member_id&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">count_distinct_query</span><span class="p">,</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>  <span class="c1"># Add title/author back to result</span>
+    <span class="n">top_five</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn&quot;</span><span class="p">),</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;isbn&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>  <span class="c1"># Reorder dataframe columns</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;isbn&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>When using <cite>count_distinct</cite> on the ID column, we no longer need to specify the
+<cite>MaxRowsPerGroupPerID</cite> constraint: Tumult Analytics understands that each ID can
+contribute at most once per group.</p>
+<p>We can then display the results as a graph:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
@@ -561,8 +586,10 @@ patrons only appear once per group (we don’t want to count the same patron twi
     <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">shorten_title</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
 <span class="p">)</span>
 
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;short_title&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_to_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_to_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span>
+    <span class="n">data_to_plot</span><span class="p">[</span><span class="s2">&quot;short_title&quot;</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;How many members have checked out popular books&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Book Title&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Members&quot;</span><span class="p">)</span>
@@ -626,7 +653,7 @@ or using <a class="reference internal" href="../reference/tmlt/analytics/constra
   </div>
   
   <div class="footer-item">
-    Built from aac9732c at 2023-04-20 22:14.
+    Built from 076c67b7 at 2023-04-25 18:40.
   </div>
   
   <div class="footer-item">
