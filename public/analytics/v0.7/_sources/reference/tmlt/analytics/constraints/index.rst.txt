@@ -1,0 +1,161 @@
+
+
+
+******************
+constraints
+******************
+
+.. py:module:: tmlt.analytics.constraints
+
+.. autoapi-nested-parse::
+
+   Defines :class:`~tmlt.analytics.constraints.Constraint` types.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.simplify_constraints`
+     - Remove redundant constraints from a list of constraints.
+
+.. py:function:: simplify_constraints(constraints)
+
+   Remove redundant constraints from a list of constraints.
+
+   Given a list of the constraints on a table, produce a copy which simplifies
+   it as much as possible by removing or combining constraints which provide
+   overlapping information. The original list is not modified.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Constraint`
+     - A known, enforceable fact about a table.
+   * - :class:`.MaxRowsPerID`
+     - A constraint limiting the number of rows associated with each ID in a table.
+   * - :class:`.MaxGroupsPerID`
+     - A constraint limiting the number of distinct groups per ID.
+   * - :class:`.MaxRowsPerGroupPerID`
+     - A constraint limiting the number of rows associated with each unique (ID, grouping column) pair in a table.
+
+   
+.. py:class:: Constraint
+
+   Bases: :class:`abc.ABC`
+
+   A known, enforceable fact about a table.
+
+   Constraints provide information about the contents of a table to help
+   produce differentially-private results. For example, a constraint might say
+   that each ID in a table corresponds to no more than two rows in that table
+   (the :class:`~tmlt.analytics.constraints.MaxRowsPerID`
+   constraint). Constraints are applied via the :meth:`QueryBuilder.enforce()
+   <tmlt.analytics.query_builder.QueryBuilder.enforce>` method.
+
+   This class is a base class for all constraints, and cannot be used directly.
+
+
+
+
+
+
+
+   
+.. py:class:: MaxRowsPerID
+
+   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+
+   A constraint limiting the number of rows associated with each ID in a table.
+
+   This constraint limits how many times each distinct value may appear in the
+   ID column of a table with the
+   :class:`~tmlt.analytics.protected_change.AddRowsWithID` protected
+   change. For example, ``MaxRowsPerID(5)`` guarantees that each ID appears in
+   at most five rows. It cannot be applied to tables with other protected changes.
+
+
+
+
+
+   .. py:attribute:: max
+      :annotation: :int
+
+      The maximum number of times each distinct value may appear in the column.
+
+
+
+   
+.. py:class:: MaxGroupsPerID
+
+   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+
+   A constraint limiting the number of distinct groups per ID.
+
+   This constraint limits how many times a distinct value may appear in the grouping
+   column for each distinct value in the table's ID column. For example,
+   ``MaxGroupsPerID("grouping_column", 4)`` guarantees that there are at most four
+   distinct values of ``grouping_column`` for each distinct value of ``ID_column``.
+
+
+
+
+
+   .. py:attribute:: grouping_column
+      :annotation: :str
+
+      The name of the grouping column.
+
+   .. py:attribute:: max
+      :annotation: :int
+
+      The maximum number of distinct values in the grouping column
+      for each distinct value in the ID column.
+
+
+
+   
+.. py:class:: MaxRowsPerGroupPerID
+
+   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+
+   A constraint limiting the number of rows associated with each unique (ID, grouping column) pair in a table.
+
+   For example, ``MaxRowsPerGroupPerID("group_col", 5)`` guarantees that each
+   ID appears in at most five rows for each distinct value of group_col".
+
+
+
+
+
+   .. py:attribute:: grouping_column
+      :annotation: :str
+
+      Name of column defining the groups to truncate.
+
+   .. py:attribute:: max
+      :annotation: :int
+
+      The maximum number of times each distinct value may appear in the column.
+
+
+
+
+
+
+

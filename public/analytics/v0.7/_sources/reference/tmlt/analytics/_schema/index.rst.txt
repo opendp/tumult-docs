@@ -1,0 +1,303 @@
+:orphan:
+
+
+
+**************
+_schema
+**************
+
+.. py:module:: tmlt.analytics._schema
+
+.. autoapi-nested-parse::
+
+   Schema management for private and public tables.
+
+   The schema represents the column types of the underlying table. This allows
+   for seamless transitions of the data representation type.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.column_type_to_py_type`
+     - Converts a ColumnType to a python type.
+   * - :func:`.analytics_to_py_types`
+     - Returns the mapping from column names to supported python types.
+   * - :func:`.analytics_to_spark_schema`
+     - Convert an Analytics schema to a Spark schema.
+   * - :func:`.analytics_to_spark_columns_descriptor`
+     - Convert a schema in Analytics representation to a Spark columns descriptor.
+   * - :func:`.spark_schema_to_analytics_columns`
+     - Convert Spark schema to Analytics columns.
+   * - :func:`.spark_dataframe_domain_to_analytics_columns`
+     - Convert a Spark dataframe domain to Analytics columns.
+
+.. py:function:: column_type_to_py_type(column_type)
+
+   Converts a ColumnType to a python type.
+
+
+
+.. py:function:: analytics_to_py_types(analytics_schema)
+
+   Returns the mapping from column names to supported python types.
+
+
+
+.. py:function:: analytics_to_spark_schema(analytics_schema)
+
+   Convert an Analytics schema to a Spark schema.
+
+
+
+.. py:function:: analytics_to_spark_columns_descriptor(analytics_schema)
+
+   Convert a schema in Analytics representation to a Spark columns descriptor.
+
+
+
+.. py:function:: spark_schema_to_analytics_columns(spark_schema)
+
+   Convert Spark schema to Analytics columns.
+
+
+
+.. py:function:: spark_dataframe_domain_to_analytics_columns(domain)
+
+   Convert a Spark dataframe domain to Analytics columns.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ColumnType`
+     - The supported SQL92 column types for Analytics data.
+   * - :class:`.ColumnDescriptor`
+     - Information about a column.
+   * - :class:`.Schema`
+     - Schema class describing the column information of the data.
+
+   
+.. py:class:: ColumnType
+
+   Bases: :class:`enum.Enum`
+
+   The supported SQL92 column types for Analytics data.
+
+
+
+
+
+   .. py:attribute:: INTEGER
+      
+
+      Integer column type.
+
+   .. py:attribute:: DECIMAL
+      
+
+      Floating-point column type.
+
+   .. py:attribute:: VARCHAR
+      
+
+      String column type.
+
+   .. py:attribute:: DATE
+      
+
+      Date column type.
+
+   .. py:attribute:: TIMESTAMP
+      
+
+      Timestamp column type.
+
+
+   .. py:method:: name(self)
+
+      The name of the Enum member.
+
+
+   .. py:method:: value(self)
+
+      The value of the Enum member.
+
+
+
+   
+.. py:class:: ColumnDescriptor
+
+   Information about a column.
+
+   ColumnDescriptors have the following attributes:
+
+   .. attribute:: column_type
+
+      A :class:`ColumnType`, specifying what type this column has.
+
+   .. attribute:: allow_null
+
+      :class:`bool`. If ``True``, this column allows null values.
+
+   .. attribute:: allow_nan
+
+      :class:`bool`. If ``True``, this column allows NaN values.
+
+   .. attribute:: allow_inf
+
+      :class:`bool`. If ``True``, this column allows infinite values.
+
+
+
+
+
+
+
+   
+.. py:class:: Schema(column_descs, grouping_column = None, id_column = None, id_space = None, default_allow_null = False, default_allow_nan = False, default_allow_inf = False)
+
+   Bases: :class:`collections.abc.Mapping`
+
+   Schema class describing the column information of the data.
+
+   The following SQL92 types are currently supported:
+     INTEGER, DECIMAL, VARCHAR, DATE, TIMESTAMP
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.columns`
+        - Return the names of the columns in the schema.
+      * - :meth:`.column_descs`
+        - Returns a mapping from column name to column descriptor.
+      * - :meth:`.column_types`
+        - Returns a mapping from column name to column type.
+      * - :meth:`.grouping_column`
+        - Returns the optional column that must be grouped by.
+      * - :meth:`.id_column`
+        - Return whether the grouping column is an ID column.
+      * - :meth:`.id_space`
+        - Return the ID space for this schema.
+      * - :meth:`.__eq__`
+        - Returns True if schemas are equal.
+      * - :meth:`.__getitem__`
+        - Returns the data type for the given column.
+      * - :meth:`.__iter__`
+        - Return an iterator over the columns in the schema.
+      * - :meth:`.__len__`
+        - Return the number of columns in the schema.
+      * - :meth:`.get`
+        - D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+      * - :meth:`.keys`
+        - D.keys() -> a set-like object providing a view on D's keys
+      * - :meth:`.items`
+        - D.items() -> a set-like object providing a view on D's items
+      * - :meth:`.values`
+        - D.values() -> an object providing a view on D's values
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: columns(self)
+      :property:
+
+      Return the names of the columns in the schema.
+
+
+   .. py:method:: column_descs(self)
+      :property:
+
+      Returns a mapping from column name to column descriptor.
+
+
+   .. py:method:: column_types(self)
+      :property:
+
+      Returns a mapping from column name to column type.
+
+
+   .. py:method:: grouping_column(self)
+      :property:
+
+      Returns the optional column that must be grouped by.
+
+
+   .. py:method:: id_column(self)
+      :property:
+
+      Return whether the grouping column is an ID column.
+
+
+   .. py:method:: id_space(self)
+      :property:
+
+      Return the ID space for this schema.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Returns True if schemas are equal.
+
+      :param other: Schema to check against.
+
+
+   .. py:method:: __getitem__(self, column)
+
+      Returns the data type for the given column.
+
+      :param column: The column to get the data type for.
+
+
+   .. py:method:: __iter__(self)
+
+      Return an iterator over the columns in the schema.
+
+
+   .. py:method:: __len__(self)
+
+      Return the number of columns in the schema.
+
+
+   .. py:method:: get(self, key, default=None)
+
+      D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+
+
+   .. py:method:: keys(self)
+
+      D.keys() -> a set-like object providing a view on D's keys
+
+
+   .. py:method:: items(self)
+
+      D.items() -> a set-like object providing a view on D's items
+
+
+   .. py:method:: values(self)
+
+      D.values() -> an object providing a view on D's values
+
+
+
+
+
+
+
