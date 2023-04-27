@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,6 +42,8 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
@@ -48,8 +51,11 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Working with Sessions" href="working-with-sessions.html" />
     <link rel="prev" title="Topic guides" href="index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -92,7 +98,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../installation.html">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -100,6 +106,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -116,8 +128,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -250,6 +262,11 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="understanding-sensitivity.html">
+   Understanding sensitivity
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="spark.html">
    Spark
   </a>
@@ -287,20 +304,22 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#the-privacy-promise-in-more-detail">
    The privacy promise in more detail
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#understanding-the-protected-change">
+     Understanding the protected change
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#subtlety-1-unit-of-privacy">
-   Subtlety 1: unit of privacy
+  <a class="reference internal nav-link" href="#subtlety-1-covered-inputs-outputs">
+   Subtlety 1: covered inputs &amp; outputs
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#subtlety-2-covered-inputs-outputs">
-   Subtlety 2: covered inputs &amp; outputs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#subtlety-3-adversarial-model">
-   Subtlety 3: adversarial model
+  <a class="reference internal nav-link" href="#subtlety-2-adversarial-model">
+   Subtlety 2: adversarial model
   </a>
  </li>
 </ul>
@@ -329,20 +348,22 @@ along with its caveats. This guarantee is based on one of the core abstractions
 of Tumult Analytics: <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sessions</span></code></a>.</p>
 <p>At a high level, a Session allows you to evaluate queries on private data in a
 way that satisfies differential privacy. When creating a Session, private data
-must first be loaded into it, along with a
-<a class="reference internal" href="privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">privacy budget</span></a>. You can then evaluate
+must first be loaded into it, along with
+a <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a> for each
+table, and a Session-wide <a class="reference internal" href="privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">privacy budget</span></a>. You
+can then evaluate
 queries on your private data, consuming at most the privacy budget provided at
 initialization time.</p>
 <section id="the-privacy-promise-in-more-detail">
 <h2>The privacy promise in more detail<a class="headerlink" href="#the-privacy-promise-in-more-detail" title="Permalink to this headline">#</a></h2>
 <p>A <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> is initialized with:</p>
 <ul class="simple">
-<li><p>one or more private data sources (data you wish to query in a differentially
-private way);</p></li>
-<li><p>one or more public data sources (data that does not require privacy
+<li><p>one or more private tables (containing data you wish to query in a differentially
+private way), each associated to a <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a>;</p></li>
+<li><p>zero or more public tables (containing data that does not require privacy
 protection, but may be used as auxiliary input to your computation);</p></li>
 <li><p>a privacy definition along with its associated privacy parameters (e.g.
-tutorials use <cite>PureDBBudget</cite>, corresponding to pure differential privacy, and
+tutorials use <cite>PureDPBudget</cite>, corresponding to pure differential privacy, and
 Tumult Analytics also supports zero-concentrated differential privacy).</p></li>
 </ul>
 <p>After initialization, the Session guarantees that the answers returned by
@@ -351,27 +372,46 @@ satisfy the corresponding privacy definition with respect to the private data,
 using the specified parameters. For example, a Session initialized with
 <code class="code docutils literal notranslate"><span class="pre">PureDPBudget(1)</span></code> provides <span class="math notranslate nohighlight">\({\varepsilon}\)</span>-differential privacy with
 <span class="math notranslate nohighlight">\({\varepsilon}=1\)</span>.</p>
+<section id="understanding-the-protected-change">
+<span id="privacy-promise-unit-of-protection"></span><h3>Understanding the protected change<a class="headerlink" href="#understanding-the-protected-change" title="Permalink to this headline">#</a></h3>
+<p>Each table’s differential privacy guarantee hides a <em>protected change</em> in
+data, preventing an attacker from learning whether a table was changed
+in some specified way. When you add a private table to a session, you must
+specify what kind of protected change to use for this table.</p>
+<ul class="simple">
+<li><p>In the simplest case, the privacy guarantee from a
+<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> prevents an attacker from learning
+whether <em>one individual row</em> was added or removed in each private table – the
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change.
+If the data of a single individual can span multiple rows in the same private
+table, then this individual is not covered by the privacy promise, only
+individual rows are.</p></li>
+<li><p>If you know that a single individual can appear in at most <em>k</em> rows in a private
+table, you can load that table into a Session using a different value for the
+<code class="docutils literal notranslate"><span class="pre">protected_change</span></code> parameter.
+For example, using <code class="docutils literal notranslate"><span class="pre">AddMaxRows(k)</span></code> will cause Tumult Analytics to hide the
+addition or removal of up to <em>k</em> rows at once from the corresponding private table.</p></li>
+<li><p>If you want to protect the addition or removal of <em>arbitrarily many</em> rows that
+all share the same <em>identifier</em> (in some column), you can use the
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change.
+If you add multiple tables that all use <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code>, the
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID.id_space" title="tmlt.analytics.protected_change.AddRowsWithID.id_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id_space</span></code></a> property
+determines which ID space each table belongs to.</p></li>
+</ul>
+<p>Other possible protected changes are also available, though they are typically
+only needed for advanced use cases.
+See our <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected_change</span></code></a> documentation for more information.</p>
+<p>Because the privacy of individuals depends on how often they appear in a table,
+you should be careful of what kind of pre-processing is done to the private data
+before loading it into a Session.
+For example, if you start from a table where each individual appears in a single
+record, but this property stops being true before the data is loaded into a Session,
+then using <code class="docutils literal notranslate"><span class="pre">AddOneRow</span></code> as a protected change might not reflect the privacy guarantee that you want to achieve.</p>
 </section>
-<section id="subtlety-1-unit-of-privacy">
-<h2>Subtlety 1: unit of privacy<a class="headerlink" href="#subtlety-1-unit-of-privacy" title="Permalink to this headline">#</a></h2>
-<p>By default, the privacy guarantee prevents an attacker for learning whether <em>one
-individual row</em> was added or removed in each private dataset. If the data of a
-single individual can span multiple rows in the same private dataset, then this
-individual is not covered by the privacy promise, only individual rows are.</p>
-<p>If you know that a single individual can appear in at most <em>k</em> rows in an input
-dataset, you can load it into a Session using the optional <code class="docutils literal notranslate"><span class="pre">stability=k</span></code>
-parameter. Then, Tumult Analytics will hide the addition or removal of up to <em>k</em>
-rows at once from the corresponding private dataset, providing individual-level
-protection.</p>
-<p>For this reason, you should be careful of what kind of pre-processing is done to
-the private data before loading it into a Session. If you start from a DataFrame
-where each individual appears in a single record, but this property stops being
-true before the data is loaded into a Session, then you might not get the
-expected privacy guarantees.</p>
 </section>
-<section id="subtlety-2-covered-inputs-outputs">
-<h2>Subtlety 2: covered inputs &amp; outputs<a class="headerlink" href="#subtlety-2-covered-inputs-outputs" title="Permalink to this headline">#</a></h2>
-<p>A Session only provides guarantees on the private datasets, and this guarantee
+<section id="subtlety-1-covered-inputs-outputs">
+<h2>Subtlety 1: covered inputs &amp; outputs<a class="headerlink" href="#subtlety-1-covered-inputs-outputs" title="Permalink to this headline">#</a></h2>
+<p>A Session only provides guarantees on the private tables, and this guarantee
 only covers data returned by <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> calls. Use of the private data in any
 other way is not protected by the Session.</p>
 <p>This means that <strong>you should not directly use private data</strong>; instead, you
@@ -381,8 +421,8 @@ particular, public sources and parameters like <code class="docutils literal not
 clamping bounds are not protected. They can reveal private information if the
 private data is used directly to determine them.</p>
 </section>
-<section id="subtlety-3-adversarial-model">
-<h2>Subtlety 3: adversarial model<a class="headerlink" href="#subtlety-3-adversarial-model" title="Permalink to this headline">#</a></h2>
+<section id="subtlety-2-adversarial-model">
+<h2>Subtlety 2: adversarial model<a class="headerlink" href="#subtlety-2-adversarial-model" title="Permalink to this headline">#</a></h2>
 <p>Tumult Analytics, and in particular the Session interface, is designed to make
 it easy to obtain expected differential privacy guarantees, and difficult to
 accidentally break these guarantees. However, this library was <em>not</em> designed to
@@ -448,12 +488,12 @@ against such side-channels is important.</p></li>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

@@ -1,0 +1,185 @@
+
+
+
+***********************
+protected_change
+***********************
+
+.. py:module:: tmlt.analytics.protected_change
+
+.. autoapi-nested-parse::
+
+   Types for programmatically specifying what changes in input tables are protected.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ProtectedChange`
+     - A description of the largest change in a dataset that is protected under DP.
+   * - :class:`.AddMaxRows`
+     - Protect the addition or removal of any set of ``max_rows`` rows.
+   * - :class:`.AddOneRow`
+     - A shorthand for the common case of :class:`AddMaxRows` with ``max_rows = 1``.
+   * - :class:`.AddMaxRowsInMaxGroups`
+     - Protect the addition or removal of rows across a finite number of groups.
+   * - :class:`.AddRowsWithID`
+     - Protect the addition or removal of rows with a specific identifier.
+
+   
+.. py:class:: ProtectedChange
+
+   Bases: :class:`abc.ABC`
+
+   A description of the largest change in a dataset that is protected under DP.
+
+   A :class:`ProtectedChange` describes, for a particular table, the largest
+   change that can be made to that table while still being indistinguishable
+   under Tumult Analytics' DP guarantee. The appropriate protected change to
+   use is one corresponding to the largest possible change to the table when
+   adding or removing a unit of protection, e.g. a person. For more
+   information, see the :ref:`privacy promise topic guide
+   <privacy-promise#unit-of-protection>`.
+
+
+
+
+
+
+
+   
+.. py:class:: AddMaxRows
+
+   Bases: :class:`ProtectedChange`
+
+   Protect the addition or removal of any set of ``max_rows`` rows.
+
+   This ProtectedChange is a generalization of the standard "add/remove one
+   row" DP guarantee, hiding the addition or removal of any set of at most
+   ``max_rows`` rows from a table.
+
+
+
+
+
+   .. py:attribute:: max_rows
+      :annotation: :int
+
+      The maximum number of rows that may be added or removed.
+
+
+
+   
+.. py:class:: AddOneRow
+
+   Bases: :class:`AddMaxRows`
+
+   A shorthand for the common case of :class:`AddMaxRows` with ``max_rows = 1``.
+
+
+
+
+
+
+
+   
+.. py:class:: AddMaxRowsInMaxGroups
+
+   Bases: :class:`ProtectedChange`
+
+   Protect the addition or removal of rows across a finite number of groups.
+
+   :class:`AddMaxRowsInMaxGroups` provides a similar guarantee to
+   :class:`AddMaxRows`, but it uses some additional information to apply less
+   noise in some cases. That information is about *groups*: collections of rows
+   which share the same value in a particular column. That column would
+   typically be some kind of categorical value, for example a state where a
+   person lives or has lived. Instead of specifying a maximum total number of
+   rows that may be added or removed, :class:`AddMaxRowsInMaxGroups` limits the
+   number of rows that may be added or removed in any particular group, as well
+   as the maximum total number of groups that may be affected. If these limits
+   are meant to correspond to the maximum contribution of a specific entity to
+   the dataset, that must be enforced *before* the data is passed to Tumult
+   Analytics.
+
+   :class:`AddMaxRowsInMaxGroups` is intended for advanced use cases, and its
+   use should be considered carefully. Note that it only provides improved
+   accuracy when used with zCDP -- with pure DP, it is equivalent to using
+   :class:`AddMaxRows` with the same total number of rows to be added/removed.
+
+   The most common case where :class:`AddMaxRowsInMaxGroups` is useful is for
+   dealing with datasets that have already undergone some type of preprocessing
+   before being turned over to an analyst. Where possible, it is preferred to
+   do such processing inside of Tumult Analytics instead, as it allows
+   specifying a simpler protected change (e.g. :class:`AddRowsWithID`)
+   and relying on Analytics' privacy tracking to handle the complex parts
+   of the analysis.
+
+
+
+
+
+   .. py:attribute:: grouping_column
+      :annotation: :str
+
+      The name of the column specifying the group.
+
+   .. py:attribute:: max_groups
+      :annotation: :int
+
+      The maximum number of groups that may differ.
+
+   .. py:attribute:: max_rows_per_group
+      :annotation: :Union[int, float]
+
+      The maximum number of rows which may be added to or removed from each group.
+
+
+
+   
+.. py:class:: AddRowsWithID
+
+   Bases: :class:`ProtectedChange`
+
+   Protect the addition or removal of rows with a specific identifier.
+
+   Instead of limiting the number of rows that may be added or removed,
+   :class:`AddRowsWithID` hides the addition or removal of *all rows*
+   with the same value in the specified column.
+
+   The id column *must* be a string, integer (or long), or date; it cannot
+   be a float or a timestamp.
+
+
+
+
+
+   .. py:attribute:: id_column
+      :annotation: :str
+
+      The name of the column containing the identifier.
+
+   .. py:attribute:: id_space
+      :annotation: :str = default_id_space
+
+      The identifier space of the rows that may be added or removed. If not specified,
+      a default will be assigned when using this protected change with
+      :class:`Session.from_dataframe()<tmlt.analytics.session.Session.from_dataframe>`.
+
+
+
+
+
+
+

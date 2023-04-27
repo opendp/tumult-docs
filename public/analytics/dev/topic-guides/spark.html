@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Nulls, NaNs, and infinite values" href="nulls-nans-infinities.html" />
-    <link rel="prev" title="Privacy budget fundamentals" href="privacy-budgets.html" />
+    <link rel="prev" title="Understanding sensitivity" href="understanding-sensitivity.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../installation.html">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -248,6 +260,11 @@ function checkPageExistsAndRedirect(event) {
    Privacy budget fundamentals
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="understanding-sensitivity.html">
+   Understanding sensitivity
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Spark
@@ -315,6 +332,18 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#performance-and-profiling">
    Performance and profiling
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ram-usage">
+     RAM usage
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#saving-results-to-csv-or-other-formats">
+     Saving results (to CSV or other formats)
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -352,7 +381,38 @@ then before running Analytics code, you should create that Spark session:</p>
 </pre></div>
 </div>
 <p>As long as this session is active, Analytics will use it.</p>
-<section id="connecting-to-hive">
+<details class="sphinx-bs dropdown card mb-3 shadow fade-in-slide-down">
+<summary class="summary-title card-header font-weight-bold text-danger text-center">
+Trouble Using Java 11 or higher?<div class="summary-down docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="summary-up docutils">
+<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="summary-content card-body bg-light docutils">
+<p class="card-text">When using Java 11, Spark requires that Java be passed some additional configuration options.</p>
+<p class="card-text">Not doing this before making calls to Tumult Analytics, or overwriting these configurations with your own,
+will result in Spark raising <code class="docutils literal notranslate"><span class="pre">java.lang.UnsupportedOperationException:</span> <span class="pre">sun.misc.Unsafe</span></code> or <code class="docutils literal notranslate"><span class="pre">java.nio.DirectByteBuffer.(long,</span> <span class="pre">int)</span> <span class="pre">not</span> <span class="pre">available</span></code>
+when evaluating queries.</p>
+<p class="card-text">Analytics attempts to set these options automatically, but if you are encountering issues, you may want to try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.utils</span> <span class="kn">import</span> <span class="n">get_java11_config</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="n">get_java11_config</span><span class="p">())</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="card-text">instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="card-text">when initializing Spark. This is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.driver.extraJavaOptions&quot;</span><span class="p">,</span> <span class="s2">&quot;-Dio.netty.tryReflectionSetAccessible=true&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.executor.extraJavaOptions&quot;</span><span class="p">,</span> <span class="s2">&quot;-Dio.netty.tryReflectionSetAccessible=true&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><section id="connecting-to-hive">
 <h3>Connecting to Hive<a class="headerlink" href="#connecting-to-hive" title="Permalink to this headline">#</a></h3>
 <p>If you want to connect Spark to an existing <a class="reference external" href="https://hive.apache.org/">Hive</a>
 database, you should use the following options when creating a Spark session:</p>
@@ -398,10 +458,10 @@ changed back to the original database at the end of the materialization step.)</
 If a Spark session is still active when the program exits normally, this cleanup
 function will automatically delete the materialization database.</p>
 <p>If you wish to call <code class="docutils literal notranslate"><span class="pre">spark.stop()</span></code> before program exit, you should call
-<a class="reference internal" href="../reference/tmlt/analytics/cleanup/index.html#tmlt.analytics.cleanup.cleanup" title="tmlt.analytics.cleanup.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
+<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
 database. This function requires an active Spark session, but is otherwise safe
 to call at any time in a single-threaded program. (If
-<a class="reference internal" href="../reference/tmlt/analytics/cleanup/index.html#tmlt.analytics.cleanup.cleanup" title="tmlt.analytics.cleanup.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
+<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
 Core will create a new materialization database.)</p>
 </section>
 <section id="finding-and-removing-leftover-temporary-data">
@@ -412,7 +472,7 @@ because it was terminated with Ctrl-C),
 or if the cleanup function is called without an active Spark session,
 this temporary database (and its associated folder) may not be deleted.</p>
 <p>Analytics has a function to delete any of these folders in the current
-Spark warehouse: <a class="reference internal" href="../reference/tmlt/analytics/cleanup/index.html#tmlt.analytics.cleanup.remove_all_temp_tables" title="tmlt.analytics.cleanup.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
+Spark warehouse: <a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
 As long as your program is single-threaded, it is safe to call this function
 at any time.</p>
 <p>You can also manually delete this database by deleting its
@@ -430,6 +490,42 @@ Deleting the folder will delete the database.</p>
 <p>All queries made with Analytics are executed by Spark. If you are having
 performance problems, you will probably want to look at
 <a class="reference external" href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">Spark performance-tuning options</a>.</p>
+<section id="ram-usage">
+<h3>RAM usage<a class="headerlink" href="#ram-usage" title="Permalink to this headline">#</a></h3>
+<p>By default, Spark allocates itself 1GB of RAM
+(see <a class="reference external" href="https://spark.apache.org/docs/latest/configuration.html#application-properties">Spark’s configuration documentation</a>).
+Analytics programs often need more RAM than this.
+Usually, a program needs more RAM because:</p>
+<ul class="simple">
+<li><p>the input data is large (10M rows or more)</p></li>
+<li><p>a keyset used for a grouping operation is large (10k rows or more)</p></li>
+<li><p>the output data is large (10M rows or more)</p></li>
+</ul>
+<p>You can adjust the amount of memory available to Spark when creating your
+Spark session. For example, to configure Spark with 8 gigabytes of RAM, you
+can run this code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s1">&#39;spark.driver.memory&#39;</span><span class="p">,</span> <span class="s1">&#39;8gb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This only applies when running Spark on a single, local node; see Spark’s
+documentation for how to configure Spark to use more RAM across a cluster.</p>
+</section>
+<section id="saving-results-to-csv-or-other-formats">
+<h3>Saving results (to CSV or other formats)<a class="headerlink" href="#saving-results-to-csv-or-other-formats" title="Permalink to this headline">#</a></h3>
+<p>Converting large Spark dataframes (10M rows or more) to Pandas dataframes can
+be very resource-intensive. We recommend using
+<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.write" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.write()</span></code></a> to save results
+to file, instead of using
+<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.toPandas" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.toPandas()</span></code></a> and then saving the Pandas
+dataframe.</p>
+<p>For example, to save a dataframe as CSV, you can do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(),</span> <span class="s1">&#39;data&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -441,11 +537,11 @@ performance problems, you will probably want to look at
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="privacy-budgets.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="understanding-sensitivity.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Privacy budget fundamentals</p>
+          <p class="prev-next-title">Understanding sensitivity</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="nulls-nans-infinities.html" title="next page">
@@ -472,12 +568,12 @@ performance problems, you will probably want to look at
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

@@ -1,0 +1,99 @@
+
+
+
+***********
+base
+***********
+
+.. py:module:: tmlt.core.measurements.base
+
+.. autoapi-nested-parse::
+
+   Base class for measurements.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Measurement`
+     - Abstract base class for measurements.
+
+   
+.. py:class:: Measurement(input_domain, input_metric, output_measure, is_interactive)
+
+   Bases: :class:`abc.ABC`
+
+   Abstract base class for measurements.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure(self)
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive(self)
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: privacy_relation(self, d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+   .. py:method:: __call__(self, data)
+      :abstractmethod:
+
+      Performs measurement.
+
+
+
+
+
+

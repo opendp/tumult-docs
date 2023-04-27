@@ -1,0 +1,446 @@
+
+
+
+***************
+measures
+***************
+
+.. py:module:: tmlt.core.measures
+
+.. autoapi-nested-parse::
+
+   Module containing supported variants for differential privacy.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Measure`
+     - Base class for output measures.
+   * - :class:`.PureDP`
+     - Pure DP measure.
+   * - :class:`.ApproxDP`
+     - Approximate DP measure.
+   * - :class:`.RhoZCDP`
+     - ρ-zCDP measure.
+   * - :class:`.PrivacyBudget`
+     - An abstract class for representing a privacy budget.
+   * - :class:`.PureDPBudget`
+     - A pure dp budget.
+   * - :class:`.ApproxDPBudget`
+     - An approximate dp budget.
+   * - :class:`.RhoZCDPBudget`
+     - A zCDP budget.
+
+   
+.. py:class:: Measure
+
+   Bases: :class:`abc.ABC`
+
+   Base class for output measures.
+
+
+
+
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+   .. py:method:: validate(self, value)
+      :abstractmethod:
+
+      Raises an error if `value` not a valid distance.
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+      :abstractmethod:
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+
+   
+.. py:class:: PureDP
+
+   Bases: :class:`Measure`
+
+   Pure DP measure.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a nonnegative real or infinity
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+   
+.. py:class:: ApproxDP
+
+   Bases: :class:`Measure`
+
+   Approximate DP measure.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a tuple with two values: (epsilon, delta)
+      * epsilon must be a nonnegative real or infinity
+      * delta must be a real between 0 and 1 (inclusive)
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+   
+.. py:class:: RhoZCDP
+
+   Bases: :class:`Measure`
+
+   ρ-zCDP measure.
+
+   See the definition of ρ-zCDP in `this <https://arxiv.org/pdf/1605.02065.pdf>`_ paper
+   under Definition 1.1.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a nonnegative real or infinity
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+   
+.. py:class:: PrivacyBudget
+
+   Bases: :class:`abc.ABC`
+
+   An abstract class for representing a privacy budget.
+
+   This class is meant to allow operations on a budget (e.g. subtracting, checking if
+   the budget is infinite) without needing to know the type of the budget.
+
+
+
+
+
+
+   .. py:method:: cast(cls, measure, value)
+      :classmethod:
+
+      Return a privacy budget matching the passed measure.
+
+      :param measure: The measure to return a privacy budget for.
+      :param value: The value of the privacy budget.
+
+
+   .. py:method:: value(self)
+      :property:
+
+      Return the value of the privacy budget.
+
+
+   .. py:method:: is_finite(self)
+      :abstractmethod:
+
+      Return true iff the budget is finite.
+
+
+   .. py:method:: can_spend_budget(self, other)
+      :abstractmethod:
+
+      Return true iff we can spend budget `other`.
+
+      :param other: The privacy budget we would like to spend.
+
+
+   .. py:method:: subtract(self, other)
+      :abstractmethod:
+
+      Return a new budget after subtracting `other`.
+
+      If the budget represented by this class is infinite, return the current budget.
+
+      :param other: The privacy budget to subtract.
+
+      :raises ValueError: If there is not enough privacy budget to subtract other.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Check is this instance is equal to `other`.
+
+      :param other: The other instance.
+
+
+
+   
+.. py:class:: PureDPBudget(value)
+
+   Bases: :class:`PrivacyBudget`
+
+   A pure dp budget.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value(self)
+      :property:
+
+      Return the value of the privacy budget.
+
+
+   .. py:method:: epsilon(self)
+      :property:
+
+      The pure dp privacy loss.
+
+
+   .. py:method:: is_finite(self)
+
+      Return true iff the budget is finite.
+
+
+   .. py:method:: can_spend_budget(self, other)
+
+      Return true iff we can spend budget `other`.
+
+      :param other: The privacy budget we would like to spend.
+
+
+   .. py:method:: subtract(self, other)
+
+      Return a new budget after subtracting `other`.
+
+      If the budget represented by this class is infinite, return the current budget.
+
+      :param other: The privacy budget to subtract.
+
+      :raises ValueError: If there is not enough privacy budget to subtract other.
+
+
+   .. py:method:: cast(cls, measure, value)
+      :classmethod:
+
+      Return a privacy budget matching the passed measure.
+
+      :param measure: The measure to return a privacy budget for.
+      :param value: The value of the privacy budget.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Check is this instance is equal to `other`.
+
+      :param other: The other instance.
+
+
+
+   
+.. py:class:: ApproxDPBudget(value)
+
+   Bases: :class:`PrivacyBudget`
+
+   An approximate dp budget.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value(self)
+      :property:
+
+      Return the value of the privacy budget.
+
+
+   .. py:method:: epsilon(self)
+      :property:
+
+      The first component of the privacy loss.
+
+
+   .. py:method:: delta(self)
+      :property:
+
+      The second component of the privacy loss.
+
+
+   .. py:method:: is_finite(self)
+
+      Return true iff the budget is finite.
+
+
+   .. py:method:: can_spend_budget(self, other)
+
+      Return true iff we can spend budget `other`.
+
+      :param other: The privacy budget we would like to spend.
+
+
+   .. py:method:: subtract(self, other)
+
+      Return a new budget after subtracting `other`.
+
+      If the budget represented by this class is infinite, return the current budget.
+
+      :param other: The privacy budget to subtract.
+
+      :raises ValueError: If there is not enough privacy budget to subtract other.
+
+
+   .. py:method:: cast(cls, measure, value)
+      :classmethod:
+
+      Return a privacy budget matching the passed measure.
+
+      :param measure: The measure to return a privacy budget for.
+      :param value: The value of the privacy budget.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Check is this instance is equal to `other`.
+
+      :param other: The other instance.
+
+
+
+   
+.. py:class:: RhoZCDPBudget(value)
+
+   Bases: :class:`PrivacyBudget`
+
+   A zCDP budget.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value(self)
+      :property:
+
+      Return the value of the privacy budget.
+
+
+   .. py:method:: rho(self)
+      :property:
+
+      The zCDP privacy loss.
+
+
+   .. py:method:: is_finite(self)
+
+      Return true iff the budget is finite.
+
+
+   .. py:method:: can_spend_budget(self, other)
+
+      Return true iff we can spend budget `other`.
+
+      :param other: The privacy budget we would like to spend.
+
+
+   .. py:method:: subtract(self, other)
+
+      Return a new budget after subtracting `other`.
+
+      If the budget represented by this class is infinite, return the current budget.
+
+      :param other: The privacy budget to subtract.
+
+      :raises ValueError: If there is not enough privacy budget to subtract other.
+
+
+   .. py:method:: cast(cls, measure, value)
+      :classmethod:
+
+      Return a privacy budget matching the passed measure.
+
+      :param measure: The measure to return a privacy budget for.
+      :param value: The value of the privacy budget.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Check is this instance is equal to `other`.
+
+      :param other: The other instance.
+
+
+
+
+
+

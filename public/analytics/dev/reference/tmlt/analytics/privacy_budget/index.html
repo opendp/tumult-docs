@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="query_builder" href="../query_builder/index.html" />
+    <link rel="next" title="protected_change" href="../protected_change/index.html" />
     <link rel="prev" title="keyset" href="../keyset/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../installation.html">
+ <a class="reference internal nav-link" href="../../../../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../../../../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -239,8 +251,8 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../cleanup/index.html">
-   cleanup
+  <a class="reference internal" href="../constraints/index.html">
+   constraints
   </a>
  </li>
  <li class="toctree-l1">
@@ -251,6 +263,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    privacy_budget
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../protected_change/index.html">
+   protected_change
   </a>
  </li>
  <li class="toctree-l1">
@@ -271,6 +288,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../truncation_strategy/index.html">
    truncation_strategy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils/index.html">
+   utils
   </a>
  </li>
 </ul>
@@ -330,6 +352,38 @@ function checkPageExistsAndRedirect(event) {
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget">
+     ApproxDPBudget
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon">
+       epsilon
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.delta">
+       delta
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite">
+       is_infinite
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__">
+       __eq__
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget">
      RhoZCDPBudget
     </a>
@@ -375,6 +429,8 @@ function checkPageExistsAndRedirect(event) {
   <section id="module-tmlt.analytics.privacy_budget">
 <span id="privacy-budget"></span><h1>privacy_budget<a class="headerlink" href="#module-tmlt.analytics.privacy_budget" title="Permalink to this headline">#</a></h1>
 <p>Classes for specifying privacy budgets.</p>
+<p>For a full introduction to privacy budgets, see the
+<a class="reference internal" href="../../../../topic-guides/privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">privacy budget topic guide</span></a>.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
 <table class="table">
@@ -387,39 +443,46 @@ function checkPageExistsAndRedirect(event) {
 <td><p>Base class for specifying privacy parameters.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a></p></td>
-<td><p>A privacy budget under Pure Differential Privacy.</p></td>
+<td><p>A privacy budget under pure differential privacy.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a></p></td>
-<td><p>A privacy budget under rho-Zero-Concentrated Differential Privacy.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDPBudget</span></code></a></p></td>
+<td><p>A privacy budget under approximate differential privacy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a></p></td>
+<td><p>A privacy budget under rho-zero-concentrated differential privacy.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PrivacyBudget">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivacyBudget</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>Base class for specifying privacy parameters.</p>
-<p>A PrivacyBudget associates a privacy definition with one or more numeric values.
-This information ultimately governs the noise that is added when evaluating
-queries, i.e., it controls how “private” the computation is.</p>
-<p>Note: An “infinite” privacy budget means that the chosen DP algorithm will use
+<p>A PrivacyBudget is a privacy definition, along with its associated parameters.
+The choice of a PrivacyBudget has an impact on the accuracy of query
+results. Smaller parameters correspond to a stronger privacy guarantee, and
+usually lead to less accurate results.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An “infinite” privacy budget means that the chosen DP algorithm will use
 parameters that do not guarantee privacy. This is not always exactly equivalent
 to evaluating the query without applying differential privacy.
 Please see the individual subclasses of PrivacyBudget for details on how to
 appropriately specify infinite budgets.</p>
+</div>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PureDPBudget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a></p>
-<p>A privacy budget under Pure Differential Privacy.</p>
+<p>A privacy budget under pure differential privacy.</p>
 <p>This privacy definition is also known as epsilon-differential privacy, and the
 associated value is the epsilon privacy parameter. The privacy definition can
-be found <a class="reference external" href="https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy">here</a></p>
+be found <a class="reference external" href="https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy">here</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -428,7 +491,8 @@ be found <a class="reference external" href="https://en.wikipedia.org/wiki/Diffe
 <dd><p>Construct a new PureDPBudget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The epsilon privacy parameter. Must be non-negative.
+<dd class="field-odd"><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The epsilon privacy parameter. Must be non-negative
+and cannot be NaN.
 To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 </dd>
 </dl>
@@ -440,7 +504,7 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 <dd><p>Returns the value of epsilon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>]</p>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -451,7 +515,87 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 <dd><p>Returns whether or not two PureDPBudgets are equivalent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApproxDPBudget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a></p>
+<p>A privacy budget under approximate differential privacy.</p>
+<p>This privacy definition is also known as (ε, δ)-differential privacy, and the
+associated privacy parameters are epsilon and delta. The formal definition can
+be found <a class="reference external" href="https://desfontain.es/privacy/almost-differential-privacy.html#formal-definition">here</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a new ApproxDPBudget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The epsilon privacy parameter. Must be non-negative.
+To specify an infinite budget, set epsilon equal to float(‘inf’).</p></li>
+<li><p><strong>delta</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The delta privacy parameter. Must be between 0 and 1 (inclusive).
+If delta is 0, this is equivalent to PureDP.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of epsilon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.delta">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of delta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_infinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if epsilon is float(‘inf’) or delta is 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether two ApproxDPBudgets are equivalent.</p>
+<p>ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
+epsilon of float(‘inf’) and the other has a delta of 1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,12 +606,12 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RhoZCDPBudget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a></p>
-<p>A privacy budget under rho-Zero-Concentrated Differential Privacy.</p>
-<p>The definition of rho-ZCDP can be found in
+<p>A privacy budget under rho-zero-concentrated differential privacy.</p>
+<p>The definition of rho-zCDP can be found in
 <a class="reference external" href="https://arxiv.org/pdf/1605.02065.pdf">this</a> paper under Definition 1.1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rho</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>rho</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -476,8 +620,9 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 <dd><p>Construct a new RhoZCDPBudget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rho</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The rho privacy parameter. To specify an infinite budget,
-set rho equal to float(‘inf’).</p>
+<dd class="field-odd"><p><strong>rho</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The rho privacy parameter.
+Rho must be non-negative and cannot be NaN.
+To specify an infinite budget, set rho equal to float(‘inf’).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -488,7 +633,7 @@ set rho equal to float(‘inf’).</p>
 <dd><p>Returns the value of rho.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>]</p>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -499,7 +644,7 @@ set rho equal to float(‘inf’).</p>
 <dd><p>Returns whether or not two RhoZCDPBudgets are equivalent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -524,10 +669,10 @@ set rho equal to float(‘inf’).</p>
           <p class="prev-next-title">keyset</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../query_builder/index.html" title="next page">
+  <a class='right-next' id="next-link" href="../protected_change/index.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">query_builder</p>
+      <p class="prev-next-title">protected_change</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -548,12 +693,12 @@ set rho equal to float(‘inf’).</p>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

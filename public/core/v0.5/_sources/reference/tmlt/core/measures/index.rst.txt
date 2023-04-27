@@ -1,0 +1,173 @@
+
+
+
+***************
+measures
+***************
+
+.. py:module:: tmlt.core.measures
+
+.. autoapi-nested-parse::
+
+   Module containing supported variants for differential privacy.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Measure`
+     - Base class for output measures.
+   * - :class:`.PureDP`
+     - Pure DP measure.
+   * - :class:`.ApproxDP`
+     - Approximate DP measure.
+   * - :class:`.RhoZCDP`
+     - ρ-zCDP measure.
+
+   
+.. py:class:: Measure
+
+   Bases: :class:`abc.ABC`
+
+   Base class for output measures.
+
+
+
+
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+   .. py:method:: validate(self, value)
+      :abstractmethod:
+
+      Raises an error if `value` not a valid distance.
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+      :abstractmethod:
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+
+   
+.. py:class:: PureDP
+
+   Bases: :class:`Measure`
+
+   Pure DP measure.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a nonnegative real or infinity
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+   
+.. py:class:: ApproxDP
+
+   Bases: :class:`Measure`
+
+   Approximate DP measure.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a tuple with two values: (epsilon, delta)
+      * epsilon must be a nonnegative real or infinity
+      * delta must be a real between 0 and 1 (inclusive)
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+   
+.. py:class:: RhoZCDP
+
+   Bases: :class:`Measure`
+
+   ρ-zCDP measure.
+
+   See the definition of ρ-zCDP in `this <https://arxiv.org/pdf/1605.02065.pdf>`_ paper
+   under Definition 1.1.
+
+
+
+
+
+
+   .. py:method:: validate(self, value)
+
+      Raises an error if `value` not a valid distance.
+
+      * `value` must be a nonnegative real or infinity
+
+      :param value: A distance between two probability distributions under this measure.
+
+
+   .. py:method:: compare(self, value1, value2)
+
+      Returns True if `value1` is less than or equal to `value2`.
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return True if both measures are equal.
+
+
+
+
+
+

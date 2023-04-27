@@ -47,8 +47,11 @@
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="distributions" href="../distributions/index.html" />
     <link rel="prev" title="cleanup" href="../cleanup/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -274,6 +277,11 @@ function checkPageExistsAndRedirect(event) {
   </label>
   <ul class="current">
    <li class="toctree-l2">
+    <a class="reference internal" href="../arb/index.html">
+     arb
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../cleanup/index.html">
      cleanup
     </a>
@@ -296,6 +304,11 @@ function checkPageExistsAndRedirect(event) {
    <li class="toctree-l2">
     <a class="reference internal" href="../grouped_dataframe/index.html">
      grouped_dataframe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../join/index.html">
+     join
     </a>
    </li>
    <li class="toctree-l2">
@@ -355,10 +368,30 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classes">
    Classes
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exceptions">
+   Exceptions
+  </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.configuration.get_java11_config">
+     get_java11_config
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.configuration.check_java11">
+     check_java11
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.core.utils.configuration.Config">
      Config
@@ -370,6 +403,11 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.configuration.SparkConfigError">
+     SparkConfigError
+    </a>
    </li>
   </ul>
  </li>
@@ -395,6 +433,48 @@ function checkPageExistsAndRedirect(event) {
   <section id="module-tmlt.core.utils.configuration">
 <span id="configuration"></span><h1>configuration<a class="headerlink" href="#module-tmlt.core.utils.configuration" title="Permalink to this headline">#</a></h1>
 <p>Configuration properties for Tumult Core.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.configuration.get_java11_config" title="tmlt.core.utils.configuration.get_java11_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_java11_config()</span></code></a></p></td>
+<td><p>Return a Spark config suitable for use with Java 11.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.configuration.check_java11" title="tmlt.core.utils.configuration.check_java11"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_java11()</span></code></a></p></td>
+<td><p>Check for running on Java11+, and make sure the correct options are set.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.configuration.get_java11_config">
+<span class="sig-name descname"><span class="pre">get_java11_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.configuration.get_java11_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a Spark config suitable for use with Java 11.</p>
+<p>You can build a session with this config by running code like:
+<code class="docutils literal notranslate"><span class="pre">SparkSession.builder.config(conf=get_java11_config()).getOrCreate()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pyspark.conf.SparkConf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.configuration.check_java11">
+<span class="sig-name descname"><span class="pre">check_java11</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.configuration.check_java11" title="Permalink to this definition">#</a></dt>
+<dd><p>Check for running on Java11+, and make sure the correct options are set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.core.utils.configuration.SparkConfigError" title="tmlt.core.utils.configuration.SparkConfigError"><strong>SparkConfigError</strong></a> – If Spark is running on Java 11 or higher, but is not
+configured with the options required for Java 11 or higher.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
 <table class="table">
@@ -418,11 +498,30 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Get the name of the temporary database that Tumult Core uses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tmlt.core.utils.configuration.SparkConfigError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SparkConfigError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">java_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spark_conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.configuration.SparkConfigError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
+<p>Exception raised when a misconfigured Spark session is running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>java_version</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – </p></li>
+<li><p><strong>spark_conf</strong> (<em>pyspark.sql.conf.RuntimeConfig</em>) – </p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -472,7 +571,7 @@ function checkPageExistsAndRedirect(event) {
   </div>
   
   <div class="footer-item">
-    Built from 1fb980fd at 2022-08-10 13:16.
+    Built from b0d27153 at 2023-04-20 17:38.
   </div>
   
   <div class="footer-item">

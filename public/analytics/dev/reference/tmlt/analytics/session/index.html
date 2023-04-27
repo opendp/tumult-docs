@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="truncation_strategy" href="../truncation_strategy/index.html" />
     <link rel="prev" title="query_expr" href="../query_expr/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../installation.html">
+ <a class="reference internal nav-link" href="../../../../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../../../../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -239,8 +251,8 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../cleanup/index.html">
-   cleanup
+  <a class="reference internal" href="../constraints/index.html">
+   constraints
   </a>
  </li>
  <li class="toctree-l1">
@@ -251,6 +263,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../privacy_budget/index.html">
    privacy_budget
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../protected_change/index.html">
+   protected_change
   </a>
  </li>
  <li class="toctree-l1">
@@ -271,6 +288,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../truncation_strategy/index.html">
    truncation_strategy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils/index.html">
+   utils
   </a>
  </li>
 </ul>
@@ -347,6 +369,11 @@ function checkPageExistsAndRedirect(event) {
          with_public_dataframe
         </a>
        </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.Builder.with_id_space">
+         with_id_space
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -380,6 +407,11 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.describe">
+       describe
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.get_schema">
        get_schema
       </a>
@@ -392,6 +424,16 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.get_grouping_column">
        get_grouping_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.get_id_column">
+       get_id_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.session.Session.get_id_space">
+       get_id_space
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -515,7 +557,7 @@ before loading the data into Analytics.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="tmlt.analytics.session.TYPE_COERCION_MAP">
-<span class="sig-name descname"><span class="pre">TYPE_COERCION_MAP</span></span><a class="headerlink" href="#tmlt.analytics.session.TYPE_COERCION_MAP" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">TYPE_COERCION_MAP</span></span><em class="property"><span class="w"> </span><span class="pre">:Dict[pyspark.sql.types.DataType,</span> <span class="pre">pyspark.sql.types.DataType]</span></em><a class="headerlink" href="#tmlt.analytics.session.TYPE_COERCION_MAP" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping describing how Spark’s data types are coerced by Tumult Analytics.</p>
 </dd></dl>
 
@@ -573,31 +615,40 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.remaining_privacy_budget" title="tmlt.analytics.session.Session.remaining_privacy_budget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remaining_privacy_budget()</span></code></a></p></td>
 <td><p>Returns the remaining privacy_budget left in the session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_schema" title="tmlt.analytics.session.Session.get_schema"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_schema()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.describe" title="tmlt.analytics.session.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe()</span></code></a></p></td>
+<td><p>Describe a Session, table, or query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_schema" title="tmlt.analytics.session.Session.get_schema"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_schema()</span></code></a></p></td>
 <td><p>Returns the schema for any data source.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_column_types" title="tmlt.analytics.session.Session.get_column_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_column_types()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_column_types" title="tmlt.analytics.session.Session.get_column_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_column_types()</span></code></a></p></td>
 <td><p>Returns the column types for any data source.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_grouping_column" title="tmlt.analytics.session.Session.get_grouping_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_grouping_column()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_grouping_column" title="tmlt.analytics.session.Session.get_grouping_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_grouping_column()</span></code></a></p></td>
 <td><p>Returns an optional column that must be grouped by in this query.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.add_public_dataframe" title="tmlt.analytics.session.Session.add_public_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_public_dataframe()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_id_column" title="tmlt.analytics.session.Session.get_id_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_id_column()</span></code></a></p></td>
+<td><p>Returns the ID column of a table, if it has one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.get_id_space" title="tmlt.analytics.session.Session.get_id_space"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_id_space()</span></code></a></p></td>
+<td><p>Returns the ID space of a table, if it has one.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.add_public_dataframe" title="tmlt.analytics.session.Session.add_public_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_public_dataframe()</span></code></a></p></td>
 <td><p>Adds a public data source to the session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a></p></td>
 <td><p>Answers a query within the given privacy budget and returns a Spark dataframe.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.create_view" title="tmlt.analytics.session.Session.create_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_view()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.create_view" title="tmlt.analytics.session.Session.create_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_view()</span></code></a></p></td>
 <td><p>Create a new view from a transformation and possibly cache it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.delete_view" title="tmlt.analytics.session.Session.delete_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_view()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.delete_view" title="tmlt.analytics.session.Session.delete_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_view()</span></code></a></p></td>
 <td><p>Deletes a view and decaches it if it was cached.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.partition_and_create" title="tmlt.analytics.session.Session.partition_and_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_and_create()</span></code></a></p></td>
-<td><p>Returns new sessions from a partition mapped to split name/<cite>source_id</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.partition_and_create" title="tmlt.analytics.session.Session.partition_and_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_and_create()</span></code></a></p></td>
+<td><p>Returns new sessions from a partition mapped to split name/<code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.stop" title="tmlt.analytics.session.Session.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.session.Session.stop" title="tmlt.analytics.session.Session.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p></td>
 <td><p>Close out this session, allowing other sessions to become active.</p></td>
 </tr>
 </tbody>
@@ -606,7 +657,7 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>accountant</strong> (<em>tmlt.core.measurements.interactive_measurements.PrivacyAccountant</em>) – </p></li>
-<li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – </p></li>
+<li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – </p></li>
 <li><p><strong>compiler</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../_query_expr_compiler/index.html#tmlt.analytics._query_expr_compiler.QueryExprCompiler" title="tmlt.analytics._query_expr_compiler.QueryExprCompiler"><em>tmlt.analytics._query_expr_compiler.QueryExprCompiler</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -642,7 +693,7 @@ using <a class="reference internal" href="#tmlt.analytics.session.Session.from_d
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.Builder.with_private_dataframe">
-<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.Builder.with_private_dataframe" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.Builder.with_private_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a Spark DataFrame as a private source.</p>
 <p>Not all Spark column types are supported in private sources; see
 <a class="reference internal" href="#tmlt.analytics.session.SUPPORTED_SPARK_TYPES" title="tmlt.analytics.session.SUPPORTED_SPARK_TYPES"><code class="xref py py-data docutils literal notranslate"><span class="pre">SUPPORTED_SPARK_TYPES</span></code></a> for information about which types are
@@ -650,19 +701,17 @@ supported.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Source id for the private source dataframe.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Source id for the private source dataframe.</p></li>
 <li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – Private source dataframe to perform queries on,
-corresponding to the <cite>source_id</cite>.</p></li>
-<li><p><strong>stability</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>]</em>) – Maximum number of rows that may be added or removed
-if a single individual is added or removed. If using RhoZCDP
-and a grouping column, this should instead be the maximum
-number of rows that an individual can contribute to each
-group times the <em>square root</em> of the maximum number of
-groups each user can contribute to.</p></li>
-<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – An input column that must be grouped on, like
-those generated when calling
-<a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>
-with the <code class="docutils literal notranslate"><span class="pre">grouping</span></code> option set.</p></li>
+corresponding to the <code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></li>
+<li><p><strong>stability</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Deprecated: use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a>.</p></li>
+<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Deprecated: use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a>.</p></li>
+<li><p><strong>protected_change</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>]</em>) – A
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>
+specifying what changes to the input data the resulting
+<a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> should protect.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -681,9 +730,28 @@ supported.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Source id for the public data source.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Source id for the public data source.</p></li>
 <li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – Public DataFrame corresponding to the source id.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session">Session</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.Builder.with_id_space">
+<span class="sig-name descname"><span class="pre">with_id_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_space</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.Builder.with_id_space" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an identifier space for the session.</p>
+<p>This defines a space of identifiers that map 1-to-1 to the
+identifiers being protected by a table with the
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected
+change. Any table with such a protected change must be a member of
+some identifier space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_space</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the identifier space.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session">Session</a></p>
@@ -698,13 +766,13 @@ supported.</p>
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accountant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a DP session from a queryable.</p>
 <p>This constructor is not intended to be used directly. Use
-<a class="reference internal" href="#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a> or <cite>from_</cite> constructors instead.</p>
+<a class="reference internal" href="#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a> or <code class="docutils literal notranslate"><span class="pre">from_</span></code> constructors instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>accountant</strong> (<em>tmlt.core.measurements.interactive_measurements.PrivacyAccountant</em>) – </p></li>
-<li><p><strong>public_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>pyspark.sql.dataframe.DataFrame</em><em>]</em>) – </p></li>
-<li><p><strong>compiler</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference internal" href="../_query_expr_compiler/_compiler/index.html#tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler" title="tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler"><em>tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler</em></a><em>]</em>) – </p></li>
+<li><p><strong>public_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>pyspark.sql.dataframe.DataFrame</em><em>]</em>) – </p></li>
+<li><p><strong>compiler</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><em>Optional</em></a><em>[</em><a class="reference internal" href="../_query_expr_compiler/_compiler/index.html#tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler" title="tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler"><em>tmlt.analytics._query_expr_compiler._compiler.QueryExprCompiler</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -715,7 +783,7 @@ supported.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.from_dataframe">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.from_dataframe" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.from_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a DP session from a Spark dataframe.</p>
 <p>Only one private data source is supported with this initialization
 method; if you need multiple data sources, use
@@ -736,6 +804,7 @@ supported.</p>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">session_budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
 <span class="go">[&#39;my_private_data&#39;]</span>
@@ -747,19 +816,17 @@ supported.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – The total privacy budget allocated to this session.</p></li>
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The source id for the private source dataframe.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The source id for the private source dataframe.</p></li>
 <li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The private source dataframe to perform queries on,
 corresponding to the <cite>source_id</cite>.</p></li>
-<li><p><strong>stability</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>]</em>) – Maximum number of rows that may be added or removed if a
-single individual is added or removed. If using RhoZCDP and a
-grouping column, this should instead be the maximum number of
-rows that an individual can contribute to each group times the
-<em>square root</em> of the maximum number of groups each user can
-contribute to.</p></li>
-<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – An input column that must be grouped on, like those
-generated when calling
-<a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a> with
-the <code class="docutils literal notranslate"><span class="pre">grouping</span></code> option set.</p></li>
+<li><p><strong>stability</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em><em>]</em>) – Deprecated: use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a></p></li>
+<li><p><strong>grouping_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – Deprecated: use <code class="docutils literal notranslate"><span class="pre">protected_change</span></code> instead, see
+<a class="reference internal" href="../../../../changelog.html#changelog-protected-change"><span class="std std-ref">changelog</span></a></p></li>
+<li><p><strong>protected_change</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>]</em>) – A
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>
+specifying what changes to the input data the resulting
+<a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> should protect.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -774,7 +841,7 @@ the <code class="docutils literal notranslate"><span class="pre">grouping</span>
 <dd><p>Returns the ids of the private sources.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -785,7 +852,7 @@ the <code class="docutils literal notranslate"><span class="pre">grouping</span>
 <dd><p>Returns the ids of the public sources.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -796,7 +863,7 @@ the <code class="docutils literal notranslate"><span class="pre">grouping</span>
 <dd><p>Returns a dictionary of public source dataframes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>]</p>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -805,11 +872,35 @@ the <code class="docutils literal notranslate"><span class="pre">grouping</span>
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.remaining_privacy_budget">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remaining_privacy_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.remaining_privacy_budget" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the remaining privacy_budget left in the session.</p>
-<p>The type of the budget (e.g., PureDP or RhoZCDP) will be the same as
+<p>The type of the budget (e.g., PureDP or rho-zCDP) will be the same as
 the type of the budget the Session was initialized with.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Union[<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget">tmlt.analytics.privacy_budget.PureDPBudget</a>, <a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget">tmlt.analytics.privacy_budget.RhoZCDPBudget</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.describe" title="Permalink to this definition">#</a></dt>
+<dd><p>Describe a Session, table, or query.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">obj</span></code> is not specified, <code class="docutils literal notranslate"><span class="pre">session.describe()</span></code> will describe the
+Session and all of the tables it contains.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a> or
+<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>, <code class="docutils literal notranslate"><span class="pre">session.describe(obj)</span></code>
+will describe the table that would result from that query if it were
+applied to the Session.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a string, <code class="docutils literal notranslate"><span class="pre">session.describe(obj)</span></code> will describe the table
+with that name. This is a shorthand for
+<code class="docutils literal notranslate"><span class="pre">session.describe(QueryBuilder(obj))</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>, </em><a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><em>tmlt.analytics.query_builder.QueryBuilder</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – The table or query to be described, or None to describe the
+whole Session.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -821,7 +912,7 @@ the type of the budget the Session was initialized with.</p>
 <p>This includes information on whether the columns are nullable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The ID for the data source whose column types
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The ID for the data source whose column types
 are being retrieved.</p>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -837,10 +928,10 @@ are being retrieved.</p>
 <p>This does <em>not</em> include information on whether the columns are nullable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p>
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType">tmlt.analytics.query_builder.ColumnType</a>]</p>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType">tmlt.analytics.query_builder.ColumnType</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -853,11 +944,39 @@ are being retrieved.</p>
 must include this column as a groupby column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The ID for the data source whose grouping column
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The ID for the data source whose grouping column
 is being retrieved.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-even"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.get_id_column">
+<span class="sig-name descname"><span class="pre">get_id_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.get_id_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the ID column of a table, if it has one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the table whose ID column is being retrieved.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.session.Session.get_id_space">
+<span class="sig-name descname"><span class="pre">get_id_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.get_id_space" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the ID space of a table, if it has one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the table whose ID space is being retrieved.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -889,8 +1008,8 @@ supported.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the public data source.</p></li>
-<li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The public data source corresponding to the <cite>source_id</cite>.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the public data source.</p></li>
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – The public data source corresponding to the <code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -901,7 +1020,7 @@ supported.</p>
 <span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.evaluate" title="Permalink to this definition">#</a></dt>
 <dd><p>Answers a query within the given privacy budget and returns a Spark dataframe.</p>
 <p>The type of privacy budget that you use must match the type your Session was
-initialized with (i.e., you cannot evaluate a query using RhoZCDPBudget if
+initialized with (i.e., you cannot evaluate a query using rho-zCDPBudget if
 the Session was initialized with a PureDPBudget, and vice versa).</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
@@ -969,7 +1088,7 @@ the Session was initialized with a PureDPBudget, and vice versa).</p>
 <span class="gp">... </span>    <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;, &#39;private_public_join&#39;]</span>
+<span class="go">[&#39;private_public_join&#39;, &#39;my_private_data&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s2">&quot;private_public_join&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span> 
 <span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Delete the view</span>
@@ -982,8 +1101,8 @@ the Session was initialized with a PureDPBudget, and vice versa).</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>query_expr</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>, </em><a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><em>tmlt.analytics.query_builder.QueryBuilder</em></a><em>]</em>) – A query that performs a transformation.</p></li>
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name, or unique identifier, of the view.</p></li>
-<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Whether or not to cache the view.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name, or unique identifier, of the view.</p></li>
+<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether or not to cache the view.</p></li>
 </ul>
 </dd>
 </dl>
@@ -995,18 +1114,20 @@ the Session was initialized with a PureDPBudget, and vice versa).</p>
 <dd><p>Deletes a view and decaches it if it was cached.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the view.</p>
+<dd class="field-odd"><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the view.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.session.Session.partition_and_create">
-<span class="sig-name descname"><span class="pre">partition_and_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.partition_and_create" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns new sessions from a partition mapped to split name/<cite>source_id</cite>.</p>
-<p>The type of privacy budget that you use must match the type your Session was
-initialized with (i.e., you cannot use a RhoZCDPBudget to partition your
-Session if the Session was created using a PureDPBudget, and vice versa).</p>
+<span class="sig-name descname"><span class="pre">partition_and_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.session.Session.partition_and_create" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns new sessions from a partition mapped to split name/<code class="docutils literal notranslate"><span class="pre">source_id</span></code>.</p>
+<p>The type of privacy budget that you use must match the type your Session
+was initialized with (i.e., you cannot use a
+<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a> to partition your
+Session if the Session was created using a
+<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a>, and vice versa).</p>
 <p>The sessions returned must be used in the order that they were created.
 Using this session again or calling stop() will stop all partition sessions.</p>
 <p class="rubric">Example</p>
@@ -1024,7 +1145,7 @@ session.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_sessions</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">partition_and_create</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mf">0.75</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">attr_name</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">splits</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;part0&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;part1&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span>
@@ -1061,15 +1182,15 @@ session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The private source to partition.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The private source to partition.</p></li>
 <li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – Amount of privacy budget to pass to each new session.</p></li>
-<li><p><strong>attr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the column partitioning on.</p></li>
-<li><p><strong>splits</strong> (<em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em><em>]</em>) – Mapping of split name to value of partition.
-Split name is <cite>source_id</cite> in new session.</p></li>
+<li><p><strong>column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – The name of the column partitioning on.</p></li>
+<li><p><strong>splits</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em><em>]</em><em>]</em>) – Mapping of split name to value of partition.
+Split name is <code class="docutils literal notranslate"><span class="pre">source_id</span></code> in new session.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session">Session</a>]</p>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session">Session</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1129,12 +1250,12 @@ Split name is <cite>source_id</cite> in new session.</p></li>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

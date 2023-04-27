@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="session" href="../session/index.html" />
     <link rel="prev" title="query_builder" href="../query_builder/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../installation.html">
+ <a class="reference internal nav-link" href="../../../../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../../../../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -239,8 +251,8 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../cleanup/index.html">
-   cleanup
+  <a class="reference internal" href="../constraints/index.html">
+   constraints
   </a>
  </li>
  <li class="toctree-l1">
@@ -251,6 +263,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../privacy_budget/index.html">
    privacy_budget
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../protected_change/index.html">
+   protected_change
   </a>
  </li>
  <li class="toctree-l1">
@@ -271,6 +288,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../truncation_strategy/index.html">
    truncation_strategy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils/index.html">
+   utils
   </a>
  </li>
 </ul>
@@ -566,8 +588,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.Filter.predicate">
-       predicate
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.Filter.condition">
+       condition
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -652,11 +674,6 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.FlatMap.max_num_rows">
-       max_num_rows
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.FlatMap.schema_new_columns">
        schema_new_columns
       </a>
@@ -664,6 +681,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.FlatMap.augment">
        augment
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.FlatMap.max_num_rows">
+       max_num_rows
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -862,6 +884,33 @@ function checkPageExistsAndRedirect(event) {
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.DropInfinity.accept">
+       accept
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.EnforceConstraint">
+     EnforceConstraint
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.EnforceConstraint.child">
+       child
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.EnforceConstraint.constraint">
+       constraint
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.EnforceConstraint.options">
+       options
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.EnforceConstraint.accept">
        accept
       </a>
      </li>
@@ -1237,6 +1286,11 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_enforce_constraint">
+       visit_enforce_constraint
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count">
        visit_groupby_count
       </a>
@@ -1348,7 +1402,7 @@ user-friendly features.</p>
 <td><p>Returns the dataframe with columns renamed.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.Filter" title="tmlt.analytics.query_expr.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p></td>
-<td><p>Returns the subset of the rows that satisfy the predicate.</p></td>
+<td><p>Returns the subset of the rows that satisfy the condition.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.Select" title="tmlt.analytics.query_expr.Select"><code class="xref py py-class docutils literal notranslate"><span class="pre">Select</span></code></a></p></td>
 <td><p>Returns a subset of the columns.</p></td>
@@ -1380,28 +1434,31 @@ user-friendly features.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.DropInfinity" title="tmlt.analytics.query_expr.DropInfinity"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropInfinity</span></code></a></p></td>
 <td><p>Returns data with rows that contain +inf/-inf dropped.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCount</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.EnforceConstraint" title="tmlt.analytics.query_expr.EnforceConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnforceConstraint</span></code></a></p></td>
+<td><p>Enforces a constraint on the data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCount</span></code></a></p></td>
 <td><p>Returns the count of each combination of the groupby domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCountDistinct</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCountDistinct</span></code></a></p></td>
 <td><p>Returns the count of distinct records in each groupby domain value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByQuantile</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByQuantile</span></code></a></p></td>
 <td><p>Returns the quantile of a column for each combination of the groupby domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSum</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSum</span></code></a></p></td>
 <td><p>Returns the bounded sum of a column for each combination of groupby domains.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedAverage</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedAverage</span></code></a></p></td>
 <td><p>Returns bounded average of a column for each combination of groupby domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedVariance</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedVariance</span></code></a></p></td>
 <td><p>Returns bounded variance of a column for each combination of groupby domains.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a></p></td>
 <td><p>Returns bounded stdev of a column for each combination of groupby domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprVisitor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprVisitor</span></code></a></p></td>
 <td><p>A base class for implementing visitors for <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -1409,7 +1466,7 @@ user-friendly features.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.CountMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CountMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.CountMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Possible mechanisms for the count() aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.count" title="tmlt.analytics.query_builder.GroupedQueryBuilder.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a> aggregation
@@ -1450,7 +1507,7 @@ might change over time as additional optimizations are added to the library.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.CountDistinctMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CountDistinctMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.CountDistinctMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Enumerating the possible mechanims used for the count_distinct aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct" title="tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a>
@@ -1491,7 +1548,7 @@ might change over time as additional optimizations are added to the library.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.SumMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SumMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.SumMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Possible mechanisms for the sum() aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.sum" title="tmlt.analytics.query_builder.GroupedQueryBuilder.sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sum()</span></code></a>
@@ -1534,7 +1591,7 @@ with floating-point sums or pure DP.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.AverageMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AverageMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.AverageMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Possible mechanisms for the average() aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.average" title="tmlt.analytics.query_builder.GroupedQueryBuilder.average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">average()</span></code></a>
@@ -1577,7 +1634,7 @@ compatible with floating-point averages or pure DP.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.VarianceMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VarianceMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.VarianceMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Possible mechanisms for the variance() aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.variance" title="tmlt.analytics.query_builder.GroupedQueryBuilder.variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">variance()</span></code></a>
@@ -1620,7 +1677,7 @@ compatible with floating-point averages or pure DP.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.StdevMechanism">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StdevMechanism</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.StdevMechanism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>Possible mechanisms for the stdev() aggregation.</p>
 <p>Currently, the
 <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.GroupedQueryBuilder.stdev" title="tmlt.analytics.query_builder.GroupedQueryBuilder.stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stdev()</span></code></a>
@@ -1663,7 +1720,7 @@ with floating-point averages or pure DP.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExpr">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QueryExpr</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExpr" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>A query expression, base class for relational operators.</p>
 <p>In most cases, QueryExpr should not be manipulated directly, but rather
 created using <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.QueryBuilder</span></code></a> and then
@@ -1755,7 +1812,7 @@ and keep the other column names the same.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.Filter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Filter</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.Filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
-<p>Returns the subset of the rows that satisfy the predicate.</p>
+<p>Returns the subset of the rows that satisfy the condition.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.Filter.child">
 <span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.Filter.child" title="Permalink to this definition">#</a></dt>
@@ -1763,8 +1820,8 @@ and keep the other column names the same.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.analytics.query_expr.Filter.predicate">
-<span class="sig-name descname"><span class="pre">predicate</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.Filter.predicate" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.Filter.condition">
+<span class="sig-name descname"><span class="pre">condition</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.Filter.condition" title="Permalink to this definition">#</a></dt>
 <dd><p>A string of SQL expression specifying the filter to apply to the data.</p>
 <p>For example, the string “A &gt; B” matches rows where column A is greater than
 column B.</p>
@@ -1839,7 +1896,7 @@ column B.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.Map.schema_new_columns">
 <span class="sig-name descname"><span class="pre">schema_new_columns</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics._schema.Schema</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.Map.schema_new_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>The expected schema for new columns produced by <cite>f</cite>.</p>
+<dd><p>The expected schema for new columns produced by <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1872,10 +1929,10 @@ columns (schema = schema_new_columns).</p>
 functions are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><em>object</em></a>) – </p>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><em>object</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1900,16 +1957,10 @@ functions are equal.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.analytics.query_expr.FlatMap.max_num_rows">
-<span class="sig-name descname"><span class="pre">max_num_rows</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.FlatMap.max_num_rows" title="Permalink to this definition">#</a></dt>
-<dd><p>The enforced limit on number of rows from each f(row).</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.FlatMap.schema_new_columns">
 <span class="sig-name descname"><span class="pre">schema_new_columns</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics._schema.Schema</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.FlatMap.schema_new_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>The expected schema for new columns produced by <cite>f</cite>.</p>
-<p>If the <cite>schema_new_columns</cite> has a <cite>grouping_column</cite>, that means this FlatMap
+<dd><p>The expected schema for new columns produced by <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">schema_new_columns</span></code> has a <code class="docutils literal notranslate"><span class="pre">grouping_column</span></code>, that means this FlatMap
 produces a column that must be grouped by eventually. It also must be the only
 column in the schema.</p>
 </dd></dl>
@@ -1920,6 +1971,12 @@ column in the schema.</p>
 <dd><p>Whether to keep the existing columns.</p>
 <p>If True, schema = old schema + schema_new_columns, otherwise only keeps the new
 columns (schema = schema_new_columns).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.FlatMap.max_num_rows">
+<span class="sig-name descname"><span class="pre">max_num_rows</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[int]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.FlatMap.max_num_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>The enforced limit on number of rows from each f(row).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1944,10 +2001,10 @@ columns (schema = schema_new_columns).</p>
 functions are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><em>object</em></a>) – </p>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><em>object</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1977,13 +2034,13 @@ detailed overview of <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_left">
-<span class="sig-name descname"><span class="pre">truncation_strategy_left</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics.truncation_strategy.TruncationStrategy.Type</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_left" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">truncation_strategy_left</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[tmlt.analytics.truncation_strategy.TruncationStrategy.Type]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_left" title="Permalink to this definition">#</a></dt>
 <dd><p>Truncation strategy to be used for the left table.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_right">
-<span class="sig-name descname"><span class="pre">truncation_strategy_right</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics.truncation_strategy.TruncationStrategy.Type</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_right" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">truncation_strategy_right</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[tmlt.analytics.truncation_strategy.TruncationStrategy.Type]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.JoinPrivate.truncation_strategy_right" title="Permalink to this definition">#</a></dt>
 <dd><p>Truncation strategy to be used for the right table.</p>
 </dd></dl>
 
@@ -2057,10 +2114,10 @@ could take a long time or consume a lot of resources, and is not
 recommended.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><em>object</em></a>) – </p>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><em>object</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2092,15 +2149,15 @@ recommended.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.AnalyticsDefault.DATE">
 <span class="sig-name descname"><span class="pre">DATE</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.AnalyticsDefault.DATE" title="Permalink to this definition">#</a></dt>
-<dd><p>The default value used for dates (<cite>datetime.date.fromtimestamp(0)</cite>).</p>
-<p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date.fromtimestamp" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
+<dd><p>The default value used for dates (<code class="docutils literal notranslate"><span class="pre">datetime.date.fromtimestamp(0)</span></code>).</p>
+<p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date.fromtimestamp" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.AnalyticsDefault.TIMESTAMP">
 <span class="sig-name descname"><span class="pre">TIMESTAMP</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.AnalyticsDefault.TIMESTAMP" title="Permalink to this definition">#</a></dt>
-<dd><p>The defauLt value used for timestamps (<cite>datetime.datetime.fromtimestamp(0)</cite>).</p>
-<p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.fromtimestamp" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
+<dd><p>The defauLt value used for timestamps (<code class="docutils literal notranslate"><span class="pre">datetime.datetime.fromtimestamp(0)</span></code>).</p>
+<p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.fromtimestamp" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2110,9 +2167,13 @@ recommended.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReplaceNullAndNan</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
 <p>Returns data with null and NaN expressions replaced by a default.</p>
-<p>Note that after a <cite>ReplaceNullAndNan</cite> query has been performed for a column,
-Analytics will raise an error if you use a <cite>KeySet</cite> for that column
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>after a <code class="docutils literal notranslate"><span class="pre">ReplaceNullAndNan</span></code> query has been performed for a column,
+Analytics will raise an error if you use a
+<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> for that column
 that contains null values.</p>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.ReplaceNullAndNan.child">
 <span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan.child" title="Permalink to this definition">#</a></dt>
@@ -2124,8 +2185,8 @@ that contains null values.</p>
 <span class="sig-name descname"><span class="pre">replace_with</span></span><em class="property"><span class="w"> </span><span class="pre">:Mapping[str,</span> <span class="pre">Union[int,</span> <span class="pre">float,</span> <span class="pre">str,</span> <span class="pre">datetime.date,</span> <span class="pre">datetime.datetime]]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.ReplaceNullAndNan.replace_with" title="Permalink to this definition">#</a></dt>
 <dd><p>New values to replace with, by column.</p>
 <p>If this dictionary is empty, <em>all</em> columns will be changed, with values
-replaced by a default value for each column’s type (see the <cite>AnalyticsDefault</cite>
-class variables).</p>
+replaced by a default value for each column’s type (see the
+<a class="reference internal" href="#tmlt.analytics.query_expr.AnalyticsDefault" title="tmlt.analytics.query_expr.AnalyticsDefault"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyticsDefault</span></code></a> class variables).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2162,8 +2223,8 @@ class variables).</p>
 will be used to replace -infinity, and the second value will be used to
 replace +infinity.</p>
 <p>If this dictionary is empty, <em>all</em> columns of type DECIMAL will be changed,
-with infinite values replaced with a default value (see the <cite>AnalyticsDefault</cite>
-class variables).</p>
+with infinite values replaced with a default value (see the
+<a class="reference internal" href="#tmlt.analytics.query_expr.AnalyticsDefault" title="tmlt.analytics.query_expr.AnalyticsDefault"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyticsDefault</span></code></a> class variables).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2187,9 +2248,13 @@ class variables).</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropNullAndNan</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.DropNullAndNan" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
 <p>Returns data with rows that contain null or NaN value dropped.</p>
-<p>Note that after a <cite>DropNullAndNan</cite> query has been performed for a column,
-Analytics will raise an error if you use a <cite>KeySet</cite> for that column
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>After a <code class="docutils literal notranslate"><span class="pre">DropNullAndNan</span></code> query has been performed for a column,
+Analytics will raise an error if you use a
+<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> for that column
 that contains null values.</p>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.DropNullAndNan.child">
 <span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.DropNullAndNan.child" title="Permalink to this definition">#</a></dt>
@@ -2242,6 +2307,47 @@ contains an infinite value, that row will be dropped.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.DropInfinity.accept">
 <span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visitor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.DropInfinity.accept" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit this QueryExpr with visitor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>visitor</strong> (<a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><em>QueryExprVisitor</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.EnforceConstraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnforceConstraint</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.EnforceConstraint" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
+<p>Enforces a constraint on the data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.EnforceConstraint.child">
+<span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.EnforceConstraint.child" title="Permalink to this definition">#</a></dt>
+<dd><p>The QueryExpr to which the constraint will be applied.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.EnforceConstraint.constraint">
+<span class="sig-name descname"><span class="pre">constraint</span></span><em class="property"><span class="w"> </span><span class="pre">:tmlt.analytics.constraints.Constraint</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.EnforceConstraint.constraint" title="Permalink to this definition">#</a></dt>
+<dd><p>A constraint to be enforced.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.EnforceConstraint.options">
+<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="w"> </span><span class="pre">:Dict[str,</span> <span class="pre">Any]</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.EnforceConstraint.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Options to be used when enforcing the constraint.</p>
+<p>Appropriate values here vary depending on the constraint. These options are
+to support advanced use cases, and generally should not be used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.EnforceConstraint.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visitor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.EnforceConstraint.accept" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit this QueryExpr with visitor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2391,13 +2497,15 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByQuantile.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByQuantile.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByQuantile.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByQuantile.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be greater than <code class="docutils literal notranslate"><span class="pre">low</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2452,13 +2560,15 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSum.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSum.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSum.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSum.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be greater than <code class="docutils literal notranslate"><span class="pre">low</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2521,13 +2631,15 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedAverage.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedAverage.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedAverage.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedAverage.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be greater than <code class="docutils literal notranslate"><span class="pre">low</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2590,13 +2702,15 @@ calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedVariance.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedVariance.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedVariance.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedVariance.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be greater than <code class="docutils literal notranslate"><span class="pre">low</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2659,13 +2773,15 @@ standard deviation is calculated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSTDEV.low">
 <span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV.low" title="Permalink to this definition">#</a></dt>
-<dd><p>The lower bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The lower bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be less than <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.GroupByBoundedSTDEV.high">
 <span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV.high" title="Permalink to this definition">#</a></dt>
-<dd><p>The upper bound for clamping the <cite>measure_column</cite>.</p>
+<dd><p>The upper bound for clamping the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.
+Should be greater than <code class="docutils literal notranslate"><span class="pre">low</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2701,7 +2817,7 @@ appropriate mechanism.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExprVisitor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QueryExprVisitor</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>A base class for implementing visitors for <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>.</p>
 <table class="table" id="id1">
 <caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
@@ -2746,25 +2862,28 @@ appropriate mechanism.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_drop_infinity" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_drop_infinity()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.DropInfinity" title="tmlt.analytics.query_expr.DropInfinity"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropInfinity</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_enforce_constraint" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_enforce_constraint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_enforce_constraint()</span></code></a></p></td>
+<td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.EnforceConstraint" title="tmlt.analytics.query_expr.EnforceConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnforceConstraint</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCount</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count_distinct" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count_distinct()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count_distinct" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count_distinct()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCountDistinct</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_quantile" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_quantile()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_quantile" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_quantile()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByQuantile</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_sum" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_sum()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_sum" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_sum()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSum</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_average" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_average()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_average" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_average()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedAverage</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_variance" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_variance()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_variance" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_variance()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedVariance</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_stdev()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_stdev()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -2938,6 +3057,20 @@ appropriate mechanism.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExprVisitor.visit_enforce_constraint">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_enforce_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_enforce_constraint" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.EnforceConstraint" title="tmlt.analytics.query_expr.EnforceConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnforceConstraint</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="#tmlt.analytics.query_expr.EnforceConstraint" title="tmlt.analytics.query_expr.EnforceConstraint"><em>EnforceConstraint</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_groupby_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCount</span></code></a>.</p>
@@ -3079,12 +3212,12 @@ appropriate mechanism.</p>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

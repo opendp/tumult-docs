@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Privacy budget fundamentals" href="privacy-budgets.html" />
     <link rel="prev" title="Tumult Analytics’ privacy promise" href="privacy-promise.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../installation.html">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../tutorials/index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -249,6 +261,11 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="understanding-sensitivity.html">
+   Understanding sensitivity
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="spark.html">
    Spark
   </a>
@@ -354,6 +371,7 @@ using <a class="reference internal" href="../reference/tmlt/analytics/session/in
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -377,6 +395,7 @@ instead. First, create your Builder:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session_builder</span> <span class="o">=</span> <span class="n">session_builder</span><span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -395,6 +414,7 @@ data stored in a CSV file:</p>
 <span class="n">session_builder</span> <span class="o">=</span> <span class="n">session_builder</span><span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_other_private_data&quot;</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">salary_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -430,7 +450,7 @@ string identifiers of available private or public data sources using
 <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">public_sources</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;my_private_data&#39;, &#39;my_other_private_data&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;my_other_private_data&#39;, &#39;my_private_data&#39;]
 [&#39;my_public_data&#39;]
 </pre></div>
 </div>
@@ -506,12 +526,12 @@ is the same as the total budget that we initialized the Session with earlier.</p
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

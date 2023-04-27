@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Topic guides" href="../topic-guides/index.html" />
+    <link rel="next" title="Tutorial 6: Working with privacy IDs" href="privacy-id-basics.html" />
     <link rel="prev" title="Tutorial 4: Group-by queries" href="groupby-queries.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../installation.html">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -258,6 +270,16 @@ function checkPageExistsAndRedirect(event) {
    Tutorial 5: Simple transformations
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-id-basics.html">
+   Tutorial 6: Working with privacy IDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more-with-privacy-ids.html">
+   Tutorial 7: Doing more with privacy IDs
+  </a>
+ </li>
 </ul>
 
   </div>
@@ -349,6 +371,7 @@ binning, and public joins.</p>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 
@@ -367,6 +390,7 @@ should not be done in production.</p>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -413,8 +437,10 @@ information, consult the <a class="reference internal" href="../topic-guides/pri
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
 
 <span class="k">def</span> <span class="nf">age_joined</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="n">year_joined</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">age_at_joining</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">year_joined</span><span class="p">))</span>
+    <span class="n">date_joined</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_joined</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">date_joined</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">date_joined</span><span class="p">)</span>
+    <span class="n">age_at_joining</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">date_joined</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age_joined&quot;</span><span class="p">:</span> <span class="n">age_at_joining</span><span class="p">}</span>
 
 <span class="n">example_row</span> <span class="o">=</span> <span class="p">{</span>
@@ -432,17 +458,17 @@ information, consult the <a class="reference internal" href="../topic-guides/pri
 <span class="nb">print</span><span class="p">(</span><span class="n">age_joined</span><span class="p">(</span><span class="n">example_row</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;age_joined&#39;: 50}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;age_joined&#39;</span><span class="p">:</span> <span class="mi">49</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Now that we have our mapping function, we can use it in a query.</p>
-<p>To add the map to our query, we also need to provide the <cite>new_column_types</cite>. It should
+<p>To add the map to our query, we also need to provide the <code class="docutils literal notranslate"><span class="pre">new_column_types</span></code>. It should
 be a dictionary containing the names and types for each of the columns created by the
-map. In this case, the type is <cite>INTEGER</cite>.</p>
-<p>We also set <cite>augment=True</cite>. This tells the query to keep the original columns in
-addition to the columns created by the map. If we used <cite>augment=False</cite>, the <cite>gender</cite>
+map. In this case, the type is <code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>.</p>
+<p>We also set <code class="docutils literal notranslate"><span class="pre">augment=True</span></code>. This tells the query to keep the original columns in
+addition to the columns created by the map. If we used <code class="docutils literal notranslate"><span class="pre">augment=False</span></code>, the <code class="docutils literal notranslate"><span class="pre">gender</span></code>
 column would no longer be available: the only column in the transformed data would be
-<cite>age_joined</cite>.</p>
+<code class="docutils literal notranslate"><span class="pre">age_joined</span></code>.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">ColumnType</span>
 
 <span class="n">ages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>  <span class="c1"># [0, 6, ..., 99]</span>
@@ -510,15 +536,15 @@ each of their favorite genres (up to three times as many rows).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[{&#39;genre&#39;: &#39;Romance&#39;}, {&#39;genre&#39;: &#39;Classics/Literature&#39;}, {&#39;genre&#39;: &#39;Current affairs&#39;}]
 </pre></div>
 </div>
-<p>Like <cite>map</cite>, <cite>flat_map</cite> has the <cite>new_column_types</cite> and <cite>augment</cite> options. In this
-example, we leave <cite>augment</cite> with its default value of <cite>False</cite>.</p>
-<p>Unlike <cite>map</cite>, <cite>flat_map</cite> has an argument <cite>max_num_rows</cite>. It clamps the maximum number
+<p>Like <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has the <code class="docutils literal notranslate"><span class="pre">new_column_types</span></code> and <code class="docutils literal notranslate"><span class="pre">augment</span></code> options.
+In this example, we leave <code class="docutils literal notranslate"><span class="pre">augment</span></code> with its default value of <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has an argument <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>. It clamps the maximum number
 of new rows that can be created for each input row. This serves a similar function as
 the clamping bounds on aggregations we used in <a class="reference internal" href="clamping-bounds.html#clamping-bounds"><span class="std std-ref">tutorial 3</span></a>, and
-also has the analogous trade-offs: higher values for <cite>max_num_rows</cite> will result in more
+also has the analogous trade-offs: higher values for <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code> will result in more
 noise in the final results, while lower values may cause more rows to be silently
 dropped. In this case, the choice is easy: no members have more than three favorites and
-there are many members with three, so we set <cite>max_num_rows=3</cite>.</p>
+there are many members with three, so we set <code class="docutils literal notranslate"><span class="pre">max_num_rows=3</span></code>.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">genre_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -547,8 +573,8 @@ there are many members with three, so we set <cite>max_num_rows=3</cite>.</p>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
         <span class="n">expand_genre</span><span class="p">,</span>
-        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">},</span>
+        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">genre_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -715,8 +741,6 @@ zero for some of the population counts. We will replace the NaN values with zero
    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
-
 <span class="n">members_per_city_df</span> <span class="o">=</span> <span class="n">members_per_city_df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">members_per_city_df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
@@ -756,10 +780,10 @@ zero for some of the population counts. We will replace the NaN values with zero
           <p class="prev-next-title">Tutorial 4: Group-by queries</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../topic-guides/index.html" title="next page">
+  <a class='right-next' id="next-link" href="privacy-id-basics.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Topic guides</p>
+      <p class="prev-next-title">Tutorial 6: Working with privacy IDs</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -780,12 +804,12 @@ zero for some of the population counts. We will replace the NaN values with zero
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">

@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,14 +42,19 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script src="../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tutorial 3: Introduction to clamping bounds" href="clamping-bounds.html" />
     <link rel="prev" title="Tutorial 1: First steps with Tumult Analytics" href="first-steps.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="None">
+
   </head>
   
   
@@ -91,7 +97,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../installation.html">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
   Installation
  </a>
 </li>
@@ -99,6 +105,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="index.html">
   Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
  </a>
 </li>
 
@@ -115,8 +127,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../additional-resources/index.html">
-  Additional resources
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
  </a>
 </li>
 
@@ -258,6 +270,16 @@ function checkPageExistsAndRedirect(event) {
    Tutorial 5: Simple transformations
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-id-basics.html">
+   Tutorial 6: Working with privacy IDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more-with-privacy-ids.html">
+   Tutorial 7: Doing more with privacy IDs
+  </a>
+ </li>
 </ul>
 
   </div>
@@ -349,6 +371,7 @@ started!</p>
 <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 </pre></div>
@@ -374,7 +397,28 @@ allocate a fixed privacy budget of <code class="docutils literal notranslate"><s
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
     <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s check that we initialized the Session as intended using the
+<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.describe" title="tmlt.analytics.session.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe</span></code></a> method:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>The session has a remaining privacy budget of PureDPBudget(epsilon=2.5).
+The following private tables are available:
+Table &#39;members&#39; (no constraints):
+   Columns:
+      - &#39;id&#39;               INTEGER
+      - &#39;name&#39;             VARCHAR
+      - &#39;age&#39;              INTEGER
+      - &#39;gender&#39;           VARCHAR
+      - &#39;education_level&#39;  VARCHAR
+      - &#39;zip_code&#39;         VARCHAR
+      - &#39;books_borrowed&#39;   INTEGER
+      - &#39;favorite_genres&#39;  VARCHAR
+      - &#39;date_joined&#39;      TIMESTAMP
 </pre></div>
 </div>
 <p>Initializing a Session with a finite privacy budget gives a simple interface
@@ -535,12 +579,12 @@ queries? To learn more about this question, you can consult our longer
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from 0e0a5f91 at 2022-08-18 14:04.
+    Built from 1b6cd610 at 2023-04-27 16:50.
   </div>
   
   <div class="footer-item">
