@@ -115,6 +115,8 @@ Classes
         - Returns a dictionary of public source dataframes.
       * - :meth:`.remaining_privacy_budget`
         - Returns the remaining privacy_budget left in the session.
+      * - :meth:`.describe`
+        - Describe a Session, table, or query.
       * - :meth:`.get_schema`
         - Returns the schema for any data source.
       * - :meth:`.get_column_types`
@@ -137,8 +139,6 @@ Classes
         - Returns new sessions from a partition mapped to split name/``source_id``.
       * - :meth:`.stop`
         - Close out this session, allowing other sessions to become active.
-      * - :meth:`.describe`
-        - Describe this session, or a query, or a table.
 
 
    
@@ -175,9 +175,9 @@ Classes
          :param source_id: Source id for the private source dataframe.
          :param dataframe: Private source dataframe to perform queries on,
                            corresponding to the ``source_id``.
-         :param stability: Use ``protected_change`` instead, see
+         :param stability: Deprecated: use ``protected_change`` instead, see
                            :ref:`changelog<changelog#protected-change>`.
-         :param grouping_column: Use ``protected_change`` instead, see
+         :param grouping_column: Deprecated: use ``protected_change`` instead, see
                                  :ref:`changelog<changelog#protected-change>`.
          :param protected_change: A
                                   :class:`~tmlt.analytics.protected_change.ProtectedChange`
@@ -199,13 +199,15 @@ Classes
 
       .. py:method:: with_id_space(self, id_space)
 
-         Sets the identifier space for the session.
+         Creates an identifier space for the session.
 
-         This defines the space of identifiers that map 1-to-1 to the identifiers
-         being protected. Any IDs table must have exactly one column containing
-         those identifiers.
+         This defines a space of identifiers that map 1-to-1 to the
+         identifiers being protected by a table with the
+         :class:`~tmlt.analytics.protected_change.AddRowsWithID` protected
+         change. Any table with such a protected change must be a member of
+         some identifier space.
 
-         :param id_space: The identifier space for the session.
+         :param id_space: The name of the identifier space.
 
 
 
@@ -259,9 +261,9 @@ Classes
       :param source_id: The source id for the private source dataframe.
       :param dataframe: The private source dataframe to perform queries on,
                         corresponding to the `source_id`.
-      :param stability: Use ``protected_change`` instead, see
+      :param stability: Deprecated: use ``protected_change`` instead, see
                         :ref:`changelog<changelog#protected-change>`
-      :param grouping_column: Use ``protected_change`` instead, see
+      :param grouping_column: Deprecated: use ``protected_change`` instead, see
                               :ref:`changelog<changelog#protected-change>`
       :param protected_change: A
                                :class:`~tmlt.analytics.protected_change.ProtectedChange`
@@ -294,6 +296,26 @@ Classes
 
       The type of the budget (e.g., PureDP or rho-zCDP) will be the same as
       the type of the budget the Session was initialized with.
+
+
+   .. py:method:: describe(self, obj = None)
+
+      Describe a Session, table, or query.
+
+      If ``obj`` is not specified, ``session.describe()`` will describe the
+      Session and all of the tables it contains.
+
+      If ``obj`` is a :class:`~tmlt.analytics.query_builder.QueryBuilder` or
+      :class:`~tmlt.analytics.query_expr.QueryExpr`, ``session.describe(obj)``
+      will describe the table that would result from that query if it were
+      applied to the Session.
+
+      If ``obj`` is a string, ``session.describe(obj)`` will describe the table
+      with that name. This is a shorthand for
+      ``session.describe(QueryBuilder(obj))``.
+
+      :param obj: The table or query to be described, or None to describe the
+                  whole Session.
 
 
    .. py:method:: get_schema(self, source_id)
@@ -516,9 +538,11 @@ Classes
 
       Returns new sessions from a partition mapped to split name/``source_id``.
 
-      The type of privacy budget that you use must match the type your Session was
-      initialized with (i.e., you cannot use a RhoZCDPBudget to partition your
-      Session if the Session was created using a PureDPBudget, and vice versa).
+      The type of privacy budget that you use must match the type your Session
+      was initialized with (i.e., you cannot use a
+      :class:`~tmlt.analytics.privacy_budget.RhoZCDPBudget` to partition your
+      Session if the Session was created using a
+      :class:`~tmlt.analytics.privacy_budget.PureDPBudget`, and vice versa).
 
       The sessions returned must be used in the order that they were created.
       Using this session again or calling stop() will stop all partition sessions.
@@ -601,28 +625,6 @@ Classes
    .. py:method:: stop(self)
 
       Close out this session, allowing other sessions to become active.
-
-
-   .. py:method:: describe(self, x = None)
-
-      Describe this session, or a query, or a table.
-
-      If ``x`` is ``None``, ``session._describe(x)`` will describe the session.
-
-      If ``x`` is a
-      :class:`~tmlt.analytics.query_expr.QueryExpr`,
-      ``session._describe(x)`` will describe
-      the schema resulting from that query expression.
-
-      If x is a
-      :class:`~tmlt.analytics.query_builder.QueryBuilder`,
-      ``session._describe(x) will describe the query constructed by the
-      query builder. This is equivalent to calling
-      ``session._describe(x.query_expr)``.
-
-      If x is a string, x is assumed to be a table name. In this case,
-      ``session._describe(x)`` is equivalent to
-      ``session._describe(QueryBuilder(x))``.
 
 
 

@@ -340,6 +340,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxRowsPerID">
+     MaxRowsPerID
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxRowsPerID.max">
+       max
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxGroupsPerID">
      MaxGroupsPerID
     </a>
@@ -368,18 +380,6 @@ function checkPageExistsAndRedirect(event) {
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxRowsPerGroupPerID.max">
-       max
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxRowsPerID">
-     MaxRowsPerID
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.constraints.MaxRowsPerID.max">
        max
       </a>
      </li>
@@ -451,14 +451,14 @@ overlapping information. The original list is not modified.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p></td>
 <td><p>A known, enforceable fact about a table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a></p></td>
-<td><p>A constraint limiting the number of distinct groups per ID.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a></p></td>
-<td><p>A constraint limiting the number of rows associated with each unique (ID, grouping column) pair in a table.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a></p></td>
 <td><p>A constraint limiting the number of rows associated with each ID in a table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a></p></td>
+<td><p>A constraint limiting the number of distinct groups per ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a></p></td>
+<td><p>A constraint limiting the number of rows associated with each unique (ID, grouping column) pair in a table.</p></td>
 </tr>
 </tbody>
 </table>
@@ -471,8 +471,26 @@ overlapping information. The original list is not modified.</p>
 produce differentially-private results. For example, a constraint might say
 that each ID in a table corresponds to no more than two rows in that table
 (the <a class="reference internal" href="#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>
-constraint). Constraints are applied via the <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.enforce" title="tmlt.analytics.query_builder.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.enforce</span></code></a> method.</p>
+constraint). Constraints are applied via the <a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.enforce" title="tmlt.analytics.query_builder.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.enforce()</span></code></a> method.</p>
 <p>This class is a base class for all constraints, and cannot be used directly.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.constraints.MaxRowsPerID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaxRowsPerID</span></span><a class="headerlink" href="#tmlt.analytics.constraints.MaxRowsPerID" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_base/index.html#tmlt.analytics.constraints._base.Constraint" title="tmlt.analytics.constraints._base.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.constraints._base.Constraint</span></code></a></p>
+<p>A constraint limiting the number of rows associated with each ID in a table.</p>
+<p>This constraint limits how many times each distinct value may appear in the
+ID column of a table with the
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected
+change. For example, <code class="docutils literal notranslate"><span class="pre">MaxRowsPerID(5)</span></code> guarantees that each ID appears in
+at most five rows. It cannot be applied to tables with other protected changes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.constraints.MaxRowsPerID.max">
+<span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.constraints.MaxRowsPerID.max" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of times each distinct value may appear in the column.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -515,24 +533,6 @@ ID appears in at most five rows for each distinct value of group_col”.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.constraints.MaxRowsPerGroupPerID.max">
 <span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.constraints.MaxRowsPerGroupPerID.max" title="Permalink to this definition">#</a></dt>
-<dd><p>The maximum number of times each distinct value may appear in the column.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tmlt.analytics.constraints.MaxRowsPerID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaxRowsPerID</span></span><a class="headerlink" href="#tmlt.analytics.constraints.MaxRowsPerID" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="_base/index.html#tmlt.analytics.constraints._base.Constraint" title="tmlt.analytics.constraints._base.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.constraints._base.Constraint</span></code></a></p>
-<p>A constraint limiting the number of rows associated with each ID in a table.</p>
-<p>This constraint limits how many times each distinct value may appear in the
-ID column of a table with the
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected
-change. For example, <code class="docutils literal notranslate"><span class="pre">MaxRowsPerID(5)</span></code> guarantees that each ID appears in
-at most five rows. It cannot be applied to tables with other protected changes.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.analytics.constraints.MaxRowsPerID.max">
-<span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="w"> </span><span class="pre">:int</span></em><a class="headerlink" href="#tmlt.analytics.constraints.MaxRowsPerID.max" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of times each distinct value may appear in the column.</p>
 </dd></dl>
 
@@ -585,7 +585,7 @@ at most five rows. It cannot be applied to tables with other protected changes.<
   </div>
   
   <div class="footer-item">
-    Built from 076c67b7 at 2023-04-25 18:40.
+    Built from ebe9580e at 2023-04-27 07:52.
   </div>
   
   <div class="footer-item">
