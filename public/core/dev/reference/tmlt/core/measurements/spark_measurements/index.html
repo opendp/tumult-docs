@@ -596,6 +596,78 @@ function checkPageExistsAndRedirect(event) {
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection">
+     BoundSelection
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column">
+       bound_column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column_type">
+       bound_column_type
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.splits">
+       splits
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.alpha">
+       alpha
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.threshold">
+       threshold
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_function">
+       privacy_function
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_domain">
+       input_domain
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_metric">
+       input_metric
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.output_measure">
+       output_measure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.is_interactive">
+       is_interactive
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_relation">
+       privacy_relation
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -639,6 +711,9 @@ function checkPageExistsAndRedirect(event) {
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.GeometricPartitionSelection" title="tmlt.core.measurements.spark_measurements.GeometricPartitionSelection"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricPartitionSelection</span></code></a></p></td>
 <td><p>Discovers the distinct rows in a DataFrame, suppressing infrequent rows.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection" title="tmlt.core.measurements.spark_measurements.BoundSelection"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundSelection</span></code></a></p></td>
+<td><p>Discovers a noisy bound based on a DataFrame Column.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1483,6 +1558,305 @@ mitigations we apply here.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BoundSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.measurements.base.Measurement</span></code></a></p>
+<p>Discovers a noisy bound based on a DataFrame Column.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">     A   B</span>
+<span class="go">0   a1  10</span>
+<span class="go">1   a1  10</span>
+<span class="go">2   a1  10</span>
+<span class="go">3   a1  10</span>
+<span class="go">4   a1  10</span>
+<span class="go">..  ..  ..</span>
+<span class="go">95  a1  40</span>
+<span class="go">96  a1  40</span>
+<span class="go">97  a1  40</span>
+<span class="go">98  a1  40</span>
+<span class="go">99  a1  40</span>
+
+<span class="go">[100 rows x 2 columns]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span> <span class="o">=</span> <span class="n">BoundSelection</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">schema</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">bound_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">min_bound</span><span class="p">,</span> <span class="n">max_bound</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min: </span><span class="si">{</span><span class="n">min_bound</span><span class="si">}</span><span class="s2">, Max: </span><span class="si">{</span><span class="n">max_bound</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
+<span class="go">Min: -64, Max: 64</span>
+</pre></div>
+</div>
+<dl>
+<dt>Measurement Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output type - Tuple[int, int] if the <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column" title="tmlt.core.measurements.spark_measurements.BoundSelection.bound_column"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bound_column</span></code></a> is int, else Tuple[float, float]</p></li>
+<li><p>Input metric - <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a></p></li>
+<li><p>Output measure - <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">output_measure</span>
+<span class="go">PureDP()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Privacy Guarantee:</dt><dd><p>For <span class="math notranslate nohighlight">\(d_{in} = 0\)</span>, returns <span class="math notranslate nohighlight">\(0\)</span></p>
+<p>For <span class="math notranslate nohighlight">\(d_{in} &gt; 0\)</span>, returns <span class="math notranslate nohighlight">\((4/\alpha) * d_{in}\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.alpha" title="tmlt.core.measurements.spark_measurements.BoundSelection.alpha"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alpha</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<table class="table" id="id2">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column" title="tmlt.core.measurements.spark_measurements.BoundSelection.bound_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bound_column()</span></code></a></p></td>
+<td><p>Returns the column to compute the bounds for.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column_type" title="tmlt.core.measurements.spark_measurements.BoundSelection.bound_column_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bound_column_type()</span></code></a></p></td>
+<td><p>Returns the type of the bound column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.splits" title="tmlt.core.measurements.spark_measurements.BoundSelection.splits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">splits()</span></code></a></p></td>
+<td><p>Returns the splits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.alpha" title="tmlt.core.measurements.spark_measurements.BoundSelection.alpha"><code class="xref py py-meth docutils literal notranslate"><span class="pre">alpha()</span></code></a></p></td>
+<td><p>Returns the alpha.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.threshold" title="tmlt.core.measurements.spark_measurements.BoundSelection.threshold"><code class="xref py py-meth docutils literal notranslate"><span class="pre">threshold()</span></code></a></p></td>
+<td><p>Returns the threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_function" title="tmlt.core.measurements.spark_measurements.BoundSelection.privacy_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">privacy_function()</span></code></a></p></td>
+<td><p>Returns the smallest d_out satisfied by the measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.__call__" title="tmlt.core.measurements.spark_measurements.BoundSelection.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a></p></td>
+<td><p>Returns the bounds for the given column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_domain" title="tmlt.core.measurements.spark_measurements.BoundSelection.input_domain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">input_domain()</span></code></a></p></td>
+<td><p>Return input domain for the measurement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_metric" title="tmlt.core.measurements.spark_measurements.BoundSelection.input_metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">input_metric()</span></code></a></p></td>
+<td><p>Distance metric on input domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.output_measure" title="tmlt.core.measurements.spark_measurements.BoundSelection.output_measure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">output_measure()</span></code></a></p></td>
+<td><p>Distance measure on output.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.is_interactive" title="tmlt.core.measurements.spark_measurements.BoundSelection.is_interactive"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_interactive()</span></code></a></p></td>
+<td><p>Returns true iff the measurement is interactive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_relation" title="tmlt.core.measurements.spark_measurements.BoundSelection.privacy_relation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">privacy_relation()</span></code></a></p></td>
+<td><p>Return True if close inputs produce close outputs.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – </p></li>
+<li><p><strong>bound_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+<li><p><strong>alpha</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – </p></li>
+<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="annotation terse"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames. Input must either be
+a column of floating point numbers or a column of integers.</p></li>
+<li><p><strong>bound_column</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Column name for finding the bounds.
+The column values must be between [-2^64 + 1, 2^64 - 1] for
+64 bit integers, [-2^32 + 1, 2^32 - 1] for 32 bit integers
+and between [-2^100, 2^100] for floats.</p></li>
+<li><p><strong>alpha</strong> (<span class="annotation terse"><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a> | <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – The noise scale parameter for Geometric noise that will be added
+to true number of values falling between the tested bounds on each
+round of the algorithm.
+Noise with scale of <span class="math notranslate nohighlight">\(\alpha / 2\)</span> will be added
+to compute the threshold.
+See <a class="reference internal" href="../noise_mechanisms/index.html#tmlt.core.measurements.noise_mechanisms.AddGeometricNoise" title="tmlt.core.measurements.noise_mechanisms.AddGeometricNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddGeometricNoise</span></code></a> for more information.</p></li>
+<li><p><strong>threshold</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">0.95</span></code>)) – The fraction of the total count to use as the threshold.
+This value should be between (0, 1]. By default it is set to 0.95.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.bound_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bound_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the column to compute the bounds for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.bound_column_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bound_column_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.bound_column_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the type of the bound column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkColumnDescriptor">tmlt.core.domains.spark_domains.SparkColumnDescriptor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.splits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the splits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>], List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.alpha" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the alpha.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.threshold">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See the privacy and stability tutorial for more information. # TODO(#1320)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the bounds for the given column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>], Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.is_interactive" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.BoundSelection.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.BoundSelection.privacy_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <cite>input_metric</cite>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <cite>output_measure</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -1530,7 +1904,7 @@ mitigations we apply here.</p>
   </div>
   
   <div class="footer-item">
-    Built from e23d28df at 2023-05-01 20:51.
+    Built from 0263e82d at 2023-05-02 20:02.
   </div>
   
   <div class="footer-item">

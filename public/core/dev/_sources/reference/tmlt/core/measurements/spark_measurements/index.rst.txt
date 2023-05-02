@@ -34,6 +34,8 @@ Classes
      - Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.
    * - :class:`.GeometricPartitionSelection`
      - Discovers the distinct rows in a DataFrame, suppressing infrequent rows.
+   * - :class:`.BoundSelection`
+     - Discovers a noisy bound based on a DataFrame Column.
 
    
 .. py:class:: SparkMeasurement(input_domain, input_metric, output_measure, is_interactive)
@@ -535,6 +537,199 @@ Classes
 
       See :ref:`pseudo-side-channel-mitigations` for more details on the specific
       mitigations we apply here.
+
+
+   .. py:method:: input_domain(self)
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric(self)
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure(self)
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive(self)
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_relation(self, d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: BoundSelection(input_domain, bound_column, alpha, threshold = 0.95)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Discovers a noisy bound based on a DataFrame Column.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1"] * 100,
+       ...             "B": [10] * 10 + [20] * 20 + [30] * 30 + [40] * 40,
+       ...         }
+       ...     )
+       ... )
+       >>> min_bound, max_bound = -64, 64
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+        A   B
+   0   a1  10
+   1   a1  10
+   2   a1  10
+   3   a1  10
+   4   a1  10
+   ..  ..  ..
+   95  a1  40
+   96  a1  40
+   97  a1  40
+   98  a1  40
+   99  a1  40
+   <BLANKLINE>
+   [100 rows x 2 columns]
+   >>> measurement = BoundSelection(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     bound_column="B",
+   ...     alpha=1,
+   ...     threshold=0.95,
+   ... )
+   >>> min_bound, max_bound = measurement(spark_dataframe) # doctest: +SKIP
+   >>> print(f"Min: {min_bound}, Max: {max_bound}")  # doctest: +NORMALIZE_WHITESPACE
+   Min: -64, Max: 64
+
+   Measurement Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output type - Tuple[int, int] if the :attr:`~.bound_column` is int, else Tuple[float, float]
+       * Input metric - :class:`~.SymmetricDifference`
+       * Output measure - :class:`~.PureDP`
+
+       >>> measurement.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> measurement.input_metric
+       SymmetricDifference()
+       >>> measurement.output_measure
+       PureDP()
+
+       Privacy Guarantee:
+           For :math:`d_{in} = 0`, returns :math:`0`
+
+           For :math:`d_{in} > 0`, returns :math:`(4/\alpha) * d_{in}`
+
+           where:
+
+           * :math:`\alpha` is :attr:`~.alpha`
+
+           >>> measurement.privacy_function(1)
+           4
+           >>> measurement.privacy_function(2)
+           8
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.bound_column`
+        - Returns the column to compute the bounds for.
+      * - :meth:`.bound_column_type`
+        - Returns the type of the bound column.
+      * - :meth:`.splits`
+        - Returns the splits.
+      * - :meth:`.alpha`
+        - Returns the alpha.
+      * - :meth:`.threshold`
+        - Returns the threshold.
+      * - :meth:`.privacy_function`
+        - Returns the smallest d_out satisfied by the measurement.
+      * - :meth:`.__call__`
+        - Returns the bounds for the given column.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_measure`
+        - Distance measure on output.
+      * - :meth:`.is_interactive`
+        - Returns true iff the measurement is interactive.
+      * - :meth:`.privacy_relation`
+        - Return True if close inputs produce close outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: bound_column(self)
+      :property:
+
+      Returns the column to compute the bounds for.
+
+
+   .. py:method:: bound_column_type(self)
+      :property:
+
+      Returns the type of the bound column.
+
+
+   .. py:method:: splits(self)
+      :property:
+
+      Returns the splits.
+
+
+   .. py:method:: alpha(self)
+      :property:
+
+      Returns the alpha.
+
+
+   .. py:method:: threshold(self)
+      :property:
+
+      Returns the threshold.
+
+
+   .. py:method:: privacy_function(self, d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See the privacy and stability tutorial for more information. # TODO(#1320)
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(self, sdf)
+
+      Returns the bounds for the given column.
 
 
    .. py:method:: input_domain(self)

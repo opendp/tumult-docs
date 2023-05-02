@@ -44,6 +44,8 @@ Functions
      - Returns the midpoint of lower and upper.
    * - :func:`.create_partition_selection_measurement`
      - Returns a partition selection measurement.
+   * - :func:`.create_bound_selection_measurement`
+     - Returns a bound selection measurement.
 
 .. py:function:: create_count_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, d_in = 1, groupby_transformation = None, count_column = None)
 
@@ -423,6 +425,28 @@ Functions
                 ``measurement.privacy_function(d_in) = (epsilon, delta)``.
    :param count_column: Column name for output group counts. If None, output column
                         will be named "count".
+
+
+
+.. py:function:: create_bound_selection_measurement(input_domain, output_measure, d_out, bound_column, threshold, d_in = 1)
+
+   Returns a bound selection measurement.
+
+   A bound selection measurement created by this function will have a
+   privacy guarantee such that
+   ``measurement.privacy_function(d_in) = epsilon``.
+
+   :param input_domain: Domain of the input Spark DataFrames.
+   :param output_measure: Desired privacy guarantee.
+   :param d_out: Desired distance between output distributions w.r.t. `d_in`. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param bound_column: Column name to calculate the bounds for. The column
+                        must be an integer or floating point column.
+   :param threshold: The threshold for the bound selection measurement.
+   :param d_in: The given d_in such that
+                ``measurement.privacy_function(d_in) = epsilon``.
 
 
 
