@@ -389,9 +389,8 @@ scales <em>linearly</em> with the protected change.</p>
 <section id="flat-maps">
 <h3>Flat maps<a class="headerlink" href="#flat-maps" title="Permalink to this headline">#</a></h3>
 <p>A <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map</span></code></a> maps each
-input row to zero or more new rows. If we take the flat map example from
-input row to zero or more new rows. Consider the flat map example from
-<a class="reference internal" href="../tutorials/simple-transformations.html#simple-transformations"><span class="std std-ref">tutorial five</span></a> where each input row is mapped to up
+input row to zero or more new rows. Consider the example from
+<a class="reference internal" href="../tutorials/simple-transformations.html#flat-map-tutorial-5"><span class="std std-ref">tutorial five</span></a>, where each input row is mapped to up
 to three new rows, using to the <code class="docutils literal notranslate"><span class="pre">max_rows=3</span></code> parameter. On a per-row basis, this operation might look like this:</p>
 <img alt="On the left, one row containing a list of genres. On the right, three rows, each containing one genre from the list." class="align-center" src="../_images/flat_map_row_example.svg" /><p>In this example, the input table was initialized with the
 <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change,
@@ -420,34 +419,62 @@ in the output table. To hide her contribution to the joined table, we need to in
 the protected change from <code class="docutils literal notranslate"><span class="pre">max_rows=1</span></code> to <code class="docutils literal notranslate"><span class="pre">max_rows=2</span></code>. More generally, if the
 protected change protects <span class="math notranslate nohighlight">\(n\)</span> rows in the private table, and each join key value
 appears in at most <span class="math notranslate nohighlight">\(m\)</span> rows in the public table, then the sensitivity of the join
-is <span class="math notranslate nohighlight">\(n \times m\)</span>.</p>
+is <span class="math notranslate nohighlight">\(n  *  m\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Like with flatmaps, the sensitivity increase doesn’t depend on the contents of the
-private table. It only depends on the <em>contents</em> of the public table, i.e. the
+<p>Like with flatmaps, the sensitivity increase doesn’t depend on the <em>contents</em> of the
+private table. It only depends on the åcontents of the public table, i.e. the
 number of rows in the public table with each value of the join key.</p>
 </div>
 </section>
 <section id="private-joins">
 <h3>Private joins<a class="headerlink" href="#private-joins" title="Permalink to this headline">#</a></h3>
-<p>Private joins have a different interface, but the underlying sensitivity computation is
-very similar. However, with private joins, <em>both</em> tables are private. This means that,
-unlike with a public table in a public join, we cannot use the contents of either table
-directly to determine the sensitivity: doing so would reveal information about
-individuals within the tables, thus violating the privacy guarantee.</p>
+<p>With private joins, <em>both</em> tables are private. This means that, unlike with a public
+table in a public join, we cannot use the contents of either table directly to determine
+the sensitivity: doing so would reveal information about individuals within the tables,
+thus violating the privacy guarantee.</p>
 <p>Suppose we have two tables, a <code class="docutils literal notranslate"><span class="pre">Users</span></code> table and a <code class="docutils literal notranslate"><span class="pre">Purchases</span></code> table, which share a
-common column, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>:</p>
-<img alt="On the left, a private table with names, user ids and payment information. On the right, a private table with user_ids and purchase information." class="align-center" src="../_images/private_join_tables.svg" /><p>Both tables contain sensitive information. Since we cannot look at the data directly for
-our calculation, we need to truncate both tables by specifying a
+common column, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. Each are initialized with a protected change of <code class="docutils literal notranslate"><span class="pre">AddMaxRows(max_rows=1)</span></code>:</p>
+<img alt="On the left, a private table with names, user ids and payment information. On the right, a private table with user_ids and purchase information." class="align-center" src="../_images/private_join_tables.svg" /><p>Since both tables contain sensitive information, we cannot look at
+the data directly to calculate the sensitivity. Therefore, we need to truncate both tables by specifying a
 <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a> for
-each of the tables. The sensitivity calculation will then use these bounds:
-<span class="math notranslate nohighlight">\(\text{sensitivity} = \text{left_truncation_bound} \times \text{right_truncation_bound}\)</span></p>
+each. The sensitivity computation is more complicated than before:</p>
+<p><span class="math notranslate nohighlight">\(\text{sensitivity} = (T_{left}  *  S_{right}  *  M_{right}) + (T_{right}  *  S_{left}  *  M_{left})\)</span></p>
+<p>where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds, i.e. <code class="docutils literal notranslate"><span class="pre">max_records</span></code>, for the left and right tables, respectively. When using <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>, these values are always 1.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are factors called the <em>stability</em> of each <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code>. This value is always 2 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropExcess</span></code></a>, and 1 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{left}\)</span> and <span class="math notranslate nohighlight">\(M_{right}\)</span> are the <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameters of the protected change on the left and right tables, respectively.</p></li>
+</ul>
+</div></blockquote>
 <p>In this example, if we choose a truncation strategy of <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> for
 both tables, they will be truncated to include no more than two rows for each value of
 our join key, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. The private join might look something like:</p>
-<img alt="On the left, a private table with names, user ids and emails. On the right, a private table with user_ids and purchase information. On the bottom, the result of a private join between the two top tables: a private table with names, user ids, emails, and purchase information." class="align-center" src="../_images/private_join_example.svg" /><p>Since our constraints each had bounds of <code class="docutils literal notranslate"><span class="pre">max_records=2</span></code>, The sensitivity of the join
-is then <span class="math notranslate nohighlight">\(2 \times 2 = 4\)</span>, even though the <code class="docutils literal notranslate"><span class="pre">Users</span></code> table did not <em>actually</em>
-contain more than one record per <code class="docutils literal notranslate"><span class="pre">user_id</span></code>.</p>
+<img alt="On the left, a private table with names, user ids and emails. On the right, a private table with user_ids and purchase information. On the bottom, the result of a private join between the two top tables: a private table with names, user ids, emails, and purchase information." class="align-center" src="../_images/private_join_example.svg" /><p>In this case, our <code class="docutils literal notranslate"><span class="pre">DropExcess()</span></code> truncation strategies each had bounds of
+<code class="docutils literal notranslate"><span class="pre">max_records=2</span></code>, and our tables each had a protected change of
+<code class="docutils literal notranslate"><span class="pre">AddMaxRows(max_rows=1)</span></code>. The sensitivity of the join is then:
+<span class="math notranslate nohighlight">\(\text{sensitivity} = 2 * 2 * 1 + 2 * 2 * 1 = 8\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even though the <code class="docutils literal notranslate"><span class="pre">Users</span></code> table did not <em>actually</em> contain more than one record per
+<code class="docutils literal notranslate"><span class="pre">user_id</span></code>, the sensitivity is still increased via the
+<code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> truncation strategy. Again, this is because we don’t
+look at the contents of private tables directly, and instead use the information
+given by the <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code> for each table.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When we know that a table always contains only one row per join key, it’s preferable
+to use <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>, due to the smaller truncation stability. In this case,
+using <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code> for the Users table and <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> for the
+Purchases table would have led to a join sensitivity of <span class="math notranslate nohighlight">\(1 * 2 * 1 + 2 * 1 * 1 = 4\)</span>.
+Using <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=1)</span></code> for the users table would have led to a sensitivity of
+<span class="math notranslate nohighlight">\(1 * 2 * 1 + 2 * 2 * 1 = 6\)</span> instead.</p>
+</div>
+<p>As you can see, tracking stability can be complicated. When in doubt, you can use the
+<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.describe" title="tmlt.analytics.session.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe</span></code></a> method to see how stability evolves
+with transformations.</p>
 </section>
 </section>
 <section id="queries-on-tables-using-addrowswithid">
@@ -477,11 +504,11 @@ type of noise added to the data.</p>
 <ul>
 <li><p>With <em>Laplace</em> noise (the default under <code class="docutils literal notranslate"><span class="pre">PureDP</span></code>), the sensitivity increases like a product of
 the two <code class="docutils literal notranslate"><span class="pre">max</span></code> truncation parameters:
-<span class="math notranslate nohighlight">\(sensitivity = (MaxRowsPerGroupPerID.max) \times (MaxGroupsPerID.max)\)</span></p></li>
+<span class="math notranslate nohighlight">\(sensitivity = (MaxRowsPerGroupPerID.max)  *  (MaxGroupsPerID.max)\)</span></p></li>
 <li><p>With <em>Gaussian</em> noise (the default under <code class="docutils literal notranslate"><span class="pre">rhoZCDP</span></code>), the sensitivity increases like a product of
 the <code class="docutils literal notranslate"><span class="pre">max</span></code> truncation parameter for <code class="docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code> and the square root of
 the <code class="docutils literal notranslate"><span class="pre">max</span></code> for <code class="docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code>:
-<span class="math notranslate nohighlight">\(sensitivity = (MaxRowsPerGroupPerID.max) \times \sqrt{(MaxGroupsPerID.max)}\)</span></p></li>
+<span class="math notranslate nohighlight">\(sensitivity = (MaxRowsPerGroupPerID.max)  *  \sqrt{(MaxGroupsPerID.max)}\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -546,7 +573,7 @@ to reach out to us on <a class="reference external" href="https://www.tmlt.dev/s
   </div>
   
   <div class="footer-item">
-    Built from 005132d2 at 2023-05-05 17:16.
+    Built from 53c48098 at 2023-05-09 17:57.
   </div>
   
   <div class="footer-item">

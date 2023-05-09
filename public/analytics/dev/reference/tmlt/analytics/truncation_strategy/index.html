@@ -44,6 +44,7 @@
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
     <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -394,6 +395,23 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="tmlt.analytics.truncation_strategy.TruncationStrategy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TruncationStrategy</span></span><a class="headerlink" href="#tmlt.analytics.truncation_strategy.TruncationStrategy" title="Permalink to this definition">#</a></dt>
 <dd><p>Strategies for performing truncation in private joins.</p>
+<p>These are used to determine the sensitivity of a private join between two tables
+having <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> as a protected change.
+The formula for the sensitivity of the table resulting from a private join is:</p>
+<p><span class="math notranslate nohighlight">\(sensitivity=(T_{left}*S_{right}*M_{left}) + (T_{right}*S_{left}*M_{right})\)</span></p>
+<p>where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds for the
+left and right truncation strategies, respectively. This value is 1 for
+<code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are the stability of the left and right
+truncation strategies, respectively. This value is 2 for <code class="docutils literal notranslate"><span class="pre">DropExcess</span></code> and 1
+for <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{left}\)</span> and <span class="math notranslate nohighlight">\(M_{right}\)</span> are the <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameters of the
+<code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code> protected changes of the the left and right tables, respectively.</p></li>
+</ul>
+</div></blockquote>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.truncation_strategy.TruncationStrategy.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Type</span></span><a class="headerlink" href="#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="Permalink to this definition">#</a></dt>
@@ -627,7 +645,7 @@ keys. In most cases, DropExcess is the preferred strategy.</p>
   </div>
   
   <div class="footer-item">
-    Built from 005132d2 at 2023-05-05 17:16.
+    Built from 53c48098 at 2023-05-09 17:57.
   </div>
   
   <div class="footer-item">
