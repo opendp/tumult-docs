@@ -271,13 +271,18 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget">
-     get_adjusted_budget
+    <a class="reference internal nav-link" href="#tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining">
+     requested_budget_is_slightly_higher_than_remaining
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining">
-     requested_budget_is_slightly_higher_than_remaining
+    <a class="reference internal nav-link" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget_number">
+     get_adjusted_budget_number
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget">
+     get_adjusted_budget
     </a>
    </li>
   </ul>
@@ -312,36 +317,17 @@ function checkPageExistsAndRedirect(event) {
 <col style="width: 50%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget" title="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_adjusted_budget()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining" title="tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining"><code class="xref py py-func docutils literal notranslate"><span class="pre">requested_budget_is_slightly_higher_than_remaining()</span></code></a></p></td>
+<td><p>Returns True if requested budget is slightly larger than remaining.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget_number" title="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget_number"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_adjusted_budget_number()</span></code></a></p></td>
 <td><p>Converts a requested int or float budget into an adjusted budget.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining" title="tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining"><code class="xref py py-func docutils literal notranslate"><span class="pre">requested_budget_is_slightly_higher_than_remaining()</span></code></a></p></td>
-<td><p>Returns True if requested budget is slightly larger than remaining.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget" title="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_adjusted_budget()</span></code></a></p></td>
+<td><p>Converts a requested privacy budget into an adjusted privacy budget.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py function">
-<dt class="sig sig-object py" id="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget">
-<span class="sig-name descname"><span class="pre">get_adjusted_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requested_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remaining_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget" title="Permalink to this definition">#</a></dt>
-<dd><p>Converts a requested int or float budget into an adjusted budget.</p>
-<p>If the requested budget is “slightly larger” than the remaining budget, as
-determined by some threshold, then we round down and consume all remaining
-budget. The goal is to accommodate some degree of floating point imprecision by
-erring on the side of providing a slightly stronger privacy guarantee
-rather than declining the request altogether.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>requested_budget</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – The numeric value of the requested budget.</p></li>
-<li><p><strong>remaining_budget</strong> (<em>tmlt.core.utils.exact_number.ExactNumber</em>) – How much budget we have left.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>tmlt.core.utils.exact_number.ExactNumber</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining">
 <span class="sig-name descname"><span class="pre">requested_budget_is_slightly_higher_than_remaining</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requested_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remaining_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._privacy_budget_rounding_helper.requested_budget_is_slightly_higher_than_remaining" title="Permalink to this definition">#</a></dt>
@@ -357,6 +343,47 @@ budget is within X% of the remaining budget.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget_number">
+<span class="sig-name descname"><span class="pre">get_adjusted_budget_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requested_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remaining_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget_number" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a requested int or float budget into an adjusted budget.</p>
+<p>If the requested budget is “slightly larger” than the remaining budget, as
+determined by some threshold, then we round down and consume all remaining
+budget. The goal is to accommodate some degree of floating point imprecision by
+erring on the side of providing a slightly stronger privacy guarantee
+rather than declining the request altogether.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requested_budget</strong> (<em>tmlt.core.utils.exact_number.ExactNumber</em>) – The numeric value of the requested budget.</p></li>
+<li><p><strong>remaining_budget</strong> (<em>tmlt.core.utils.exact_number.ExactNumber</em>) – The numeric value of how much budget we have left.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tmlt.core.utils.exact_number.ExactNumber</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget">
+<span class="sig-name descname"><span class="pre">get_adjusted_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requested_privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remaining_privacy_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._privacy_budget_rounding_helper.get_adjusted_budget" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a requested privacy budget into an adjusted privacy budget.</p>
+<p>For each term in the privacy budget, calls get_adjusted_budget_number to adjust
+the requested budget slightly if it’s close enough to the remaining budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requested_privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – The requested privacy budget.</p></li>
+<li><p><strong>remaining_privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – How much privacy budget we have left.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget">tmlt.analytics.privacy_budget.PrivacyBudget</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -394,7 +421,7 @@ budget is within X% of the remaining budget.</p>
   </div>
   
   <div class="footer-item">
-    Built from c032fc92 at 2023-05-18 15:17.
+    Built from e38c6358 at 2023-05-18 18:00.
   </div>
   
   <div class="footer-item">
