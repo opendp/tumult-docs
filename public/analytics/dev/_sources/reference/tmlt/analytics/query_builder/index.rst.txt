@@ -134,12 +134,12 @@ Classes
       Timestamp column type.
 
 
-   .. py:method:: name(self)
+   .. py:method:: name()
 
       The name of the Enum member.
 
 
-   .. py:method:: value(self)
+   .. py:method:: value()
 
       The value of the Enum member.
 
@@ -256,13 +256,13 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: query_expr(self)
+   .. py:method:: query_expr()
       :property:
 
       Returns the query_expr being built.
 
 
-   .. py:method:: join_public(self, public_table, join_columns = None)
+   .. py:method:: join_public(public_table, join_columns = None)
 
       Updates the current query to join with a dataframe or public source.
 
@@ -377,7 +377,7 @@ Classes
                            the tables will be joined on all common columns.
 
 
-   .. py:method:: join_private(self, right_operand, truncation_strategy_left = None, truncation_strategy_right = None, join_columns = None)
+   .. py:method:: join_private(right_operand, truncation_strategy_left = None, truncation_strategy_right = None, join_columns = None)
 
       Updates the current query to join with another :class:`QueryBuilder`.
 
@@ -492,7 +492,7 @@ Classes
                            the tables will be joined on all common columns.
 
 
-   .. py:method:: replace_null_and_nan(self, replace_with = None)
+   .. py:method:: replace_null_and_nan(replace_with = None)
 
       Updates the current query to replace null and NaN values in some columns.
 
@@ -563,7 +563,7 @@ Classes
                            :class:`tmlt.analytics.query_expr.AnalyticsDefault`.
 
 
-   .. py:method:: replace_infinity(self, replace_with = None)
+   .. py:method:: replace_infinity(replace_with = None)
 
       Updates the current query to replace +inf and -inf values in some columns.
 
@@ -631,7 +631,7 @@ Classes
                            :class:`tmlt.analytics.query_expr.AnalyticsDefault`.
 
 
-   .. py:method:: drop_null_and_nan(self, columns)
+   .. py:method:: drop_null_and_nan(columns)
 
       Updates the current query to drop rows containing null or NaN values.
 
@@ -721,7 +721,7 @@ Classes
                       is in will be dropped.
 
 
-   .. py:method:: drop_infinity(self, columns)
+   .. py:method:: drop_infinity(columns)
 
       Updates the current query to drop rows containing infinite values.
 
@@ -805,7 +805,7 @@ Classes
                       then the row it is in will be dropped.
 
 
-   .. py:method:: rename(self, column_mapper)
+   .. py:method:: rename(column_mapper)
 
       Updates the current query to rename the columns.
 
@@ -861,7 +861,7 @@ Classes
                             Columns not specified in the mapper will remain the same.
 
 
-   .. py:method:: filter(self, condition)
+   .. py:method:: filter(condition)
 
       Updates the current query to filter for rows matching a condition.
 
@@ -929,7 +929,7 @@ Classes
                         greater than column B.
 
 
-   .. py:method:: select(self, columns)
+   .. py:method:: select(columns)
 
       Updates the current query to select certain columns.
 
@@ -979,7 +979,7 @@ Classes
       :param columns: The columns to select.
 
 
-   .. py:method:: map(self, f, new_column_types, augment = False)
+   .. py:method:: map(f, new_column_types, augment = False)
 
       Updates the current query to apply a mapping function to each row.
 
@@ -1058,7 +1058,7 @@ Classes
                       If False, make the new dataframe with schema = schema_new_columns
 
 
-   .. py:method:: flat_map(self, f, new_column_types, augment = False, grouping = False, max_num_rows = None)
+   .. py:method:: flat_map(f, new_column_types, augment = False, grouping = False, max_num_rows = None)
 
       Updates the current query to apply a flat map.
 
@@ -1160,7 +1160,7 @@ Classes
                            rows will be in the output.
 
 
-   .. py:method:: bin_column(self, column, spec, name = None)
+   .. py:method:: bin_column(column, spec, name = None)
 
       Create a new column by assigning the values in a given column to bins.
 
@@ -1246,7 +1246,7 @@ Classes
                    the input column name with ``_binned`` appended to it.
 
 
-   .. py:method:: histogram(self, column, bin_edges, name = None)
+   .. py:method:: histogram(column, bin_edges, name = None)
 
       Returns a count query containing the frequency of values in specified column.
 
@@ -1306,7 +1306,7 @@ Classes
                    the input column name with ``_binned`` appended to it.
 
 
-   .. py:method:: enforce(self, constraint)
+   .. py:method:: enforce(constraint)
 
       Enforce a :mod:`~tmlt.analytics.constraints.Constraint` on the current table.
 
@@ -1317,7 +1317,7 @@ Classes
       :param constraint: The constraint to enforce.
 
 
-   .. py:method:: groupby(self, keys)
+   .. py:method:: groupby(keys)
 
       Groups the query by the given set of keys, returning a GroupedQueryBuilder.
 
@@ -1452,7 +1452,7 @@ Classes
                    performing an aggregation.
 
 
-   .. py:method:: count(self, name = None, mechanism = CountMechanism.DEFAULT)
+   .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
       Returns a count query that is ready to be evaluated.
 
@@ -1521,7 +1521,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: count_distinct(self, columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
+   .. py:method:: count_distinct(columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
 
       Returns a count_distinct query that is ready to be evaluated.
 
@@ -1599,7 +1599,7 @@ Classes
       :param cols: Deprecated; use ``columns`` instead.
 
 
-   .. py:method:: quantile(self, column, quantile, low, high, name = None)
+   .. py:method:: quantile(column, quantile, low, high, name = None)
 
       Returns a quantile query that is ready to be evaluated.
 
@@ -1666,7 +1666,7 @@ Classes
                    ``f"{column}_quantile({quantile})"``.
 
 
-   .. py:method:: min(self, column, low, high, name = None)
+   .. py:method:: min(column, low, high, name = None)
 
       Returns a quantile query requesting a minimum value, ready to be evaluated.
 
@@ -1731,7 +1731,7 @@ Classes
                    ``f"{column}_min"``.
 
 
-   .. py:method:: max(self, column, low, high, name = None)
+   .. py:method:: max(column, low, high, name = None)
 
       Returns a quantile query requesting a maximum value, ready to be evaluated.
 
@@ -1796,7 +1796,7 @@ Classes
                    ``f"{column}_max"``.
 
 
-   .. py:method:: median(self, column, low, high, name = None)
+   .. py:method:: median(column, low, high, name = None)
 
       Returns a quantile query requesting a median value, ready to be evaluated.
 
@@ -1861,7 +1861,7 @@ Classes
                    ``f"{column}_median"``.
 
 
-   .. py:method:: sum(self, column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
+   .. py:method:: sum(column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
       Returns a sum query that is ready to be evaluated.
 
@@ -1934,7 +1934,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: average(self, column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
+   .. py:method:: average(column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
 
       Returns an average query that is ready to be evaluated.
 
@@ -2007,7 +2007,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: variance(self, column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
+   .. py:method:: variance(column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
 
       Returns a variance query that is ready to be evaluated.
 
@@ -2080,7 +2080,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: stdev(self, column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
+   .. py:method:: stdev(column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
 
       Returns a standard deviation query that is ready to be evaluated.
 
@@ -2165,7 +2165,7 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: count(self, name = None, mechanism = CountMechanism.DEFAULT)
+   .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
       Returns a count query that is ready to be evaluated.
 
@@ -2221,7 +2221,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: count_distinct(self, columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
+   .. py:method:: count_distinct(columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
 
       Returns a count_distinct query that is ready to be evaluated.
 
@@ -2284,7 +2284,7 @@ Classes
       :param cols: Deprecated; use ``columns`` instead.
 
 
-   .. py:method:: quantile(self, column, quantile, low, high, name = None)
+   .. py:method:: quantile(column, quantile, low, high, name = None)
 
       Returns a quantile query that is ready to be evaluated.
 
@@ -2353,7 +2353,7 @@ Classes
                    ``f"{column}_quantile({quantile})"``.
 
 
-   .. py:method:: min(self, column, low, high, name = None)
+   .. py:method:: min(column, low, high, name = None)
 
       Returns a quantile query requesting a minimum value, ready to be evaluated.
 
@@ -2424,7 +2424,7 @@ Classes
                    ``f"{column}_min"``.
 
 
-   .. py:method:: max(self, column, low, high, name = None)
+   .. py:method:: max(column, low, high, name = None)
 
       Returns a quantile query requesting a maximum value, ready to be evaluated.
 
@@ -2495,7 +2495,7 @@ Classes
                    ``f"{column}_max"``.
 
 
-   .. py:method:: median(self, column, low, high, name = None)
+   .. py:method:: median(column, low, high, name = None)
 
       Returns a quantile query requesting a median value, ready to be evaluated.
 
@@ -2562,7 +2562,7 @@ Classes
                    ``f"{column}_median"``.
 
 
-   .. py:method:: sum(self, column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
+   .. py:method:: sum(column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
       Returns a sum query that is ready to be evaluated.
 
@@ -2637,7 +2637,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: average(self, column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
+   .. py:method:: average(column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
 
       Returns an average query that is ready to be evaluated.
 
@@ -2712,7 +2712,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: variance(self, column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
+   .. py:method:: variance(column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
 
       Returns a variance query that is ready to be evaluated.
 
@@ -2787,7 +2787,7 @@ Classes
                         automatically selects an appropriate mechanism.
 
 
-   .. py:method:: stdev(self, column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
+   .. py:method:: stdev(column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
 
       Returns a standard deviation query that is ready to be evaluated.
 

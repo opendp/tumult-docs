@@ -152,19 +152,19 @@ Classes
 
 
       .. automethod:: __init__
-      .. py:method:: build(self)
+      .. py:method:: build()
 
          Builds Session with specified configuration.
 
 
-      .. py:method:: with_privacy_budget(self, privacy_budget)
+      .. py:method:: with_privacy_budget(privacy_budget)
 
          Sets the privacy budget for the Session to be built.
 
          :param privacy_budget: Privacy Budget to be allocated to Session.
 
 
-      .. py:method:: with_private_dataframe(self, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
+      .. py:method:: with_private_dataframe(source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
 
          Adds a Spark DataFrame as a private source.
 
@@ -185,7 +185,7 @@ Classes
                                   :class:`Session` should protect.
 
 
-      .. py:method:: with_public_dataframe(self, source_id, dataframe)
+      .. py:method:: with_public_dataframe(source_id, dataframe)
 
          Adds a Spark DataFrame as a public source.
 
@@ -197,7 +197,7 @@ Classes
          :param dataframe: Public DataFrame corresponding to the source id.
 
 
-      .. py:method:: with_id_space(self, id_space)
+      .. py:method:: with_id_space(id_space)
 
          Creates an identifier space for the session.
 
@@ -214,7 +214,7 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: from_dataframe(cls, privacy_budget, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
+   .. py:method:: from_dataframe(privacy_budget, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
       :classmethod:
 
       Initializes a DP session from a Spark dataframe.
@@ -271,25 +271,25 @@ Classes
                                :class:`Session` should protect.
 
 
-   .. py:method:: private_sources(self)
+   .. py:method:: private_sources()
       :property:
 
       Returns the ids of the private sources.
 
 
-   .. py:method:: public_sources(self)
+   .. py:method:: public_sources()
       :property:
 
       Returns the ids of the public sources.
 
 
-   .. py:method:: public_source_dataframes(self)
+   .. py:method:: public_source_dataframes()
       :property:
 
       Returns a dictionary of public source dataframes.
 
 
-   .. py:method:: remaining_privacy_budget(self)
+   .. py:method:: remaining_privacy_budget()
       :property:
 
       Returns the remaining privacy_budget left in the session.
@@ -298,7 +298,7 @@ Classes
       the type of the budget the Session was initialized with.
 
 
-   .. py:method:: describe(self, obj = None)
+   .. py:method:: describe(obj = None)
 
       Describe a Session, table, or query.
 
@@ -318,7 +318,7 @@ Classes
                   whole Session.
 
 
-   .. py:method:: get_schema(self, source_id)
+   .. py:method:: get_schema(source_id)
 
       Returns the schema for any data source.
 
@@ -328,14 +328,14 @@ Classes
                         are being retrieved.
 
 
-   .. py:method:: get_column_types(self, source_id)
+   .. py:method:: get_column_types(source_id)
 
       Returns the column types for any data source.
 
       This does *not* include information on whether the columns are nullable.
 
 
-   .. py:method:: get_grouping_column(self, source_id)
+   .. py:method:: get_grouping_column(source_id)
 
       Returns an optional column that must be grouped by in this query.
 
@@ -346,21 +346,21 @@ Classes
                         is being retrieved.
 
 
-   .. py:method:: get_id_column(self, source_id)
+   .. py:method:: get_id_column(source_id)
 
       Returns the ID column of a table, if it has one.
 
       :param source_id: The name of the table whose ID column is being retrieved.
 
 
-   .. py:method:: get_id_space(self, source_id)
+   .. py:method:: get_id_space(source_id)
 
       Returns the ID space of a table, if it has one.
 
       :param source_id: The name of the table whose ID space is being retrieved.
 
 
-   .. py:method:: add_public_dataframe(self, source_id, dataframe)
+   .. py:method:: add_public_dataframe(source_id, dataframe)
 
       Adds a public data source to the session.
 
@@ -410,7 +410,7 @@ Classes
       :param dataframe: The public data source corresponding to the ``source_id``.
 
 
-   .. py:method:: evaluate(self, query_expr, privacy_budget)
+   .. py:method:: evaluate(query_expr, privacy_budget)
 
       Answers a query within the given privacy budget and returns a Spark dataframe.
 
@@ -464,7 +464,7 @@ Classes
       :param privacy_budget: The privacy budget used for the query.
 
 
-   .. py:method:: create_view(self, query_expr, source_id, cache)
+   .. py:method:: create_view(query_expr, source_id, cache)
 
       Create a new view from a transformation and possibly cache it.
 
@@ -527,14 +527,14 @@ Classes
       :param cache: Whether or not to cache the view.
 
 
-   .. py:method:: delete_view(self, source_id)
+   .. py:method:: delete_view(source_id)
 
       Deletes a view and decaches it if it was cached.
 
       :param source_id: The name of the view.
 
 
-   .. py:method:: partition_and_create(self, source_id, privacy_budget, column = None, splits = None)
+   .. py:method:: partition_and_create(source_id, privacy_budget, column = None, splits = None)
 
       Returns new sessions from a partition mapped to split name/``source_id``.
 
@@ -622,7 +622,7 @@ Classes
                      Split name is ``source_id`` in new session.
 
 
-   .. py:method:: stop(self)
+   .. py:method:: stop()
 
       Close out this session, allowing other sessions to become active.
 
