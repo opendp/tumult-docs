@@ -62,6 +62,12 @@ Classes
 
 
 
+   .. py:method:: value()
+      :property:
+
+      Return the value of the privacy budget.
+
+
 
    
 .. py:class:: PureDPBudget(epsilon)
@@ -80,15 +86,29 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: epsilon(self)
+   .. py:method:: value()
       :property:
 
-      Returns the value of epsilon.
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the epsilon property instead, as it will
+      represent the same value, but be more human readable.
 
 
-   .. py:method:: __eq__(self, other)
+   .. py:method:: epsilon()
+      :property:
 
-      Returns whether or not two PureDPBudgets are equivalent.
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value instead.
+
+
+   .. py:method:: __eq__(other)
+
+      Returns whether or not a PureDPBudget are equivalent to another PrivacyBudget.
+
+      PureDPBudgets are considered equal to ApproxDPBudgets that have delta of 0, and the same epsilon.
 
 
 
@@ -109,28 +129,44 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: epsilon(self)
+   .. py:method:: value()
       :property:
 
-      Returns the value of epsilon.
+      Returns self._epsilon and self._delta as an ExactNumber tuple.
+
+      For printing purposes, you might want to use the epsilon and delta properties
+      instead, as they will represent the same values, but be more human readable.
 
 
-   .. py:method:: delta(self)
+   .. py:method:: epsilon()
       :property:
 
-      Returns the value of delta.
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value[0] instead.
 
 
-   .. py:method:: is_infinite(self)
+   .. py:method:: delta()
+      :property:
+
+      Returns the value of delta as an int or float.
+
+      This is helpful for human readability. If you need to use the delta value in
+      a computation, you should use self.value[1] instead.
+
+
+   .. py:method:: is_infinite()
       :property:
 
       Returns true if epsilon is float('inf') or delta is 1.
 
 
-   .. py:method:: __eq__(self, other)
+   .. py:method:: __eq__(other)
 
-      Returns whether two ApproxDPBudgets are equivalent.
+      Returns whether an ApproxDPBudget is equivalent to another privacy budget.
 
+      ApproxDPBudgets that have delta of 0 are considered equal to PureDPBudgets with the same epsilon.
       ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
       epsilon of float('inf') and the other has a delta of 1).
 
@@ -152,13 +188,25 @@ Classes
 
 
    .. automethod:: __init__
-   .. py:method:: rho(self)
+   .. py:method:: value()
       :property:
 
-      Returns the value of rho.
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the rho property instead, as it will
+      represent the same value, but be more human readable.
 
 
-   .. py:method:: __eq__(self, other)
+   .. py:method:: rho()
+      :property:
+
+      Returns the value of rho as an int or float.
+
+      This is helpful for human readability. If you need to use the rho value in
+      a computation, you should use self.value instead.
+
+
+   .. py:method:: __eq__(other)
 
       Returns whether or not two RhoZCDPBudgets are equivalent.
 

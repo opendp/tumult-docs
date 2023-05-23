@@ -163,7 +163,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.7.0  <!-- this text may get changed later by javascript -->
+        0.7.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -173,7 +173,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/privacy_budget/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.0'}.
+     variables reference/tmlt/analytics/privacy_budget/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.1'}.
 -->
 
 <script type="text/javascript">
@@ -228,10 +228,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.7.0 variable.
+            // this version, rather than using sphinx's 0.7.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.7.0") {
+            if (entry.version == "0.7.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -328,6 +328,13 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget">
      PrivacyBudget
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.value">
+       value
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget">
@@ -337,6 +344,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.__init__">
        __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.value">
+       value
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -359,6 +371,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__init__">
        __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.value">
+       value
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -391,6 +408,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__init__">
        __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.value">
+       value
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -470,6 +492,17 @@ to evaluating the query without applying differential privacy.
 Please see the individual subclasses of PrivacyBudget for details on how to
 appropriately specify infinite budgets.</p>
 </div>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PrivacyBudget.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PrivacyBudget.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the value of the privacy budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[tmlt.core.utils.exact_number.ExactNumber, Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -482,7 +515,7 @@ associated value is the epsilon privacy parameter. The privacy definition can
 be found <a class="reference external" href="https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy">here</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>tmlt.core.utils.exact_number.ExactNumber</em><em>]</em>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -491,7 +524,7 @@ be found <a class="reference external" href="https://en.wikipedia.org/wiki/Diffe
 <dd><p>Construct a new PureDPBudget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The epsilon privacy parameter. Must be non-negative
+<dd class="field-odd"><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code>]</span>) – The epsilon privacy parameter. Must be non-negative
 and cannot be NaN.
 To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 </dd>
@@ -499,9 +532,24 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the value of the privacy budget as an ExactNumber.</p>
+<p>For printing purposes, you should use the epsilon property instead, as it will
+represent the same value, but be more human readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tmlt.core.utils.exact_number.ExactNumber</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.epsilon">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the value of epsilon.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.epsilon" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of epsilon as an int or float.</p>
+<p>This is helpful for human readability. If you need to use the epsilon value in
+a computation, you should use self.value instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
@@ -511,8 +559,9 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns whether or not two PureDPBudgets are equivalent.</p>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether or not a PureDPBudget are equivalent to another PrivacyBudget.</p>
+<p>PureDPBudgets are considered equal to ApproxDPBudgets that have delta of 0, and the same epsilon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
@@ -533,8 +582,8 @@ be found <a class="reference external" href="https://desfontain.es/privacy/almos
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p></li>
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – </p></li>
+<li><p><strong>epsilon</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>tmlt.core.utils.exact_number.ExactNumber</em><em>]</em>) – </p></li>
+<li><p><strong>delta</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>tmlt.core.utils.exact_number.ExactNumber</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -545,9 +594,9 @@ be found <a class="reference external" href="https://desfontain.es/privacy/almos
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The epsilon privacy parameter. Must be non-negative.
+<li><p><strong>epsilon</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code>]</span>) – The epsilon privacy parameter. Must be non-negative.
 To specify an infinite budget, set epsilon equal to float(‘inf’).</p></li>
-<li><p><strong>delta</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The delta privacy parameter. Must be between 0 and 1 (inclusive).
+<li><p><strong>delta</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code>]</span>) – The delta privacy parameter. Must be between 0 and 1 (inclusive).
 If delta is 0, this is equivalent to PureDP.</p></li>
 </ul>
 </dd>
@@ -555,9 +604,24 @@ If delta is 0, this is equivalent to PureDP.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns self._epsilon and self._delta as an ExactNumber tuple.</p>
+<p>For printing purposes, you might want to use the epsilon and delta properties
+instead, as they will represent the same values, but be more human readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the value of epsilon.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.epsilon" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of epsilon as an int or float.</p>
+<p>This is helpful for human readability. If you need to use the epsilon value in
+a computation, you should use self.value[0] instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
@@ -567,18 +631,20 @@ If delta is 0, this is equivalent to PureDP.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.delta">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.delta" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the value of delta.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of delta as an int or float.</p>
+<p>This is helpful for human readability. If you need to use the delta value in
+a computation, you should use self.value[1] instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_infinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_infinite</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.is_infinite" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns true if epsilon is float(‘inf’) or delta is 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -589,9 +655,10 @@ If delta is 0, this is equivalent to PureDP.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns whether two ApproxDPBudgets are equivalent.</p>
-<p>ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether an ApproxDPBudget is equivalent to another privacy budget.</p>
+<p>ApproxDPBudgets that have delta of 0 are considered equal to PureDPBudgets with the same epsilon.
+ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
 epsilon of float(‘inf’) and the other has a delta of 1).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -611,7 +678,7 @@ epsilon of float(‘inf’) and the other has a delta of 1).</p>
 <a class="reference external" href="https://arxiv.org/pdf/1605.02065.pdf">this</a> paper under Definition 1.1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rho</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>rho</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>tmlt.core.utils.exact_number.ExactNumber</em><em>]</em>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -620,7 +687,7 @@ epsilon of float(‘inf’) and the other has a delta of 1).</p>
 <dd><p>Construct a new RhoZCDPBudget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rho</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The rho privacy parameter.
+<dd class="field-odd"><p><strong>rho</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code>]</span>) – The rho privacy parameter.
 Rho must be non-negative and cannot be NaN.
 To specify an infinite budget, set rho equal to float(‘inf’).</p>
 </dd>
@@ -628,9 +695,24 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the value of the privacy budget as an ExactNumber.</p>
+<p>For printing purposes, you should use the rho property instead, as it will
+represent the same value, but be more human readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tmlt.core.utils.exact_number.ExactNumber</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.rho">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rho</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.rho" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the value of rho.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rho</span></span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.rho" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the value of rho as an int or float.</p>
+<p>This is helpful for human readability. If you need to use the rho value in
+a computation, you should use self.value instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>]</p>
@@ -640,7 +722,7 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns whether or not two RhoZCDPBudgets are equivalent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -698,7 +780,7 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
   </div>
   
   <div class="footer-item">
-    Built from c4767a77 at 2023-04-27 18:27.
+    Built from c44e4bd6 at 2023-05-23 19:40.
   </div>
   
   <div class="footer-item">

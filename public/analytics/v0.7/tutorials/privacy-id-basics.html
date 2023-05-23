@@ -163,7 +163,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.7.0  <!-- this text may get changed later by javascript -->
+        0.7.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -173,7 +173,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables tutorials/privacy-id-basics and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.0'}.
+     variables tutorials/privacy-id-basics and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.1'}.
 -->
 
 <script type="text/javascript">
@@ -228,10 +228,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.7.0 variable.
+            // this version, rather than using sphinx's 0.7.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.7.0") {
+            if (entry.version == "0.7.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -457,7 +457,8 @@ query on our data, we will get an error:</p>
 <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">count_query</span><span class="p">,</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">RuntimeError</span><span class="p">:</span> <span class="n">A</span> <span class="n">constraint</span> <span class="n">on</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">rows</span> <span class="n">contributed</span> <span class="n">by</span> <span class="n">each</span> <span class="n">ID</span> <span class="ow">is</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">perform</span> <span class="n">this</span> <span class="n">query</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">RuntimeError</span><span class="p">:</span> <span class="n">A</span> <span class="n">constraint</span> <span class="n">on</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">rows</span> <span class="n">contributed</span> <span class="n">by</span> <span class="n">each</span> <span class="n">ID</span>
+<span class="ow">is</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">perform</span> <span class="n">this</span> <span class="n">query</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">MaxRowsPerID</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>This error occurs because there is no limit to how many rows a single person
@@ -606,7 +607,11 @@ how much each privacy ID can contribute to the final statistic. There are two
 ways of doing so: using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
 or using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
 <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>.</p>
-<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" /></section>
+<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" /><p>To understand more the impact of choosing one kind of constraint vs. another,
+you can consult our <a class="reference internal" href="../topic-guides/understanding-sensitivity.html#understanding-sensitivity"><span class="std std-ref">topic guide about sensitivity</span></a>.
+To learn more about how to perform more complex queries on tables initialized with
+privacy IDs, you can proceed to the <a class="reference internal" href="more-with-privacy-ids.html#advanced-ids-features"><span class="std std-ref">next tutorial</span></a>.</p>
+</section>
 </section>
 
 
@@ -653,7 +658,7 @@ or using <a class="reference internal" href="../reference/tmlt/analytics/constra
   </div>
   
   <div class="footer-item">
-    Built from c4767a77 at 2023-04-27 18:27.
+    Built from c44e4bd6 at 2023-05-23 19:40.
   </div>
   
   <div class="footer-item">

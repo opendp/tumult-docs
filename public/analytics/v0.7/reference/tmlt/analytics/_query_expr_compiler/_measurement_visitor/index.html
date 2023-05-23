@@ -161,7 +161,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.7.0  <!-- this text may get changed later by javascript -->
+        0.7.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -171,7 +171,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/_query_expr_compiler/_measurement_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.0'}.
+     variables reference/tmlt/analytics/_query_expr_compiler/_measurement_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.1'}.
 -->
 
 <script type="text/javascript">
@@ -226,10 +226,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.7.0 variable.
+            // this version, rather than using sphinx's 0.7.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.7.0") {
+            if (entry.version == "0.7.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -421,7 +421,7 @@ function checkPageExistsAndRedirect(event) {
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasurementVisitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_query_privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasurementVisitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_expr.QueryExprVisitor</span></code></a></p>
 <p>A visitor to create a measurement from a query expression.</p>
 <table class="table" id="id1">
@@ -496,11 +496,11 @@ function checkPageExistsAndRedirect(event) {
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>per_query_privacy_budget</strong> (<em>sympy.Expr</em>) – </p></li>
+<li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – </p></li>
 <li><p><strong>stability</strong> (<em>Any</em>) – </p></li>
 <li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – </p></li>
 <li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – </p></li>
-<li><p><strong>output_measure</strong> (<em>Union</em><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p></li>
+<li><p><strong>output_measure</strong> (<em>Union</em><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.ApproxDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p></li>
 <li><p><strong>default_mechanism</strong> (<em>tmlt.core.measurements.aggregations.NoiseMechanism</em>) – </p></li>
 <li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – </p></li>
 <li><p><strong>catalog</strong> (<a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – </p></li>
@@ -510,16 +510,16 @@ function checkPageExistsAndRedirect(event) {
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_query_privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructor for MeasurementVisitor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>per_query_privacy_budget</strong> (<a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.11)"><em>sympy.core.expr.Expr</em></a>) – </p></li>
+<li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – </p></li>
 <li><p><strong>stability</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><em>Any</em></a>) – </p></li>
 <li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – </p></li>
 <li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – </p></li>
-<li><p><strong>output_measure</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><em>Union</em></a><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p></li>
+<li><p><strong>output_measure</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><em>Union</em></a><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.ApproxDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p></li>
 <li><p><strong>default_mechanism</strong> (<em>tmlt.core.measurements.aggregations.NoiseMechanism</em>) – </p></li>
 <li><p><strong>public_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>pyspark.sql.dataframe.DataFrame</em><em>]</em>) – </p></li>
 <li><p><strong>catalog</strong> (<a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – </p></li>
@@ -531,11 +531,11 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count">
-<span class="sig-name descname"><span class="pre">visit_groupby_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByCount query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><em>tmlt.analytics.query_expr.GroupByCount</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><em>tmlt.analytics.query_expr.GroupByCount</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -545,11 +545,11 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count_distinct">
-<span class="sig-name descname"><span class="pre">visit_groupby_count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count_distinct" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_count_distinct" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByCountDistinct query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><em>tmlt.analytics.query_expr.GroupByCountDistinct</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><em>tmlt.analytics.query_expr.GroupByCountDistinct</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -559,7 +559,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_quantile">
-<span class="sig-name descname"><span class="pre">visit_groupby_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_quantile" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_quantile" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByQuantile query expression.</p>
 <p>This method also checks to see if the schema allows invalid values
 (nulls, NaNs, and infinite values) on the measure column; if so,
@@ -567,7 +567,7 @@ the query has DropNullAndNan and/or DropInfinity queries
 inserted immediately before it is executed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><em>tmlt.analytics.query_expr.GroupByQuantile</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><em>tmlt.analytics.query_expr.GroupByQuantile</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -577,11 +577,11 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_sum">
-<span class="sig-name descname"><span class="pre">visit_groupby_bounded_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_sum" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_sum" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByBoundedSum query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><em>tmlt.analytics.query_expr.GroupByBoundedSum</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><em>tmlt.analytics.query_expr.GroupByBoundedSum</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -591,11 +591,11 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_average">
-<span class="sig-name descname"><span class="pre">visit_groupby_bounded_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_average" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_average" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByBoundedAverage query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><em>tmlt.analytics.query_expr.GroupByBoundedAverage</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><em>tmlt.analytics.query_expr.GroupByBoundedAverage</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -605,11 +605,11 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_variance">
-<span class="sig-name descname"><span class="pre">visit_groupby_bounded_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_variance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_variance" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByBoundedVariance query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><em>tmlt.analytics.query_expr.GroupByBoundedVariance</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><em>tmlt.analytics.query_expr.GroupByBoundedVariance</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -619,11 +619,11 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_stdev">
-<span class="sig-name descname"><span class="pre">visit_groupby_bounded_stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_stdev" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_groupby_bounded_stdev" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a measurement from a GroupByBoundedStdev query expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><em>tmlt.analytics.query_expr.GroupByBoundedSTDEV</em></a>) – </p>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><em>tmlt.analytics.query_expr.GroupByBoundedSTDEV</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tmlt.core.measurements.base.Measurement</p>
@@ -633,7 +633,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_private_source">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_private_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_private_source" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_private_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_private_source" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a PrivateSource query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -644,7 +644,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_rename">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_rename" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_rename" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a Rename query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -655,7 +655,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_filter">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_filter" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a Filter query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -666,7 +666,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_select">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_select" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_select" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a Select query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -677,7 +677,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_map">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_map" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_map" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a Map query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -688,7 +688,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_flat_map">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_flat_map" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_flat_map" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a FlatMap query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -699,7 +699,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_private">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_private" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_private" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a JoinPrivate query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -710,7 +710,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_public">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_join_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_public" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_join_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_join_public" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a JoinPublic query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -721,7 +721,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_null_and_nan">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_null_and_nan" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_null_and_nan" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a ReplaceNullAndNan query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -732,7 +732,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_infinity">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_infinity" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_replace_infinity" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a ReplaceInfinity query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -743,7 +743,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_infinity">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_drop_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_infinity" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_drop_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_infinity" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a DropInfinity query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -754,7 +754,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_null_and_nan">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_null_and_nan" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_drop_null_and_nan" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit a DropNullAndNan query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -765,7 +765,7 @@ inserted immediately before it is executed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_enforce_constraint">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_enforce_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_enforce_constraint" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_enforce_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._measurement_visitor.MeasurementVisitor.visit_enforce_constraint" title="Permalink to this definition">#</a></dt>
 <dd><p>Visit an EnforceConstraint query expression (raises an error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -809,7 +809,7 @@ inserted immediately before it is executed.</p>
   </div>
   
   <div class="footer-item">
-    Built from c4767a77 at 2023-04-27 18:27.
+    Built from c44e4bd6 at 2023-05-23 19:40.
   </div>
   
   <div class="footer-item">

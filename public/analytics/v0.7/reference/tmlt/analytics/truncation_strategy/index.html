@@ -44,6 +44,7 @@
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
     <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../../../_static/js/version-banner.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -163,7 +164,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.7.0  <!-- this text may get changed later by javascript -->
+        0.7.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -173,7 +174,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/truncation_strategy/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.0'}.
+     variables reference/tmlt/analytics/truncation_strategy/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.1'}.
 -->
 
 <script type="text/javascript">
@@ -228,10 +229,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.7.0 variable.
+            // this version, rather than using sphinx's 0.7.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.7.0") {
+            if (entry.version == "0.7.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -394,6 +395,23 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="tmlt.analytics.truncation_strategy.TruncationStrategy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TruncationStrategy</span></span><a class="headerlink" href="#tmlt.analytics.truncation_strategy.TruncationStrategy" title="Permalink to this definition">#</a></dt>
 <dd><p>Strategies for performing truncation in private joins.</p>
+<p>These are used to determine the sensitivity of a private join between two tables
+having <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> as a protected change.
+The formula for the sensitivity of the table resulting from a private join is:</p>
+<p><span class="math notranslate nohighlight">\(sensitivity=(T_{left}*S_{right}*M_{left}) + (T_{right}*S_{left}*M_{right})\)</span></p>
+<p>where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds for the
+left and right truncation strategies, respectively. This value is 1 for
+<code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are the stability of the left and right
+truncation strategies, respectively. This value is 2 for <code class="docutils literal notranslate"><span class="pre">DropExcess</span></code> and 1
+for <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{left}\)</span> and <span class="math notranslate nohighlight">\(M_{right}\)</span> are the <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameters of the
+<code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code> protected changes of the the left and right tables, respectively.</p></li>
+</ul>
+</div></blockquote>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.truncation_strategy.TruncationStrategy.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Type</span></span><a class="headerlink" href="#tmlt.analytics.truncation_strategy.TruncationStrategy.Type" title="Permalink to this definition">#</a></dt>
@@ -627,7 +645,7 @@ keys. In most cases, DropExcess is the preferred strategy.</p>
   </div>
   
   <div class="footer-item">
-    Built from c4767a77 at 2023-04-27 18:27.
+    Built from c44e4bd6 at 2023-05-23 19:40.
   </div>
   
   <div class="footer-item">

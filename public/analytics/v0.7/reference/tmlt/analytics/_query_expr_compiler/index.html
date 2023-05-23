@@ -161,7 +161,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.7.0  <!-- this text may get changed later by javascript -->
+        0.7.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -171,7 +171,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/_query_expr_compiler/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.0'}.
+     variables reference/tmlt/analytics/_query_expr_compiler/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.7.1'}.
 -->
 
 <script type="text/javascript">
@@ -226,10 +226,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.7.0 variable.
+            // this version, rather than using sphinx's 0.7.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.7.0") {
+            if (entry.version == "0.7.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -376,7 +376,7 @@ run with a private data source to obtain DP answers to supplied queries.</p>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>output_measure</strong> (<em>Union</em><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>output_measure</strong> (<em>Union</em><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.ApproxDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p>
 </dd>
 </dl>
 <dl class="py method">
@@ -385,14 +385,14 @@ run with a private data source to obtain DP answers to supplied queries.</p>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>output_measure</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code>]</span> (default: <code class="docutils literal notranslate"><span class="pre">PureDP()</span></code>)) – Distance measure for measurement’s output.</p>
+<dd class="field-odd"><p><strong>output_measure</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code>]</span> (default: <code class="docutils literal notranslate"><span class="pre">PureDP()</span></code>)) – Distance measure for measurement’s output.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mechanism</span></span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the value of Core noise mechanism.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -403,11 +403,11 @@ run with a private data source to obtain DP answers to supplied queries.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the distance measure for the measurement’s output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Union[tmlt.core.measures.PureDP, tmlt.core.measures.RhoZCDP]</p>
+<dd class="field-odd"><p>Union[tmlt.core.measures.PureDP, tmlt.core.measures.ApproxDP, tmlt.core.measures.RhoZCDP]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -431,13 +431,13 @@ run with a private data source to obtain DP answers to supplied queries.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a compiled DP measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>queries</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>]</em>) – Queries representing measurements to compile.</p></li>
-<li><p><strong>privacy_budget</strong> (<em>sympy.Expr</em>) – The total privacy budget for answering the queries.</p></li>
+<li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – The total privacy budget for answering the queries.</p></li>
 <li><p><strong>stability</strong> (<em>Any</em>) – The stability of the input to compiled query.</p></li>
 <li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – The input domain of the compiled query.</p></li>
 <li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – The input metric of the compiled query.</p></li>
@@ -454,7 +454,7 @@ run with a private data source to obtain DP answers to supplied queries.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation">
-<span class="sig-name descname"><span class="pre">build_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a transformation and reference for the query.</p>
 <p>Supported
 <a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>s:</p>
@@ -520,7 +520,7 @@ run with a private data source to obtain DP answers to supplied queries.</p>
   </div>
   
   <div class="footer-item">
-    Built from c4767a77 at 2023-04-27 18:27.
+    Built from c44e4bd6 at 2023-05-23 19:40.
   </div>
   
   <div class="footer-item">
