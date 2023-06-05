@@ -538,6 +538,8 @@ function checkPageExistsAndRedirect(event) {
 <section id="changed">
 <h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
+<li><p>The <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.replace_null_and_nan()</span></code></a> and <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.drop_null_and_nan()</span></code></a> methods now accept empty column specifications on tables with an <a class="reference internal" href="reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change.
+Replacing/dropping nulls on ID columns is not allowed, but this will now raise a <code class="docutils literal notranslate"><span class="pre">RuntimeWarning</span></code> instead of a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p></li>
 <li><p><a class="reference internal" href="reference/tmlt/analytics/binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec.bins" title="tmlt.analytics.binning_spec.BinningSpec.bins"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BinningSpec.bins()</span></code></a> used to only include the NaN bin if the provided bin edges were floats.
 However, float-valued columns can be binned with integer bin edges, which resulted in a confusing situation where a <a class="reference internal" href="reference/tmlt/analytics/binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinningSpec</span></code></a> could indicate that it would not use a NaN bin but still place values in the NaN bin.
 To avoid this, <a class="reference internal" href="reference/tmlt/analytics/binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec.bins" title="tmlt.analytics.binning_spec.BinningSpec.bins"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BinningSpec.bins()</span></code></a> now always includes the NaN bin if one was specified, regardless of whether the bin edge type can represent NaN values.</p></li>
@@ -881,7 +883,7 @@ They will be removed in a future version.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 8dd34684 at 2023-06-02 13:36.
+    Built from 356993b6 at 2023-06-05 16:53.
   </div>
   
   <div class="footer-item">
