@@ -145,10 +145,15 @@ Functions
        }
 
    See :cite:`Canonne0S20` for more information. The formula above is based on
-   Definition 1.
+   Definition 1 in the paper.
 
-   The implementation also referenced the paper's implementation, which can be found at
-   https://github.com/IBM/discrete-gaussian-differential-privacy.
+   .. note:
+
+       The performance of this function degrades roughly linearly with the square root
+       of `sigma_squared`.
+
+   :param k: The value to evaluate the pmf at.
+   :param sigma_squared: The variance of the discrete gaussian distribution.
 
 
 
@@ -159,17 +164,31 @@ Functions
 
    See :eq:`discrete_gaussian_pmf` for the probability mass function.
 
+   .. note:
+
+       The performance of this function degrades roughly linearly with the square root
+       of `sigma_squared`.
+
+   :param k: The value to evaluate the cmf at.
+   :param sigma_squared: The variance of the discrete gaussian distribution.
+
 
 
 .. py:function:: discrete_gaussian_inverse_cmf(p: float, sigma_squared: float) -> int
               discrete_gaussian_inverse_cmf(p: numpy.ndarray, sigma_squared: float) -> numpy.ndarray
+              discrete_gaussian_inverse_cmf(p: tmlt.core.utils.arb.Arb, sigma_squared: tmlt.core.utils.arb.Arb) -> int
 
    Returns the inverse cmf for a discrete gaussian distribution at p.
 
    In other words, it returns the smallest k s.t. CMF(k) >= p.
 
-   This is not terribly performant. Don't use it in places where it's
-   going to get called a lot.
+   .. note:
+
+       The performance of this function degrades roughly linearly with the square root
+       of `sigma_squared`.
+
+   :param p: The value to evaluate the inverse cmf at.
+   :param sigma_squared: The variance of the discrete gaussian distribution.
 
 
 
