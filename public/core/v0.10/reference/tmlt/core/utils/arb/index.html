@@ -154,7 +154,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.0  <!-- this text may get changed later by javascript -->
+        0.10.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -164,7 +164,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/utils/arb/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.0'}.
+     variables reference/tmlt/core/utils/arb/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.1'}.
 -->
 
 <script type="text/javascript">
@@ -219,10 +219,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.0 variable.
+            // this version, rather than using sphinx's 0.10.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.0") {
+            if (entry.version == "0.10.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -408,6 +408,11 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_exp">
+     arb_exp
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_min">
      arb_min
     </a>
@@ -418,8 +423,23 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_neg">
+     arb_neg
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_sgn">
      arb_sgn
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_erf">
+     arb_erf
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_erfc">
+     arb_erfc
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -430,6 +450,26 @@ function checkPageExistsAndRedirect(event) {
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_sqrt">
      arb_sqrt
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_const_pi">
+     arb_const_pi
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_union">
+     arb_union
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_sum">
+     arb_sum
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.utils.arb.arb_product">
+     arb_product
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -609,20 +649,44 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_max" title="tmlt.core.utils.arb.arb_max"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_max()</span></code></a></p></td>
 <td><p>Returns max of <cite>x</cite> and <cite>y</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_min" title="tmlt.core.utils.arb.arb_min"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_min()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_exp" title="tmlt.core.utils.arb.arb_exp"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_exp()</span></code></a></p></td>
+<td><p>Returns exp(x).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_min" title="tmlt.core.utils.arb.arb_min"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_min()</span></code></a></p></td>
 <td><p>Returns min of <cite>x</cite> and <cite>y</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_abs" title="tmlt.core.utils.arb.arb_abs"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_abs()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_abs" title="tmlt.core.utils.arb.arb_abs"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_abs()</span></code></a></p></td>
 <td><p>Returns absolute value of x.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_neg" title="tmlt.core.utils.arb.arb_neg"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_neg()</span></code></a></p></td>
+<td><p>Returns -x.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_sgn" title="tmlt.core.utils.arb.arb_sgn"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_sgn()</span></code></a></p></td>
 <td><p>Sign function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_erf" title="tmlt.core.utils.arb.arb_erf"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_erf()</span></code></a></p></td>
+<td><p>Error function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_erfc" title="tmlt.core.utils.arb.arb_erfc"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_erfc()</span></code></a></p></td>
+<td><p>Complementary error function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_erfinv" title="tmlt.core.utils.arb.arb_erfinv"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_erfinv()</span></code></a></p></td>
 <td><p>Inverse error function.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_sqrt" title="tmlt.core.utils.arb.arb_sqrt"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_sqrt()</span></code></a></p></td>
 <td><p>Returns square root of <cite>x</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_const_pi" title="tmlt.core.utils.arb.arb_const_pi"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_const_pi()</span></code></a></p></td>
+<td><p>Returns pi.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_union" title="tmlt.core.utils.arb.arb_union"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_union()</span></code></a></p></td>
+<td><p>Returns union of <cite>x</cite> and <cite>y</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_sum" title="tmlt.core.utils.arb.arb_sum"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_sum()</span></code></a></p></td>
+<td><p>Sum of elements in xs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.arb.arb_product" title="tmlt.core.utils.arb.arb_product"><code class="xref py py-func docutils literal notranslate"><span class="pre">arb_product()</span></code></a></p></td>
+<td><p>Product of elements in xs.</p></td>
 </tr>
 </tbody>
 </table>
@@ -736,6 +800,25 @@ interval containing [max(x_l, y_l), max(x_u, y_u)].</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_exp">
+<span class="sig-name descname"><span class="pre">arb_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_exp" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns exp(x).</p>
+<p>If <cite>x</cite> represents an interval [x_l, x_u], this returns an
+interval containing [exp(x_l), exp(x_u)].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+<li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_min">
 <span class="sig-name descname"><span class="pre">arb_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_min" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns min of <cite>x</cite> and <cite>y</cite>.</p>
@@ -770,6 +853,20 @@ interval containing [min(x_l, y_l), min(x_u, y_u)].</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_neg">
+<span class="sig-name descname"><span class="pre">arb_neg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_neg" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns -x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_sgn">
 <span class="sig-name descname"><span class="pre">arb_sgn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_sgn" title="Permalink to this definition">#</a></dt>
 <dd><p>Sign function.</p>
@@ -778,6 +875,40 @@ and rad=1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_erf">
+<span class="sig-name descname"><span class="pre">arb_erf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_erf" title="Permalink to this definition">#</a></dt>
+<dd><p>Error function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+<li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_erfc">
+<span class="sig-name descname"><span class="pre">arb_erfc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_erfc" title="Permalink to this definition">#</a></dt>
+<dd><p>Complementary error function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+<li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
@@ -810,6 +941,73 @@ and rad=1.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+<li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_const_pi">
+<span class="sig-name descname"><span class="pre">arb_const_pi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_const_pi" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns pi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_union">
+<span class="sig-name descname"><span class="pre">arb_union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_union" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns union of <cite>x</cite> and <cite>y</cite>.</p>
+<p>If <cite>x</cite> and <cite>y</cite> represent intervals [x_l, x_u] and [y_l, y_u], this returns an
+interval containing [min(x_l, y_l), max(x_u, y_u)].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+<li><p><strong>y</strong> (<a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_sum">
+<span class="sig-name descname"><span class="pre">arb_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_sum" title="Permalink to this definition">#</a></dt>
+<dd><p>Sum of elements in xs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xs</strong> (<em>List</em><em>[</em><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a><em>]</em>) – </p></li>
+<li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb">Arb</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.core.utils.arb.arb_product">
+<span class="sig-name descname"><span class="pre">arb_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.arb_product" title="Permalink to this definition">#</a></dt>
+<dd><p>Product of elements in xs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xs</strong> (<em>List</em><em>[</em><a class="reference internal" href="#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><em>Arb</em></a><em>]</em>) – </p></li>
 <li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
@@ -987,7 +1185,7 @@ and rad=1.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__lt__">
-<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__lt__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__lt__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is less than other.</p>
 <p>This returns True if each value in the interval represented by <cite>self</cite> is less
 than every value in <cite>other</cite>.</p>
@@ -1004,7 +1202,7 @@ than every value in <cite>other</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__le__">
-<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__le__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__le__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is less than or equal to other.</p>
 <p>This returns True if each value in the interval represented by <cite>self</cite> is less
 than or equal to every value in <cite>other</cite>.</p>
@@ -1021,7 +1219,7 @@ than or equal to every value in <cite>other</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__ne__">
-<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__ne__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__ne__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is not equal to other.</p>
 <p>This returns True if no value in the interval represented by <cite>self</cite> is equal
 to a value in <cite>other</cite>.</p>
@@ -1038,7 +1236,7 @@ to a value in <cite>other</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__gt__">
-<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__gt__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__gt__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is greater than other.</p>
 <p>This returns True if each value in the interval represented by <cite>self</cite> is
 greater than every value in <cite>other</cite>.</p>
@@ -1055,7 +1253,7 @@ greater than every value in <cite>other</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__ge__">
-<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__ge__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__ge__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is greater than or equal to other.</p>
 <p>This returns True if each value in the interval represented by <cite>self</cite> is
 greater than or equal to every value in <cite>other</cite>.</p>
@@ -1072,7 +1270,7 @@ greater than or equal to every value in <cite>other</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is equal to other.</p>
 <p>This returns True if each value in the interval represented by <cite>self</cite> is
 greater than every value in <cite>other</cite>. If midpoint is NaN, this returns False.</p>
@@ -1088,7 +1286,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__neg__">
-<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__neg__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__neg__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns -1 * self`.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1099,7 +1297,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.is_exact">
-<span class="sig-name descname"><span class="pre">is_exact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_exact" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_exact</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_exact" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if radius is 0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1110,7 +1308,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.is_finite">
-<span class="sig-name descname"><span class="pre">is_finite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_finite" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_finite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_finite" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if self is finite.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1121,7 +1319,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.is_nan">
-<span class="sig-name descname"><span class="pre">is_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_nan" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_nan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.is_nan" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if midpoint is NaN.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1132,7 +1330,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__float__">
-<span class="sig-name descname"><span class="pre">__float__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__float__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__float__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__float__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a float approximating the midpoint of <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1143,7 +1341,7 @@ greater than every value in <cite>other</cite>. If midpoint is NaN, this returns
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.to_float">
-<span class="sig-name descname"><span class="pre">to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.to_float" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.to_float" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the only floating point number contained in <cite>self</cite>.</p>
 <p>If more than one float lies in the interval represented by <cite>self</cite>,
 this raises an error.</p>
@@ -1159,7 +1357,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.man_exp">
-<span class="sig-name descname"><span class="pre">man_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.man_exp" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">man_exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.man_exp" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a pair (Mantissa, Exponent) if exact.</p>
 <p>If <cite>self</cite> is not exact, this raises an error.</p>
 <dl class="field-list simple">
@@ -1171,7 +1369,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.lower">
-<span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.lower" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.lower" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an exact Arb representing the smallest value in <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1185,7 +1383,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.upper">
-<span class="sig-name descname"><span class="pre">upper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.upper" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">upper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.upper" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an exact Arb representing the largest value in <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1199,7 +1397,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.midpoint">
-<span class="sig-name descname"><span class="pre">midpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.midpoint" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">midpoint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.midpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the midpoint of <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1210,7 +1408,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.radius">
-<span class="sig-name descname"><span class="pre">radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.radius" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">radius</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.radius" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the radius of <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1221,7 +1419,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__contains__">
-<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__contains__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__contains__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if value is contained in the interval represented by <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1235,7 +1433,7 @@ this raises an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.utils.arb.Arb.__del__">
-<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__del__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.arb.Arb.__del__" title="Permalink to this definition">#</a></dt>
 <dd><p>Cleanup.</p>
 </dd></dl>
 
@@ -1288,7 +1486,7 @@ this raises an error.</p>
   </div>
   
   <div class="footer-item">
-    Built from 0d2ca64e at 2023-05-17 16:48.
+    Built from ec6b333e at 2023-06-08 13:29.
   </div>
   
   <div class="footer-item">

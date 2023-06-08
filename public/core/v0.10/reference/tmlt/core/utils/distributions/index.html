@@ -155,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.0  <!-- this text may get changed later by javascript -->
+        0.10.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -165,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/utils/distributions/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.0'}.
+     variables reference/tmlt/core/utils/distributions/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.1'}.
 -->
 
 <script type="text/javascript">
@@ -220,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.0 variable.
+            // this version, rather than using sphinx's 0.10.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.0") {
+            if (entry.version == "0.10.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -571,9 +571,15 @@ through <span class="math notranslate nohighlight">\(p = 1 - e^{-1 / \alpha}\)</
     e^{-n^2/2\sigma^2}
 }\]</div>
 <p>See <a class="bibtex reference internal" href="../../../../../zcitations.html#canonne0s20" id="id2">[CKS20]</a> for more information. The formula above is based on
-Definition 1.</p>
-<p>The implementation also referenced the paper’s implementation, which can be found at
-<a class="reference external" href="https://github.com/IBM/discrete-gaussian-differential-privacy">https://github.com/IBM/discrete-gaussian-differential-privacy</a>.</p>
+Definition 1 in the paper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – The value to evaluate the pmf at.</p></li>
+<li><p><strong>sigma_squared</strong> – The variance of the discrete gaussian distribution.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -583,6 +589,14 @@ Definition 1.</p>
 <span class="sig-name descname"><span class="pre">discrete_gaussian_cmf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><span class="pre">numpy.ndarray</span></a></span></span></dt>
 <dd><p>Returns the cmf for a discrete gaussian distribution at k.</p>
 <p>See <a class="reference internal" href="#equation-discrete-gaussian-pmf">(1)</a> for the probability mass function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – The value to evaluate the cmf at.</p></li>
+<li><p><strong>sigma_squared</strong> – The variance of the discrete gaussian distribution.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -590,10 +604,18 @@ Definition 1.</p>
 <span class="sig-name descname"><span class="pre">discrete_gaussian_inverse_cmf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#tmlt.core.utils.distributions.discrete_gaussian_inverse_cmf" title="Permalink to this definition">#</a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">discrete_gaussian_inverse_cmf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><span class="pre">numpy.ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><span class="pre">numpy.ndarray</span></a></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">discrete_gaussian_inverse_cmf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../arb/index.html#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><span class="pre">tmlt.core.utils.arb.Arb</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../arb/index.html#tmlt.core.utils.arb.Arb" title="tmlt.core.utils.arb.Arb"><span class="pre">tmlt.core.utils.arb.Arb</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></span></dt>
 <dd><p>Returns the inverse cmf for a discrete gaussian distribution at p.</p>
 <p>In other words, it returns the smallest k s.t. CMF(k) &gt;= p.</p>
-<p>This is not terribly performant. Don’t use it in places where it’s
-going to get called a lot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> – The value to evaluate the inverse cmf at.</p></li>
+<li><p><strong>sigma_squared</strong> – The variance of the discrete gaussian distribution.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -643,7 +665,7 @@ going to get called a lot.</p>
   </div>
   
   <div class="footer-item">
-    Built from 0d2ca64e at 2023-05-17 16:48.
+    Built from ec6b333e at 2023-06-08 13:29.
   </div>
   
   <div class="footer-item">

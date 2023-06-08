@@ -154,7 +154,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.0  <!-- this text may get changed later by javascript -->
+        0.10.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -164,7 +164,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/metrics/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.0'}.
+     variables reference/tmlt/core/metrics/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.1'}.
 -->
 
 <script type="text/javascript">
@@ -219,10 +219,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.0 variable.
+            // this version, rather than using sphinx's 0.10.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.0") {
+            if (entry.version == "0.10.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -298,6 +298,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classes">
    Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exceptions">
+   Exceptions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -848,6 +853,30 @@ function checkPageExistsAndRedirect(event) {
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.metrics.UnsupportedMetricError">
+     UnsupportedMetricError
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.UnsupportedMetricError.metric">
+       metric
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.core.metrics.MetricMismatchError">
+     MetricMismatchError
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.metrics.MetricMismatchError.metrics">
+       metrics
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
 </ul>
@@ -931,7 +960,7 @@ function checkPageExistsAndRedirect(event) {
 <p>Base class for input/output metrics.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.Metric.validate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.validate" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -942,7 +971,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.Metric.compare">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.compare" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -959,7 +988,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.Metric.supports_domain">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.supports_domain" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -973,7 +1002,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.Metric.distance">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.distance" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -991,7 +1020,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.Metric.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.Metric.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1012,7 +1041,7 @@ function checkPageExistsAndRedirect(event) {
 <p>Metric for use when distance is undefined.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.NullMetric.validate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.validate" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <p>This method is not implemented.</p>
 <dl class="field-list simple">
@@ -1024,7 +1053,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.NullMetric.compare">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.compare" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <p>This method is not implemented.</p>
 <dl class="field-list simple">
@@ -1042,7 +1071,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.NullMetric.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1056,7 +1085,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.NullMetric.distance">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.distance" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1074,7 +1103,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.NullMetric.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.NullMetric.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1095,7 +1124,7 @@ function checkPageExistsAndRedirect(event) {
 <p>A metric whose distances are exact numbers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.ExactNumberMetric.distance">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.distance" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1113,7 +1142,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.ExactNumberMetric.validate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.validate" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1124,7 +1153,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.ExactNumberMetric.compare">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.compare" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1141,7 +1170,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.ExactNumberMetric.supports_domain">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.supports_domain" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1155,7 +1184,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.ExactNumberMetric.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.ExactNumberMetric.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1188,7 +1217,7 @@ function checkPageExistsAndRedirect(event) {
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AbsoluteDifference.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a nonnegative real or infinite</p></li>
@@ -1202,7 +1231,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AbsoluteDifference.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1219,7 +1248,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AbsoluteDifference.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1233,7 +1262,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AbsoluteDifference.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1251,7 +1280,7 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AbsoluteDifference.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AbsoluteDifference.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1316,7 +1345,7 @@ as an item. For grouped data there are a few cases:</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SymmetricDifference.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a nonnegative integer or infinity</p></li>
@@ -1330,7 +1359,7 @@ as an item. For grouped data there are a few cases:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SymmetricDifference.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1347,7 +1376,7 @@ as an item. For grouped data there are a few cases:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SymmetricDifference.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1361,7 +1390,7 @@ as an item. For grouped data there are a few cases:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SymmetricDifference.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1379,7 +1408,7 @@ as an item. For grouped data there are a few cases:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SymmetricDifference.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SymmetricDifference.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1431,7 +1460,7 @@ each collection as a multiset of records.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.HammingDistance.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a nonnegative and integer or infinity</p></li>
@@ -1445,7 +1474,7 @@ each collection as a multiset of records.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.HammingDistance.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1462,7 +1491,7 @@ each collection as a multiset of records.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.HammingDistance.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1476,7 +1505,7 @@ each collection as a multiset of records.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.HammingDistance.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1494,7 +1523,7 @@ each collection as a multiset of records.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.HammingDistance.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.HammingDistance.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1528,14 +1557,14 @@ example usage.</p>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>]</span>) – Metric to be applied to the components.</p>
+<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a>]</span>) – Metric to be applied to the components.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.inner_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.inner_metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.inner_metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns metric to be used for summing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1546,7 +1575,7 @@ example usage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1563,7 +1592,7 @@ example usage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1577,7 +1606,7 @@ example usage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1595,7 +1624,7 @@ example usage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.validate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.validate" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1606,7 +1635,7 @@ example usage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AggregationMetric.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AggregationMetric.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1688,14 +1717,14 @@ to compute the distances of the components.</p>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>]</span>) – Metric to be applied to the components.</p>
+<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a>]</span>) – Metric to be applied to the components.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a a valid distance for <a class="reference internal" href="#tmlt.core.metrics.SumOf.inner_metric" title="tmlt.core.metrics.SumOf.inner_metric"><code class="xref py py-attr docutils literal notranslate"><span class="pre">inner_metric</span></code></a></p></li>
@@ -1709,7 +1738,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.inner_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.inner_metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><a class="headerlink" href="#tmlt.core.metrics.SumOf.inner_metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns metric to be used for summing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1720,7 +1749,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1737,7 +1766,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1751,7 +1780,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1769,7 +1798,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.SumOf.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.SumOf.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1842,14 +1871,14 @@ to compute the distances of the components.</p>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>]</span>) – Metric to be applied to the components.</p>
+<dd class="field-odd"><p><strong>inner_metric</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbsoluteDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ForwardRef" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code></a>]</span>) – Metric to be applied to the components.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a nonnegative real or infinity</p></li>
@@ -1863,7 +1892,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.inner_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.inner_metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.inner_metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns metric to be used for summing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1874,7 +1903,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1891,7 +1920,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1905,7 +1934,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1923,7 +1952,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.RootSumOfSquared.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.RootSumOfSquared.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1995,7 +2024,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.column" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.column" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the column to apply the metric to.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2006,7 +2035,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metric</span></span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric to apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2017,10 +2046,10 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
-<li><p><cite>value</cite> must be a a valid distance for <a class="reference internal" href="#tmlt.core.metrics.OnColumn.metric" title="tmlt.core.metrics.OnColumn.metric"><code class="xref py py-attr docutils literal notranslate"><span class="pre">metric</span></code></a></p></li>
+<li><p><cite>value</cite> must be a a valid distance for <a class="reference internal" href="#tmlt.core.metrics.UnsupportedMetricError.metric" title="tmlt.core.metrics.UnsupportedMetricError.metric"><code class="xref py py-attr docutils literal notranslate"><span class="pre">metric</span></code></a></p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2031,7 +2060,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2048,7 +2077,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2062,7 +2091,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2080,7 +2109,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumn.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumn.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2148,7 +2177,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.on_columns">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.on_columns" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_columns</span></span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.on_columns" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the OnColumn metrics to apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2159,7 +2188,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a tuple with one value for each metric in <a class="reference internal" href="#tmlt.core.metrics.OnColumns.on_columns" title="tmlt.core.metrics.OnColumns.on_columns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">on_columns</span></code></a></p></li>
@@ -2174,7 +2203,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2191,7 +2220,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2205,7 +2234,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2223,7 +2252,7 @@ to compute the distances of the components.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.OnColumns.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.OnColumns.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2307,7 +2336,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.column" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.column" title="Permalink to this definition">#</a></dt>
 <dd><p>Column that DataFrame shall be grouped by.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2318,7 +2347,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.inner_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.inner_metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inner_metric</span></span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.inner_metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Metric to be applied for corresponding groups.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2329,7 +2358,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a a valid distance for <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy.inner_metric" title="tmlt.core.metrics.IfGroupedBy.inner_metric"><code class="xref py py-attr docutils literal notranslate"><span class="pre">inner_metric</span></code></a></p></li>
@@ -2343,7 +2372,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2360,7 +2389,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2374,7 +2403,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2392,7 +2421,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2462,7 +2491,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.key_to_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key_to_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.key_to_metric" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key_to_metric</span></span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.key_to_metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns mapping from keys to metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2473,7 +2502,7 @@ the DataFrame.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a dictionary with the same keys as <a class="reference internal" href="#tmlt.core.metrics.DictMetric.key_to_metric" title="tmlt.core.metrics.DictMetric.key_to_metric"><code class="xref py py-attr docutils literal notranslate"><span class="pre">key_to_metric</span></code></a></p></li>
@@ -2489,7 +2518,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2506,7 +2535,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2520,7 +2549,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2538,7 +2567,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__getitem__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__getitem__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns metric associated with given key.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2552,7 +2581,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__len__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__len__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of keys in the metric.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2563,7 +2592,7 @@ metric</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.DictMetric.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.DictMetric.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2682,7 +2711,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.df_to_key_column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_to_key_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.df_to_key_column" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_to_key_column</span></span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.df_to_key_column" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the key column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -2693,7 +2722,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.validate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Raises an error if <cite>value</cite> not a valid distance.</p>
 <ul class="simple">
 <li><p><cite>value</cite> must be a nonnegative real or infinite</p></li>
@@ -2707,7 +2736,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.compare" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.compare" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if <cite>value1</cite> is less than or equal to <cite>value2</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2724,7 +2753,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2738,7 +2767,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.distance" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.distance" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2756,7 +2785,7 @@ key column in that dataframe.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__eq__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__eq__" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2766,6 +2795,51 @@ key column in that dataframe.</p>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tmlt.core.metrics.UnsupportedMetricError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UnsupportedMetricError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.UnsupportedMetricError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>Exception raised when a given metric is not supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<a class="reference internal" href="#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><em>Metric</em></a>) – </p></li>
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.core.metrics.UnsupportedMetricError.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><a class="headerlink" href="#tmlt.core.metrics.UnsupportedMetricError.metric" title="Permalink to this definition">#</a></dt>
+<dd><p>The metric that is not supported.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="tmlt.core.metrics.MetricMismatchError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricMismatchError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.MetricMismatchError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>Exception raised when two or more metrics should match, but don’t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metrics</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><em>Metric</em></a><em>]</em>) – </p></li>
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.core.metrics.MetricMismatchError.metrics">
+<span class="sig-name descname"><span class="pre">metrics</span></span><a class="headerlink" href="#tmlt.core.metrics.MetricMismatchError.metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>The metrics that should match, but do not.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2817,7 +2891,7 @@ key column in that dataframe.</p>
   </div>
   
   <div class="footer-item">
-    Built from 0d2ca64e at 2023-05-17 16:48.
+    Built from ec6b333e at 2023-06-08 13:29.
   </div>
   
   <div class="footer-item">
