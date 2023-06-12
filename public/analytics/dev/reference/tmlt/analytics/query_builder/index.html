@@ -1863,6 +1863,37 @@ the input column name with <code class="docutils literal notranslate"><span clas
 <p>This method can be used to enforce constraints on the current table. See
 the <a class="reference internal" href="../constraints/index.html#module-tmlt.analytics.constraints" title="tmlt.analytics.constraints"><code class="xref py py-mod docutils literal notranslate"><span class="pre">constraints</span></code></a> module for information about the
 available constraints and what they are used for.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">  id  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Session</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_id_space</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">my_private_data</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># No ID contributes more than 2 rows, so no rows are dropped when</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># enforcing the constraint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   count</span>
+<span class="go">0      3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ID 1 contributes more than one row, so one of the rows with ID 1 will</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># be dropped when enforcing the constraint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   count</span>
+<span class="go">0      2</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>constraint</strong> (<a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><em>tmlt.analytics.constraints.Constraint</em></a>) – The constraint to enforce.</p>
@@ -3397,7 +3428,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from aebc931b at 2023-06-09 16:12.
+    Built from 57a4768a at 2023-06-12 14:40.
   </div>
   
   <div class="footer-item">

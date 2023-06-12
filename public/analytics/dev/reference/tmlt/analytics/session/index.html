@@ -894,6 +894,31 @@ applied to the Session.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a string, <code class="docutils literal notranslate"><span class="pre">session.describe(obj)</span></code> will describe the table
 with that name. This is a shorthand for
 <code class="docutils literal notranslate"><span class="pre">session.describe(QueryBuilder(obj))</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># describe a session, &quot;sess&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> 
+<span class="go">The session has a remaining privacy budget of PureDPBudget(epsilon=1).</span>
+<span class="go">The following private tables are available:</span>
+<span class="go">Table &#39;my_private_data&#39; (no constraints):</span>
+<span class="go">    Columns:</span>
+<span class="go">        - &#39;A&#39;  VARCHAR</span>
+<span class="go">        - &#39;B&#39;  INTEGER</span>
+<span class="go">        - &#39;X&#39;  INTEGER</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># describe a query object</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop_null_and_nan</span><span class="p">([</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> 
+<span class="go">Columns:</span>
+<span class="go">    - &#39;A&#39;  VARCHAR</span>
+<span class="go">    - &#39;B&#39;  INTEGER, not null</span>
+<span class="go">    - &#39;X&#39;  INTEGER, not null</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># describe a table by name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span> 
+<span class="go">Columns:</span>
+<span class="go">    - &#39;A&#39;  VARCHAR</span>
+<span class="go">    - &#39;B&#39;  INTEGER</span>
+<span class="go">    - &#39;X&#39;  INTEGER</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>obj</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>, </em><a class="reference internal" href="../query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><em>tmlt.analytics.query_builder.QueryBuilder</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em><em>]</em>) – The table or query to be described, or None to describe the
@@ -1255,7 +1280,7 @@ Split name is <code class="docutils literal notranslate"><span class="pre">sourc
   </div>
   
   <div class="footer-item">
-    Built from aebc931b at 2023-06-09 16:12.
+    Built from 57a4768a at 2023-06-12 14:40.
   </div>
   
   <div class="footer-item">
