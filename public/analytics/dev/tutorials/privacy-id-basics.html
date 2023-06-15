@@ -383,7 +383,8 @@ books.</p>
 </pre></div>
 </div>
 <p>… and download two datasets: one containing books checked out from
-the library, and one that contains a list of the books that the library has.</p>
+the library, and one that contains a list of the books that the library has. The checkout logs might look like:</p>
+<img alt="An 8x6 table demonstrating the checkout logs data structure. The columns of the table are checkout_date, member_id, title, author, isbn, publication_date, publisher, and genres. The rows of the table are the individual checkouts. The checkout_date column contains dates, the member_id column contains integers, the title, author, isbn, publication_date, publisher, and genres columns contain strings." class="align-center" src="../_images/mock_checkout_logs.svg" /><p>Notice that the <em>same member</em> may have checked out <em>many books</em>, as illustrated by the highlighted rows. This is a defining characteristic of data fit for use with privacy IDs, as we will see in a moment.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
     <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/checkout-logs.csv&quot;</span>
@@ -607,7 +608,16 @@ how much each privacy ID can contribute to the final statistic. There are two
 ways of doing so: using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
 or using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
 <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>.</p>
-<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" /><p>To understand more the impact of choosing one kind of constraint vs. another,
+<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" /><p>As a reminder:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a> limits the number of rows
+associated with each privacy ID in a table.</p></li>
+<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> limits the number of distinct
+values of the grouping column that may appear for each privacy ID in a table.</p></li>
+<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> limits the number of rows
+associated with each (privacy ID, grouping column value) pair in a table.</p></li>
+</ul>
+<p>To understand the impact of the various constraints in more detail,
 you can consult our <a class="reference internal" href="../topic-guides/understanding-sensitivity.html#understanding-sensitivity"><span class="std std-ref">topic guide about sensitivity</span></a>.
 To learn more about how to perform more complex queries on tables initialized with
 privacy IDs, you can proceed to the <a class="reference internal" href="more-with-privacy-ids.html#advanced-ids-features"><span class="std std-ref">next tutorial</span></a>.</p>
@@ -658,7 +668,7 @@ privacy IDs, you can proceed to the <a class="reference internal" href="more-wit
   </div>
   
   <div class="footer-item">
-    Built from d52083a6 at 2023-06-15 07:05.
+    Built from 4f4d7921 at 2023-06-15 08:16.
   </div>
   
   <div class="footer-item">
