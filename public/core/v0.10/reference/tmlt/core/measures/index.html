@@ -155,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.1  <!-- this text may get changed later by javascript -->
+        0.10.2  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -165,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/measures/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.1'}.
+     variables reference/tmlt/core/measures/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.10.2'}.
 -->
 
 <script type="text/javascript">
@@ -220,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.1 variable.
+            // this version, rather than using sphinx's 0.10.2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.1") {
+            if (entry.version == "0.10.2") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -240,6 +240,11 @@ function checkPageExistsAndRedirect(event) {
  <li class="toctree-l1">
   <a class="reference internal" href="../domains/index.html">
    domains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../exceptions/index.html">
+   exceptions
   </a>
  </li>
  <li class="toctree-l1">
@@ -394,6 +399,11 @@ function checkPageExistsAndRedirect(event) {
      PrivacyBudget
     </a>
     <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.core.measures.PrivacyBudget.__init__">
+       __init__
+      </a>
+     </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.core.measures.PrivacyBudget.cast">
        cast
@@ -865,11 +875,30 @@ between two distributions <span class="math notranslate nohighlight">\(X\)</span
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.measures.PrivacyBudget">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivacyBudget</span></span><a class="headerlink" href="#tmlt.core.measures.PrivacyBudget" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivacyBudget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.PrivacyBudget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>An abstract class for representing a privacy budget.</p>
 <p>This class is meant to allow operations on a budget (e.g. subtracting, checking if
 the budget is infinite) without needing to know the type of the budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>PrivacyBudgetInput</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measures.PrivacyBudget.__init__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measures.PrivacyBudget.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Initializes the privacy budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<span class="annotation terse"><a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a> | <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]]]</span>) – The value of the privacy budget.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measures.PrivacyBudget.cast">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><span class="pre">RhoZCDP</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PrivacyBudgetInput</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tmlt.core.measures.RhoZCDPBudget" title="tmlt.core.measures.RhoZCDPBudget"><span class="pre">RhoZCDPBudget</span></a></span></span><a class="headerlink" href="#tmlt.core.measures.PrivacyBudget.cast" title="Permalink to this definition">#</a></dt>
@@ -1380,12 +1409,12 @@ the budget is infinite) without needing to know the type of the budget.</p>
   
   <div class="footer-item">
     <p class="copyright">
-    &copy; Copyright Tumult Labs 2022.<br>
+    &copy; Copyright Tumult Labs 2023.<br>
 </p>
   </div>
   
   <div class="footer-item">
-    Built from ec6b333e at 2023-06-08 13:29.
+    Built from 626c9699 at 2023-07-18 19:13.
   </div>
   
   <div class="footer-item">
