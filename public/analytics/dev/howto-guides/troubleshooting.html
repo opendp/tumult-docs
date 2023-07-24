@@ -300,6 +300,11 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#receiving-empty-dataframes-as-outputs">
+   Receiving empty dataframes as outputs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#picklingerror-on-map-queries">
    <code class="docutils literal notranslate">
     <span class="pre">
@@ -346,6 +351,29 @@ or <code class="docutils literal notranslate"><span class="pre">java.lang.OutOfM
 It’s often possible to successfully run Analytics
 locally anyway, by configuring Spark with enough RAM. See our
 <a class="reference internal" href="../topic-guides/spark.html#spark"><span class="std std-ref">Spark guide</span></a> for more information.</p>
+</section>
+<section id="receiving-empty-dataframes-as-outputs">
+<h2>Receiving empty dataframes as outputs<a class="headerlink" href="#receiving-empty-dataframes-as-outputs" title="Permalink to this headline">#</a></h2>
+<p>If you’re running Analytics queries and getting empty dataframes as outputs,
+this likely indicates that your Spark configuration is incorrect. If you run the installation checker, it should identify this problem.</p>
+<p>Receiving empty dataframes is a sign that Spark is writing to an incorrect warehouse directory location.
+This is most likely to occur in a setting where multiple machines need to use a shared location as a datastore,
+but no external warehouse directory is specified.</p>
+<p>The issue can be resolved by providing your desired warehouse directory location when building your Spark session.
+For example, to configure the session to use to the S3 location <code class="docutils literal notranslate"><span class="pre">s3://my-bucket/spark-warehouse</span></code>, you would use the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">warehouse_location</span> <span class="o">=</span> <span class="s2">&quot;s3://my-bucket/spark-warehouse&quot;</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
+    <span class="s2">&quot;spark.sql.warehouse.dir&quot;</span><span class="p">,</span> <span class="n">warehouse_location</span>
+<span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This assumes that you have configured Spark with the permissions to interact with the given bucket.</p>
+<p>If you are using Hive tables to read and write data, you may instead want to consult
+the <a class="reference internal" href="../topic-guides/spark.html#hive-tips"><span class="std std-ref">Hive section</span></a> of the <a class="reference internal" href="../topic-guides/spark.html#spark"><span class="std std-ref">Spark topic guide</span></a>. For more tips
+related to Spark, see the entirety of that guide.</p>
 </section>
 <section id="picklingerror-on-map-queries">
 <h2><code class="docutils literal notranslate"><span class="pre">PicklingError</span></code> on map queries<a class="headerlink" href="#picklingerror-on-map-queries" title="Permalink to this headline">#</a></h2>
@@ -443,7 +471,7 @@ function have <em>any</em> references to Spark objects, the map function will su
   </div>
   
   <div class="footer-item">
-    Built from 4525ea4c at 2023-07-19 21:04.
+    Built from 5b0ea068 at 2023-07-24 19:06.
   </div>
   
   <div class="footer-item">
