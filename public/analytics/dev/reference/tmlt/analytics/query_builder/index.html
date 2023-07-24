@@ -1067,7 +1067,7 @@ truncation is necessary while performing the join.</p>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_view&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where only one record with each join key is kept on the left</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where only one row with each join key is kept on the left</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># table, but two are kept on the right table.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_drop_excess</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1086,7 +1086,7 @@ truncation is necessary while performing the join.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   count</span>
 <span class="go">0      3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where all records that share a join key with another record in</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where all rows that share a join key with another row in</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># their table are dropped, in both the left and right tables.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_drop_non_unique</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1639,7 +1639,7 @@ If False, make the new dataframe with schema = schema_new_columns</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.flat_map">
-<span class="sig-name descname"><span class="pre">flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the current query to apply a flat map.</p>
 <p>If you provide only a ColumnType for the new column types, Analytics
 assumes that all new columns created may contain null values (and that
@@ -1647,7 +1647,7 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <p>Operations on tables with a
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> do not require a
-<code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code> argument, since it is not necessary to impose a limit on
+<code class="docutils literal notranslate"><span class="pre">max_rows</span></code> argument, since it is not necessary to impose a limit on
 the number of new rows.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
@@ -1678,7 +1678,7 @@ the number of new rows.</p>
 <span class="gp">... </span>        <span class="p">)},</span>
 <span class="gp">... </span>        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">grouping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">max_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}))</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -1720,9 +1720,10 @@ If True, this requires that any groupby aggregations following this
 query include the new column as a groupby column. Only one new column
 is supported, and the new column must have distinct values for each
 input row.</p></li>
-<li><p><strong>max_num_rows</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The enforced limit on the number of rows from each <code class="docutils literal notranslate"><span class="pre">f(row)</span></code>.
-If <code class="docutils literal notranslate"><span class="pre">f</span></code> produces more rows than this, only the first <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>
+<li><p><strong>max_rows</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The enforced limit on the number of rows from each <code class="docutils literal notranslate"><span class="pre">f(row)</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">f</span></code> produces more rows than this, only the first <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>
 rows will be in the output.</p></li>
+<li><p><strong>max_num_rows</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Deprecated synonym for max_rows.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -3488,7 +3489,7 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 5b0ea068 at 2023-07-24 19:06.
+    Built from f10083b4 at 2023-07-24 19:26.
   </div>
   
   <div class="footer-item">

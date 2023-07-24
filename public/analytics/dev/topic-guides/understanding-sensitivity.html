@@ -443,23 +443,23 @@ each. The sensitivity computation is more complicated than before:</p>
 <p>where:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds, i.e. <code class="docutils literal notranslate"><span class="pre">max_records</span></code>, for the left and right tables, respectively. When using <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>, these values are always 1.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds, i.e. <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>, for the left and right tables, respectively. When using <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>, these values are always 1.</p></li>
 <li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are factors called the <em>stability</em> of each <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code>. These values are always 2 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropExcess</span></code></a> and 1 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(M_{left}\)</span> and <span class="math notranslate nohighlight">\(M_{right}\)</span> are the <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameters of the protected change on the left and right tables, respectively.</p></li>
 </ul>
 </div></blockquote>
-<p>In this example, if we choose a truncation strategy of <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> for
+<p>In this example, if we choose a truncation strategy of <code class="docutils literal notranslate"><span class="pre">DropExcess(max_rows=2)</span></code> for
 both tables, they will be truncated to include no more than two rows for each value of
 our join key, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. The private join might look something like:</p>
 <img alt="On the left, a private table with names, user ids and emails. On the right, a private table with user_ids and purchase information. On the bottom, the result of a private join between the two top tables: a private table with names, user ids, emails, and purchase information." class="align-center" src="../_images/private_join_example.svg" /><p>In this case, our <code class="docutils literal notranslate"><span class="pre">DropExcess()</span></code> truncation strategies each had bounds of
-<code class="docutils literal notranslate"><span class="pre">max_records=2</span></code>, and our tables each had a protected change of
+<code class="docutils literal notranslate"><span class="pre">max_rows=2</span></code>, and our tables each had a protected change of
 <code class="docutils literal notranslate"><span class="pre">AddMaxRows(max_rows=1)</span></code>. The sensitivity of the join is then:
 <span class="math notranslate nohighlight">\(\text{sensitivity} = 2 * 2 * 1 + 2 * 2 * 1 = 8\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Even though the <code class="docutils literal notranslate"><span class="pre">Users</span></code> table did not <em>actually</em> contain more than one record per
+<p>Even though the <code class="docutils literal notranslate"><span class="pre">Users</span></code> table did not <em>actually</em> contain more than one row per
 <code class="docutils literal notranslate"><span class="pre">user_id</span></code>, the sensitivity is still increased via the
-<code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> truncation strategy. Again, this is because we don’t
+<code class="docutils literal notranslate"><span class="pre">DropExcess(max_rows=2)</span></code> truncation strategy. Again, this is because we don’t
 look at the contents of private tables directly, and instead use the information
 given by the <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code> for each table.</p>
 </div>
@@ -467,9 +467,9 @@ given by the <code class="docutils literal notranslate"><span class="pre">Trunca
 <p class="admonition-title">Note</p>
 <p>When we know that a table always contains only one row per join key, it’s preferable
 to use <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code>, due to the smaller truncation stability. In this case,
-using <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code> for the Users table and <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=2)</span></code> for the
+using <code class="docutils literal notranslate"><span class="pre">DropNonUnique</span></code> for the Users table and <code class="docutils literal notranslate"><span class="pre">DropExcess(max_rows=2)</span></code> for the
 Purchases table would have led to a join sensitivity of <span class="math notranslate nohighlight">\(1 * 2 * 1 + 2 * 1 * 1 = 4\)</span>.
-Using <code class="docutils literal notranslate"><span class="pre">DropExcess(max_records=1)</span></code> for the users table would have led to a sensitivity of
+Using <code class="docutils literal notranslate"><span class="pre">DropExcess(max_rows=1)</span></code> for the users table would have led to a sensitivity of
 <span class="math notranslate nohighlight">\(1 * 2 * 1 + 2 * 2 * 1 = 6\)</span> instead.</p>
 </div>
 <p>As you can see, tracking stability can be complicated!</p>
@@ -571,7 +571,7 @@ to reach out to us on <a class="reference external" href="https://www.tmlt.dev/s
   </div>
   
   <div class="footer-item">
-    Built from 5b0ea068 at 2023-07-24 19:06.
+    Built from f10083b4 at 2023-07-24 19:26.
   </div>
   
   <div class="footer-item">

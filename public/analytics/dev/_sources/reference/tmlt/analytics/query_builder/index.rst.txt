@@ -447,7 +447,7 @@ Classes
       ...     source_id="my_private_view",
       ...     cache=False
       ... )
-      >>> # A query where only one record with each join key is kept on the left
+      >>> # A query where only one row with each join key is kept on the left
       >>> # table, but two are kept on the right table.
       >>> query_drop_excess = (
       ...     QueryBuilder("my_private_data")
@@ -466,7 +466,7 @@ Classes
       >>> answer.toPandas()
          count
       0      3
-      >>> # A query where all records that share a join key with another record in
+      >>> # A query where all rows that share a join key with another row in
       >>> # their table are dropped, in both the left and right tables.
       >>> query_drop_non_unique = (
       ...     QueryBuilder("my_private_data")
@@ -1078,7 +1078,7 @@ Classes
                       If False, make the new dataframe with schema = schema_new_columns
 
 
-   .. py:method:: flat_map(f, new_column_types, augment = False, grouping = False, max_num_rows = None)
+   .. py:method:: flat_map(f, new_column_types, augment = False, grouping = False, max_rows = None, max_num_rows = None)
 
       Updates the current query to apply a flat map.
 
@@ -1089,7 +1089,7 @@ Classes
       Operations on tables with a
       :class:`~tmlt.analytics.protected_change.AddRowsWithID`
       :class:`~tmlt.analytics.protected_change.ProtectedChange` do not require a
-      ``max_num_rows`` argument, since it is not necessary to impose a limit on
+      ``max_rows`` argument, since it is not necessary to impose a limit on
       the number of new rows.
 
       ..
@@ -1137,7 +1137,7 @@ Classes
       ...         )},
       ...         augment=True,
       ...         grouping=False,
-      ...         max_num_rows=3,
+      ...         max_rows=3,
       ...     )
       ...     .groupby(KeySet.from_dict({"B": [0, 1, 2, 3]}))
       ...     .count()
@@ -1175,9 +1175,10 @@ Classes
                        query include the new column as a groupby column. Only one new column
                        is supported, and the new column must have distinct values for each
                        input row.
-      :param max_num_rows: The enforced limit on the number of rows from each ``f(row)``.
-                           If ``f`` produces more rows than this, only the first ``max_num_rows``
-                           rows will be in the output.
+      :param max_rows: The enforced limit on the number of rows from each ``f(row)``.
+                       If ``f`` produces more rows than this, only the first ``max_rows``
+                       rows will be in the output.
+      :param max_num_rows: Deprecated synonym for max_rows.
 
 
    .. py:method:: bin_column(column, spec, name = None)

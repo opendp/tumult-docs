@@ -415,7 +415,7 @@ should not be done in production.</p>
 </pre></div>
 </div>
 <p>In this query, we first we filtered the data to only include rows where
-the age was less than 18, and then counted the total number of records. More complicated
+the age was less than 18, and then counted the total number of rows. More complicated
 filters are also supported: Tumult Analytics filters support the same syntax as <a class="reference external" href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-where.html">Spark
 SQL</a>.</p>
 <p>With Tumult Analytics, using transformations is that easy, and we will see that other
@@ -538,13 +538,13 @@ each of their favorite genres (up to three times as many rows).</p>
 </div>
 <p>Like <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has the <code class="docutils literal notranslate"><span class="pre">new_column_types</span></code> and <code class="docutils literal notranslate"><span class="pre">augment</span></code> options.
 In this example, we leave <code class="docutils literal notranslate"><span class="pre">augment</span></code> with its default value of <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
-<p>Unlike <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has an argument <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code>. It clamps the maximum number
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has an argument <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>. It clamps the maximum number
 of new rows that can be created for each input row. This serves a similar function as
 the clamping bounds on aggregations we used in <a class="reference internal" href="clamping-bounds.html#clamping-bounds"><span class="std std-ref">tutorial 3</span></a>, and
-also has the analogous trade-offs: higher values for <code class="docutils literal notranslate"><span class="pre">max_num_rows</span></code> will result in more
+also has the analogous trade-offs: higher values for <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> will result in more
 noise in the final results, while lower values may cause more rows to be silently
 dropped. In this case, the choice is easy: no members have more than three favorites and
-there are many members with three, so we set <code class="docutils literal notranslate"><span class="pre">max_num_rows=3</span></code>.</p>
+there are many members with three, so we set <code class="docutils literal notranslate"><span class="pre">max_rows=3</span></code>.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">genre_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -574,7 +574,7 @@ there are many members with three, so we set <code class="docutils literal notra
     <span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
         <span class="n">expand_genre</span><span class="p">,</span>
         <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">},</span>
-        <span class="n">max_num_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">genre_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -809,7 +809,7 @@ zero for some of the population counts. We will replace the NaN values with zero
   </div>
   
   <div class="footer-item">
-    Built from 5b0ea068 at 2023-07-24 19:06.
+    Built from f10083b4 at 2023-07-24 19:26.
   </div>
   
   <div class="footer-item">
