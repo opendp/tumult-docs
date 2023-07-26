@@ -368,19 +368,19 @@ function checkPageExistsAndRedirect(event) {
 <span id="id1"></span><h1>Spark<a class="headerlink" href="#spark" title="Permalink to this headline">#</a></h1>
 <p>Tumult Analytics uses Spark as its underlying data processing
 framework. This topic guide covers relevant information about Spark
-for users of the Analytics library.</p>
+for Tumult Analytics users.</p>
 <section id="configuring-spark-sessions">
 <h2>Configuring Spark sessions<a class="headerlink" href="#configuring-spark-sessions" title="Permalink to this headline">#</a></h2>
-<p>Analytics uses <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.SparkSession" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">sessions</span></code></a> to do all data processing operations.
+<p>Tumult Analytics uses <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.SparkSession" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">sessions</span></code></a> to do all data processing operations.
 As long as Spark has an active session, any calls that “create” new Spark
 sessions use that active session.</p>
-<p>If you want Analytics to use Spark sessions with any <em>specific</em> properties,
-then before running Analytics code, you should create that Spark session:</p>
+<p>If you want Tumult Analytics to use Spark sessions with any <em>specific</em> properties,
+then before running Tumult Analytics code, you should create that Spark session:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.&lt;</span><span class="n">your</span> <span class="n">options</span> <span class="n">here</span><span class="o">&gt;.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>As long as this session is active, Analytics will use it.</p>
+<p>As long as this session is active, Tumult Analytics will use it.</p>
 <details class="sphinx-bs dropdown card mb-3 shadow fade-in-slide-down">
 <summary class="summary-title card-header font-weight-bold text-danger text-center">
 Trouble Using Java 11 or higher?<div class="summary-down docutils">
@@ -392,7 +392,7 @@ Trouble Using Java 11 or higher?<div class="summary-down docutils">
 <p class="card-text">Not doing this before making calls to Tumult Analytics, or overwriting these configurations with your own,
 will result in Spark raising <code class="docutils literal notranslate"><span class="pre">java.lang.UnsupportedOperationException:</span> <span class="pre">sun.misc.Unsafe</span></code> or <code class="docutils literal notranslate"><span class="pre">java.nio.DirectByteBuffer.(long,</span> <span class="pre">int)</span> <span class="pre">not</span> <span class="pre">available</span></code>
 when evaluating queries.</p>
-<p class="card-text">Analytics attempts to set these options automatically, but if you are encountering issues, you may want to try:</p>
+<p class="card-text">Tumult Analytics attempts to set these options automatically, but if you are encountering issues, you may want to try:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.utils</span> <span class="kn">import</span> <span class="n">get_java11_config</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="n">get_java11_config</span><span class="p">())</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
@@ -438,7 +438,7 @@ to view the
 <section id="materialization-and-data-cleanup">
 <h2>Materialization and data cleanup<a class="headerlink" href="#materialization-and-data-cleanup" title="Permalink to this headline">#</a></h2>
 <p>Tumult Analytics is built on top of Tumult Core, which
-implements all of the differential privacy primitives that Analytics uses.
+implements all of the differential privacy primitives that Tumult Analytics uses.
 Tumult Core uses a Spark database (named “<code class="docutils literal notranslate"><span class="pre">tumult_temp_&lt;time&gt;_&lt;uuid&gt;</span></code>”) to
 materialize dataframes after noise has been added. This ensures that repeated
 queries on a dataframe of results do not re-evaluate the query with fresh
@@ -447,7 +447,7 @@ randomness.</p>
 <ul class="simple">
 <li><p>Queries are eagerly-evaluated, instead of lazily-evaluated.</p></li>
 <li><p>Operations create a temporary database in Spark.</p></li>
-<li><p>Analytics <em>does not</em> support multi-threaded operations, because the
+<li><p>Tumult Analytics <em>does not</em> support multi-threaded operations, because the
 materialization step changes the active Spark database. (The active database is
 changed back to the original database at the end of the materialization step.)</p></li>
 </ul>
@@ -471,7 +471,7 @@ warehouse directory.  If your program exits unexpectedly (for example,
 because it was terminated with Ctrl-C),
 or if the cleanup function is called without an active Spark session,
 this temporary database (and its associated folder) may not be deleted.</p>
-<p>Analytics has a function to delete any of these folders in the current
+<p>Tumult Analytics has a function to delete any of these folders in the current
 Spark warehouse: <a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
 As long as your program is single-threaded, it is safe to call this function
 at any time.</p>
@@ -487,14 +487,14 @@ Deleting the folder will delete the database.</p>
 </section>
 <section id="performance-and-profiling">
 <h2>Performance and profiling<a class="headerlink" href="#performance-and-profiling" title="Permalink to this headline">#</a></h2>
-<p>All queries made with Analytics are executed by Spark. If you are having
+<p>All queries made with Tumult Analytics are executed by Spark. If you are having
 performance problems, you will probably want to look at
 <a class="reference external" href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">Spark performance-tuning options</a>.</p>
 <section id="ram-usage">
 <h3>RAM usage<a class="headerlink" href="#ram-usage" title="Permalink to this headline">#</a></h3>
 <p>By default, Spark allocates itself 1GB of RAM
 (see <a class="reference external" href="https://spark.apache.org/docs/latest/configuration.html#application-properties">Spark’s configuration documentation</a>).
-Analytics programs often need more RAM than this.
+Tumult Analytics programs often need more RAM than this.
 Usually, a program needs more RAM because:</p>
 <ul class="simple">
 <li><p>the input data is large (10M rows or more)</p></li>
@@ -573,7 +573,7 @@ dataframe.</p>
   </div>
   
   <div class="footer-item">
-    Built from 1d4d66b3 at 2023-07-25 13:36.
+    Built from 3e176dcd at 2023-07-26 15:28.
   </div>
   
   <div class="footer-item">
