@@ -1307,7 +1307,7 @@ measurement. If None, this column will be named “sum(&lt;measure_column&gt;)�
 <span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>            <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="n">group_keys</span><span class="o">=</span><span class="n">group_keys</span>
+<span class="gp">... </span>        <span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SumOf</span><span class="p">(</span><span class="n">SymmetricDifference</span><span class="p">()),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1334,7 +1334,7 @@ measurement. If None, this column will be named “sum(&lt;measure_column&gt;)�
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.OnColumn" title="tmlt.core.metrics.OnColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnColumn</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">count_by_A</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, group_keys=DataFrame[A: string])</span>
+<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=[&#39;A&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">count_by_A</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;count&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">count_by_A</span><span class="o">.</span><span class="n">input_metric</span>
@@ -1518,7 +1518,7 @@ will be named “count”.</p></li>
 <span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>            <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="n">group_keys</span><span class="o">=</span><span class="n">group_keys</span>
+<span class="gp">... </span>        <span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SumOf</span><span class="p">(</span><span class="n">SymmetricDifference</span><span class="p">()),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1545,7 +1545,7 @@ will be named “count”.</p></li>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.OnColumn" title="tmlt.core.metrics.OnColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnColumn</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">count_distinct_by_A</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, group_keys=DataFrame[A: string])</span>
+<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=[&#39;A&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">count_distinct_by_A</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;count_distinct&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">count_distinct_by_A</span><span class="o">.</span><span class="n">input_metric</span>
@@ -1997,7 +1997,7 @@ the sum. (See below for more information).</p>
 <span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>            <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="n">group_keys</span><span class="o">=</span><span class="n">group_keys</span>
+<span class="gp">... </span>        <span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SumOf</span><span class="p">(</span><span class="n">SymmetricDifference</span><span class="p">()),</span>
 <span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
@@ -2024,7 +2024,7 @@ the sum. (See below for more information).</p>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.OnColumn" title="tmlt.core.metrics.OnColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnColumn</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_X_by_A</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, group_keys=DataFrame[A: string])</span>
+<span class="go">SparkGroupedDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=[&#39;A&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_X_by_A</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;sum(X)&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_X_by_A</span><span class="o">.</span><span class="n">input_metric</span>
@@ -2315,7 +2315,7 @@ will be named ‘sum(&lt;measure_column&gt;)’.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 326fde0f at 2023-08-08 15:28.
+    Built from 851233fa at 2023-08-15 01:33.
   </div>
   
   <div class="footer-item">

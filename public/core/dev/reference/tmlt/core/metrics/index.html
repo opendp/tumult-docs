@@ -1278,8 +1278,10 @@ function checkPageExistsAndRedirect(event) {
 <p>This metric is compatible with spark dataframes, pandas dataframes, and pandas
 series. It ignores ordering and, in the case of pandas, indices. That is, it treats
 each collection as a multiset of items. For non-grouped data, it treats each record
-as an item. For grouped data there are a few cases:</p>
+as an item.</p>
+<p>For grouped data there are a few cases:</p>
 <ul class="simple">
+<li><p>If the group keys are different, the distance is infinity</p></li>
 <li><p>The distance between two groups with the same multi-set of records is 0</p></li>
 <li><p>The distance between two groups where exactly one is empty is 1</p></li>
 <li><p>The distance between two groups with different records (where neither is empty) is
@@ -1311,7 +1313,7 @@ as an item. For grouped data there are a few cases:</p>
 <span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">},</span>
-<span class="gp">... </span>    <span class="n">group_keys</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grouped_df1</span> <span class="o">=</span> <span class="n">GroupedDataFrame</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">group_keys</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grouped_df2</span> <span class="o">=</span> <span class="n">GroupedDataFrame</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">group_keys</span><span class="p">)</span>
@@ -1522,6 +1524,10 @@ each collection as a multiset of records.</p>
 of a list. This metric is parameterized by an <cite>inner_metric</cite> that is used to compute
 the distances of the components. See <a class="reference internal" href="#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> or :class`RootSumOfSquared` for
 example usage.</p>
+<p>If the values are grouped dataframes, the groups must be the same for both values,
+or the distance is infinity.</p>
+<p>If the values are pandas series or lists, they must be the same size, or the
+distance is infinity. The index of the series is ignored.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>inner_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tmlt.core.metrics.AbsoluteDifference" title="tmlt.core.metrics.AbsoluteDifference"><em>AbsoluteDifference</em></a><em>, </em><a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>SymmetricDifference</em></a><em>, </em><a class="reference internal" href="#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>HammingDistance</em></a><em>, </em><a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>IfGroupedBy</em></a><em>]</em>) – </p>
@@ -1650,7 +1656,7 @@ to compute the distances of the components.</p>
 <span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">},</span>
-<span class="gp">... </span>    <span class="n">group_keys</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df1</span> <span class="o">=</span> <span class="n">GroupedDataFrame</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
@@ -1813,7 +1819,7 @@ to compute the distances of the components.</p>
 <span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">},</span>
-<span class="gp">... </span>    <span class="n">group_keys</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df1</span> <span class="o">=</span> <span class="n">GroupedDataFrame</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
@@ -2822,7 +2828,7 @@ key column in that dataframe.</p>
   </div>
   
   <div class="footer-item">
-    Built from 326fde0f at 2023-08-08 15:28.
+    Built from 851233fa at 2023-08-15 01:33.
   </div>
   
   <div class="footer-item">

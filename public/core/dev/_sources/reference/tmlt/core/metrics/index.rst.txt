@@ -273,8 +273,11 @@ Classes
    This metric is compatible with spark dataframes, pandas dataframes, and pandas
    series. It ignores ordering and, in the case of pandas, indices. That is, it treats
    each collection as a multiset of items. For non-grouped data, it treats each record
-   as an item. For grouped data there are a few cases:
+   as an item.
 
+   For grouped data there are a few cases:
+
+   - If the group keys are different, the distance is infinity
    - The distance between two groups with the same multi-set of records is 0
    - The distance between two groups where exactly one is empty is 1
    - The distance between two groups with different records (where neither is empty) is
@@ -307,7 +310,7 @@ Classes
    ...         "A": SparkIntegerColumnDescriptor(),
    ...         "B": SparkIntegerColumnDescriptor(),
    ...     },
-   ...     group_keys,
+   ...     ["B"],
    ... )
    >>> grouped_df1 = GroupedDataFrame(df1, group_keys)
    >>> grouped_df2 = GroupedDataFrame(df2, group_keys)
@@ -448,6 +451,12 @@ Classes
    the distances of the components. See :class:`SumOf` or :class`RootSumOfSquared` for
    example usage.
 
+   If the values are grouped dataframes, the groups must be the same for both values,
+   or the distance is infinity.
+
+   If the values are pandas series or lists, they must be the same size, or the
+   distance is infinity. The index of the series is ignored.
+
 
 
 
@@ -526,7 +535,7 @@ Classes
    ...         "A": SparkIntegerColumnDescriptor(),
    ...         "B": SparkIntegerColumnDescriptor(),
    ...     },
-   ...     group_keys,
+   ...     ["A"],
    ... )
    >>> df1 = GroupedDataFrame(
    ...     spark.createDataFrame(
@@ -635,7 +644,7 @@ Classes
    ...         "A": SparkIntegerColumnDescriptor(),
    ...         "B": SparkIntegerColumnDescriptor(),
    ...     },
-   ...     group_keys,
+   ...     ["A"],
    ... )
    >>> df1 = GroupedDataFrame(
    ...     spark.createDataFrame(
