@@ -301,6 +301,16 @@ function checkPageExistsAndRedirect(event) {
    Floating point overflow/underflow
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parallel-composition">
+   Parallel composition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluating-privacy-and-stability-relations-using-sympy">
+   Evaluating privacy and stability relations using SymPy
+  </a>
+ </li>
 </ul>
 
 </nav>
@@ -344,6 +354,61 @@ aggregations, values must be clamped to <span class="math notranslate nohighligh
 or underflow can only happen when the number of values summed is more than
 <span class="math notranslate nohighlight">\(2^{52}\)</span>. We expect users to hit performance bottlenecks before this
 happens.</p>
+</section>
+<section id="parallel-composition">
+<h2>Parallel composition<a class="headerlink" href="#parallel-composition" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>s in Tumult Core provide privacy guarantees in the form of privacy
+functions and relations (See <a class="reference internal" href="privacy-guarantee.html#privacy-guarantee"><span class="std std-ref">Tumult Core Privacy Guarantee</span></a> for more details). Let <span class="math notranslate nohighlight">\(M\)</span> be
+a Core measurement and <span class="math notranslate nohighlight">\(f\)</span> be its privacy function. If <span class="math notranslate nohighlight">\(f(k) = \epsilon\)</span> then for any pair of inputs that are
+at most <span class="math notranslate nohighlight">\(k\)</span>-apart under the input metric, the distance between the outputs of the measurement
+under the output measure is at most <span class="math notranslate nohighlight">\(\epsilon\)</span>. Crucially, this is the exclusive guarantee provided
+by a Core measurement; because of the generality of the Core privacy framework, it is possible to construct measurements with certain combinations of input domain, input metric, and output measure where this guarantee does not extend to group privacy. In particular, it is possible to construct a measurement for
+inputs that are <span class="math notranslate nohighlight">\(c*k\)</span> apart, the outputs are more than <span class="math notranslate nohighlight">\(c*\epsilon\)</span> apart.</p>
+<p>The <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a> measurement allows different <a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>s to be evaluated on different
+partitions of an input. Given a list <span class="math notranslate nohighlight">\(M_1, M_2, ..., M_n\)</span> of measurements, the privacy function <span class="math notranslate nohighlight">\(F(d)\)</span> for the
+parallel composition, <span class="math notranslate nohighlight">\(M\)</span>, of these measurements is evaluated as the max of the privacy functions for
+each of the <span class="math notranslate nohighlight">\(n\)</span> measurements evaluated at <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F(d) = \max_{i=1}^n F_i(d)\]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> corresponds to the privacy function of <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(F_i\)</span> corresponds to the privacy function of <span class="math notranslate nohighlight">\(M_i\)</span>.</p>
+<p>An implicit assumption is made in this privacy function:
+privacy functions for all <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a> measurements are linear (or quadratic for <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a> measurements).</p>
+<p>While this assumption holds for standard notions of pure differential privacy and zCDP – where the domain is the domain of all datasets with some schema and neighboring datasets are obtained by adding or removing a record – as a result of group privacy, this not true of privacy functions for Core measurements in general. Consider the following example.
+Let <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span> denote 2 core measurements composed together in a ParallelComposition measurement
+<span class="math notranslate nohighlight">\(M\)</span>. To verify that inputs that differ in 2 records produce outputs that are <span class="math notranslate nohighlight">\(\epsilon\)</span>-indistinguishable
+under PureDP, we need to verify that
+<span class="math notranslate nohighlight">\(F(2) \leq \epsilon\)</span> holds. The parallel composition measurement verifies this by checking that:
+<span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(2) \leq \epsilon\)</span>.
+Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(X'\)</span> be two inputs to <span class="math notranslate nohighlight">\(M\)</span> that differ in 2 records. Let <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> be the partitions
+of <span class="math notranslate nohighlight">\(X\)</span> corresponding to <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span>, and let <span class="math notranslate nohighlight">\(x_1'\)</span> and <span class="math notranslate nohighlight">\(x_2'\)</span> be the corresponding partitions of <span class="math notranslate nohighlight">\(X'\)</span>.
+Consider the possible combinations of distances between the corresponding partitions:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 0\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 1\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 2\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 0\)</span></p></li>
+</ol>
+<p>In order to verify that <span class="math notranslate nohighlight">\(F(2) \leq \epsilon\)</span> holds, we need to verify that all of the following hold:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(F_1(0) \leq 0 \wedge F_2(2) \leq \epsilon\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(F_1(1) \leq \epsilon_1 \wedge F_2(1) \leq \epsilon_2\)</span> for some <span class="math notranslate nohighlight">\(\epsilon_1, \epsilon_2 \geq 0\)</span> such that <span class="math notranslate nohighlight">\(\epsilon_1 + \epsilon_2 = \epsilon\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(0) \leq 0\)</span></p></li>
+</ol>
+<p>Currently, <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>‘s privacy function assumes that the privacy functions of PureDP measurements are
+linear, and infers all 3 of these from <span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(2) \leq \epsilon\)</span>. However, it is possible to
+add new Core measurements whose privacy functions violate this assumption of linearity. When composing such measurements, <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>
+will not actually provide the privacy guarantee it claims. Note that no existing Core component violates the implicit assumption made by
+the privacy function of <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>.</p>
+</section>
+<section id="evaluating-privacy-and-stability-relations-using-sympy">
+<h2>Evaluating privacy and stability relations using SymPy<a class="headerlink" href="#evaluating-privacy-and-stability-relations-using-sympy" title="Permalink to this headline">#</a></h2>
+<p>Tumult Core uses <a class="reference external" href="https://www.sympy.org/">SymPy</a> to evaluate privacy and stability
+relations for all measurements and transformations. Real numbers are represented using symbolic expressions,
+and inequalities relevant to evaluating the privacy relation of a measurement for a given
+pair of inputs are solved using SymPy. In most cases, these inequalities are evaluated analytically;
+however, this isn’t always possible and SymPy occassionally resorts to numerical methods of
+approximating the expressions. In such cases, SymPy does not provide any correctness guarantees.
+In some cases, SymPy may fail to solve the inequality altogether, making it
+impossible to verify the privacy properties of Core measurements.</p>
 </section>
 </section>
 
@@ -391,7 +456,7 @@ happens.</p>
   </div>
   
   <div class="footer-item">
-    Built from 1aa620fd at 2023-08-28 15:42.
+    Built from 86ac55c3 at 2023-09-19 15:45.
   </div>
   
   <div class="footer-item">
