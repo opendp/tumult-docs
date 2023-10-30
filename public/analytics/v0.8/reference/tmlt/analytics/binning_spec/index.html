@@ -146,6 +146,10 @@
           <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
             <label class="sr-only">GitLab</label></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
       </ul>
       </div>
       
@@ -163,7 +167,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.8.0  <!-- this text may get changed later by javascript -->
+        0.8.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -173,7 +177,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/binning_spec/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.8.0'}.
+     variables reference/tmlt/analytics/binning_spec/index and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.8.1'}.
 -->
 
 <script type="text/javascript">
@@ -228,10 +232,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.8.0 variable.
+            // this version, rather than using sphinx's 0.8.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.8.0") {
+            if (entry.version == "0.8.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -429,8 +433,8 @@ left edge instead, set the <code class="docutils literal notranslate"><span clas
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bin_edges</strong> (<em>Sequence</em><em>[</em><em>BinT</em><em>]</em>) – </p></li>
 <li><p><strong>names</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Optional</em><em>[</em><em>BinNameT</em><em>]</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
-<li><p><strong>include_both_endpoints</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
+<li><p><strong>right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>include_both_endpoints</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
 <li><p><strong>nan_bin</strong> (<em>Optional</em><em>[</em><em>BinNameT</em><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -442,20 +446,20 @@ left edge instead, set the <code class="docutils literal notranslate"><span clas
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bin_edges</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[~BinT]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[~BinT]</span>) – A list of the bin edges, sorted in ascending order.</p></li>
-<li><p><strong>names</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]] | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]]]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – If given, used as the names of bins. Must be one element
+<li><p><strong>bin_edges</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[~BinT]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[~BinT]</span>) – A list of the bin edges, sorted in ascending order.</p></li>
+<li><p><strong>names</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]] | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]]]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – If given, used as the names of bins. Must be one element
 shorter than <code class="docutils literal notranslate"><span class="pre">bin_edges</span></code>. Duplicate values are allowed, which
 will place non-contiguous ranges of values into the same
 bin. Note that while using floats and timestamps as bin names is
 allowed here, grouping on the resulting column is not allowed.</p></li>
-<li><p><strong>right</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – When True, the right edge of each bin is included in that bin;
+<li><p><strong>right</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – When True, the right edge of each bin is included in that bin;
 otherwise, the left edge is. Defaults to True.</p></li>
-<li><p><strong>include_both_endpoints</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – When True, the outer edges of both the first
+<li><p><strong>include_both_endpoints</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – When True, the outer edges of both the first
 and last bins will be included in their respective bins; when
 False, these edges are treated the same as the other bins,
 i.e. only one will be included based on how <code class="docutils literal notranslate"><span class="pre">right</span></code> is
 set. Defaults to True.</p></li>
-<li><p><strong>nan_bin</strong> (<span class="annotation terse">~BinNameT | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – If binning over a float-valued column, all NaNs will be
+<li><p><strong>nan_bin</strong> (<span class="annotation terse">~BinNameT | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[~BinNameT]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – If binning over a float-valued column, all NaNs will be
 placed in a bin with this name. The default value, <code class="docutils literal notranslate"><span class="pre">None</span></code>,
 causes these values to be placed in the same bin with
 out-of-range and null values.</p></li>
@@ -496,7 +500,7 @@ specified, is included. If <code class="docutils literal notranslate"><span clas
 included as well; by default, it is not included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>include_null</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p>
+<dd class="field-odd"><p><strong>include_null</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>List[Optional[BinNameT]]</p>
@@ -569,7 +573,7 @@ be called on its own to test the binning that will be performed.</p>
   </div>
   
   <div class="footer-item">
-    Built from 00757d11 at 2023-08-15 19:01.
+    Built from d3ac6bfc at 2023-10-30 20:52.
   </div>
   
   <div class="footer-item">

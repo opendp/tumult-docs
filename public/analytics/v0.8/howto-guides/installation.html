@@ -146,6 +146,10 @@
           <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
             <label class="sr-only">GitLab</label></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
       </ul>
       </div>
       
@@ -163,7 +167,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.8.0  <!-- this text may get changed later by javascript -->
+        0.8.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -173,7 +177,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables howto-guides/installation and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.8.0'}.
+     variables howto-guides/installation and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.8.1'}.
 -->
 
 <script type="text/javascript">
@@ -228,10 +232,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.8.0 variable.
+            // this version, rather than using sphinx's 0.8.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.8.0") {
+            if (entry.version == "0.8.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -307,7 +311,7 @@ function checkPageExistsAndRedirect(event) {
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>Tumult Analytics is built in <a class="reference external" href="https://www.python.org/">Python</a>, so a Python installation is required to use it.
-It is compatible with Python 3.7, 3.8, and 3.9.
+It is compatible with Python 3.7 through 3.11.
 Because Tumult Analytics uses PySpark for computation, it also <a class="reference external" href="https://spark.apache.org/docs/3.0.0/index.html#downloading">requires Java 8 or 11</a>.</p>
 <p>Only the x86_64 processor architecture is officially supported at present.
 Apple silicon is supported through binary translation with <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a>.</p>
@@ -315,8 +319,8 @@ Apple silicon is supported through binary translation with <a class="reference e
 If none of these apply to you, install Python 3 and Java from your OS package manager or manually, then proceed with the <cite>pip</cite> installation.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="420f3679-0b34-4409-8f4e-61b56a6f05c8" name="f4655c4a-c0b7-4ba6-a7e4-fc57350bc173" type="radio">
-</input><label class="tabbed-label" for="420f3679-0b34-4409-8f4e-61b56a6f05c8">
+<input checked="checked" id="28b782d0-0d9e-45e1-87c5-ff091c88fd9c" name="b13c2d8b-3afa-4ff9-bf1b-87cfe3153daa" type="radio">
+</input><label class="tabbed-label" for="28b782d0-0d9e-45e1-87c5-ff091c88fd9c">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -329,8 +333,8 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 </div>
-<input id="c4abddd8-b06d-4d24-843a-38f18cb92479" name="f4655c4a-c0b7-4ba6-a7e4-fc57350bc173" type="radio">
-</input><label class="tabbed-label" for="c4abddd8-b06d-4d24-843a-38f18cb92479">
+<input id="5174cee3-1d8a-46a1-8296-0e7ca021de76" name="b13c2d8b-3afa-4ff9-bf1b-87cfe3153daa" type="radio">
+</input><label class="tabbed-label" for="5174cee3-1d8a-46a1-8296-0e7ca021de76">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -344,8 +348,8 @@ To install Python 3, run:</p>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
 </div>
-<input id="a1eea0e2-1480-4bc8-95d2-f802736e488c" name="f4655c4a-c0b7-4ba6-a7e4-fc57350bc173" type="radio">
-</input><label class="tabbed-label" for="a1eea0e2-1480-4bc8-95d2-f802736e488c">
+<input id="1dee1d1b-8092-4213-b77e-21613f8380cd" name="b13c2d8b-3afa-4ff9-bf1b-87cfe3153daa" type="radio">
+</input><label class="tabbed-label" for="1dee1d1b-8092-4213-b77e-21613f8380cd">
 macOS (Intel)</label><div class="tabbed-content docutils">
 <p>The below instructions assume the use of <a class="reference external" href="https://brew.sh/">Homebrew</a> for managing packages.
 If you do not already have Homebrew, it can be installed with:</p>
@@ -363,8 +367,8 @@ If you do not already have Homebrew, it can be installed with:</p>
 <p>You may need to explicitly add this OpenJDK installation to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> for it to be detected and usable by Spark.
 This can be done by, for example, adding <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;/usr/local/opt/openjdk/bin:$PATH&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> and then restarting your shell.</p>
 </div>
-<input id="fa4fb6f5-58e8-4551-86b5-dfff15261ce0" name="f4655c4a-c0b7-4ba6-a7e4-fc57350bc173" type="radio">
-</input><label class="tabbed-label" for="fa4fb6f5-58e8-4551-86b5-dfff15261ce0">
+<input id="39e06af1-8726-431e-8034-3304dde66455" name="b13c2d8b-3afa-4ff9-bf1b-87cfe3153daa" type="radio">
+</input><label class="tabbed-label" for="39e06af1-8726-431e-8034-3304dde66455">
 macOS (Apple silicon)</label><div class="tabbed-content docutils">
 <p>Since Python 3.7 is not supported on the Apple silicon processor architecture, you will need to first install <a class="reference external" href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> and the x86_64 version of Homebrew.
 If you do not already have Rosetta 2, it can be installed with:</p>
@@ -384,8 +388,8 @@ If you do not already have Rosetta 2, it can be installed with:</p>
 </pre></div>
 </div>
 </div>
-<input id="df03666b-15d6-47ed-bfec-025a73729ebe" name="f4655c4a-c0b7-4ba6-a7e4-fc57350bc173" type="radio">
-</input><label class="tabbed-label" for="df03666b-15d6-47ed-bfec-025a73729ebe">
+<input id="00577b4b-ff57-45d4-a551-ecda0a72a315" name="b13c2d8b-3afa-4ff9-bf1b-87cfe3153daa" type="radio">
+</input><label class="tabbed-label" for="00577b4b-ff57-45d4-a551-ecda0a72a315">
 Windows</label><div class="tabbed-content docutils">
 <p>The only supported way to install Tumult Analytics on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.
 Once you have installed your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Analytics set up.</p>
@@ -456,7 +460,7 @@ check that basic functionality works:</p>
   </div>
   
   <div class="footer-item">
-    Built from 00757d11 at 2023-08-15 19:01.
+    Built from d3ac6bfc at 2023-10-30 20:52.
   </div>
   
   <div class="footer-item">
