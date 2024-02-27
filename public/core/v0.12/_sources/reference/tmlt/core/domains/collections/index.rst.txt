@@ -1,0 +1,127 @@
+
+
+
+******************
+collections
+******************
+
+.. py:module:: tmlt.core.domains.collections
+
+.. autoapi-nested-parse::
+
+   Domains for common python collections such as lists and dictionaries.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ListDomain`
+     - Domain of lists of elements of a particular domain.
+   * - :class:`.DictDomain`
+     - Domain of dictionaries.
+
+   
+.. py:class:: ListDomain
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of lists of elements of a particular domain.
+
+
+
+
+
+   .. py:attribute:: element_domain
+      :annotation: :tmlt.core.domains.base.Domain
+
+      Domain of list elements.
+
+   .. py:attribute:: length
+      :annotation: :Optional[int]
+
+      Number of elements in lists in the domain. If None, this is unrestricted.
+
+
+   .. py:method:: carrier_type()
+      :property:
+
+      Returns python list type.
+
+
+   .. py:method:: validate(value)
+
+      Raises error if value is not a row with matching schema.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+   
+.. py:class:: DictDomain(key_to_domain)
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of dictionaries.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: __eq__(other)
+
+      Returns True if both domains are identical.
+
+
+   .. py:method:: key_to_domain()
+      :property:
+
+      Returns dictionary mapping each key in the domain with its domain.
+
+
+   .. py:method:: length()
+      :property:
+
+      Returns number of keys in the domain.
+
+
+   .. py:method:: __getitem__(key)
+
+      Returns domain associated with given key.
+
+
+   .. py:method:: carrier_type()
+      :property:
+
+      Returns the type of elements in the domain.
+
+
+   .. py:method:: validate(value)
+
+      Raises error if value is not in the domain.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+
+
+
