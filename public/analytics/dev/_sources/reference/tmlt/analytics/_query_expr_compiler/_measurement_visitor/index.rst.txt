@@ -1,5 +1,8 @@
 :orphan:
 
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
 
 
 ***************************
@@ -28,14 +31,17 @@ Classes
 .. list-table::
 
    * - :class:`.MeasurementVisitor`
-     - A visitor to create a measurement from a query expression.
+     - A visitor to create a measurement from a DP query expression.
 
    
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
 .. py:class:: MeasurementVisitor(privacy_budget, stability, input_domain, input_metric, output_measure, default_mechanism, public_sources, catalog, table_constraints)
 
-   Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
+   Bases: :class:`tmlt.analytics._query_expr_compiler._base_measurement_visitor.BaseMeasurementVisitor`
 
-   A visitor to create a measurement from a query expression.
+   A visitor to create a measurement from a DP query expression.
 
 
 
@@ -77,12 +83,12 @@ Classes
         - Visit a ReplaceNullAndNan query expression (raises an error).
       * - :meth:`.visit_replace_infinity`
         - Visit a ReplaceInfinity query expression (raises an error).
-      * - :meth:`.visit_drop_infinity`
-        - Visit a DropInfinity query expression (raises an error).
       * - :meth:`.visit_drop_null_and_nan`
         - Visit a DropNullAndNan query expression (raises an error).
+      * - :meth:`.visit_drop_infinity`
+        - Visit a DropInfinity query expression (raises an error).
       * - :meth:`.visit_enforce_constraint`
-        - Visit an EnforceConstraint query expression (raises an error).
+        - Visit a EnforceConstraint query expression (raises an error).
 
 
 
@@ -109,7 +115,7 @@ Classes
 
       This method also checks to see if the schema allows invalid values
       (nulls, NaNs, and infinite values) on the measure column; if so,
-      the query has DropNullAndNan and/or DropInfinity queries
+      the query has DropNullAndNan and/or ReplaceInfinity queries
       inserted immediately before it is executed.
 
 
@@ -193,22 +199,22 @@ Classes
       Visit a ReplaceInfinity query expression (raises an error).
 
 
-   .. py:method:: visit_drop_infinity(expr)
-      :abstractmethod:
-
-      Visit a DropInfinity query expression (raises an error).
-
-
    .. py:method:: visit_drop_null_and_nan(expr)
       :abstractmethod:
 
       Visit a DropNullAndNan query expression (raises an error).
 
 
+   .. py:method:: visit_drop_infinity(expr)
+      :abstractmethod:
+
+      Visit a DropInfinity query expression (raises an error).
+
+
    .. py:method:: visit_enforce_constraint(expr)
       :abstractmethod:
 
-      Visit an EnforceConstraint query expression (raises an error).
+      Visit a EnforceConstraint query expression (raises an error).
 
 
 

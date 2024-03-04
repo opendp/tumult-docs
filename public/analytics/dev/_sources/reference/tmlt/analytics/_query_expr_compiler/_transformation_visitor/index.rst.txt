@@ -1,5 +1,8 @@
 :orphan:
 
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
 
 
 ******************************
@@ -28,14 +31,17 @@ Classes
 .. list-table::
 
    * - :class:`.TransformationVisitor`
-     - A visitor to create a transformation from a query expression.
+     - A visitor to create a transformation from a DP query expression.
 
    
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
 .. py:class:: TransformationVisitor(input_domain, input_metric, mechanism, public_sources, table_constraints)
 
-   Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
+   Bases: :class:`tmlt.analytics._query_expr_compiler._base_transformation_visitor.BaseTransformationVisitor`
 
-   A visitor to create a transformation from a query expression.
+   A visitor to create a transformation from a DP query expression.
 
 
 
@@ -46,6 +52,8 @@ Classes
 
    .. list-table:: Methods
 
+      * - :meth:`.visit_flat_map`
+        - Create a transformation from a FlatMap query expression.
       * - :meth:`.validate_transformation`
         - Ensure that a query's transformation is valid on a given catalog.
       * - :meth:`.inner_metric`
@@ -60,8 +68,8 @@ Classes
         - Create a transformation from a Select query expression.
       * - :meth:`.visit_map`
         - Create a transformation from a Map query expression.
-      * - :meth:`.visit_flat_map`
-        - Create a transformation from a FlatMap query expression.
+      * - :meth:`.build_private_join_transformation`
+        - Build a Transformation for a private join.
       * - :meth:`.visit_join_private`
         - Create a transformation from a JoinPrivate query expression.
       * - :meth:`.visit_join_public`
@@ -95,6 +103,9 @@ Classes
 
 
    
+   ..
+       SPDX-License-Identifier: CC-BY-SA-4.0
+       Copyright Tumult Labs 2024
    .. py:class:: Output
 
       Bases: :class:`NamedTuple`
@@ -110,6 +121,11 @@ Classes
 
 
    .. automethod:: __init__
+   .. py:method:: visit_flat_map(expr)
+
+      Create a transformation from a FlatMap query expression.
+
+
    .. py:method:: validate_transformation(query, transformation, reference, catalog)
 
       Ensure that a query's transformation is valid on a given catalog.
@@ -145,9 +161,10 @@ Classes
       Create a transformation from a Map query expression.
 
 
-   .. py:method:: visit_flat_map(expr)
+   .. py:method:: build_private_join_transformation(input_domain, left_key, right_key, left_truncation_strategy, right_truncation_strategy, left_truncation_threshold, right_truncation_threshold, join_cols = None, join_on_nulls = False)
+      :staticmethod:
 
-      Create a transformation from a FlatMap query expression.
+      Build a Transformation for a private join.
 
 
    .. py:method:: visit_join_private(expr)

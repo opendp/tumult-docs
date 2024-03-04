@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
 
 <!DOCTYPE html>
 
@@ -166,7 +168,9 @@
 
 <!-- Only show if we have sidebars configured, else just a small margin  -->
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
-  <div class="sidebar-start-items"><h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
         dev  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
@@ -952,6 +956,12 @@ columns) from the private table will be joined with every row from that same
 group in the public table. For example, if a group has <span class="math notranslate nohighlight">\(X\)</span> rows in the
 private table and <span class="math notranslate nohighlight">\(Y\)</span> rows in the public table, then the output table
 will contain <span class="math notranslate nohighlight">\(X*Y\)</span> rows for this group.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tables with a <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> of
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> must include the
+<em>privacy ID</em> column in the join columns.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1045,6 +1055,12 @@ based on the corresponding
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> do not require a
 <a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, as no
 truncation is necessary while performing the join.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tables with a <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> of
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> must include the
+<em>privacy ID</em> column in the join columns.</p>
+</div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -1963,7 +1979,10 @@ datasets that have few values for each set of group keys.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em>) – Name of the column used to assign bins. If empty or none
-are provided, will use all of the columns in the table.</p>
+are provided, all of the columns in the table will be used, excluding
+any column marked as a <em>privacy ID</em> in a table with a
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> of
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr">tmlt.analytics.query_expr.QueryExpr</a></p>
@@ -3495,7 +3514,9 @@ automatically selects an appropriate mechanism.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from 2d25aff6 at 2023-12-21 16:50.
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 484c89f6 at 2024-03-04 20:43.
   </div>
   
   <div class="footer-item">
