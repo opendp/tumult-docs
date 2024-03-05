@@ -153,6 +153,8 @@ Classes
        Copyright Tumult Labs 2024
    .. py:class:: Builder
 
+      Bases: :class:`tmlt.analytics._base_builder.DataframeMixin`, :class:`tmlt.analytics._base_builder.PrivacyBudgetMixin`, :class:`tmlt.analytics._base_builder.BaseBuilder`
+
       Builder for :class:`Session`.
 
 
@@ -166,64 +168,47 @@ Classes
          Builds Session with specified configuration.
 
 
-      .. py:method:: with_privacy_budget(privacy_budget)
-
-         Sets the privacy budget for the Session to be built.
-
-         :param privacy_budget: Privacy Budget to be allocated to Session.
-
-
-      .. py:method:: with_private_dataframe(source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
+      .. py:method:: with_private_dataframe(source_id, dataframe, protected_change)
 
          Adds a Spark DataFrame as a private source.
 
          Not all Spark column types are supported in private sources; see
-         :data:`SUPPORTED_SPARK_TYPES` for information about which types are
-         supported.
+         :data:`tmlt.analytics.session.SUPPORTED_SPARK_TYPES` for information about
+         which types are supported.
 
          :param source_id: Source id for the private source dataframe.
          :param dataframe: Private source dataframe to perform queries on,
                            corresponding to the ``source_id``.
-         :param stability: Deprecated: use ``protected_change`` instead, see
-                           :ref:`changelog<changelog#protected-change>`.
-         :param grouping_column: Deprecated: use ``protected_change`` instead, see
-                                 :ref:`changelog<changelog#protected-change>`.
          :param protected_change: A
                                   :class:`~tmlt.analytics.protected_change.ProtectedChange`
-                                  specifying what changes to the input data the resulting
-                                  :class:`Session` should protect.
+                                  specifying what changes to the input data should be protected.
 
 
       .. py:method:: with_public_dataframe(source_id, dataframe)
 
-         Adds a Spark DataFrame as a public source.
-
-         Not all Spark column types are supported in public sources; see
-         :data:`SUPPORTED_SPARK_TYPES` for information about which types are
-         supported.
-
-         :param source_id: Source id for the public data source.
-         :param dataframe: Public DataFrame corresponding to the source id.
+         Add a public dataframe.
 
 
       .. py:method:: with_id_space(id_space)
 
-         Creates an identifier space for the session.
+         Add an identifier space.
 
-         This defines a space of identifiers that map 1-to-1 to the
-         identifiers being protected by a table with the
-         :class:`~tmlt.analytics.protected_change.AddRowsWithID` protected
-         change. Any table with such a protected change must be a member of
-         some identifier space.
+         This defines a space of identifiers that map 1-to-1 to the identifiers
+         being protected by a table with the :class`~AddRowsWithID` protected
+         change. Any table with such a protected change must be a member of some
+         identifier space.
 
-         :param id_space: The name of the identifier space.
+
+      .. py:method:: with_privacy_budget(privacy_budget)
+
+         Set the privacy budget for the object being built.
 
 
 
 
 
    .. automethod:: __init__
-   .. py:method:: from_dataframe(privacy_budget, source_id, dataframe, stability = None, grouping_column = None, protected_change = None)
+   .. py:method:: from_dataframe(privacy_budget, source_id, dataframe, protected_change)
       :classmethod:
 
       Initializes a DP session from a Spark dataframe.
@@ -270,10 +255,6 @@ Classes
       :param source_id: The source id for the private source dataframe.
       :param dataframe: The private source dataframe to perform queries on,
                         corresponding to the `source_id`.
-      :param stability: Deprecated: use ``protected_change`` instead, see
-                        :ref:`changelog<changelog#protected-change>`
-      :param grouping_column: Deprecated: use ``protected_change`` instead, see
-                              :ref:`changelog<changelog#protected-change>`
       :param protected_change: A
                                :class:`~tmlt.analytics.protected_change.ProtectedChange`
                                specifying what changes to the input data the resulting
