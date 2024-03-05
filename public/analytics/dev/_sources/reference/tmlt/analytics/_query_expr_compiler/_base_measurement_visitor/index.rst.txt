@@ -31,7 +31,7 @@ Classes
 .. list-table::
 
    * - :class:`.BaseMeasurementVisitor`
-     - A A visitor to create a measurement from a query expression.
+     - A visitor to create a measurement from a query expression.
 
    
 ..
@@ -41,7 +41,7 @@ Classes
 
    Bases: :class:`tmlt.analytics.query_expr.QueryExprVisitor`
 
-   A A visitor to create a measurement from a query expression.
+   A visitor to create a measurement from a query expression.
 
 
 
@@ -75,20 +75,34 @@ Classes
         - Visit a EnforceConstraint query expression (raises an error).
       * - :meth:`.visit_get_groups`
         - Visit a GetGroups query expression (raises an error).
+      * - :meth:`.build_groupby_count`
+        - Build a Measurement for a GroupByCount query.
       * - :meth:`.visit_groupby_count`
-        - Visit a GroupByCount query expression (raises an error).
+        - Create a measurement from a GroupByCount query expression.
+      * - :meth:`.build_count_distinct_measurement`
+        - Build a Measurement for a GroupByCountDistinct query.
       * - :meth:`.visit_groupby_count_distinct`
-        - Visit a GroupByCountDistinct query expression (raises an error).
+        - Create a measurement from a GroupByCountDistinct query expression.
+      * - :meth:`.build_groupby_quantile`
+        - Build a Measurement for a GroupByQuantile query.
       * - :meth:`.visit_groupby_quantile`
-        - Visit a GroupByQuantile query expression (raises an error).
+        - Create a measurement from a GroupByQuantile query expression.
+      * - :meth:`.build_groupby_bounded_sum`
+        - Build a Measurement for a GroupByBoundedSum query.
       * - :meth:`.visit_groupby_bounded_sum`
-        - Visit a GroupByBoundedSum query expression (raises an error).
+        - Create a measurement from a GroupByBoundedSum query expression.
+      * - :meth:`.build_groupby_bounded_average`
+        - Build a Measurement for a GroupByBoundedAverage query.
       * - :meth:`.visit_groupby_bounded_average`
-        - Visit a GroupByBoundedAverage query expression (raises an error).
+        - Create a measurement from a GroupByBoundedAverage query expression.
+      * - :meth:`.build_groupby_bounded_variance`
+        - Build a Measurement for a GroupByBoundedVariance query.
       * - :meth:`.visit_groupby_bounded_variance`
-        - Visit a GroupByBoundedVariance query expression (raises an error).
+        - Create a measurement from a GroupByBoundedVariance query expression.
+      * - :meth:`.build_groupby_bounded_stdev`
+        - Build a Measurement for a GroupByBoundedStdev query.
       * - :meth:`.visit_groupby_bounded_stdev`
-        - Visit a GroupByBoundedSTDEV query expression (raises an error).
+        - Create a measurement from a GroupByBoundedStdev query expression.
 
 
 
@@ -178,46 +192,74 @@ Classes
       Visit a GetGroups query expression (raises an error).
 
 
-   .. py:method:: visit_groupby_count(expr)
-      :abstractmethod:
+   .. py:method:: build_groupby_count(input_domain, input_metric, stability, mechanism, budget, groupby, output_column)
 
-      Visit a GroupByCount query expression (raises an error).
+      Build a Measurement for a GroupByCount query.
+
+
+   .. py:method:: visit_groupby_count(expr)
+
+      Create a measurement from a GroupByCount query expression.
+
+
+   .. py:method:: build_count_distinct_measurement(input_domain, input_metric, mechanism, stability, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByCountDistinct query.
 
 
    .. py:method:: visit_groupby_count_distinct(expr)
-      :abstractmethod:
 
-      Visit a GroupByCountDistinct query expression (raises an error).
+      Create a measurement from a GroupByCountDistinct query expression.
+
+
+   .. py:method:: build_groupby_quantile(input_domain, input_metric, measure_column, quantile, lower, upper, stability, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByQuantile query.
 
 
    .. py:method:: visit_groupby_quantile(expr)
-      :abstractmethod:
 
-      Visit a GroupByQuantile query expression (raises an error).
+      Create a measurement from a GroupByQuantile query expression.
+
+
+   .. py:method:: build_groupby_bounded_sum(input_domain, input_metric, measure_column, lower, upper, stability, mechanism, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByBoundedSum query.
 
 
    .. py:method:: visit_groupby_bounded_sum(expr)
-      :abstractmethod:
 
-      Visit a GroupByBoundedSum query expression (raises an error).
+      Create a measurement from a GroupByBoundedSum query expression.
+
+
+   .. py:method:: build_groupby_bounded_average(input_domain, input_metric, measure_column, lower, upper, stability, mechanism, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByBoundedAverage query.
 
 
    .. py:method:: visit_groupby_bounded_average(expr)
-      :abstractmethod:
 
-      Visit a GroupByBoundedAverage query expression (raises an error).
+      Create a measurement from a GroupByBoundedAverage query expression.
+
+
+   .. py:method:: build_groupby_bounded_variance(input_domain, input_metric, measure_column, lower, upper, stability, mechanism, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByBoundedVariance query.
 
 
    .. py:method:: visit_groupby_bounded_variance(expr)
-      :abstractmethod:
 
-      Visit a GroupByBoundedVariance query expression (raises an error).
+      Create a measurement from a GroupByBoundedVariance query expression.
+
+
+   .. py:method:: build_groupby_bounded_stdev(input_domain, input_metric, measure_column, lower, upper, stability, mechanism, budget, groupby, output_column)
+
+      Build a Measurement for a GroupByBoundedStdev query.
 
 
    .. py:method:: visit_groupby_bounded_stdev(expr)
-      :abstractmethod:
 
-      Visit a GroupByBoundedSTDEV query expression (raises an error).
+      Create a measurement from a GroupByBoundedStdev query expression.
 
 
 
