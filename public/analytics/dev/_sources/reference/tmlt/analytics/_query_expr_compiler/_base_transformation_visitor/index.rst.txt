@@ -66,6 +66,12 @@ Classes
         - Create a transformation from a Select query expression.
       * - :meth:`.visit_map`
         - Create a transformation from a Map query expression.
+      * - :meth:`.build_flat_map`
+        - Build a Transformation for a FlatMap query expression with grouping=False.
+      * - :meth:`.build_grouping_flat_map`
+        - Build a Transformation for a FlatMap query expression with grouping=True.
+      * - :meth:`.visit_flat_map`
+        - Create a transformation from a FlatMap query expression.
       * - :meth:`.build_private_join_transformation`
         - Build a Transformation for a private join.
       * - :meth:`.visit_join_private`
@@ -82,8 +88,6 @@ Classes
         - Create a transformation from a DropNullAndNan query expression.
       * - :meth:`.visit_enforce_constraint`
         - Create a transformation from an EnforceConstraint query expression.
-      * - :meth:`.visit_flat_map`
-        - Visit a FlatMap query expression (raises an error).
       * - :meth:`.visit_get_groups`
         - Visit a GetGroups query expression (raises an error).
       * - :meth:`.visit_groupby_count`
@@ -156,8 +160,22 @@ Classes
       Create a transformation from a Map query expression.
 
 
+   .. py:method:: build_flat_map(input_metric, row_transformer, max_rows)
+
+      Build a Transformation for a FlatMap query expression with grouping=False.
+
+
+   .. py:method:: build_grouping_flat_map(inner_metric, row_transformer, max_rows)
+
+      Build a Transformation for a FlatMap query expression with grouping=True.
+
+
+   .. py:method:: visit_flat_map(expr)
+
+      Create a transformation from a FlatMap query expression.
+
+
    .. py:method:: build_private_join_transformation(input_domain, left_key, right_key, left_truncation_strategy, right_truncation_strategy, left_truncation_threshold, right_truncation_threshold, join_cols = None, join_on_nulls = False)
-      :staticmethod:
 
       Build a Transformation for a private join.
 
@@ -195,12 +213,6 @@ Classes
    .. py:method:: visit_enforce_constraint(expr)
 
       Create a transformation from an EnforceConstraint query expression.
-
-
-   .. py:method:: visit_flat_map(expr)
-      :abstractmethod:
-
-      Visit a FlatMap query expression (raises an error).
 
 
    .. py:method:: visit_get_groups(expr)
