@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Tutorial 5: Simple transformations &#8212; Tumult Analytics  documentation</title>
+    <title>Simple transformations &#8212; Tumult Analytics  documentation</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -50,8 +50,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tutorial 6: Working with privacy IDs" href="privacy-id-basics.html" />
-    <link rel="prev" title="Tutorial 4: Group-by queries" href="groupby-queries.html" />
+    <link rel="next" title="Working with privacy IDs" href="privacy-id-basics.html" />
+    <link rel="prev" title="Group-by queries" href="groupby-queries.html" />
     <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
     
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -252,40 +252,42 @@ function checkPageExistsAndRedirect(event) {
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
+    <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="first-steps.html">
-   Tutorial 1: First steps with Tumult Analytics
+   First steps with Tumult Analytics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="privacy-budget-basics.html">
-   Tutorial 2: Working with privacy budgets
+   Working with privacy budgets
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="clamping-bounds.html">
-   Tutorial 3: Introduction to clamping bounds
+   Numerical aggregations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="groupby-queries.html">
-   Tutorial 4: Group-by queries
+   Group-by queries
   </a>
  </li>
+</ul>
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Tutorial 5: Simple transformations
+   Simple transformations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="privacy-id-basics.html">
-   Tutorial 6: Working with privacy IDs
+   Working with privacy IDs
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="more-with-privacy-ids.html">
-   Tutorial 7: Doing more with privacy IDs
+   Doing more with privacy IDs
   </a>
  </li>
 </ul>
@@ -361,8 +363,8 @@ function checkPageExistsAndRedirect(event) {
               
               <article class="bd-article" role="main">
                 
-  <section id="tutorial-5-simple-transformations">
-<span id="simple-transformations"></span><h1>Tutorial 5: Simple transformations<a class="headerlink" href="#tutorial-5-simple-transformations" title="Permalink to this headline">#</a></h1>
+  <section id="simple-transformations">
+<span id="id1"></span><h1>Simple transformations<a class="headerlink" href="#simple-transformations" title="Permalink to this headline">#</a></h1>
 <p>So far we have learned how to perform aggregations on our data, but sometimes we need
 to transform our data before they are ready to be aggregated. In this tutorial, we’ll
 demonstrate a few ways that we can transform our data using filters, maps, flat maps,
@@ -406,7 +408,7 @@ should not be done in production.</p>
 <section id="revisiting-the-filter-transformation">
 <h2>Revisiting the filter transformation<a class="headerlink" href="#revisiting-the-filter-transformation" title="Permalink to this headline">#</a></h2>
 <p>You might recall that we already used a transformation in
-<a class="reference internal" href="privacy-budget-basics.html#working-with-privacy-budgets"><span class="std std-ref">tutorial 2</span></a>! Let’s run that query again.</p>
+<a class="reference internal" href="privacy-budget-basics.html#working-with-privacy-budgets"><span class="std std-ref">working with privacy budgets tutorial</span></a>! Let’s run that query again.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">minor_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;age &lt; 18&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="n">minor_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
     <span class="n">minor_query</span><span class="p">,</span>
@@ -548,7 +550,7 @@ each of their favorite genres (up to three times as many rows).</p>
 In this example, we leave <code class="docutils literal notranslate"><span class="pre">augment</span></code> with its default value of <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>Unlike <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">flat_map</span></code> has an argument <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>. It clamps the maximum number
 of new rows that can be created for each input row. This serves a similar function as
-the clamping bounds on aggregations we used in <a class="reference internal" href="clamping-bounds.html#clamping-bounds"><span class="std std-ref">tutorial 3</span></a>, and
+the clamping bounds on aggregations we used in <a class="reference internal" href="clamping-bounds.html#clamping-bounds"><span class="std std-ref">clamping bounds tutorial</span></a>, and
 also has the analogous trade-offs: higher values for <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> will result in more
 noise in the final results, while lower values may cause more rows to be silently
 dropped. In this case, the choice is easy: no members have more than three favorites and
@@ -785,13 +787,13 @@ zero for some of the population counts. We will replace the NaN values with zero
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Tutorial 4: Group-by queries</p>
+          <p class="prev-next-title">Group-by queries</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="privacy-id-basics.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Tutorial 6: Working with privacy IDs</p>
+      <p class="prev-next-title">Working with privacy IDs</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -819,7 +821,7 @@ zero for some of the population counts. We will replace the NaN values with zero
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 9602d755 at 2024-03-19 20:13.
+Built from 8dd04a92 at 2024-03-19 20:53.
   </div>
   
   <div class="footer-item">
