@@ -1,0 +1,216 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+********************
+_user_defined
+********************
+
+.. py:module:: tmlt.analytics.metrics._user_defined
+
+.. autoapi-nested-parse::
+
+   Metric functions for wrapping user-defined functions.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.UserDefinedSingleBaselineMetric`
+     - Provides wrapper to turn function given DP and single baseline into its value.
+   * - :class:`.UserDefinedMultiBaselineMetric`
+     - Provides wrapper to turn function given DP and multiple baseline into value.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: UserDefinedSingleBaselineMetric(output, func, *, name, description, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.SingleBaselineMetric`
+
+   Provides wrapper to turn function given DP and single baseline into its value.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: func()
+      :property:
+
+      Returns function to be applied.
+
+
+   .. py:method:: format(value)
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Returns the metric value give the DP and single baseline outputs.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines
+      that the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: UserDefinedMultiBaselineMetric(output, func, *, name, description, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.MultiBaselineMetric`
+
+   Provides wrapper to turn function given DP and multiple baseline into value.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: func()
+      :property:
+
+      Returns function to be applied.
+
+
+   .. py:method:: compute_for_multiple_baselines(dp_outputs, baseline_outputs)
+
+      Returns the metric value given the DP and multiple baseline outputs.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines that
+      the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs, after filtering to
+                               only include the baselines that the metric is supposed to use.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+      :abstractmethod:
+
+      Checks if the metric supports the program.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+
+
+
+

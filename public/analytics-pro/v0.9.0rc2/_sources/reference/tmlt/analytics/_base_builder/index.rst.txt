@@ -1,0 +1,171 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+********************
+_base_builder
+********************
+
+.. py:module:: tmlt.analytics._base_builder
+
+.. autoapi-nested-parse::
+
+   Building blocks of modular builders used by various Analytics objects.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.BaseBuilder`
+     - A base for various builders of privacy-tracking objects.
+   * - :class:`.PrivacyBudgetMixin`
+     - Add support for setting the privacy budget for a builder.
+   * - :class:`.PrivateDataFrame`
+     - A private dataframe and its protected change.
+   * - :class:`.DataFrameMixin`
+     - Add private and public dataframe support to a builder.
+   * - :class:`.ParameterMixin`
+     - Add support for setting parameters to a builder.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: BaseBuilder
+
+   Bases: :class:`abc.ABC`
+
+   A base for various builders of privacy-tracking objects.
+
+
+
+
+
+
+   .. py:method:: build()
+      :abstractmethod:
+
+      Construct the type that this builder builds.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: PrivacyBudgetMixin
+
+   Add support for setting the privacy budget for a builder.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: with_privacy_budget(privacy_budget)
+
+      Set the privacy budget for the object being built.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: PrivateDataFrame
+
+   Bases: :class:`NamedTuple`
+
+   A private dataframe and its protected change.
+
+
+
+
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: DataFrameMixin
+
+   Add private and public dataframe support to a builder.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: with_private_dataframe(source_id, dataframe, protected_change)
+
+      Adds a Spark DataFrame as a private source.
+
+      Not all Spark column types are supported in private sources; see
+      :data:`tmlt.analytics.session.SUPPORTED_SPARK_TYPES` for information about
+      which types are supported.
+
+      :param source_id: Source id for the private source dataframe.
+      :param dataframe: Private source dataframe to perform queries on,
+                        corresponding to the ``source_id``.
+      :param protected_change: A
+                               :class:`~tmlt.analytics.protected_change.ProtectedChange`
+                               specifying what changes to the input data should be protected.
+
+
+   .. py:method:: with_public_dataframe(source_id, dataframe)
+
+      Add a public dataframe.
+
+
+   .. py:method:: with_id_space(id_space)
+
+      Add an identifier space.
+
+      This defines a space of identifiers that map 1-to-1 to the identifiers
+      being protected by a table with the :class`~AddRowsWithID` protected
+      change. Any table with such a protected change must be a member of some
+      identifier space.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: ParameterMixin
+
+   Add support for setting parameters to a builder.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: with_parameter(name, value)
+
+      Set the value of a parameter.
+
+
+
+
+
+
+

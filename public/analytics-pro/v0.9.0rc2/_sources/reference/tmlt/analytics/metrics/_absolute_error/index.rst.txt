@@ -1,0 +1,475 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+**********************
+_absolute_error
+**********************
+
+.. py:module:: tmlt.analytics.metrics._absolute_error
+
+.. autoapi-nested-parse::
+
+   Metric functions relating to absolute error.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.AbsoluteError`
+     - Computes the absolute error between two scalar values.
+   * - :class:`.QuantileAbsoluteError`
+     - Computes the quantile of the absolute error.
+   * - :class:`.MedianAbsoluteError`
+     - Computes median absolute error.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AbsoluteError(output, column = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.ScalarMetric`
+
+   Computes the absolute error between two scalar values.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.format`
+        - Return a string representation of this object.
+      * - :meth:`.compute_on_scalar`
+        - Compute metric value from DP and baseline values.
+      * - :meth:`.output`
+        - Return the name of the run output.
+      * - :meth:`.column`
+        - Return the name of the value column, if it is set.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.compute_for_baseline`
+        - Returns the metric value give the DP and single baseline outputs.
+      * - :meth:`.compute`
+        - Compute the given metric on the given dp and baseline outputs.
+      * - :meth:`.name`
+        - Return the name of the metric.
+      * - :meth:`.description`
+        - Return the description of the metric.
+      * - :meth:`.baselines`
+        - Return the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Compute the given metric on the given dp and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: format(value)
+
+      Return a string representation of this object.
+
+
+   .. py:method:: compute_on_scalar(dp_value, baseline_value)
+
+      Compute metric value from DP and baseline values.
+
+
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: column()
+      :property:
+
+      Return the name of the value column, if it is set.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Returns the metric value give the DP and single baseline outputs.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines
+      that the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: QuantileAbsoluteError(output, measure_column, quantile, join_columns, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.JoinedOutputMetric`
+
+   Computes the quantile of the absolute error.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+   .. note::
+       This error metric is not analytic, and is calculated from a single run of the
+       DP and baseline.
+
+   How it works:
+   1. Take the intersection of the groups in the DP and baseline.
+   2. Compute the absoulte error for each group. The absolute error is
+   abs(dp - baseline).
+   3. Return the n-th quantile of the absolute error.
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> dp_df = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2"],
+       ...             "X": [50, 110, 100]
+       ...         }
+       ...     )
+       ... )
+       >>> dp_outputs = {"books_by_zip_code": dp_df}
+       >>> baseline_df = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2"],
+       ...             "X": [100, 100, 100]
+       ...         }
+       ...     )
+       ... )
+       >>> baseline_outputs = {"books_by_zip_code": baseline_df}
+
+   >>> # Create the metric
+   >>> quantile_ae_X = QuantileAbsoluteError(
+   ...     output="books_by_zip_code",
+   ...     measure_column="X",
+   ...     quantile=0.5,
+   ...     join_columns=["A"]
+   ... )
+   >>> quantile_ae_X.quantile
+   0.5
+   >>> quantile_ae_X.join_columns
+   ['A']
+   >>> quantile_ae_X.compute_for_baseline(dp_outputs, baseline_outputs)
+   10.0
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.measure_column`
+        - Returns name of the column to compute the quantile of absolute error over.
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Return a string representation of this object.
+      * - :meth:`.compute_on_joined_output`
+        - Compute quantile absolute error value from combined dataframe.
+      * - :meth:`.output`
+        - Return the name of the run output.
+      * - :meth:`.join_columns`
+        - Return the name of the join columns.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.compute`
+        - Compute the given metric on the given dp and baseline outputs.
+      * - :meth:`.name`
+        - Return the name of the metric.
+      * - :meth:`.description`
+        - Return the description of the metric.
+      * - :meth:`.baselines`
+        - Return the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Compute the given metric on the given dp and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: measure_column()
+      :property:
+
+      Returns name of the column to compute the quantile of absolute error over.
+
+
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Return a string representation of this object.
+
+
+   .. py:method:: compute_on_joined_output(joined_output)
+
+      Compute quantile absolute error value from combined dataframe.
+
+
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Return the name of the join columns.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines
+      that the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MedianAbsoluteError(output, measure_column, join_columns, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`QuantileAbsoluteError`
+
+   Computes median absolute error.
+
+   i.e., :class:`QuantileAbsoluteError` with ``quantile = 0.5``.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.measure_column`
+        - Returns name of the column to compute the quantile of absolute error over.
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Return a string representation of this object.
+      * - :meth:`.compute_on_joined_output`
+        - Compute quantile absolute error value from combined dataframe.
+      * - :meth:`.output`
+        - Return the name of the run output.
+      * - :meth:`.join_columns`
+        - Return the name of the join columns.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.compute`
+        - Compute the given metric on the given dp and baseline outputs.
+      * - :meth:`.name`
+        - Return the name of the metric.
+      * - :meth:`.description`
+        - Return the description of the metric.
+      * - :meth:`.baselines`
+        - Return the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Compute the given metric on the given dp and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: measure_column()
+      :property:
+
+      Returns name of the column to compute the quantile of absolute error over.
+
+
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Return a string representation of this object.
+
+
+   .. py:method:: compute_on_joined_output(joined_output)
+
+      Compute quantile absolute error value from combined dataframe.
+
+
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Return the name of the join columns.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines
+      that the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+
+
+
+

@@ -1,0 +1,176 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*******************
+_suppression
+*******************
+
+.. py:module:: tmlt.analytics.metrics._suppression
+
+.. autoapi-nested-parse::
+
+   Metric functions relating to suppression rate.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.SuppressionRate`
+     - Computes the fraction of groups in the baseline that aren't in the output.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SuppressionRate(output, join_columns, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.SingleBaselineMetric`
+
+   Computes the fraction of groups in the baseline that aren't in the output.
+
+   .. note::
+
+       This class is only available on a paid version of Tumult Analytics. If you
+       would like to hear more, please contact us at info@tmlt.io.
+
+   .. note::
+       This error metric is not analytic, and is calculated from a single run of the
+       component and baseline.
+
+   .. note::
+       below, `released` means that the group is in the DP output, and
+       `spurious` means that the group is **not** in the output of the baseline.
+
+   How it works:
+   1.  Take the left anti join of the groups in the baseline and DP. This returns all
+   rows from the baseline where there is no match in the DP output i.e.,
+   `non-spurious non-released count`
+   2. Compute the suppression rate for each group. The suppression rate is
+   `non-spurious non-released count` / `non-spurious count`.
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> dp_df = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "c"],
+       ...             "X": [50, 110, 100, 50]
+       ...         }
+       ...     )
+       ... )
+       >>> dp_outputs = {"books_by_zip_code": dp_df}
+       >>> baseline_df = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "b"],
+       ...             "X": [100, 100, 100, 50]
+       ...         }
+       ...     )
+       ... )
+       >>> baseline_outputs = {"books_by_zip_code": baseline_df}
+
+   >>> # Create the metric
+   >>> suppression_rate = SuppressionRate(
+   ...     output="books_by_zip_code",
+   ...     join_columns=["A"]
+   ... )
+   >>> suppression_rate.join_columns
+   ['A']
+   >>> suppression_rate.compute_for_baseline(dp_outputs, baseline_outputs)
+   0.25
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Return the name of the run output.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Return the name of the join columns.
+
+
+   .. py:method:: format(value)
+
+      Return a string representation of this object.
+
+
+   .. py:method:: check_compatibility_with_program(program)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Compute suppression rate given dp and baseline outputs.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines
+      that the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Return the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Return the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Return the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Compute the given metric on the given dp and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+
+
+
+
