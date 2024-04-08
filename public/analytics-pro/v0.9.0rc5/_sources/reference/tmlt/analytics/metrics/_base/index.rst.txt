@@ -1,0 +1,427 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+************
+_base
+************
+
+.. py:module:: tmlt.analytics.metrics._base
+
+.. autoapi-nested-parse::
+
+   Base classes for metrics.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Metric`
+     - A generic metric.
+   * - :class:`.MetricOutput`
+     - An output of a Metric with additional metadata.
+   * - :class:`.SingleBaselineMetric`
+     - Base class for metrics computed from DP outputs and a single baseline’s outputs.
+   * - :class:`.MultiBaselineMetric`
+     - Base class for metrics computed from DP outputs and multiple baseline outputs.
+   * - :class:`.JoinedOutputMetric`
+     - Base class for metrics computed from join between single DP and baseline output.
+   * - :class:`.ScalarMetric`
+     - Base class for metrics computed from outputs containing only one value.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: Metric(name, description, baselines)
+
+   Bases: :class:`abc.ABC`
+
+   A generic metric.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MetricOutput
+
+   An output of a Metric with additional metadata.
+
+   .. note::
+
+       💡 |PRO_NOTE|
+
+
+
+
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the metric.
+
+   .. py:attribute:: description
+      :annotation: :str
+
+      The description of the metric.
+
+   .. py:attribute:: baseline
+      :annotation: :Union[str, List[str]]
+
+      The name of the baseline program(s) used for the error report.
+
+   .. py:attribute:: metric
+      :annotation: :Metric
+
+      The metric that was used.
+
+   .. py:attribute:: value
+      :annotation: :Any
+
+      The value of the metric applied to the program outputs.
+
+
+   .. py:method:: format()
+
+      Returns a string representation of this object.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SingleBaselineMetric(name, description, baselines)
+
+   Bases: :class:`Metric`, :class:`abc.ABC`
+
+   Base class for metrics computed from DP outputs and a single baseline’s outputs.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   Subclasses of ``SingleBaselineMetric`` define a ``compute_for_baseline`` method
+   from DP outputs and one baseline's outputs to the metric value.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MultiBaselineMetric(name, description, baselines)
+
+   Bases: :class:`Metric`, :class:`abc.ABC`
+
+   Base class for metrics computed from DP outputs and multiple baseline outputs.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   Subclasses of ``MultiBaselineMetric`` define a ``compute_for_multiple_baselines``
+   method from DP outputs and a collection of outputs from several baselines to the
+   metric value.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: compute(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines that
+      the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs, after filtering to
+                               only include the baselines that the metric is supposed to use.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: JoinedOutputMetric(output, join_columns, name, description, baselines)
+
+   Bases: :class:`SingleBaselineMetric`, :class:`abc.ABC`
+
+   Base class for metrics computed from join between single DP and baseline output.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   Subclasses of ``JoinedOutputMetric`` define a
+   ``compute_on_joined_output`` method which takes in a single dataframe, the
+   result of joining the DP and baseline output tables with the given name on
+   the given list of columns, and returns the metric value. The joined table is
+   the result of performing an *outer* join between the DP and baseline tables
+   on the given join columns.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Retursn the name of the run output.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Computes metric value.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: ScalarMetric(output, name, description, column = None, baselines = None)
+
+   Bases: :class:`SingleBaselineMetric`, :class:`abc.ABC`
+
+   Base class for metrics computed from outputs containing only one value.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   Subclasses of ``ScalarMetric`` define a ``compute_on_scalar`` method
+   which takes two values, each one taken from the given column of the given
+   output, and returns a metric value. The given output *must* contain a single
+   row in both the DP and baseline outputs.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output.
+
+
+   .. py:method:: column()
+      :property:
+
+      Returns the name of the value column, if it is set.
+
+
+   .. py:method:: compute_for_baseline(dp_outputs, baseline_outputs)
+
+      Returns the metric value given the DP outputs and the baseline outputs.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+
+
+
+
+
+
+
