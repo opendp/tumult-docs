@@ -1,0 +1,108 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+***************************************
+_no_privacy_core_transformations
+***************************************
+
+.. py:module:: tmlt.analytics._query_expr_compiler._no_privacy_core_transformations
+
+.. autoapi-nested-parse::
+
+   Defines transformations that have infinite stability.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.InfiniteStabilityConversion`
+     - Converts to a new metric, but has infinite stability.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: InfiniteStabilityConversion(domain, input_metric, output_metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Converts to a new metric, but has infinite stability.
+
+   Works for any output metric where infinity is a valid stability value.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Always returns infinity.
+
+
+   .. py:method:: __call__(value)
+
+      No operation.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+
+
