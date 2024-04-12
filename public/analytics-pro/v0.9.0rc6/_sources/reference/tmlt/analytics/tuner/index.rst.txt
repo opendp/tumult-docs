@@ -1,0 +1,510 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+************
+tuner
+************
+
+.. py:module:: tmlt.analytics.tuner
+
+.. autoapi-nested-parse::
+
+   |PRO| Interface for tuning SessionPrograms.
+
+   .. warning::
+
+       SessionProgramTuner is intended to be used for tuning DP programs. **It does not
+       provide any privacy guarantees.** It is recommended to use synthetic or historical
+       data for tuning instead of the data that will be used in production.
+
+   The :class:`~.tuner.SessionProgramTuner` class is an abstract base class that
+   defines the interface for tuning :class:`~.SessionProgram`\ s. To tune a specific
+   program, users should subclass :class:`~.tuner.SessionProgramTuner`, passing their
+   :class:`~.SessionProgram` as the ``program`` class argument.
+
+   .. ::
+
+       >>> from tmlt.analytics.metrics import RelativeError
+       >>> from tmlt.analytics.privacy_budget import PureDPBudget
+       >>> from tmlt.analytics.program import SessionProgram
+       >>> from tmlt.analytics.protected_change import AddOneRow
+       >>> from tmlt.analytics.session import Session
+       >>> from tmlt.analytics.tuner import SessionProgramTuner, Tunable, baseline
+       >>> from tmlt.analytics.no_privacy_session import NoPrivacySession
+       >>> from tmlt.analytics.query_builder import QueryBuilder
+       >>> from pyspark.sql import DataFrame
+       >>> from pyspark.sql import SparkSession
+       >>> from pyspark.sql.functions import sum as sf_sum
+       >>> from typing import Dict
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> class Program(SessionProgram):
+   ...     class ProtectedInputs:
+   ...         protected_df: DataFrame
+   ...     class Outputs:
+   ...         a_sum: DataFrame
+   ...     class Parameters:
+   ...         low: int
+   ...         high: int
+   ...     def session_interaction(self, session: Session):
+   ...         low = self.parameters["low"]
+   ...         high = self.parameters["high"]
+   ...         sum_query = QueryBuilder("protected_df").sum("a", low, high)
+   ...         a_sum = session.evaluate(sum_query, self.privacy_budget)
+   ...         return {"a_sum": a_sum}
+   >>> class Tuner(SessionProgramTuner, program=Program):
+   ...     baseline_options = {
+   ...         "use_clamping_bounds": NoPrivacySession.Options(
+   ...             enforce_clamping_bounds=True
+   ...         ),
+   ...         "ignore_clamping_bounds": NoPrivacySession.Options(
+   ...             enforce_clamping_bounds=False
+   ...         ),
+   ...     }
+   ...
+   ...     @baseline("custom_baseline")
+   ...     def no_clamping_bounds_baseline(
+   ...         self,
+   ...         protected_inputs: Dict[str, DataFrame],
+   ...     ) -> Dict[str, DataFrame]:
+   ...         df = protected_inputs["protected_df"]
+   ...         sum_value = df.agg(sf_sum("a").alias('a_sum'))
+   ...         return {"a_sum": sum_value}
+   ...
+   ...     metrics = [
+   ...         RelativeError(
+   ...             "a_sum",
+   ...             column="a_sum",
+   ...             baselines=list(baseline_options.keys()) + ["custom_baseline"],
+   ...         ),
+   ...     ]
+
+
+   Just like a :class:`~.SessionProgram`, once a subclass of
+   :class:`~.tuner.SessionProgramTuner` is defined, it can be instantiated using the
+   automatically-generated builder for that class. Unlike a :class:`~.SessionProgram`,
+   you can pass :class:`~.tuner.Tunable` objects to the builder methods instead of
+   concrete values.
+
+   >>> protected_df = spark.createDataFrame([(1, 2), (3, 4)], ["a", "b"])
+   >>> tuner = (
+   ...     Tuner.Builder()
+   ...     .with_privacy_budget(Tunable("budget"))
+   ...     .with_private_dataframe("protected_df", protected_df, AddOneRow())
+   ...     .with_parameter("low", 0)
+   ...     .with_parameter("high", Tunable("high"))
+   ...     .build()
+   ... )
+
+   The :meth:`~.tuner.SessionProgramTuner.outputs` method can be used to run the program
+   to get the outputs of the DP and baseline programs.
+
+   >>> dp_outputs, baseline_outputs = (
+   ...     tuner.outputs({"budget": PureDPBudget(1), "high": 1})
+   ... )
+
+   The :meth:`~.tuner.SessionProgramTuner.error_report` method on the tuner can be used to
+   run the program to get the DP and baseline outputs as well as the metrics defined in
+   the Tuner class.
+
+   >>> tuner.error_report({"budget": PureDPBudget(1), "high": 1}).show()  # doctest: +SKIP
+   Error report ran with budget PureDPBudget(epsilon=1) and the following params:
+   budget: PureDPBudget(epsilon=1)
+   high: 1.
+   Metric results:
+   - use_clamping_bounds: Relative error for column a_sum of output a_sum: 0.00%
+   - ignore_clamping_bounds: Relative error for column a_sum of output a_sum: 50.00%
+   - custom_baseline: Relative error for column a_sum of table a_sum: 50.00%
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.baseline`
+     - Decorator to define a custom baseline method for :class:`~.SessionProgramTuner`.
+
+.. py:function:: baseline(name)
+
+   Decorator to define a custom baseline method for :class:`~.SessionProgramTuner`.
+
+   To use the default baseline in addition to this custom baseline,
+   you can separately specify baseline_options.
+
+   ..
+
+       >>> from tmlt.analytics.session import Session
+
+   >>> class Program(SessionProgram):
+   ...     class ProtectedInputs:
+   ...         protected_df: DataFrame
+   ...     class UnprotectedInputs:
+   ...         unprotected_df: DataFrame
+   ...     class Outputs:
+   ...         output_df: DataFrame
+   ...     def session_interaction(self, session: Session):
+   ...         ...
+   >>> class Tuner(SessionProgramTuner, program=Program):
+   ...     @baseline("custom_baseline")
+   ...     def custom_baseline(
+   ...         self,
+   ...         protected_inputs: Dict[str, DataFrame],
+   ...     ) -> Dict[str, DataFrame]:
+   ...         ...
+   ...     @baseline("another_custom_baseline")
+   ...     def another_custom_baseline(
+   ...         self,
+   ...         protected_inputs: Dict[str, DataFrame],
+   ...         unprotected_inputs: Dict[str, DataFrame],
+   ...     ) -> Dict[str, DataFrame]:
+   ...         # If the program has unprotected inputs, the custom baseline method
+   ...         # can take them as an argument.
+   ...         ...
+   ...     baseline_options = {
+   ...         "default": NoPrivacySession.Options()
+   ...     }  # This is required to keep the default baseline
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.SessionProgramTuner`
+     - Base class for defining an object to tune inputs to a :class:`~.SessionProgram`.
+   * - :class:`.Tunable`
+     - Named placeholder for a single input to a :class:`~.SessionProgramTunerBuilder`.
+   * - :class:`.ErrorReport`
+     - Output of a single error report run.
+   * - :class:`.MultiErrorReport`
+     - Output of an error report run across multiple input combinations.
+   * - :class:`.UnprotectedInput`
+     - An unprotected input that was used for an :class:`~.ErrorReport`.
+   * - :class:`.ProtectedInput`
+     - A protected input that was used for an :class:`~.ErrorReport`.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SessionProgramTuner(builder)
+
+   Base class for defining an object to tune inputs to a :class:`~.SessionProgram`.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   SessionProgramTuners should not be directly constructed. Instead, users should
+   create a subclass of :class:`SessionProgramTuner`, then construct their
+   :class:`SessionProgramTuner` using the auto-generated :attr:`Builder` attribute of
+   the subclass.
+
+
+
+
+
+   .. py:attribute:: baseline_options
+      :annotation: :Optional[Union[Dict[str, tmlt.analytics.no_privacy_session.NoPrivacySession.Options], tmlt.analytics.no_privacy_session.NoPrivacySession.Options]]
+
+      Configuration for how baseline outputs are computed.
+
+      By default, a SessionProgramTuner computes both the DP outputs and the baseline
+      outputs for a SessionProgram to compute metrics. The baseline outputs are computed
+      by calling the :meth:`~.session_interaction` method with a
+      :class:`~.NoPrivacySession`. The ``baseline_options`` attribute allows you to
+      override the default options for the :class:`~.NoPrivacySession` used to
+      compute the baseline. You can also specify multiple configurations to compute
+      the baselines with different options. When multiple baseline configurations are
+      specified, the metrics are computed with respect to each of the baseline
+      configurations (unless specified otherwise in the metric definitions).
+
+      To override the default baseline options
+      (see :class:`~.NoPrivacySession.Options`), you can set this to
+      an :class:`~.NoPrivacySession.Options` object.
+
+      If you want to specify multiple baseline configurations, you can set this to a
+      dictionary mapping baseline names to :class:`~.NoPrivacySession.Options`.
+
+   .. py:attribute:: metrics
+      :annotation: :Optional[List[tmlt.analytics.metrics.Metric]]
+
+      A list of metrics to compute in each ``error_report``.
+
+   .. py:attribute:: Builder
+      :annotation: :Type[SessionProgramTunerBuilder]
+
+      The builder for a specific subclass of SessionProgramTuner.
+
+   .. py:attribute:: program
+      :annotation: :Type[tmlt.analytics.program.SessionProgram]
+
+      A subclass of :class:`~.SessionProgram` to be tuned.
+
+
+   .. automethod:: __init__
+   .. py:method:: tunables()
+      :property:
+
+      Returns a list of tunable inputs associated with this tuner.
+
+
+   .. py:method:: outputs(tunable_values = None)
+
+      Computes all outputs for a single run.
+
+      :param tunable_values: A dictionary mapping names of :class:`Tunable`\s
+                             to concrete values to use for this run. Every :class:`Tunable` used
+                             in building this tuner must have a value in this dictionary. This
+                             can be None only if no :class:`~.tuner.Tunable`\s were used.
+
+
+   .. py:method:: error_report(tunable_values = None)
+
+      Computes DP outputs, baseline outputs, and metrics for a single run.
+
+      :param tunable_values: A dictionary mapping names of Tunables to concrete values
+                             to use for this error report. Every Tunable used in building this tuner
+                             must have a value in this dictionary. This can be None only if no
+                             Tunables were used.
+
+
+   .. py:method:: multi_error_report(tunable_values_list)
+
+      Runs the ``error_report`` for each set of values for the Tunables.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: Tunable
+
+   Named placeholder for a single input to a :class:`~.SessionProgramTunerBuilder`.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   When a :class:`~.Tunable` is passed to a :class:`~.SessionProgramTunerBuilder`, it
+   is replaced with the concrete values for the tunable parameter when building
+   :class:`~.SessionProgram` s inside of methods like
+   :meth:`~.tuner.SessionProgramTuner.error_report` and
+   :meth:`~.tuner.SessionProgramTuner.multi_error_report`.
+
+
+
+
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      Name of the tunable parameter.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: ErrorReport
+
+   Output of a single error report run.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   This class is not intended to be constructed directly. Instead, it is returned by
+   the :meth:`~.tuner.SessionProgramTuner.error_report` method.
+
+
+
+
+
+   .. py:attribute:: tunable_values
+      :annotation: :Dict[str, Any]
+
+      The values of the tunable parameters used for this error report.
+
+   .. py:attribute:: parameters
+      :annotation: :Dict[str, Any]
+
+      The non-tunable parameters used for this error report.
+
+   .. py:attribute:: protected_inputs
+      :annotation: :Dict[str, ProtectedInput]
+
+      The protected inputs used for this error report.
+
+   .. py:attribute:: unprotected_inputs
+      :annotation: :Dict[str, UnprotectedInput]
+
+      The unprotected inputs used for this error report.
+
+   .. py:attribute:: privacy_budget
+      :annotation: :tmlt.analytics.privacy_budget.PrivacyBudget
+
+      The privacy budget used for this error report.
+
+   .. py:attribute:: dp_outputs
+      :annotation: :Dict[str, pyspark.sql.DataFrame]
+
+      The differentially private outputs of the program.
+
+   .. py:attribute:: baseline_outputs
+      :annotation: :Dict[str, Dict[str, pyspark.sql.DataFrame]]
+
+      The outputs of the baseline program.
+
+   .. py:attribute:: metrics
+      :annotation: :List[tmlt.analytics.metrics._base.MetricOutput]
+
+      The metrics computed on the outputs of the dp and baseline programs.
+
+
+   .. py:method:: format()
+
+      Return a string representation of this object.
+
+
+   .. py:method:: show()
+
+      Prints the error report in a nicely-formatted, human-readable way.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MultiErrorReport(reports)
+
+   Output of an error report run across multiple input combinations.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   This class is not intended to be constructed directly. Instead, it is returned by
+   the :meth:`~.tuner.SessionProgramTuner.multi_error_report` method.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: reports()
+      :property:
+
+      Return the error reports.
+
+
+   .. py:method:: __iter__()
+
+      Return an iterator over the error reports.
+
+
+   .. py:method:: to_dataframe()
+
+      Return a dataframe representation of the error reports.
+
+      The dataframe will have a row for each error report (run) and a column for each
+      tunable and metric.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: UnprotectedInput
+
+   Bases: :class:`NamedTuple`
+
+   An unprotected input that was used for an :class:`~.ErrorReport`.
+
+
+
+
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the input.
+
+   .. py:attribute:: dataframe
+      :annotation: :pyspark.sql.DataFrame
+
+      A dataframe containing the unprotected data used for the report.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: ProtectedInput
+
+   Bases: :class:`NamedTuple`
+
+   A protected input that was used for an :class:`~.ErrorReport`.
+
+   .. warning::
+
+       Note that normally ProtectedInputs are treated as sensitive and would not
+       accessible to the user except through the :class:`~.session.Session` API to
+       avoid violating differential privacy. But these error reports are not
+       differentially private, and for this reason it is highly recommended to avoid
+       using sensitive data in error reports, and to instead use synthetic data or
+       other non-sensitive data.
+
+       For these reasons, the protected inputs used in error reports are attached to
+       the outputs for your convenience, but it is ultimately your responsibility to
+       ensure that truly sensitive data is not used inappropriately.
+
+
+
+
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the input.
+
+   .. py:attribute:: dataframe
+      :annotation: :pyspark.sql.DataFrame
+
+      A dataframe containing the protected data used for the report.
+
+   .. py:attribute:: protected_change
+      :annotation: :tmlt.analytics.protected_change.ProtectedChange
+
+      What changes to the protected data the Session should protect.
+
+
+
+
+
+
+
