@@ -1,0 +1,679 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Basics of error measurement &#8212; Tumult Analytics Pro  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specifying error metrics" href="specifying-error-metrics.html" />
+    <link rel="prev" title="Doing more with privacy IDs" href="more-with-privacy-ids.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/analytics/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.9.0-rc.6  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables tutorials/error-measurement-basics and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.9.0-rc.6'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "tutorials/error-measurement-basics.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics-pro/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "tutorials/error-measurement-basics.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.9.0-rc.6 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.9.0-rc.6") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="first-steps.html">
+   First steps with Tumult Analytics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-budget-basics.html">
+   Working with privacy budgets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="clamping-bounds.html">
+   Numerical aggregations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby-queries.html">
+   Group-by queries
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="simple-transformations.html">
+   Simple transformations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-id-basics.html">
+   Working with privacy IDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more-with-privacy-ids.html">
+   Doing more with privacy IDs
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Basics of error measurement
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="specifying-error-metrics.html">
+   Specifying error metrics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tuning-parameters.html">
+   Tuning Parameters
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-simple-query">
+   A simple query
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-session-to-sessionprogram">
+   From Session to SessionProgram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initializing-and-running-a-sessionprogram">
+   Initializing and running a SessionProgram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#first-look-at-error">
+   First look at error
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="basics-of-error-measurement">
+<span id="id1"></span><h1>Basics of error measurement<a class="headerlink" href="#basics-of-error-measurement" title="Permalink to this headline">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+</div>
+<p>In previous tutorials, we saw how to write differentially private queries using the Tumult Analytics API. Differential privacy adds noise to data, and also involves truncation, so before going ahead with publishing or sharing DP statistics, we typically want to evaluate how accurate these statistics are, and carefully select the parameters used in our Tumult Analytics program.</p>
+<p>That’s exactly what this tutorial series about error measurement and tuning is about. In this tutorial we will walk you through the first step of the process of measuring and optimizing error: converting a simple program to have a fixed structure, and evaluate its error. Let’s get started!</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<p>First, let’s import the Python packages we will use and download some sample data.</p>
+<p>Throughout this tutorial section, we will use two tables: <code class="docutils literal notranslate"><span class="pre">members</span></code> contains information about the members of our fictional public library, and <code class="docutils literal notranslate"><span class="pre">nc-zip-codes</span></code> lists all the ZIP codes in North Carolina, where our library is located.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.program</span> <span class="kn">import</span> <span class="n">SessionProgram</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.tuner._tuner</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.metrics._relative_error</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/demos/library/v2/members.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+   <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># ZIP code data is based on https://worldpopulationreview.com/zips/north-carolina</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/nc-zip-codes.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nc-zip-codes.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;Zip Code&quot;</span><span class="p">,</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">zip_code</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">))</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="a-simple-query">
+<h2>A simple query<a class="headerlink" href="#a-simple-query" title="Permalink to this headline">#</a></h2>
+<p>Say we want to compute the number of books borrowed by users of our library, sliced by ZIP code.  We know how to do this, thanks to what we learned in previous tutorials. Below, we use two input Spark DataFrames: <code class="docutils literal notranslate"><span class="pre">members_df</span></code>, which contains a list of members of our fictional public library and information such as how many books each one borrowed, and <code class="docutils literal notranslate"><span class="pre">nc_zip_codes_df</span></code>, which contains a list of ZIP codes in North Carolina. The former needs to be protected, the second is public.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">zip_code_keys</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">books_by_zip_code</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we run this program, we get a DataFrame with noisy sums and we can use a visualization library to plot this into a nice map. Let’s consider only top ten ZIP codes in which most books have been borrowed and display the noisy sums as a graph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+<span class="n">top_10_zipcodes</span> <span class="o">=</span> <span class="n">books_by_zip_code</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">data_to_plot</span> <span class="o">=</span> <span class="n">top_10_zipcodes</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_to_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span>
+    <span class="n">data_to_plot</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;The ten ZIP codes in which most books have been borrowed&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ZIP code&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Total books borrowed&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="A bar chart plotting the number of the number of books borrowed by users of our library, sliced by ZIP code." class="align-center" src="../_images/chart_total_books_borrowed_in_zipcodes.png" />
+<p>However, it’s hard to know how trustworthy these results are. Let’s figure it out by computing the error of the above query. To get a sense of the “typical” error in these noisy statistics, we will compute the relative error for each zip code and then report the median value of those errors.</p>
+</section>
+<section id="from-session-to-sessionprogram">
+<h2>From Session to SessionProgram<a class="headerlink" href="#from-session-to-sessionprogram" title="Permalink to this headline">#</a></h2>
+<p>To get an error report, we first need to convert our program to a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> instead. In particular, we will create a subclass of <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that contains the logic from our program. Subclasses of <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> work similarly to Sessions, but the operations are defined in the reverse order: we describe all the queries we want to run in advance as part of the class definition, and then we specify the data and privacy guarantees when the program is instantiated.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+        <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
+    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+        <span class="n">nc_zip_codes</span><span class="p">:</span> <span class="n">DataFrame</span>
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+        <span class="n">books_by_zip_code</span><span class="p">:</span> <span class="n">DataFrame</span>
+
+    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">public_source_dataframes</span><span class="p">[</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">]</span>
+        <span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">nc_zip_code_keys</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">remaining_privacy_budget</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">budget</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>A subclass of <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> has two main parts: an input/output specification, and a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Let’s look at each component separately.</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>First, we list our program’s inputs (distinguishing the protected ones from the non-protected ones) and outputs.</dt><dd><ul class="simple">
+<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.ProtectedInputs" title="tmlt.analytics.program.SessionProgram.ProtectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contain sensitive data (and therefore should be protected by differential privacy). All protected inputs must be DataFrames. In this case, the only protected input is the <code class="docutils literal notranslate"><span class="pre">members</span></code> DataFrame.</p></li>
+<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.UnprotectedInputs" title="tmlt.analytics.program.SessionProgram.UnprotectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnprotectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contains public data (and does not require differential privacy). All unprotected inputs must be DataFrames. These DataFrame can be accessed directly by the program. In this case, the only unprotected input is the publicly available <code class="docutils literal notranslate"><span class="pre">nc_zip_codes</span></code> DataFrame.</p></li>
+<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.Outputs" title="tmlt.analytics.program.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a> nested class contains one class variable for each output DataFrame. All outputs must be DataFrames. In this case, we have only one output, <code class="docutils literal notranslate"><span class="pre">books_by_zip_code</span></code>, which will hold the results obtained by the program.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Second, we write our program logic inside a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method, which is used to define the interaction between this <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> and a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>. This method:</dt><dd><ul class="simple">
+<li><p>Uses a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to evaluate queries as we would in any other Tumult Analytics program. Unlike other Tumult Analytics programs, we don’t construct the <cite>Session</cite> directly - instead, the <cite>Session</cite> is provided to <cite>session_interaction</cite> as a method parameter.</p></li>
+<li><p>Returns a dictionary of output DataFrames keyed by their names (which must correspond to the names in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.Outputs" title="tmlt.analytics.program.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a>).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="initializing-and-running-a-sessionprogram">
+<h2>Initializing and running a SessionProgram<a class="headerlink" href="#initializing-and-running-a-sessionprogram" title="Permalink to this headline">#</a></h2>
+<p>Let’s initialize our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> using its <em>Builder</em> (which is inherited from <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>). The Builder interface is very similar to <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a>. We use builder methods to pass in the protected and unprotected dataframes, and the privacy budget we want to enforce.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">zip_code_program</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">BooksByZipCodeProgram</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Once initialized, instead of calling queries on it like the Session, we run the whole program at once using the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.run" title="tmlt.analytics.program.SessionProgram.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method, and obtain the outputs with <code class="docutils literal notranslate"><span class="pre">outputs</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The only way that a SessionProgram can access its input data is through the <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> provided as a parameter in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Its privacy guarantee is exactly the same as a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>’s - the data is protected with the privacy loss budget we specify when instantiating the program (using the same syntax as the <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>).</p>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">zip_code_program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">zip_code_program</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+------------------+</span>
+<span class="o">|</span><span class="n">zip_code</span><span class="o">|</span><span class="n">books_borrowed_sum</span><span class="o">|</span>
+<span class="o">+--------+------------------+</span>
+<span class="o">|</span>   <span class="mi">27006</span><span class="o">|</span>               <span class="mi">359</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27007</span><span class="o">|</span>              <span class="o">-</span><span class="mi">218</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27009</span><span class="o">|</span>               <span class="mi">477</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27011</span><span class="o">|</span>              <span class="o">-</span><span class="mi">145</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27012</span><span class="o">|</span>               <span class="mi">424</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27013</span><span class="o">|</span>                 <span class="mi">8</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27014</span><span class="o">|</span>              <span class="o">-</span><span class="mi">302</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27016</span><span class="o">|</span>               <span class="mi">278</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27017</span><span class="o">|</span>              <span class="o">-</span><span class="mi">322</span><span class="o">|</span>
+<span class="o">|</span>   <span class="mi">27018</span><span class="o">|</span>               <span class="mi">274</span><span class="o">|</span>
+<span class="o">+--------+------------------+</span>
+<span class="n">only</span> <span class="n">showing</span> <span class="n">top</span> <span class="mi">10</span> <span class="n">rows</span>
+</pre></div>
+</div>
+<p>One characteristic of a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> is that it can only be run <em>once</em>: running it again is forbidden.</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">zip_code_program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">RuntimeError</span>: <span class="n">The SessionProgram has already been run. It can only be run once.</span>
+</pre></div>
+</div>
+</section>
+<section id="first-look-at-error">
+<h2>First look at error<a class="headerlink" href="#first-look-at-error" title="Permalink to this headline">#</a></h2>
+<p>Now that we have clearly defined our program, and specified its inputs, outputs, and query logic, we can use a <a class="reference internal" href="../reference/tmlt/analytics/tuner/_tuner/index.html#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> to measure its error. In particular, we will write a subclass of <a class="reference internal" href="../reference/tmlt/analytics/tuner/_tuner/index.html#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and pass our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> as a class argument. We will also specify a set of error metrics in the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable to measure how accurate our output is. For example, we will use the built-in metric <a class="reference internal" href="../reference/tmlt/analytics/metrics/_relative_error/index.html#tmlt.analytics.metrics._relative_error.MedianRelativeError" title="tmlt.analytics.metrics._relative_error.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> to measure the program’s median relative error.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">MedianRelativeError</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span> <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">,</span> <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">]),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>The <a class="reference internal" href="../reference/tmlt/analytics/metrics/_relative_error/index.html#tmlt.analytics.metrics._relative_error.MedianRelativeError" title="tmlt.analytics.metrics._relative_error.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> metric requires three parameters:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output</span></code>: the name of the output DataFrame whose error we want to measure. In this case, it is our only output table: <code class="docutils literal notranslate"><span class="pre">books_by_zip_code</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">measure_column</span></code>: the column in the output DataFrame whose error we want to measure. In this case, it is the sum column from our query, <code class="docutils literal notranslate"><span class="pre">books_borrowed_sum</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">join_columns</span></code>: the columns that can be used to uniquely identify an output row. In this case, it is the <code class="docutils literal notranslate"><span class="pre">zip_code</span></code> column because we have one output row per zip code.</p></li>
+</ul>
+</dd>
+<dt>The <code class="docutils literal notranslate"><span class="pre">measure_column</span></code> and <code class="docutils literal notranslate"><span class="pre">join_columns</span></code> parameters are used behind the scenes to measure error:</dt><dd><ul class="simple">
+<li><p>First, we automatically generate the <em>baseline</em> output - a DataFrame containing the “true” (non-noisy) query results.</p></li>
+<li><p>Then, we join the noisy answers to the baseline on the <code class="docutils literal notranslate"><span class="pre">join_columns</span></code>.</p></li>
+<li><p>Finally, we calculate the relative error for each row between the <code class="docutils literal notranslate"><span class="pre">measure_column</span></code> in the noisy and baseline DataFrames, and return the median.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Our <code class="docutils literal notranslate"><span class="pre">BooksTuner</span></code> can be initialized just like a Session, but <strong>it does not provide any privacy guarantees</strong>: error information is not differentially private! This is true even though we provide a budget to the tuner - the budget is used to calculate the DP dataset, but we then compare the DP answers to the true, un-noised answers. For this reason, it is a good practice to use different datasets for tuning and deployment — historical datasets or synthetic datasets are common choices.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_tuner</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">BooksTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that our <code class="docutils literal notranslate"><span class="pre">BooksTuner</span></code> is initialized, we can get our very first error report by calling the <a class="reference internal" href="../reference/tmlt/analytics/tuner/_tuner/index.html#tmlt.analytics.tuner._tuner.SessionProgramTuner.error_report" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> method.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">error_report</span> <span class="o">=</span> <span class="n">simple_tuner</span><span class="o">.</span><span class="n">error_report</span><span class="p">()</span>
+<span class="n">error_report</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">report</span> <span class="n">ran</span> <span class="k">with</span> <span class="n">budget</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> <span class="n">no</span> <span class="n">tunable</span> <span class="n">parameters</span> <span class="ow">and</span> <span class="n">no</span> <span class="n">additional</span> <span class="n">parameters</span>
+
+<span class="n">Metric</span> <span class="n">results</span><span class="p">:</span>
+<span class="o">+---------+----------+--------------------------------------------------------------------------------+</span>
+<span class="o">|</span>   <span class="n">Value</span> <span class="o">|</span> <span class="n">Metric</span>   <span class="o">|</span> <span class="n">Description</span>                                                                    <span class="o">|</span>
+<span class="o">+=========+==========+================================================================================+</span>
+<span class="o">|</span>   <span class="mf">0.199</span> <span class="o">|</span> <span class="n">mre</span>      <span class="o">|</span> <span class="n">Median</span> <span class="n">relative</span> <span class="n">error</span> <span class="k">for</span> <span class="n">column</span> <span class="n">books_borrowed_sum</span> <span class="n">of</span> <span class="n">table</span> <span class="n">books_by_zip_code</span> <span class="o">|</span>
+<span class="o">+---------+----------+--------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+<p>We computed our first error metric!</p>
+<p>You probably have lots of questions, like “how do I choose which metrics to use to quantify error”, or “how do I measure error with many parameters at once”, or “how do I determine what baseline is used behind the scenes to measure error”. Great news — that’s exactly the topic of the next tutorials in this series.</p>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="more-with-privacy-ids.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Doing more with privacy IDs</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="specifying-error-metrics.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Specifying error metrics</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 4805b607 at 2024-04-12 13:10.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
