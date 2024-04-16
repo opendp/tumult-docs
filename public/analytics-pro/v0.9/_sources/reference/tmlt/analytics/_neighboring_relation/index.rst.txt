@@ -1,0 +1,306 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+****************************
+_neighboring_relation
+****************************
+
+.. py:module:: tmlt.analytics._neighboring_relation
+
+.. autoapi-nested-parse::
+
+   Module containing supported variants of neighboring relations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.NeighboringRelation`
+     - Base class for a NeighboringRelation.
+   * - :class:`.AddRemoveRows`
+     - A relation of tables differing by a limited number of rows.
+   * - :class:`.AddRemoveRowsAcrossGroups`
+     - A relation of tables differing by a limited number of groups.
+   * - :class:`.AddRemoveKeys`
+     - A relation of tables differing by a certain number of keys.
+   * - :class:`.Conjunction`
+     - A conjunction composed of other neighboring relations.
+   * - :class:`.NeighboringRelationVisitor`
+     - A base class for implementing visitors for :class:`NeighboringRelation`.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: NeighboringRelation
+
+   Bases: :class:`abc.ABC`
+
+   Base class for a NeighboringRelation.
+
+
+
+
+
+
+   .. py:method:: validate_input(dfs)
+      :abstractmethod:
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+      Used only for top-level validation.
+
+      Exception types and common reasons:
+         - TypeError: Input dictionary does not map table names to Spark DataFrames
+         - ValueError: Input dictionary contains an invalid number of items or
+           contains invalid values.
+         - KeyError: Relation table doesn't exist in input dictionary
+
+
+   .. py:method:: accept(visitor)
+      :abstractmethod:
+
+      Returns the result of a visit to core for this relation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AddRemoveRows
+
+   Bases: :class:`NeighboringRelation`
+
+   A relation of tables differing by a limited number of rows.
+
+   Two tables are considered neighbors under this relation if
+   they differ by at most n rows.
+
+
+
+
+
+   .. py:attribute:: table
+      :annotation: :str
+
+      The name of the table in this relation.
+
+   .. py:attribute:: n
+      :annotation: :int
+
+      The max number of rows which may be differ for two instances of the table to
+      be neighbors.
+
+
+   .. py:method:: validate_input(dfs)
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+      Used only for top-level validation.
+
+
+   .. py:method:: accept(visitor)
+
+      Visit this NeighboringRelation with a Visitor.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AddRemoveRowsAcrossGroups
+
+   Bases: :class:`NeighboringRelation`
+
+   A relation of tables differing by a limited number of groups.
+
+   Two tables are considered neighbors under this relation if they differ by
+    at most n groups, with each group differing by no more than m rows.
+
+
+
+
+
+   .. py:attribute:: table
+      :annotation: :str
+
+      The name of the table in this relation.
+
+   .. py:attribute:: grouping_column
+      :annotation: :str
+
+      The column that must be grouped over for the privacy guarantee to hold.
+
+   .. py:attribute:: max_groups
+      :annotation: :int
+
+      The maximum number of groups which may differ for two instances of the table
+      to be neighbors.
+
+   .. py:attribute:: per_group
+      :annotation: :int
+
+      The max number of rows in any single group that may differ for two instances of
+      the table to be neighbors.
+
+
+   .. py:method:: validate_input(dfs)
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+      Used only for top-level validation.
+
+
+   .. py:method:: accept(visitor)
+
+      Visit this NeighboringRelation with a Visitor.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AddRemoveKeys
+
+   Bases: :class:`NeighboringRelation`
+
+   A relation of tables differing by a certain number of keys.
+
+   Two tables are considered neighbors under this definition if they
+   differ only by the addition/removal of all rows with max_keys distinct values under
+   the columns indicated.
+
+   Note that AddRemoveKeys is a neighboring relation that covers *multiple*
+   tables.
+
+
+
+
+
+   .. py:attribute:: id_space
+      :annotation: :str
+
+      The identifier space protected in the relation.
+
+   .. py:attribute:: table_to_key_column
+      :annotation: :Dict[str, str]
+
+      A dictionary mapping table names to key columns.
+
+   .. py:attribute:: max_keys
+      :annotation: :int
+
+      The maximum number of keys which may differ for two instances of the table
+      to be neighbors.
+
+
+   .. py:method:: validate_input(dfs)
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+      Used only for top-level validation.
+
+
+   .. py:method:: accept(visitor)
+
+      Visit this NeighboringRelation with a Visitor.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: Conjunction(*children)
+
+   Bases: :class:`NeighboringRelation`
+
+   A conjunction composed of other neighboring relations.
+
+
+
+
+
+   .. py:attribute:: children
+      :annotation: :List[NeighboringRelation]
+
+      Other neighboring relations to build the Conjunction.
+      Args can be provided as a single list or as separate arguments.
+
+      If more than one list is provided, Conjunction will only use the first.
+
+
+   .. automethod:: __init__
+   .. py:method:: validate_input(dfs)
+
+      Does nothing if input is valid, otherwise raises an informative exception.
+
+
+   .. py:method:: accept(visitor)
+
+      Visit this NeighboringRelation with a Visitor.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: NeighboringRelationVisitor
+
+   Bases: :class:`abc.ABC`
+
+   A base class for implementing visitors for :class:`NeighboringRelation`.
+
+
+
+
+
+
+   .. py:method:: visit_add_remove_rows(relation)
+      :abstractmethod:
+
+      Visit a :class:`AddRemoveRows`.
+
+
+   .. py:method:: visit_add_remove_rows_across_groups(relation)
+      :abstractmethod:
+
+      Visit a :class:`AddRemoveRowsAcrossGroups`.
+
+
+   .. py:method:: visit_add_remove_keys(relation)
+      :abstractmethod:
+
+      Visit a :class:`AddRemoveKeys`.
+
+
+   .. py:method:: visit_conjunction(relation)
+      :abstractmethod:
+
+      Visit a :class:`Conjunction`.
+
+
+
+
+
+
+

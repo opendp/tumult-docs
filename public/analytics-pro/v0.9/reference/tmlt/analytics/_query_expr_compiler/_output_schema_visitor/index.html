@@ -1,0 +1,1181 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>_output_schema_visitor &#8212; Tumult Analytics Pro  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../../../../../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.9.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/analytics/_query_expr_compiler/_output_schema_visitor/index and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.9.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/_output_schema_visitor/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics-pro/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/_output_schema_visitor/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.9.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.9.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor">
+     OutputSchemaVisitor
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_private_source">
+       visit_private_source
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_rename">
+       visit_rename
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_filter">
+       visit_filter
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_select">
+       visit_select
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_map">
+       visit_map
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_flat_map">
+       visit_flat_map
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private">
+       visit_join_private
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_public">
+       visit_join_public
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_null_and_nan">
+       visit_replace_null_and_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_infinity">
+       visit_replace_infinity
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_null_and_nan">
+       visit_drop_null_and_nan
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_infinity">
+       visit_drop_infinity
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_enforce_constraint">
+       visit_enforce_constraint
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_get_groups">
+       visit_get_groups
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count">
+       visit_groupby_count
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count_distinct">
+       visit_groupby_count_distinct
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_quantile">
+       visit_groupby_quantile
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_sum">
+       visit_groupby_bounded_sum
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_average">
+       visit_groupby_bounded_average
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_variance">
+       visit_groupby_bounded_variance
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_stdev">
+       visit_groupby_bounded_stdev
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.analytics._query_expr_compiler._output_schema_visitor">
+<span id="output-schema-visitor"></span><h1>_output_schema_visitor<a class="headerlink" href="#module-tmlt.analytics._query_expr_compiler._output_schema_visitor" title="Permalink to this headline">#</a></h1>
+<p>Defines a visitor for determining the output schemas of query expressions.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputSchemaVisitor</span></code></a></p></td>
+<td><p>A visitor to get the output schema of a query expression.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OutputSchemaVisitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_expr.QueryExprVisitor</span></code></a></p>
+<p>A visitor to get the output schema of a query expression.</p>
+<table class="table" id="id1">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_private_source" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_private_source"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_private_source()</span></code></a></p></td>
+<td><p>Return the resulting schema from evaluating a PrivateSource.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_rename" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_rename()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a Rename.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_filter" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_filter()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a Filter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_select" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_select()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a Select.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_map" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_map()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a Map.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_flat_map" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_flat_map()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a FlatMap.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_join_private()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a JoinPrivate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_public" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_join_public()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a JoinPublic.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_null_and_nan" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_replace_null_and_nan()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a ReplaceNullAndNan.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_infinity" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_replace_infinity()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a ReplaceInfinity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_null_and_nan" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_drop_null_and_nan()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a DropNullAndNan.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_infinity" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_drop_infinity()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a DropInfinity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_enforce_constraint" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_enforce_constraint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_enforce_constraint()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating an EnforceConstraint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_get_groups" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_get_groups()</span></code></a></p></td>
+<td><p>Returns the resulting schema from GetGroups.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByCount.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count_distinct" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_count_distinct()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByCountDistinct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_quantile" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_quantile()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByQuantile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_sum" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_sum()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByBoundedSum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_average" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_average()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByBoundedAverage.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_variance" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_variance()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByBoundedVariance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_stdev" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_stdev()</span></code></a></p></td>
+<td><p>Returns the resulting schema from evaluating a GroupByBoundedSTDEV.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>catalog</strong> (<a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Visitor constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>catalog</strong> (<span class="annotation terse"><a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a></span><span class="annotation full"><a class="reference internal" href="../../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a></span>) – The catalog defining schemas and relations between tables.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_private_source">
+<span class="sig-name descname"><span class="pre">visit_private_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_private_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the resulting schema from evaluating a PrivateSource.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.PrivateSource" title="tmlt.analytics.query_expr.PrivateSource"><em>tmlt.analytics.query_expr.PrivateSource</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_rename">
+<span class="sig-name descname"><span class="pre">visit_rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a Rename.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Rename</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Rename" title="tmlt.analytics.query_expr.Rename"><em>tmlt.analytics.query_expr.Rename</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_filter">
+<span class="sig-name descname"><span class="pre">visit_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a Filter.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="s1">&#39;B &gt; 10&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Filter" title="tmlt.analytics.query_expr.Filter"><em>tmlt.analytics.query_expr.Filter</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_select">
+<span class="sig-name descname"><span class="pre">visit_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_select" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a Select.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Select" title="tmlt.analytics.query_expr.Select"><em>tmlt.analytics.query_expr.Select</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_map">
+<span class="sig-name descname"><span class="pre">visit_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_map" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a Map.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span> <span class="c1"># Augment = False example</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span> <span class="c1"># Augment = True example</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;, &#39;D&#39;: &#39;VARCHAR&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.Map" title="tmlt.analytics.query_expr.Map"><em>tmlt.analytics.query_expr.Map</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_flat_map">
+<span class="sig-name descname"><span class="pre">visit_flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_flat_map" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a FlatMap.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Augment = False example</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
+<span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
+<span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;C&#39;: &#39;INTEGER&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Augment = True example</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
+<span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">({</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">}),</span>
+<span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span> <span class="o">=</span> <span class="n">FlatMap</span><span class="p">(</span> <span class="c1"># Grouping example</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}],</span>
+<span class="gp">... </span>    <span class="n">schema_new_columns</span><span class="o">=</span><span class="n">Schema</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span> <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query3</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;B&#39;: &#39;INTEGER&#39;, &#39;C&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.FlatMap" title="tmlt.analytics.query_expr.FlatMap"><em>tmlt.analytics.query_expr.FlatMap</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private">
+<span class="sig-name descname"><span class="pre">visit_join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a JoinPrivate.</p>
+<p>The ordering of output columns are:</p>
+<ol class="arabic simple">
+<li><p>The join columns</p></li>
+<li><p>Columns that are only in the left table</p></li>
+<li><p>Columns that are only in the right table</p></li>
+<li><p>Columns that are in both tables, but not included in the join columns. These
+columns are included with _left and _right suffixes.</p></li>
+</ol>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;left_source&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;left_only&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">DECIMAL</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;common1&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;common2&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;common3&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;right_source&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;common1&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;common2&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;common3&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;right_only&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># join_columns default behavior is [&quot;common1&quot;, &quot;common2&quot;, &quot;common3&quot;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span> <span class="o">=</span> <span class="n">JoinPrivate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;left_source&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">right_operand_expr</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;right_source&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">truncation_strategy_left</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query1</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;common1&#39;: &#39;INTEGER&#39;, &#39;common2&#39;: &#39;VARCHAR&#39;, &#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span> <span class="o">=</span> <span class="n">JoinPrivate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;left_source&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">right_operand_expr</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;right_source&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">truncation_strategy_left</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;common3&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query2</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;common3&#39;: &#39;INTEGER&#39;, &#39;left_only&#39;: &#39;DECIMAL&#39;, &#39;common1_left&#39;: &#39;INTEGER&#39;, &#39;common2_left&#39;: &#39;VARCHAR&#39;, &#39;common1_right&#39;: &#39;INTEGER&#39;, &#39;common2_right&#39;: &#39;VARCHAR&#39;, &#39;right_only&#39;: &#39;VARCHAR&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.JoinPrivate" title="tmlt.analytics.query_expr.JoinPrivate"><em>tmlt.analytics.query_expr.JoinPrivate</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_public">
+<span class="sig-name descname"><span class="pre">visit_join_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_public" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a JoinPublic.</p>
+<p>Has analogous behavior to <a class="reference internal" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private" title="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">OutputSchemaVisitor.visit_join_private()</span></code></a>,
+where the private table is the left table.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_public_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;public&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">DECIMAL</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">JoinPublic</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span> <span class="n">public_table</span><span class="o">=</span><span class="s2">&quot;public&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;B&#39;: &#39;INTEGER&#39;, &#39;A&#39;: &#39;VARCHAR&#39;, &#39;C&#39;: &#39;DECIMAL&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.JoinPublic" title="tmlt.analytics.query_expr.JoinPublic"><em>tmlt.analytics.query_expr.JoinPublic</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_null_and_nan">
+<span class="sig-name descname"><span class="pre">visit_replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_null_and_nan" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a ReplaceNullAndNan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.ReplaceNullAndNan" title="tmlt.analytics.query_expr.ReplaceNullAndNan"><em>tmlt.analytics.query_expr.ReplaceNullAndNan</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_infinity">
+<span class="sig-name descname"><span class="pre">visit_replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_replace_infinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a ReplaceInfinity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.ReplaceInfinity" title="tmlt.analytics.query_expr.ReplaceInfinity"><em>tmlt.analytics.query_expr.ReplaceInfinity</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_null_and_nan">
+<span class="sig-name descname"><span class="pre">visit_drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_null_and_nan" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a DropNullAndNan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.DropNullAndNan" title="tmlt.analytics.query_expr.DropNullAndNan"><em>tmlt.analytics.query_expr.DropNullAndNan</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_infinity">
+<span class="sig-name descname"><span class="pre">visit_drop_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_drop_infinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a DropInfinity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.DropInfinity" title="tmlt.analytics.query_expr.DropInfinity"><em>tmlt.analytics.query_expr.DropInfinity</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_enforce_constraint">
+<span class="sig-name descname"><span class="pre">visit_enforce_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_enforce_constraint" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating an EnforceConstraint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.EnforceConstraint" title="tmlt.analytics.query_expr.EnforceConstraint"><em>tmlt.analytics.query_expr.EnforceConstraint</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_get_groups">
+<span class="sig-name descname"><span class="pre">visit_get_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_get_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from GetGroups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GetGroups" title="tmlt.analytics.query_expr.GetGroups"><em>tmlt.analytics.query_expr.GetGroups</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count">
+<span class="sig-name descname"><span class="pre">visit_groupby_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByCount.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByCount</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><em>tmlt.analytics.query_expr.GroupByCount</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count_distinct">
+<span class="sig-name descname"><span class="pre">visit_groupby_count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_count_distinct" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByCountDistinct.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByCountDistinct</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;count_distinct&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;count_distinct&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><em>tmlt.analytics.query_expr.GroupByCountDistinct</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_quantile">
+<span class="sig-name descname"><span class="pre">visit_groupby_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_quantile" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByQuantile.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByQuantile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">quantile</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;quantile&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;quantile&#39;: &#39;DECIMAL&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><em>tmlt.analytics.query_expr.GroupByQuantile</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_sum">
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_sum" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByBoundedSum.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByBoundedSum</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;sum&#39;: &#39;INTEGER&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><em>tmlt.analytics.query_expr.GroupByBoundedSum</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_average">
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_average" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByBoundedAverage.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByBoundedAverage</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;average&#39;: &#39;DECIMAL&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><em>tmlt.analytics.query_expr.GroupByBoundedAverage</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_variance">
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_variance" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByBoundedVariance.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByBoundedAverage</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;variance&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;variance&#39;: &#39;DECIMAL&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><em>tmlt.analytics.query_expr.GroupByBoundedVariance</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_stdev">
+<span class="sig-name descname"><span class="pre">visit_groupby_bounded_stdev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler._output_schema_visitor.OutputSchemaVisitor.visit_groupby_bounded_stdev" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the resulting schema from evaluating a GroupByBoundedSTDEV.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">catalog</span><span class="o">.</span><span class="n">add_private_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">col_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_schema_visitor</span> <span class="o">=</span> <span class="n">OutputSchemaVisitor</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">GroupByBoundedSTDEV</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">child</span><span class="o">=</span><span class="n">PrivateSource</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">groupby_keys</span><span class="o">=</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a3&quot;</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_column</span><span class="o">=</span><span class="s2">&quot;stdev&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">output_schema_visitor</span><span class="p">)</span><span class="o">.</span><span class="n">column_types</span>
+<span class="go">{&#39;A&#39;: &#39;VARCHAR&#39;, &#39;stdev&#39;: &#39;DECIMAL&#39;}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="../../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><em>tmlt.analytics.query_expr.GroupByBoundedSTDEV</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from d5c0918d at 2024-04-16 13:27.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

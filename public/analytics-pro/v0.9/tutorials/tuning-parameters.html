@@ -1,0 +1,677 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tuning Parameters &#8212; Tumult Analytics Pro  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How-to guides" href="../howto-guides/index.html" />
+    <link rel="prev" title="Specifying error metrics" href="specifying-error-metrics.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/analytics/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.9.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables tutorials/tuning-parameters and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.9.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "tutorials/tuning-parameters.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics-pro/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "tutorials/tuning-parameters.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.9.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.9.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="first-steps.html">
+   First steps with Tumult Analytics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-budget-basics.html">
+   Working with privacy budgets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="clamping-bounds.html">
+   Numerical aggregations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby-queries.html">
+   Group-by queries
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="simple-transformations.html">
+   Simple transformations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-id-basics.html">
+   Working with privacy IDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="more-with-privacy-ids.html">
+   Doing more with privacy IDs
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="error-measurement-basics.html">
+   Basics of error measurement
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="specifying-error-metrics.html">
+   Specifying error metrics
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Tuning Parameters
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parametrizing-the-sessionprogram">
+   Parametrizing the SessionProgram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-multiple-error-reports-at-once">
+   Running Multiple Error Reports at Once
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuning-not-just-for-parameters">
+   Tuning: Not Just for Parameters!
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="tuning-parameters">
+<span id="id1"></span><h1>Tuning Parameters<a class="headerlink" href="#tuning-parameters" title="Permalink to this headline">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+</div>
+<p>In the previous two tutorials in this section, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for <em>optimizing</em> the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> class is designed to help us do just that. Let’s see how it works!</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<p>First, we import necessary packages and download the data.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span><span class="p">,</span> <span class="n">AddMaxRows</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.program</span> <span class="kn">import</span> <span class="n">SessionProgram</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.tuner</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span><span class="p">,</span> <span class="n">QuantileRelativeError</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/demos/library/v2/members.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+   <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># ZIP code data is based on https://worldpopulationreview.com/zips/north-carolina</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/nc-zip-codes.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nc-zip-codes.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;Zip Code&quot;</span><span class="p">,</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">)</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">zip_code</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">))</span>
+<span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="parametrizing-the-sessionprogram">
+<h2>Parametrizing the SessionProgram<a class="headerlink" href="#parametrizing-the-sessionprogram" title="Permalink to this headline">#</a></h2>
+<p>We previously used a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">nc_zip_code_keys</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first <em>parametrize</em> it. To do this, we must declare this parameter as part of our <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, and then use it in our query.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+        <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
+    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+        <span class="n">nc_zip_codes</span><span class="p">:</span> <span class="n">DataFrame</span>
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+        <span class="n">books_by_zip_code</span><span class="p">:</span> <span class="n">DataFrame</span>
+    <span class="k">class</span> <span class="nc">Parameters</span><span class="p">:</span>
+        <span class="n">upper_clamping_bound</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+        <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unprotected_inputs</span><span class="p">[</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">]</span>
+        <span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">nc_zip_code_keys</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">remaining_privacy_budget</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">budget</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>Since our program now has a parameter, we must specify the parameter’s value when we build it.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">zip_code_program</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">BooksByZipCodeProgram</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">with_parameter</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>But we don’t want to specify it just yet — we first want to try different values for it, and observe which ones give us acceptable accuracy.</p>
+</section>
+<section id="running-multiple-error-reports-at-once">
+<h2>Running Multiple Error Reports at Once<a class="headerlink" href="#running-multiple-error-reports-at-once" title="Permalink to this headline">#</a></h2>
+<p>Let’s define a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> with our program class to compute two metrics: median relative error and 75th percentile relative error. We’ve already seen similar metrics, but this time we are giving them a short name.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">MedianRelativeError</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
+            <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">,</span>
+            <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mre&quot;</span>
+        <span class="p">),</span>
+        <span class="n">QuantileRelativeError</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
+            <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">,</span>
+            <span class="n">quantile</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+            <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;qre_0.75&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>Now that we have defined our class, let’s build it. Unlike a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span><span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span> <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span><span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span><span class="p">,)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">with_parameter</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">Tunable</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, we have specified that the upper clamping bound is a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameter. However, as we will see later, <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.</p>
+<p>Once we have built our <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> object, we can run an error report by specifying concrete values for all of our <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span><span class="o">.</span><span class="n">error_report</span><span class="p">({</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span>  <span class="mi">500</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>More usefully, we can generate many error reports at once:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span> <span class="n">bound</span><span class="p">}</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a> returns a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.MultiErrorReport" title="tmlt.analytics.tuner.MultiErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiErrorReport</span></code></a>, which can be iterated over to get individual <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.ErrorReport" title="tmlt.analytics.tuner.ErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorReport</span></code></a> objects and provides a method to get all of the metrics in a single Pandas DataFrame.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">multi_error_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">upper_clamping_bound</span>    <span class="n">mre</span>  <span class="n">qre_0</span><span class="mf">.75</span>
+<span class="mi">0</span>                    <span class="mi">25</span>  <span class="mf">0.451</span>     <span class="mf">0.537</span>
+<span class="mi">1</span>                    <span class="mi">75</span>  <span class="mf">0.224</span>     <span class="mf">0.362</span>
+<span class="mi">2</span>                   <span class="mi">150</span>  <span class="mf">0.132</span>     <span class="mf">0.319</span>
+<span class="mi">3</span>                   <span class="mi">250</span>  <span class="mf">0.142</span>     <span class="mf">0.567</span>
+<span class="mi">4</span>                   <span class="mi">400</span>  <span class="mf">0.167</span>     <span class="mf">0.689</span>
+</pre></div>
+</div>
+<p>Looking at these results, we can see that the error seems to be smallest for upper clamping bounds between 150 and 250. We can run a second error report that focuses on this part of the search space:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span> <span class="n">bound</span><span class="p">}</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">225</span><span class="p">,</span> <span class="mi">250</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>We can then plot the results to visualize the privacy-utility trade-off.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">multi_error_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;75th percentile&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Relative Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Upper Clamping Bound&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Relative Error vs. Upper Clamping Bound&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="A line chart plotting the median and 75th percentile relative error against the upper clamping bounds in the range 100 to 500." class="align-center" src="../_images/tuning-parameters-error-vs-clamping.png" />
+<p>Setting the clamping bound to about 175 seems to be getting us the best result.</p>
+</section>
+<section id="tuning-not-just-for-parameters">
+<h2>Tuning: Not Just for Parameters!<a class="headerlink" href="#tuning-not-just-for-parameters" title="Permalink to this headline">#</a></h2>
+<p>We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> to find out.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">Tunable</span><span class="p">(</span><span class="s2">&quot;budget&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">with_parameter</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">Tunable</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We then specify the values of our <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters for methods like <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="tmlt.analytics.tuner.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">&quot;budget&quot;</span><span class="p">:</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="p">),</span> <span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span> <span class="n">bound</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>And plot the privacy-utility trade-off using the optimal upper clamping bound values for each privacy budget.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">multi_error_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="c1"># Convert &#39;budget&#39; column to string representation focusing on the &#39;epsilon&#39; attribute</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;budget&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;budget&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;epsilon=</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">epsilon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Median Relative Error&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;75th Percentile Relative Error&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Upper Clamping Bound&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Upper Clamping Bound&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="Two line charts plotting relative error against upper clamping bounds in the range 150 to 200. The top chart shows median relative error, and the bottom chart shows 75th percentile relative error. Each chart has a line for each privacy budget, with the x-axis representing the upper clamping bound and the y-axis representing the relative error." class="align-center" src="../_images/tuning-parameters-error-vs-clamping-varied-budgets.png" />
+<p><a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> s can also replace DataFrame arguments (so we can run our program on different datasets in the same Tuner), or protected changes (so we can see the impact of changing how the data is protected).</p>
+<p>For example, if we wanted to fix the clamping bound parameter, but tune both the dataframe and protected change used by the program, we would supply a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> for each of these arguments, like so:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">Tunable</span><span class="p">(</span><span class="s2">&quot;members_df&quot;</span><span class="p">),</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">Tunable</span><span class="p">(</span><span class="s2">&quot;protected_change&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
+        <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">nc_zip_codes_df</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">with_parameter</span><span class="p">(</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We can then run the error report with different values for the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> s:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">&quot;members_df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;protected_change&quot;</span><span class="p">:</span> <span class="n">protected_change</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">[</span><span class="n">members_df</span><span class="p">,</span> <span class="n">members_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">protected_change</span> <span class="ow">in</span> <span class="p">[</span><span class="n">AddOneRow</span><span class="p">(),</span> <span class="n">AddMaxRows</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>For more information, consult the API references for <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="specifying-error-metrics.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Specifying error metrics</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../howto-guides/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">How-to guides</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from d5c0918d at 2024-04-16 13:27.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
