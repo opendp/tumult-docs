@@ -1,0 +1,157 @@
+:orphan:
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+****************
+_compiler
+****************
+
+.. py:module:: tmlt.analytics._query_expr_compiler._compiler
+
+.. autoapi-nested-parse::
+
+   Defines :class:`QueryExprCompiler` for building transformations from query exprs.
+
+
+
+
+
+
+
+
+
+Data
+====
+
+
+.. py:data:: DEFAULT_MECHANISM
+   :annotation: = DEFAULT
+
+   Constant used for DEFAULT noise mechanism
+
+.. py:data:: LAPLACE_MECHANISM
+   :annotation: = LAPLACE
+
+   Constant used for LAPLACE noise mechanism
+
+.. py:data:: GAUSSIAN_MECHANISM
+   :annotation: = GAUSSIAN
+
+   Constant used for GAUSSIAN noise mechanism
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.QueryExprCompiler`
+     - Compiles a list of query expressions to a single measurement object.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: QueryExprCompiler(output_measure = PureDP())
+
+   Compiles a list of query expressions to a single measurement object.
+
+   Requires that each query is a groupby-aggregation on a sequence of transformations
+   on a PrivateSource or PrivateView. If there is a PrivateView, the stability of the
+   view is handled when the noise scale is calculated.
+
+   A QueryExprCompiler object compiles a list of
+   :class:`~tmlt.analytics.query_expr.QueryExpr` objects into
+   a single  object (based on the privacy framework). The
+   :class:`~tmlt.core.measurements.base.Measurement` object can be
+   run with a private data source to obtain DP answers to supplied queries.
+
+   Supported :class:`~tmlt.analytics.query_expr.QueryExpr`\ s:
+
+   * :class:`~tmlt.analytics.query_expr.PrivateSource`
+   * :class:`~tmlt.analytics.query_expr.Filter`
+   * :class:`~tmlt.analytics.query_expr.FlatMap`
+   * :class:`~tmlt.analytics.query_expr.Map`
+   * :class:`~tmlt.analytics.query_expr.Rename`
+   * :class:`~tmlt.analytics.query_expr.Select`
+   * :class:`~tmlt.analytics.query_expr.JoinPublic`
+   * :class:`~tmlt.analytics.query_expr.JoinPrivate`
+   * :class:`~tmlt.analytics.query_expr.GroupByCount`
+   * :class:`~tmlt.analytics.query_expr.GroupByCountDistinct`
+   * :class:`~tmlt.analytics.query_expr.GroupByBoundedSum`
+   * :class:`~tmlt.analytics.query_expr.GroupByBoundedAverage`
+   * :class:`~tmlt.analytics.query_expr.GroupByBoundedSTDEV`
+   * :class:`~tmlt.analytics.query_expr.GroupByBoundedVariance`
+   * :class:`~tmlt.analytics.query_expr.GroupByQuantile`
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: mechanism()
+      :property:
+
+      Return the value of Core noise mechanism.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Return the distance measure for the measurement's output.
+
+
+   .. py:method:: query_schema(query, catalog)
+      :staticmethod:
+
+      Return the schema created by a given query.
+
+
+   .. py:method:: __call__(queries, privacy_budget, stability, input_domain, input_metric, public_sources, catalog, table_constraints)
+
+      Returns a compiled DP measurement and its noise information.
+
+      :param queries: Queries representing measurements to compile.
+      :param privacy_budget: The total privacy budget for answering the queries.
+      :param stability: The stability of the input to compiled query.
+      :param input_domain: The input domain of the compiled query.
+      :param input_metric: The input metric of the compiled query.
+      :param public_sources: Public data sources for the queries.
+      :param catalog: The catalog, used only for query validation.
+      :param table_constraints: A mapping of tables to the existing constraints on them.
+
+
+   .. py:method:: build_transformation(query, input_domain, input_metric, public_sources, catalog, table_constraints)
+
+      Returns a transformation and reference for the query.
+
+      Supported
+      :class:`~tmlt.analytics.query_expr.QueryExpr`\ s:
+
+      * :class:`~tmlt.analytics.query_expr.Filter`
+      * :class:`~tmlt.analytics.query_expr.FlatMap`
+      * :class:`~tmlt.analytics.query_expr.JoinPrivate`
+      * :class:`~tmlt.analytics.query_expr.JoinPublic`
+      * :class:`~tmlt.analytics.query_expr.Map`
+      * :class:`~tmlt.analytics.query_expr.PrivateSource`
+      * :class:`~tmlt.analytics.query_expr.Rename`
+      * :class:`~tmlt.analytics.query_expr.Select`
+
+      :param query: A query representing a transformation to compile.
+      :param input_domain: The input domain of the compiled query.
+      :param input_metric: The input metric of the compiled query.
+      :param public_sources: Public data sources for the queries.
+      :param catalog: The catalog, used only for query validation.
+      :param table_constraints: A mapping of tables to the existing constraints on them.
+
+
+
+
+
+
+
