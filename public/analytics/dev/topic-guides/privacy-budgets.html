@@ -359,7 +359,7 @@ guarantees provided by each query, and by the Session as a whole.</p>
 to the computation of a query. Choosing an appropriate budget
 for a given query is ultimately an exercise in balancing privacy and accuracy
 needs; we discuss this topic more <a class="reference internal" href="#privacy-tradeoff"><span class="std std-ref">below</span></a>.</p>
-<p>Tumult Analytics currently supports two distinct privacy definitions:</p>
+<p>Tumult Analytics currently supports three distinct privacy definitions:</p>
 <ul class="simple">
 <li><p><em>Pure Differential Privacy (Pure DP)</em>, with its associated privacy parameter <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>.
 For data publication use cases, the value of <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> is often chosen to be
@@ -367,20 +367,25 @@ For data publication use cases, the value of <code class="docutils literal notra
 Values below 1 are typically considered conservative.</p></li>
 <li><p><em>Zero Concentrated Differential Privacy (zCDP)</em>, with its associated
 privacy parameter <code class="docutils literal notranslate"><span class="pre">rho</span></code>.</p></li>
+<li><p><em>Approximate Differential Privacy (Approx DP)</em>, with its associated
+privacy parameters <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> and <code class="docutils literal notranslate"><span class="pre">delta</span></code>.</p></li>
 </ul>
-<p>For both pure DP and zCDP, a higher budget
-leads to less randomization and thus more accurate results, whereas
-a lower budget yields more noisy results.</p>
-<p>Understanding the differences between these two privacy definitions is out of scope
+<p>Queries with higher values of epsilon, rho, and delta will produce results with
+less randomization that are therefore more accurate, whereas
+a lower budget yields more noisy results. Lower budgets are a stronger privacy guarantee,
+which highlights the trade-off between privacy and accuracy.</p>
+<p>Understanding the differences between these privacy definitions is out of scope
 for this guide; for simple use cases, pure DP is a good default choice.
-To learn more, you can consult this <a class="reference external" href="https://desfontain.es/privacy/renyi-dp-zero-concentrated-dp.html">blog post</a>.</p>
+To learn more about zCDP, you can consult this <a class="reference external" href="https://desfontain.es/privacy/renyi-dp-zero-concentrated-dp.html">blog post</a>.
+To learn more about Approx DP, you can consult this <a class="reference external" href="https://desfontain.es/privacy/almost-differential-privacy.html">blog post</a>.</p>
 <section id="using-privacy-budgets-in-tumult-analytics">
 <h2>Using privacy budgets in Tumult Analytics<a class="headerlink" href="#using-privacy-budgets-in-tumult-analytics" title="Permalink to this headline">#</a></h2>
 <p>Tumult Analytics provides the <a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a>
-interface and two concrete implementations for specifying privacy budgets,
+interface and concrete implementations for specifying privacy budgets,
 depending on which privacy definition you wish to use:
-<a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a>
-and <a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a>.</p>
+<a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a>,
+<a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a>,
+or <a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDPBudget</span></code></a>.</p>
 <p>Recall from tutorials <a class="reference internal" href="../tutorials/first-steps.html#first-steps"><span class="std std-ref">first steps</span></a> and
 <a class="reference internal" href="../tutorials/privacy-budget-basics.html#working-with-privacy-budgets"><span class="std std-ref">working with privacy budgets</span></a> that when you initialize a Session,
 you must allocate a total privacy budget for it. Then, each time you evaluate a
@@ -514,7 +519,7 @@ when determining an appropriate privacy budget.</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 69a4687b at 2024-04-17 15:40.
+Built from 92e6ba99 at 2024-04-17 15:50.
   </div>
   
   <div class="footer-item">
