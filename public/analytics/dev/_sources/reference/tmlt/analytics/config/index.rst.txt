@@ -64,6 +64,39 @@ Classes
 
 
 
+   .. py:method:: enable()
+
+      Enable the features controlled by this feature flag.
+
+
+   .. py:method:: disable()
+
+      Disable the features controlled by this feature flag.
+
+
+   .. py:method:: reset()
+
+      Reset this feature flag to its base state.
+
+
+   .. py:method:: enabled()
+
+      A context manager inside which this feature flag will be enabled.
+
+      When the context manager exits, the feature flag will be reset to the
+      state it was in before entering the context manager, ignoring any
+      changes that occurred inside the context.
+
+
+   .. py:method:: disabled()
+
+      A context manager inside which this feature flag will be disabled.
+
+      When the context manager exits, the feature flag will be reset to the
+      state it was in before entering the context manager, ignoring any
+      changes that occurred inside the context.
+
+
    .. py:method:: raise_if_disabled()
 
       Raise a RuntimeError if this feature flag is not enabled.
@@ -93,13 +126,12 @@ Classes
       disabled by default are experimental and should not be used in
       production. Their APIs may change at any time.
 
-      A particular feature can be enabled or disabled by assigning True or
-      False, respectively, to the corresponding attribute of this class, for
-      example:
+      A particular feature can be enabled or disabled by using the methods on
+      its :class:`~FeatureFlag` instance, for example:
 
       .. code-block::
 
-          config.features.example_feature = True
+          config.features.example_feature.enable()
 
 
 
