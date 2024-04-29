@@ -361,23 +361,31 @@ for a given query is ultimately an exercise in balancing privacy and accuracy
 needs; we discuss this topic more <a class="reference internal" href="#privacy-tradeoff"><span class="std std-ref">below</span></a>.</p>
 <p>Tumult Analytics currently supports three distinct privacy definitions:</p>
 <ul class="simple">
-<li><p><em>Pure Differential Privacy (Pure DP)</em>, with its associated privacy parameter <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>.
+<li><p><em>Pure differential privacy (“pure DP”, or simply “DP”)</em>, with its associated privacy parameter <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>.
 For data publication use cases, the value of <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> is often chosen to be
 <a class="reference external" href="https://desfontain.es/privacy/real-world-differential-privacy.html">lower than 5</a>.
-Values below 1 are typically considered conservative.</p></li>
-<li><p><em>Zero Concentrated Differential Privacy (zCDP)</em>, with its associated
-privacy parameter <code class="docutils literal notranslate"><span class="pre">rho</span></code>.</p></li>
-<li><p><em>Approximate Differential Privacy (Approx DP)</em>, with its associated
-privacy parameters <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> and <code class="docutils literal notranslate"><span class="pre">delta</span></code>.</p></li>
+Values below 1 are typically considered conservative. Pure DP is the
+original definition of differential privacy. To learn more, consult this
+<a class="reference external" href="https://desfontain.es/privacy/differential-privacy-in-more-detail.html">blog post</a>.</p></li>
+<li><p><em>Approximate differential privacy (“Approx DP”)</em>, with its associated
+privacy parameters <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> and <code class="docutils literal notranslate"><span class="pre">delta</span></code>. Approximate DP is a relaxation of PureDP where mechanisms are
+allowed to fail to provide Pure DP guarantees with some (hopefully small) probability,``delta``. Delta can
+be thought of as that failure probability. The most common advice is to set <code class="docutils literal notranslate"><span class="pre">delta</span></code> significantly smaller
+smaller than <code class="docutils literal notranslate"><span class="pre">1/n</span></code>, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of people in your dataset. The relaxation of Pure DP
+enables new types of queries and can therefore be a powerful tool that still offers reasonable privacy
+protections when used correctly. To learn more, consult this
+<a class="reference external" href="https://desfontain.es/privacy/almost-differential-privacy.html">blog post</a>.</p></li>
+<li><p><em>Zero-concentrated differential privacy (“zCDP”)</em>, with its associated
+privacy parameter <code class="docutils literal notranslate"><span class="pre">rho</span></code>. zCDP is a variant of differential privacy, which
+adjusts the way privacy loss is measured. To learn more, consult this:
+<a class="reference external" href="https://desfontain.es/privacy/renyi-dp-zero-concentrated-dp.html">blog post</a>.</p></li>
 </ul>
-<p>Queries with higher values of epsilon, rho, and delta will produce results with
+<p>Queries with higher values of epsilon, delta, and rho will produce results with
 less randomization that are therefore more accurate, whereas
 a lower budget yields more noisy results. Lower budgets are a stronger privacy guarantee,
 which highlights the trade-off between privacy and accuracy.</p>
-<p>Understanding the differences between these privacy definitions is out of scope
-for this guide; for simple use cases, pure DP is a good default choice.
-To learn more about zCDP, you can consult this <a class="reference external" href="https://desfontain.es/privacy/renyi-dp-zero-concentrated-dp.html">blog post</a>.
-To learn more about Approx DP, you can consult this <a class="reference external" href="https://desfontain.es/privacy/almost-differential-privacy.html">blog post</a>.</p>
+<p>There is far more to learn about variations on differential privacy than we can
+explain in this guide; for simple use cases, pure DP is a good default choice.</p>
 <section id="using-privacy-budgets-in-tumult-analytics">
 <h2>Using privacy budgets in Tumult Analytics<a class="headerlink" href="#using-privacy-budgets-in-tumult-analytics" title="Permalink to this headline">#</a></h2>
 <p>Tumult Analytics provides the <a class="reference internal" href="../reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyBudget</span></code></a>
@@ -519,7 +527,7 @@ when determining an appropriate privacy budget.</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from b7963740 at 2024-04-29 16:25.
+Built from 2b350cbc at 2024-04-29 16:38.
   </div>
   
   <div class="footer-item">
