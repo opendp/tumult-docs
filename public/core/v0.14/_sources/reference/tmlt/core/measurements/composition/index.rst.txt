@@ -1,0 +1,119 @@
+
+
+
+******************
+composition
+******************
+
+.. py:module:: tmlt.core.measurements.composition
+
+.. autoapi-nested-parse::
+
+   Measurement for combining multiple measurements into a single measurement.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Composition`
+     - Describes a measurement constructed by composing two or more Measurements.
+
+   
+.. py:class:: Composition(measurements, hint = None)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Describes a measurement constructed by composing two or more Measurements.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: measurements()
+      :property:
+
+      Returns the list of measurements being composed.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      Returns the sum of the :meth:`~.Measurement.privacy_function`'s of the composed
+      measurements on d_in (adding element-wise for :class:`~.ApproxDP`).
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If the :meth:`~.Measurement.privacy_function` of one
+          of the composed measurements raises :class:`NotImplementedError`.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Returns True only if outputs are close under close inputs.
+
+      Let d_outs be the d_out from the :meth:`~.Measurement.privacy_function`'s of all
+      measurements or the d_outs from the hint if one of them raises
+      :class:`NotImplementedError`.
+
+      And total_d_out to be the sum of d_outs (adding element-wise for
+      :class:`~.ApproxDP` ).
+
+      This returns True if total_d_out <= d_out (the input argument) and each composed
+      measurement satisfies its :meth:`~.Measurement.privacy_relation` from d_in to
+      its d_out from d_outs.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_measure.
+
+      :raises ValueError: If a hint is not provided and the
+          :meth:`~.Measurement.privacy_function` of one of the composed
+          measurements raises :class:`NotImplementedError`.
+
+
+   .. py:method:: __call__(data)
+
+      Return answers to composed measurements.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+
+
+
+

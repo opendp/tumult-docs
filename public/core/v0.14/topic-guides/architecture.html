@@ -1,0 +1,702 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tumult Core Architecture &#8212; Tumult Core  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Handling Real Numbers" href="real-numbers.html" />
+    <link rel="prev" title="Topic Guides" href="index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Topic Guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/core/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../additional-resources/index.html">
+  Additional Resources
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/core" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.14.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables topic-guides/architecture and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.14.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "topic-guides/architecture.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/core/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "topic-guides/architecture.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.14.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.14.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Tumult Core Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="real-numbers.html">
+   Handling Real Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-guarantee.html">
+   Tumult Core Privacy Guarantee
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="known-vulnerabilities.html">
+   Known Vulnerabilities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="special-values.html">
+   NaNs, nulls, and infs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="spark.html">
+   Spark
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformation-and-measurements">
+   Transformation and Measurements
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-note-on-privacy-stability-functions-and-relations">
+     A note on privacy/stability functions and relations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combinators">
+   Combinators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interactivity">
+   Interactivity
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="tumult-core-architecture">
+<span id="architecture"></span><h1>Tumult Core Architecture<a class="headerlink" href="#tumult-core-architecture" title="Permalink to this headline">#</a></h1>
+<p>Tumult Core is a collection of composable components for implementing
+algorithms to perform differentially private computations. The design of Tumult Core
+is based on the design proposed in the <a class="reference external" href="https://projects.iq.harvard.edu/files/opendp/files/opendp_programming_framework_11may2020_1_01.pdf">OpenDP White Paper</a>.
+On this page, we give an overview of this design. Readers who want more
+information should refer to the linked white paper.</p>
+<section id="transformation-and-measurements">
+<h2>Transformation and Measurements<a class="headerlink" href="#transformation-and-measurements" title="Permalink to this headline">#</a></h2>
+<p>The main building blocks of Tumult Core are <em>transformations</em> and
+<em>measurements</em>. In this section we begin by defining a transformation,
+then later define a measurement, which shares many of the same concepts.</p>
+<p>A transformation is a function that takes an input from some
+defined <em>input domain</em> and produces an output in some given <em>output domain</em>.
+Each transformation additionally has an <em>input metric</em> – a function defining
+distances <a class="footnote-reference brackets" href="#id10" id="id1">1</a> between elements in the input domain – and an <em>output metric</em> – a
+function defining distances between elements in the output domain.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Tumult core, subclasses of <a class="reference internal" href="../reference/tmlt/core/transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a> and
+<a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a> are constructors for various types of transformations;
+instances of these classes are the transformations and measurements
+themselves. For example, the <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/map/index.html#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a> class does not define a
+single transformation. It is a constructor that can create many distinct
+transformations, all with different domains, metrics, and stability
+relations.</p>
+</div>
+<p>For example, the following code uses the <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/filter/index.html#tmlt.core.transformations.spark_transformations.filter.Filter" title="tmlt.core.transformations.spark_transformations.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a> transformation
+constructor to create a transformation that filters out the records with ages of
+at least 18 years. This transformation constructor takes only a single domain
+and metric, because the input and output metric/domain must match. Even if some
+metric and domain information is inferred by the constructor, we can always
+inspect the constructed transformation to see its input domain, input metric,
+output domain, and output metric.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span> <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">())]</span>
+<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)],</span> <span class="n">schema</span><span class="o">=</span><span class="n">spark_schema</span><span class="p">)</span>
+<span class="n">tumult_schema</span> <span class="o">=</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span><span class="n">convert_spark_schema</span><span class="p">(</span><span class="n">spark_schema</span><span class="p">))</span>
+<span class="n">filter_transformation</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">filter_expr</span><span class="o">=</span><span class="s2">&quot;Age &gt;= 18&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">input_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">output_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">input_metric</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">output_metric</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SparkDataFrameDomain(schema={&#39;Name&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;Age&#39;: SparkIntegerColumnDescriptor(allow_null=True, size=32)})
+SparkDataFrameDomain(schema={&#39;Name&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;Age&#39;: SparkIntegerColumnDescriptor(allow_null=True, size=32)})
+SymmetricDifference()
+SymmetricDifference()
+</pre></div>
+</div>
+<p>Finally, each transformation has a <em>stability function</em> (this statement is not
+completely true, see <a class="reference internal" href="#function-vs-relation"><span class="std std-ref">A note on privacy/stability functions and relations</span></a>). This is a function that, given an input
+distance <code class="docutils literal notranslate"><span class="pre">d_in</span></code>, returns an output distance <code class="docutils literal notranslate"><span class="pre">d_out</span></code> satisfying the following:</p>
+<blockquote>
+<div><p>For any pair of inputs in the input domain whose distance is at most <code class="docutils literal notranslate"><span class="pre">d_in</span></code>
+in the input metric, the corresponding outputs (the result of the
+transformation applied to each of the two inputs) will have distance at most
+<code class="docutils literal notranslate"><span class="pre">d_out</span></code> in the output metric.</p>
+</div></blockquote>
+<p>Ideally, we want the stability function to give the smallest such <code class="docutils literal notranslate"><span class="pre">d_out</span></code>
+satisfying the statement above, but this is not required. Although this
+guarantee on its own is not a privacy guarantee, we will see in the following
+section that it allows us to construct complex measurements with provable
+privacy guarantees.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+<p>Measurements have many things in common with transformations, for example they
+both have input domains and input metrics. One key difference is that
+measurements produced random outputs, while transformations are deterministic.
+Since the output is random, a measurement has an <em>output measure</em> rather than an
+output metric.</p>
+<p>The measure defines a distance between distributions of outputs over the output
+domain of the measurement. For example, if <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> denote two
+distributions over some output domain, the distance between <span class="math notranslate nohighlight">\(P\)</span> and
+<span class="math notranslate nohighlight">\(Q\)</span> in the <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a> output measure is <span class="math notranslate nohighlight">\(D_{\infty}(X \| Y)\)</span>,
+where <span class="math notranslate nohighlight">\(D_{\infty}(P \| Q) = \sup _{x \in \operatorname{supp} (Q)} \log
+\frac{P(x)}{Q(x)}\)</span> is the Rényi divergence of infinite order.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_noise</span> <span class="o">=</span> <span class="n">AddGeometricNoise</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">input_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">input_metric</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">output_measure</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>NumpyIntegerDomain(size=64)
+AbsoluteDifference()
+PureDP()
+</pre></div>
+</div>
+<p>Like transformations, measurements have a guarantee that relates a distance in
+the input metric to a distance in the output measure. We call this guarantee the
+<em>privacy function</em>, and it works similarly to a stability function. The privacy
+function takes an input distance <code class="docutils literal notranslate"><span class="pre">d_in</span></code> and returns an output distance
+<code class="docutils literal notranslate"><span class="pre">d_out</span></code> satisfying the following:</p>
+<blockquote>
+<div><p>For any pair of inputs in the input domain whose distance is at most
+<code class="docutils literal notranslate"><span class="pre">d_in</span></code> in the input metric, the distribution of the corresponding random
+outputs (the result of the measurements applied to each of the two inputs),
+will have distance at most <code class="docutils literal notranslate"><span class="pre">d_out</span></code> in the output measure.</p>
+</div></blockquote>
+<p>Like stability functions, we want the privacy function to give the smallest such
+<code class="docutils literal notranslate"><span class="pre">d_out</span></code> satisfying the statement above in order to get the best possible
+privacy guarantee, but this is not required. The privacy function of a
+measurement can give us a standard <span class="math notranslate nohighlight">\(\epsilon\)</span>-differential privacy
+guarantee, but is more general and can give other provable guarantees (see
+<a class="reference internal" href="privacy-guarantee.html#privacy-guarantee"><span class="std std-ref">Tumult Core Privacy Guarantee</span></a>). In addition, the privacy function can be used to
+build more complex measurements, as we will see in the next section.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1/2
+</pre></div>
+</div>
+<section id="a-note-on-privacy-stability-functions-and-relations">
+<span id="function-vs-relation"></span><h3>A note on privacy/stability functions and relations<a class="headerlink" href="#a-note-on-privacy-stability-functions-and-relations" title="Permalink to this headline">#</a></h3>
+<p>In some cases, privacy and stability functions are not sufficient to capture
+the guarantees we want to make about the transformations or measurements. For
+example, the <em>approximate differential privacy</em> measure has two parameters:
+<span class="math notranslate nohighlight">\(\epsilon\)</span> and <span class="math notranslate nohighlight">\(\delta\)</span>. Some measurements that use this privacy
+measure actually satisfy a continuum of <span class="math notranslate nohighlight">\((\epsilon, \delta)\)</span>-differential
+privacy guarantees that are not comparable, and it is therefore not possible for
+the privacy function to give the best guarantee.</p>
+<p>Because of cases like these, we also consider more general versions of the
+stability and privacy functions, called <em>stability relations</em> and <em>privacy
+relations</em> respectively. A stability relation is a function that, given <em>both</em>
+an input distance <code class="docutils literal notranslate"><span class="pre">d_in</span></code> and an output distance <code class="docutils literal notranslate"><span class="pre">d_out</span></code>, returns either
+<code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. If the relation returns <code class="docutils literal notranslate"><span class="pre">True</span></code>, it means that the
+transformation satisfies the following:</p>
+<blockquote>
+<div><p>For any pair of inputs in the input domain whose distance is at most <code class="docutils literal notranslate"><span class="pre">d_in</span></code>
+in the input metric, the corresponding outputs (the result of the
+transformation applied to each of the two inputs) will have distance at most
+<code class="docutils literal notranslate"><span class="pre">d_out</span></code> in the output metric.</p>
+</div></blockquote>
+<p>Similarly, a privacy relation takes an input distance <code class="docutils literal notranslate"><span class="pre">d_in</span></code> and an output
+distance <code class="docutils literal notranslate"><span class="pre">d_out</span></code>, and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. If it returns <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+the measurement satisfies the following:</p>
+<blockquote>
+<div><p>For any pair of inputs in the input domain whose distance is at most
+<code class="docutils literal notranslate"><span class="pre">d_in</span></code> in the input metric, the distribution of the corresponding random
+outputs (the result of the measurements applied to each of the two inputs),
+will have distance at most <code class="docutils literal notranslate"><span class="pre">d_out</span></code> in the output measure.</p>
+</div></blockquote>
+<p>Every transformation has a stability relation and every measurement has a
+privacy relation. If the stability and privacy functions are defined, these
+relations are defined using the corresponding functions. For transformations and
+measurements for which the stability and privacy functions are insufficient,
+only the stability and privacy relations are defined. Transformations and
+measurements with only stability and privacy relations have the drawback that
+they take extra work to chain (see <a class="reference internal" href="#combinators"><span class="std std-ref">Combinators</span></a> for an overview on
+chaining).</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">stability_relation</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_transformation</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
+1
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">privacy_relation</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">add_noise</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
+1/2
+</pre></div>
+</div>
+</section>
+</section>
+<section id="combinators">
+<span id="id2"></span><h2>Combinators<a class="headerlink" href="#combinators" title="Permalink to this headline">#</a></h2>
+<p>The power of Tumult Core lies in the ways that we can combine components to
+produce larger and more complex components. The first way that we can do this is
+by <em>chaining</em> components. The <a class="reference internal" href="../reference/tmlt/core/transformations/chaining/index.html#tmlt.core.transformations.chaining.ChainTT" title="tmlt.core.transformations.chaining.ChainTT"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTT</span></code></a> component combines two
+transformations into a single transformation and <a class="reference internal" href="../reference/tmlt/core/measurements/chaining/index.html#tmlt.core.measurements.chaining.ChainTM" title="tmlt.core.measurements.chaining.ChainTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTM</span></code></a> combines a
+transformation and measurement into a new measurement. These components behave
+like function composition, e.g. <a class="reference internal" href="../reference/tmlt/core/transformations/chaining/index.html#tmlt.core.transformations.chaining.ChainTT" title="tmlt.core.transformations.chaining.ChainTT"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTT</span></code></a> applies the first
+transformation to the input, then passes the output to the second transformation,
+then returns the output of the second transformation. Most importantly though,
+<a class="reference internal" href="../reference/tmlt/core/transformations/chaining/index.html#tmlt.core.transformations.chaining.ChainTT" title="tmlt.core.transformations.chaining.ChainTT"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTT</span></code></a> and <a class="reference internal" href="../reference/tmlt/core/measurements/chaining/index.html#tmlt.core.measurements.chaining.ChainTM" title="tmlt.core.measurements.chaining.ChainTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTM</span></code></a> have their own stability and privacy
+relations (and functions, if the subcomponents have stability/privacy functions)
+that are derived automatically <a class="footnote-reference brackets" href="#id11" id="id3">2</a> from their constituent pieces. This is what
+allows us to build complex measurements with privacy relations that are
+automatically determined.</p>
+<p>The following example uses <a class="reference internal" href="../reference/tmlt/core/transformations/chaining/index.html#tmlt.core.transformations.chaining.ChainTT" title="tmlt.core.transformations.chaining.ChainTT"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTT</span></code></a> <a class="footnote-reference brackets" href="#id12" id="id4">3</a> to combine our previous <code class="docutils literal notranslate"><span class="pre">filter</span></code>
+transformation with a new <code class="docutils literal notranslate"><span class="pre">count</span></code> transformation.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="n">Count</span><span class="p">(</span><span class="n">input_domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
+<span class="n">filter_and_count</span> <span class="o">=</span> <span class="n">ChainTT</span><span class="p">(</span><span class="n">filter_transformation</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_and_count</span><span class="o">.</span><span class="n">input_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_and_count</span><span class="o">.</span><span class="n">output_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_and_count</span><span class="o">.</span><span class="n">input_metric</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_and_count</span><span class="o">.</span><span class="n">output_metric</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filter_and_count</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SparkDataFrameDomain(schema={&#39;Name&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;Age&#39;: SparkIntegerColumnDescriptor(allow_null=True, size=32)})
+NumpyIntegerDomain(size=64)
+SymmetricDifference()
+AbsoluteDifference()
+1
+</pre></div>
+</div>
+<p>This new transformation can be chained with our previously created measurement
+using <a class="reference internal" href="../reference/tmlt/core/measurements/chaining/index.html#tmlt.core.measurements.chaining.ChainTM" title="tmlt.core.measurements.chaining.ChainTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTM</span></code></a> to create a new measurement.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">measurement</span> <span class="o">=</span> <span class="n">ChainTM</span><span class="p">(</span><span class="n">filter_and_count</span><span class="p">,</span> <span class="n">add_noise</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">input_domain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">input_metric</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">output_measure</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SparkDataFrameDomain(schema={&#39;Name&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;Age&#39;: SparkIntegerColumnDescriptor(allow_null=True, size=32)})
+SymmetricDifference()
+PureDP()
+1/2
+</pre></div>
+</div>
+<p>Additionally, Tumult Core provides components for composing measurements. These
+components are specific to particular privacy measures, and leverage the
+composition properties of that measure. For example, the <em>sequential
+composition</em> property of <span class="math notranslate nohighlight">\(\epsilon\)</span>-differential privacy is leveraged in
+the <a class="reference internal" href="../reference/tmlt/core/measurements/composition/index.html#tmlt.core.measurements.composition.Composition" title="tmlt.core.measurements.composition.Composition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Composition</span></code></a> class.  Another example of a measurement combinator
+is <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>, which composes measurements that are applied
+to a series of datasets with a bound on the contribution of a single user across
+all the datasets.  Note that this class is actually a different type of
+measurement: one that supports interactivity (discussed in the next section).
+Tumult Core could additionally define a measurement for composing measurements
+in a non-interactive way, but the interactive versions provide the same
+functionality and more.</p>
+</section>
+<section id="interactivity">
+<h2>Interactivity<a class="headerlink" href="#interactivity" title="Permalink to this headline">#</a></h2>
+<p>Tumult Core also supports interactivity. Instances of the class
+<a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.Queryable" title="tmlt.core.measurements.interactive_measurements.Queryable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queryable</span></code></a> (that we refer to as <em>queryables</em>) are objects that can
+queried interactively. Queryables have some state, including, e.g. the private
+data and the remaining privacy budget afforded to the queryable.  Queryables are
+not instantiated directly, but rather by evaluating an <em>interactive measurement</em>
+which gives the privacy guarantee of the queryable. An interactive measurement
+(a <a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a> with <code class="docutils literal notranslate"><span class="pre">is_interactive</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>) is a type of
+measurement that produces a queryable, rather than directly producing some
+private output.  Unlike non-interactive measurements, the output measure of an
+interactive measurement applies to the transcript resulting from an interaction
+between a user and the produced queryable (all queries made to the queryable,
+along with the responses from the queryable).</p>
+<p>Tumult Core supports various types of interactive components, such as <em>privacy
+filters</em> <a class="bibtex reference internal" href="../zcitations.html#rogersvru16" id="id5">[RVRU16]</a> (<a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.SequentialComposition" title="tmlt.core.measurements.interactive_measurements.SequentialComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialComposition</span></code></a>).  Like the
+non-interactive components of Tumult Core, interactive components are composable
+and extensible. For example, queryables can evaluate interactive measurements
+that spawn new queryables without knowing anything about the behavior of the
+spawned queryable. This allows for rich interactions between the user and the
+private data whose privacy properties are derived from the constituent
+interactive measurements.</p>
+<p>One complexity surrounding interactivity is that the privacy guarantee of the
+<em>concurrent composition</em> of queryables is not known for some privacy
+definitions.  Concurrent composition occurs when queries to the composed
+queryables are interleaved (i.e. ask a query of queryable 1, ask a query of
+qeuryable 2, then again ask a query of queryable 1). Although differential
+privacy supports concurrent composition, other privacy notions such as zCDP
+<a class="bibtex reference internal" href="../zcitations.html#buns16" id="id6">[BS16]</a> have not been shown to support concurrent composition (see
+<a class="bibtex reference internal" href="../zcitations.html#vadhant21" id="id7">[VW21]</a>). Tumult Core currently maintains a consistent approach to
+concurrent composition: it is not permitted regardless of the privacy measure.</p>
+<p>The modularity of the Tumult Core design of interactivity, combined with the
+restriction on concurrent composition makes interactivity somewhat complicated
+to work with.  For this reason, Tumult Core provides the
+<a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.PrivacyAccountant" title="tmlt.core.measurements.interactive_measurements.PrivacyAccountant"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacyAccountant</span></code></a> interface for working with interactivity that hides
+some of this complexity and manages details for the user.</p>
+<p>Our model for interactive is based on the <em>interactive mechanisms</em> defined by
+<a class="bibtex reference internal" href="../zcitations.html#vadhant21" id="id8">[VW21]</a>. Compared to this work, we use slightly different terminology
+and roughly split <a class="bibtex reference internal" href="../zcitations.html#vadhant21" id="id9">[VW21]</a>’s interactive mechanism into an
+instantiation phase (Tumult Core interactive measurement) and the interaction
+phase (Tumult Core queryable).</p>
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Although it is useful to think of this function as defining distances, in
+reality these distances need not satisfy the triangle inequality, and do
+not even need to be numbers (e.g. see <a class="reference internal" href="../reference/tmlt/core/metrics/index.html#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a>) – “distances”
+are any set with a partial ordering.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>When both the constituent components do not have stability/privacy
+functions defined, it’s necessary to provide a <em>chaining hint</em> to the
+chaining component in order for it to construct it’s stability/privacy
+guarantee. Providing a good hint can be challenging, but since most
+components have stability or privacy functions defined, chaining hints
+are beyond the scope of this article.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id4">3</a></span></dt>
+<dd><p>In these examples we explicitly use <a class="reference internal" href="../reference/tmlt/core/transformations/chaining/index.html#tmlt.core.transformations.chaining.ChainTT" title="tmlt.core.transformations.chaining.ChainTT"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTT</span></code></a> and
+<a class="reference internal" href="../reference/tmlt/core/measurements/chaining/index.html#tmlt.core.measurements.chaining.ChainTM" title="tmlt.core.measurements.chaining.ChainTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChainTM</span></code></a>. More commonly, we use the operator <code class="docutils literal notranslate"><span class="pre">|</span></code> for
+chaining, which automatically selects between the two chaining combinators.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Topic Guides</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="real-numbers.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Handling Real Numbers</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from bf60d220 at 2024-05-16 19:31.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

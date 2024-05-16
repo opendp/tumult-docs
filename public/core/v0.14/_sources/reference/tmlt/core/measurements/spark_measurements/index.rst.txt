@@ -1,0 +1,779 @@
+
+
+
+*************************
+spark_measurements
+*************************
+
+.. py:module:: tmlt.core.measurements.spark_measurements
+
+.. autoapi-nested-parse::
+
+   Measurements on Spark DataFrames.
+
+   See `the architecture guide <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.SparkMeasurement`
+     - Base class that materializes output DataFrames before returning.
+   * - :class:`.AddNoiseToColumn`
+     - Adds noise to a single aggregated column of a Spark DataFrame.
+   * - :class:`.ApplyInPandas`
+     - Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.
+   * - :class:`.GeometricPartitionSelection`
+     - Discovers the distinct rows in a DataFrame, suppressing infrequent rows.
+   * - :class:`.BoundSelection`
+     - Discovers a noisy bound based on a DataFrame Column.
+
+   
+.. py:class:: SparkMeasurement(input_domain, input_metric, output_measure, is_interactive)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Base class that materializes output DataFrames before returning.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: call(val)
+      :abstractmethod:
+
+      Performs measurement.
+
+      .. warning::
+
+         Spark recomputes the output of this method (adding different noise
+         each time) on every call to collect.
+
+
+   .. py:method:: __call__(val)
+
+      Performs measurement and returns a DataFrame with additional protections.
+
+      See :ref:`pseudo-side-channel-mitigations` for more details on the specific
+      mitigations we apply here.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: AddNoiseToColumn(input_domain, measurement, measure_column)
+
+   Bases: :class:`SparkMeasurement`
+
+   Adds noise to a single aggregated column of a Spark DataFrame.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from tmlt.core.measurements.noise_mechanisms import (
+       ...     AddLaplaceNoise,
+       ... )
+       >>> from tmlt.core.measurements.pandas_measurements.series import (
+       ...     AddNoiseToSeries,
+       ... )
+       >>> from tmlt.core.domains.numpy_domains import NumpyIntegerDomain
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "B": ["b1", "b2", "b1", "b2"],
+       ...             "count": [3, 2, 1, 0],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B  count
+   0  a1  b1      3
+   1  a1  b2      2
+   2  a2  b1      1
+   3  a2  b2      0
+   >>> # Create a measurement that can add noise to a pd.Series
+   >>> add_laplace_noise = AddLaplaceNoise(
+   ...     scale="0.5",
+   ...     input_domain=NumpyIntegerDomain(),
+   ... )
+   >>> # Create a measurement that can add noise to a Spark DataFrame
+   >>> add_laplace_noise_to_column = AddNoiseToColumn(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...             "count": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     measurement=AddNoiseToSeries(add_laplace_noise),
+   ...     measure_column="count",
+   ... )
+   >>> # Apply measurement to data
+   >>> noisy_spark_dataframe = add_laplace_noise_to_column(spark_dataframe)
+   >>> print_sdf(noisy_spark_dataframe) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+       A   B   count
+   0  a1  b1 ...
+   1  a1  b2 ...
+   2  a2  b1 ...
+   3  a2  b2 ...
+
+   Measurement Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output type - Spark DataFrame
+       * Input metric - :class:`~.OnColumn` with metric
+         `SumOf(SymmetricDifference())` (for :class:`~.PureDP`) or
+         `RootSumOfSquared(SymmetricDifference())` (for :class:`~.RhoZCDP`) on each
+         column.
+       * Output measure - :class:`~.PureDP` or :class:`~.RhoZCDP`
+
+       >>> add_laplace_noise_to_column.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'count': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> add_laplace_noise_to_column.input_metric
+       OnColumn(column='count', metric=SumOf(inner_metric=AbsoluteDifference()))
+       >>> add_laplace_noise_to_column.output_measure
+       PureDP()
+
+       Privacy Guarantee:
+           :class:`~.AddNoiseToColumn`'s :meth:`~.privacy_function` returns the output of
+           privacy function on the :class:`~.AddNoiseToSeries` measurement.
+
+           >>> add_laplace_noise_to_column.privacy_function(1)
+           2
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the name of the column to add noise to.
+
+
+   .. py:method:: measurement()
+      :property:
+
+      Returns the :class:`~.AddNoiseToSeries` measurement to apply to measure column.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See `the architecture guide <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If the :meth:`~.Measurement.privacy_function` of the
+          :class:`~.AddNoiseToSeries` measurement raises :class:`NotImplementedError`.
+
+
+   .. py:method:: call(val)
+
+      Applies measurement to measure column.
+
+
+   .. py:method:: __call__(val)
+
+      Performs measurement and returns a DataFrame with additional protections.
+
+      See :ref:`pseudo-side-channel-mitigations` for more details on the specific
+      mitigations we apply here.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: ApplyInPandas(input_domain, input_metric, aggregation_function)
+
+   Bases: :class:`SparkMeasurement`
+
+   Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: aggregation_function()
+      :property:
+
+      Returns the aggregation function.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Returns input domain.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See `the architecture guide <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If self.aggregation_function.privacy_function(d_in)
+          raises :class:`NotImplementedError`.
+
+
+   .. py:method:: call(val)
+
+      Returns DataFrame obtained by applying pandas aggregation to each group.
+
+
+   .. py:method:: __call__(val)
+
+      Performs measurement and returns a DataFrame with additional protections.
+
+      See :ref:`pseudo-side-channel-mitigations` for more details on the specific
+      mitigations we apply here.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: GeometricPartitionSelection(input_domain, threshold, alpha, count_column = None)
+
+   Bases: :class:`SparkMeasurement`
+
+   Discovers the distinct rows in a DataFrame, suppressing infrequent rows.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1"] + ["a2"] * 100,
+       ...             "B": ["b1"] + ["b2"] * 100,
+       ...         }
+       ...     )
+       ... )
+       >>> noisy_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a2"],
+       ...             "B": ["b2"],
+       ...             "count": [106],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+         A   B
+   0    a1  b1
+   1    a2  b2
+   2    a2  b2
+   3    a2  b2
+   4    a2  b2
+   ..   ..  ..
+   96   a2  b2
+   97   a2  b2
+   98   a2  b2
+   99   a2  b2
+   100  a2  b2
+   <BLANKLINE>
+   [101 rows x 2 columns]
+   >>> measurement = GeometricPartitionSelection(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     threshold=50,
+   ...     alpha=1,
+   ... )
+   >>> noisy_spark_dataframe = measurement(spark_dataframe) # doctest: +SKIP
+   >>> print_sdf(noisy_spark_dataframe)  # doctest: +NORMALIZE_WHITESPACE
+       A   B  count
+   0  a2  b2    106
+
+   Measurement Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output type - Spark DataFrame
+       * Input metric - :class:`~.SymmetricDifference`
+       * Output measure - :class:`~.ApproxDP`
+
+       >>> measurement.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
+       >>> measurement.input_metric
+       SymmetricDifference()
+       >>> measurement.output_measure
+       ApproxDP()
+
+       Privacy Guarantee:
+           For :math:`d_{in} = 0`, returns :math:`(0, 0)`
+
+           For :math:`d_{in} = 1`, returns
+           :math:`(1/\alpha, 1 - CDF_{\alpha}[\tau - 2])`
+
+           For :math:`d_{in} > 1`, returns
+           :math:`(d_{in} \cdot \epsilon, d_{in} \cdot e^{d_{in} \cdot \epsilon} \cdot \delta)`
+
+           where:
+
+           * :math:`\alpha` is :attr:`~.alpha`
+           * :math:`\tau` is :attr:`~.threshold`
+           * :math:`\epsilon` is the first element returned for the :math:`d_{in} = 1`
+             case
+           * :math:`\delta` is the second element returned for the :math:`d_{in} = 1`
+             case
+           * :math:`CDF_{\alpha}` is :func:`~.double_sided_geometric_cmf_exact`
+
+           >>> epsilon, delta = measurement.privacy_function(1)
+           >>> epsilon
+           1
+           >>> delta.to_float(round_up=True)
+           3.8328565409781243e-22
+           >>> epsilon, delta = measurement.privacy_function(2)
+           >>> epsilon
+           2
+           >>> delta.to_float(round_up=True)
+           5.664238400088129e-21
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.alpha`
+        - Returns the noise scale.
+      * - :meth:`.threshold`
+        - Returns the minimum noisy count to include row.
+      * - :meth:`.count_column`
+        - Returns the count column name.
+      * - :meth:`.privacy_function`
+        - Returns the smallest d_out satisfied by the measurement.
+      * - :meth:`.call`
+        - Return the noisy counts for common rows.
+      * - :meth:`.__call__`
+        - Performs measurement and returns a DataFrame with additional protections.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_measure`
+        - Distance measure on output.
+      * - :meth:`.is_interactive`
+        - Returns true iff the measurement is interactive.
+      * - :meth:`.privacy_relation`
+        - Return True if close inputs produce close outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: alpha()
+      :property:
+
+      Returns the noise scale.
+
+
+   .. py:method:: threshold()
+      :property:
+
+      Returns the minimum noisy count to include row.
+
+
+   .. py:method:: count_column()
+      :property:
+
+      Returns the count column name.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See `the architecture guide <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: call(val)
+
+      Return the noisy counts for common rows.
+
+
+   .. py:method:: __call__(val)
+
+      Performs measurement and returns a DataFrame with additional protections.
+
+      See :ref:`pseudo-side-channel-mitigations` for more details on the specific
+      mitigations we apply here.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: BoundSelection(input_domain, bound_column, alpha, threshold = 0.95)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Discovers a noisy bound based on a DataFrame Column.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1"] * 100,
+       ...             "B": [10] * 10 + [20] * 20 + [30] * 30 + [40] * 40,
+       ...         }
+       ...     )
+       ... )
+       >>> min_bound, max_bound = -64, 64
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+        A   B
+   0   a1  10
+   1   a1  10
+   2   a1  10
+   3   a1  10
+   4   a1  10
+   ..  ..  ..
+   95  a1  40
+   96  a1  40
+   97  a1  40
+   98  a1  40
+   99  a1  40
+   <BLANKLINE>
+   [100 rows x 2 columns]
+   >>> measurement = BoundSelection(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     bound_column="B",
+   ...     alpha=1,
+   ...     threshold=0.95,
+   ... )
+   >>> min_bound, max_bound = measurement(spark_dataframe) # doctest: +SKIP
+   >>> print(f"Min: {min_bound}, Max: {max_bound}")  # doctest: +NORMALIZE_WHITESPACE
+   Min: -64, Max: 64
+
+   Measurement Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output type - Tuple[int, int] if the :attr:`~.bound_column` is int, else Tuple[float, float]
+       * Input metric - :class:`~.SymmetricDifference`
+       * Output measure - :class:`~.PureDP`
+
+       >>> measurement.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> measurement.input_metric
+       SymmetricDifference()
+       >>> measurement.output_measure
+       PureDP()
+
+       Privacy Guarantee:
+           For :math:`d_{in} = 0`, returns :math:`0`
+
+           For :math:`d_{in} > 0`, returns :math:`(4/\alpha) * d_{in}`
+
+           where:
+
+           * :math:`\alpha` is :attr:`~.alpha`
+
+           >>> measurement.privacy_function(1)
+           4
+           >>> measurement.privacy_function(2)
+           8
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.bound_column`
+        - Returns the column to compute the bounds for.
+      * - :meth:`.bound_column_type`
+        - Returns the type of the bound column.
+      * - :meth:`.splits`
+        - Returns the splits.
+      * - :meth:`.alpha`
+        - Returns the alpha.
+      * - :meth:`.threshold`
+        - Returns the threshold.
+      * - :meth:`.privacy_function`
+        - Returns the smallest d_out satisfied by the measurement.
+      * - :meth:`.__call__`
+        - Returns the bounds for the given column.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_measure`
+        - Distance measure on output.
+      * - :meth:`.is_interactive`
+        - Returns true iff the measurement is interactive.
+      * - :meth:`.privacy_relation`
+        - Return True if close inputs produce close outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: bound_column()
+      :property:
+
+      Returns the column to compute the bounds for.
+
+
+   .. py:method:: bound_column_type()
+      :property:
+
+      Returns the type of the bound column.
+
+
+   .. py:method:: splits()
+      :property:
+
+      Returns the splits.
+
+
+   .. py:method:: alpha()
+      :property:
+
+      Returns the alpha.
+
+
+   .. py:method:: threshold()
+      :property:
+
+      Returns the threshold.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See `the architecture guide <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Returns the bounds for the given column.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+
+
+

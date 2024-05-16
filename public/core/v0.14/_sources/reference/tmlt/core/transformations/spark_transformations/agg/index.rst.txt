@@ -1,0 +1,1084 @@
+
+
+
+**********
+agg
+**********
+
+.. py:module:: tmlt.core.transformations.spark_transformations.agg
+
+.. autoapi-nested-parse::
+
+   Transformations for grouping and aggregating Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information on transformations.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.create_count_aggregation`
+     - Returns a :class:`~.Count` or :class:`~.CountGrouped` transformation.
+   * - :func:`.create_count_distinct_aggregation`
+     - Returns a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped` transformation.
+   * - :func:`.create_sum_aggregation`
+     - Returns a :class:`~.Sum` or :class:`~.SumGrouped` transformation.
+
+.. py:function:: create_count_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkDataFrameDomain, input_metric: Union[tmlt.core.metrics.SymmetricDifference, tmlt.core.metrics.HammingDistance], count_column: Optional[str]) -> Count
+              create_count_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain, input_metric: Union[tmlt.core.metrics.SumOf, tmlt.core.metrics.RootSumOfSquared], count_column: Optional[str]) -> CountGrouped
+
+   Returns a :class:`~.Count` or :class:`~.CountGrouped` transformation.
+
+   :param input_domain: Domain of input DataFrames or GroupedDataFrames.
+   :param input_metric: Distance metric on inputs.
+   :param count_column: If `input_domain` is a SparkGroupedDataFrameDomain, this is the
+                        name of the output count column.
+
+
+
+.. py:function:: create_count_distinct_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkDataFrameDomain, input_metric: Union[tmlt.core.metrics.SymmetricDifference, tmlt.core.metrics.HammingDistance], count_column: Optional[str]) -> CountDistinct
+              create_count_distinct_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain, input_metric: Union[tmlt.core.metrics.SumOf, tmlt.core.metrics.RootSumOfSquared], count_column: Optional[str]) -> CountDistinctGrouped
+
+   Returns a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped` transformation.
+
+   :param input_domain: Domain of input DataFrames or GroupedDataFrames.
+   :param input_metric: Distance metric on inputs.
+   :param count_column: If `input_domain` is a SparkGroupedDataFrameDomain, this is the
+                        name of the output count column.
+
+
+
+.. py:function:: create_sum_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkDataFrameDomain, input_metric: Union[tmlt.core.metrics.SymmetricDifference, tmlt.core.metrics.HammingDistance], measure_column: str, lower: tmlt.core.utils.exact_number.ExactNumberInput, upper: tmlt.core.utils.exact_number.ExactNumberInput, sum_column: Optional[str]) -> Sum
+              create_sum_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain, input_metric: Union[tmlt.core.metrics.SumOf, tmlt.core.metrics.RootSumOfSquared], measure_column: str, lower: tmlt.core.utils.exact_number.ExactNumberInput, upper: tmlt.core.utils.exact_number.ExactNumberInput, sum_column: Optional[str]) -> SumGrouped
+
+   Returns a :class:`~.Sum` or :class:`~.SumGrouped` transformation.
+
+   :param input_domain: Domain of input DataFrames or GroupedDataFrames.
+   :param input_metric: Distance metric on inputs.
+                        name of the output sum column.
+   :param measure_column: Column to be summed.
+   :param lower: Lower clipping bound for measure column.
+   :param upper: Upper clipping bound for measure column.
+   :param sum_column: If `input_domain` is a SparkGroupedDataFrameDomain, this is the
+                      column name to be used for sums in the DataFrame output by the
+                      measurement. If None, this column will be named “sum(<measure_column>)”.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Count`
+     - Counts the number of records in a spark DataFrame.
+   * - :class:`.CountDistinct`
+     - Counts the number of distinct records in a spark DataFrame.
+   * - :class:`.CountGrouped`
+     - Counts the number of records in each group in a :class:`~.GroupedDataFrame`.
+   * - :class:`.CountDistinctGrouped`
+     - Counts the number of distinct records in each group in a :class:`~.GroupedDataFrame`.
+   * - :class:`.Sum`
+     - Returns the sum of a single numeric column in a spark DataFrame.
+   * - :class:`.SumGrouped`
+     - Computes the sum of a column for each group in a :class:`~.GroupedDataFrame`.
+
+   
+.. py:class:: Count(input_domain, input_metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Counts the number of records in a spark DataFrame.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "X": [2, 3, 5, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  3
+   2  a2 -1
+   3  a2  5
+   >>> # Create the transformation
+   >>> count_dataframe = Count(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     input_metric=SymmetricDifference(),
+   ... )
+   >>> # Apply transformation to data
+   >>> count_dataframe(spark_dataframe)
+   4
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.NumpyIntegerDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.HammingDistance`
+       * Output metric - :class:`~.AbsoluteDifference`
+
+       >>> count_dataframe.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> count_dataframe.output_domain
+       NumpyIntegerDomain(size=64)
+       >>> count_dataframe.input_metric
+       SymmetricDifference()
+       >>> count_dataframe.output_metric
+       AbsoluteDifference()
+
+       Stability Guarantee:
+           :class:`~.Count`'s :meth:`~.stability_function` returns `d_in` if input metric is
+           :class:`~.SymmetricDifference` and :math:`d_{in} * 2` if input metric is :class:`~.HammingDistance`.
+
+            >>> count_dataframe.stability_function(1)
+            1
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(df)
+
+      Returns the number of records in given DataFrame.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: CountDistinct(input_domain, input_metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Counts the number of distinct records in a spark DataFrame.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "X": [2, 2, -1, 5],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  2
+   2  a2 -1
+   3  a2  5
+   >>> # Create the transformation
+   >>> count_distinct_dataframe = CountDistinct(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     input_metric=SymmetricDifference(),
+   ... )
+   >>> # Apply transformation to data
+   >>> count_distinct_dataframe(spark_dataframe)
+   3
+
+   Transformation contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.NumpyIntegerDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.HammingDistance`
+       * Output metric - :class:`~.AbsoluteDifference`
+
+       >>> count_distinct_dataframe.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> count_distinct_dataframe.output_domain
+       NumpyIntegerDomain(size=64)
+       >>> count_distinct_dataframe.input_metric
+       SymmetricDifference()
+       >>> count_distinct_dataframe.output_metric
+       AbsoluteDifference()
+
+       Stability Guarantee:
+           :class:`~CountDistinct`'s :meth:`~stability_function` returns
+           `d_in` if input metric is :class:`~.SymmetricDifference` and
+           :math:`d_{in} * 2` if input metric is :class:`~.HammingDistance`.
+
+           >>> count_distinct_dataframe.stability_function(1)
+           1
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(df)
+
+      Returns the number of distinct records in the given DataFrame.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: CountGrouped(input_domain, input_metric, count_column = None)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Counts the number of records in each group in a :class:`~.GroupedDataFrame`.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkGroupedDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ...     SumOf,
+       ... )
+       >>> from tmlt.core.utils.grouped_dataframe import (
+       ...     GroupedDataFrame,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "X": [2, 3, 5, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  3
+   2  a2 -1
+   3  a2  5
+   >>> # Specify group keys
+   >>> group_keys = spark.createDataFrame(
+   ...     [("a0",), ("a1",)],
+   ...     schema=["A"],
+   ... )
+   >>> # Note that we have omitted 'a2' from our group keys
+   >>> # and included 'a0' which doesn't exist in the DataFrame
+   >>> # Create the transformation
+   >>> count_by_A = CountGrouped(
+   ...     input_domain=SparkGroupedDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...         groupby_columns=["A"],
+   ...     ),
+   ...     input_metric=SumOf(SymmetricDifference()),
+   ... )
+   >>> # Create GroupedDataFrame
+   >>> grouped_dataframe = GroupedDataFrame(
+   ...     dataframe=spark_dataframe,
+   ...     group_keys=group_keys,
+   ... )
+   >>> # Apply transformation to data
+   >>> print_sdf(count_by_A(grouped_dataframe))
+       A  count
+   0  a0      0
+   1  a1      2
+   >>> # Note that the output does not contain an entry
+   >>> # for group key 'a2' but it does contain an entry
+   >>> # for group key 'a0'.
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkGroupedDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SumOf` or :class:`~.RootSumOfSquared` of :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.OnColumn`
+
+       >>> count_by_A.input_domain
+       SparkGroupedDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=['A'])
+       >>> count_by_A.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'count': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> count_by_A.input_metric
+       SumOf(inner_metric=SymmetricDifference())
+       >>> count_by_A.output_metric
+       OnColumn(column='count', metric=SumOf(inner_metric=AbsoluteDifference()))
+
+       Stability Guarantee:
+           :class:`~.CountGrouped`'s :meth:`~.stability_function` returns `d_in`.
+
+           >>> count_by_A.stability_function(1)
+           1
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: input_domain()
+      :property:
+
+      Returns input domain.
+
+
+   .. py:method:: count_column()
+      :property:
+
+      Returns the count column name.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(grouped_data)
+
+      Returns a DataFrame containing counts for each group.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: CountDistinctGrouped(input_domain, input_metric, count_column = None)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Counts the number of distinct records in each group in a :class:`~.GroupedDataFrame`.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkGroupedDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ...     SumOf,
+       ... )
+       >>> from tmlt.core.utils.grouped_dataframe import (
+       ...     GroupedDataFrame,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a1", "a2", "a2"],
+       ...             "X": [2, 2, 3, 5, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  2
+   2  a1  3
+   3  a2 -1
+   4  a2  5
+   >>> # Specify group keys
+   >>> group_keys = spark.createDataFrame(
+   ...     [("a0",), ("a1",)],
+   ...     schema=["A"],
+   ... )
+   >>> # Note that we have omitted 'a2' from our group keys
+   >>> # and included 'a0' which doesn't exist in the DataFrame
+   >>> # Create the transformation
+   >>> count_distinct_by_A = CountDistinctGrouped(
+   ...     input_domain=SparkGroupedDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...         groupby_columns=["A"],
+   ...     ),
+   ...     input_metric=SumOf(SymmetricDifference()),
+   ... )
+   >>> # Create GroupedDataFrame
+   >>> grouped_dataframe = GroupedDataFrame(
+   ...     dataframe=spark_dataframe,
+   ...     group_keys=group_keys,
+   ... )
+   >>> # Apply transformation to data
+   >>> print_sdf(count_distinct_by_A(grouped_dataframe))
+       A  count_distinct
+   0  a0               0
+   1  a1               2
+   >>> # Note that the output does not contain an entry
+   >>> # for group key 'a2' but it does contain an entry
+   >>> # for group key 'a0'.
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkGroupedDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SumOf` or :class:`~.RootSumOfSquared` of :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.OnColumn`
+
+       >>> count_distinct_by_A.input_domain
+       SparkGroupedDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=['A'])
+       >>> count_distinct_by_A.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'count_distinct': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> count_distinct_by_A.input_metric
+       SumOf(inner_metric=SymmetricDifference())
+       >>> count_distinct_by_A.output_metric
+       OnColumn(column='count_distinct', metric=SumOf(inner_metric=AbsoluteDifference()))
+
+       Stability Guarantee:
+           :class:`~.CountDistinctGrouped`'s :meth:`~.stability_function` returns `d_in`.
+
+           >>> count_distinct_by_A.stability_function(1)
+           1
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: input_domain()
+      :property:
+
+      Returns input domain.
+
+
+   .. py:method:: count_column()
+      :property:
+
+      Returns the count column name.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(grouped_data)
+
+      Returns a DataFrame containing counts for each group.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: Sum(input_domain, input_metric, measure_column, lower, upper)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Returns the sum of a single numeric column in a spark DataFrame.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "X": [2, 3, 5, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  3
+   2  a2 -1
+   3  a2  5
+   >>> # Create the transformation
+   >>> sum_X = Sum(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     input_metric=SymmetricDifference(),
+   ...     measure_column="X",
+   ...     upper=4,
+   ...     lower=0,
+   ... )
+   >>> # Apply transformation to data
+   >>> sum_X(spark_dataframe)
+   9
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.NumpyIntegerDomain` or :class:`~.NumpyFloatDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.HammingDistance`
+       * Output metric - :class:`~.AbsoluteDifference`
+
+       >>> sum_X.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> sum_X.output_domain
+       NumpyIntegerDomain(size=64)
+       >>> sum_X.input_metric
+       SymmetricDifference()
+       >>> sum_X.output_metric
+       AbsoluteDifference()
+
+       Stability Guarantee:
+           :class:`~.Sum`'s :meth:`~.stability_function` returns `d_in` times sensitivity of
+           the sum. (See below for more information).
+
+           >>> sum_X.stability_function(1)
+           4
+
+           The sensitivity of the sum is:
+
+           * :math:`\max(|h|, |\ell|)` if the input metric is
+             :class:`~.SymmetricDifference`
+           * :math:`h - \ell` if the input metric is
+             :class:`~.HammingDistance`
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.upper`
+        - Returns upper clipping bound.
+      * - :meth:`.lower`
+        - Returns lower clipping bound.
+      * - :meth:`.measure_column`
+        - Returns name of the column to be summed.
+      * - :meth:`.stability_function`
+        - Returns the smallest d_out satisfied by the transformation.
+      * - :meth:`.__call__`
+        - Returns the sum of specified column in the dataframe.
+      * - :meth:`.input_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.output_metric`
+        - Distance metric on input domain.
+      * - :meth:`.stability_relation`
+        - Returns True only if close inputs produce close outputs.
+      * - :meth:`.__or__`
+        - Return this transformation chained with another component.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: upper()
+      :property:
+
+      Returns upper clipping bound.
+
+
+   .. py:method:: lower()
+      :property:
+
+      Returns lower clipping bound.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns name of the column to be summed.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(df)
+
+      Returns the sum of specified column in the dataframe.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: SumGrouped(input_domain, input_metric, measure_column, lower, upper, sum_column = None)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Computes the sum of a column for each group in a :class:`~.GroupedDataFrame`.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkGroupedDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.metrics import (
+       ...     SymmetricDifference,
+       ...     SumOf,
+       ... )
+       >>> from tmlt.core.utils.grouped_dataframe import (
+       ...     GroupedDataFrame,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a2", "a2"],
+       ...             "X": [2, 3, 6, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A  X
+   0  a1  2
+   1  a1  3
+   2  a2 -1
+   3  a2  6
+   >>> # Specify group keys
+   >>> group_keys = spark.createDataFrame(
+   ...     [("a0",), ("a2",)],
+   ...     schema=["A"],
+   ... )
+   >>> # Note that we omit the key 'a1' even though it
+   >>> # exists in the spark dataframe and include 'a0'.
+   >>> # Create the transformation
+   >>> sum_X_by_A = SumGrouped(
+   ...     input_domain=SparkGroupedDataFrameDomain(
+   ...         schema={
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...         groupby_columns=["A"],
+   ...     ),
+   ...     input_metric=SumOf(SymmetricDifference()),
+   ...     measure_column="X",
+   ...     upper=4,
+   ...     lower=0,
+   ... )
+   >>> # Create GroupedDataFrame
+   >>> grouped_dataframe = GroupedDataFrame(
+   ...     dataframe=spark_dataframe,
+   ...     group_keys=group_keys,
+   ... )
+   >>> # Apply transformation to data
+   >>> print_sdf(sum_X_by_A(grouped_dataframe))
+       A  sum(X)
+   0  a0       0
+   1  a2       4
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkGroupedDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SumOf` or :class:`~.RootSumOfSquared`
+       * Output metric - :class:`~.OnColumn`
+
+       >>> sum_X_by_A.input_domain
+       SparkGroupedDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}, groupby_columns=['A'])
+       >>> sum_X_by_A.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'sum(X)': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> sum_X_by_A.input_metric
+       SumOf(inner_metric=SymmetricDifference())
+       >>> sum_X_by_A.output_metric
+       OnColumn(column='sum(X)', metric=SumOf(inner_metric=AbsoluteDifference()))
+
+       Stability Guarantee:
+           :class:`~.SumGrouped`'s :meth:`~.stability_function` returns `d_in` * sensitivity of the sum.
+
+           >>> sum_X_by_A.stability_function(1)
+           4
+
+           The sensitivity of the sum is:
+
+           * :math:`\max(|h|, |\ell|)`
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.upper`
+        - Returns upper clipping bound.
+      * - :meth:`.lower`
+        - Returns lower clipping bound.
+      * - :meth:`.measure_column`
+        - Returns name of the column to be summed.
+      * - :meth:`.sum_column`
+        - Returns name of the output column containing sums.
+      * - :meth:`.input_domain`
+        - Returns input domain.
+      * - :meth:`.stability_function`
+        - Returns the smallest d_out satisfied by the transformation.
+      * - :meth:`.__call__`
+        - Returns DataFrame containing sum of specified column for each group.
+      * - :meth:`.input_metric`
+        - Distance metric on input domain.
+      * - :meth:`.output_domain`
+        - Return input domain for the measurement.
+      * - :meth:`.output_metric`
+        - Distance metric on input domain.
+      * - :meth:`.stability_relation`
+        - Returns True only if close inputs produce close outputs.
+      * - :meth:`.__or__`
+        - Return this transformation chained with another component.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: upper()
+      :property:
+
+      Returns upper clipping bound.
+
+
+   .. py:method:: lower()
+      :property:
+
+      Returns lower clipping bound.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns name of the column to be summed.
+
+
+   .. py:method:: sum_column()
+      :property:
+
+      Returns name of the output column containing sums.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Returns input domain.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(grouped_dataframe)
+
+      Returns DataFrame containing sum of specified column for each group.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+
