@@ -343,16 +343,6 @@ function checkPageExistsAndRedirect(event) {
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.__init__">
-       __init__
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.dataframe">
-       dataframe
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.from_dict">
        from_dict
       </a>
@@ -363,18 +353,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.filter">
-       filter
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.dataframe">
+       dataframe
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.__getitem__">
        __getitem__
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.__mul__">
-       __mul__
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -385,6 +370,26 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.schema">
        schema
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.__mul__">
+       __mul__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.columns">
+       columns
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.filter">
+       filter
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.size">
+       size
       </a>
      </li>
     </ul>
@@ -432,51 +437,22 @@ transformations.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet" title="Permalink to this definition">#</a></dt>
-<dd><p>A class containing a set of values for specific columns.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeySet</span></span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>A class containing a set of values for specific columns.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If a column has null values dropped or replaced, then Analytics
 will raise an error if you use a KeySet that contains a null value for
 that column.</p>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>, </em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em>) – </p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a new keyset.</p>
-<p>The <a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dict" title="tmlt.analytics.keyset.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a> and <a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> methods are preferred
-over directly using the constructor to create new KeySets. Directly
-constructing KeySets skips checks that guarantee the uniqueness of
-output rows.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataframe</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><em>Union</em></a><em>[</em><em>pyspark.sql.dataframe.DataFrame</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a><em>[</em><em>[</em><em>]</em><em>, </em><em>pyspark.sql.dataframe.DataFrame</em><em>]</em><em>]</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.dataframe">
-<span class="sig-name descname"><span class="pre">dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the dataframe associated with this KeySet.</p>
-<p>This dataframe contains every combination of values being selected in
-the KeySet, and its rows are guaranteed to be unique as long as the
-KeySet was constructed safely.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dict" title="tmlt.analytics.keyset.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a> and <a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> methods
+are the preferred way to construct KeySets. Directly constructing KeySets
+skips checks that guarantee the uniqueness of output rows, and <code class="docutils literal notranslate"><span class="pre">__init__</span></code>
+methods are not guaranteed to work the same way between releases.</p>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.from_dict">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domains</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.from_dict" title="Permalink to this definition">#</a></dt>
@@ -532,8 +508,156 @@ dataframe may raise exceptions or have other unanticipated effects.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.dataframe">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the dataframe associated with this KeySet.</p>
+<p>This dataframe contains every combination of values being selected in
+the KeySet, and its rows are guaranteed to be unique as long as the
+KeySet was constructed safely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__getitem__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__getitem__" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">KeySet[col,</span> <span class="pre">col,</span> <span class="pre">...]</span></code> returns a KeySet with those columns only.</p>
+<p>The returned KeySet contains all unique combinations of values in the
+given columns that were present in the original KeySet.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">domains</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A   B</span>
+<span class="go">0  a1  b1</span>
+<span class="go">1  a1  b2</span>
+<span class="go">2  a2  b1</span>
+<span class="go">3  a2  b2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A   B</span>
+<span class="go">0  a1  b1</span>
+<span class="go">1  a1  b2</span>
+<span class="go">2  a2  b1</span>
+<span class="go">3  a2  b2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A</span>
+<span class="go">0  a1</span>
+<span class="go">1  a2</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>columns</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet">KeySet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Override equality.</p>
+<p>Two KeySets are equal if their dataframes contain the same values for
+the same columns (in any order).</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset3</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a1&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">keyset2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">keyset3</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">different_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">different_keyset</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><em>object</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.schema">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a Schema based on the KeySet.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">domains</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">keyset</span><span class="o">.</span><span class="n">schema</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> 
+<span class="go">Schema({&#39;A&#39;: ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),</span>
+<span class="go">        &#39;B&#39;: ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False)})</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__mul__" title="Permalink to this definition">#</a></dt>
+<dd><p>A product (<code class="docutils literal notranslate"><span class="pre">KeySet</span> <span class="pre">*</span> <span class="pre">KeySet</span></code>) returns the cross-product of both KeySets.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">keyset1</span> <span class="o">*</span> <span class="n">keyset2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A   B</span>
+<span class="go">0  a1  b1</span>
+<span class="go">1  a1  b2</span>
+<span class="go">2  a2  b1</span>
+<span class="go">3  a2  b2</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>KeySet</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet">KeySet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.columns">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the list of columns used by this KeySet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.filter">
-<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.filter" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter this KeySet using some condition.</p>
 <p>This method accepts the same syntax as
 <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.filter" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>: valid conditions are those that
@@ -579,124 +703,12 @@ in Spark SQL. Examples of valid conditions include:</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__getitem__" title="Permalink to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">KeySet[col,</span> <span class="pre">col,</span> <span class="pre">...]</span></code> returns a KeySet with those columns only.</p>
-<p>The returned KeySet contains all unique combinations of values in the
-given columns that were present in the original KeySet.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">domains</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="gp">... </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A   B</span>
-<span class="go">0  a1  b1</span>
-<span class="go">1  a1  b2</span>
-<span class="go">2  a2  b1</span>
-<span class="go">3  a2  b2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_b_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A   B</span>
-<span class="go">0  a1  b1</span>
-<span class="go">1  a1  b2</span>
-<span class="go">2  a2  b1</span>
-<span class="go">3  a2  b2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_keyset</span> <span class="o">=</span> <span class="n">keyset</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_keyset</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A</span>
-<span class="go">0  a1</span>
-<span class="go">1  a2</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>columns</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Ellipsis</em><em>]</em><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet">KeySet</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__mul__">
-<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__mul__" title="Permalink to this definition">#</a></dt>
-<dd><p>A product (<code class="docutils literal notranslate"><span class="pre">KeySet</span> <span class="pre">*</span> <span class="pre">KeySet</span></code>) returns the cross-product of both KeySets.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span> <span class="o">=</span> <span class="n">keyset1</span> <span class="o">*</span> <span class="n">keyset2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">product</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A   B</span>
-<span class="go">0  a1  b1</span>
-<span class="go">1  a1  b2</span>
-<span class="go">2  a2  b1</span>
-<span class="go">3  a2  b2</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>KeySet</em></a>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet">KeySet</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.__eq__" title="Permalink to this definition">#</a></dt>
-<dd><p>Override equality.</p>
-<p>Two KeySets are equal if their dataframes contain the same values for
-the same columns (in any order).</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset3</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="s2">&quot;a1&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">keyset2</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">keyset3</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">different_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">==</span> <span class="n">different_keyset</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><em>object</em></a>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.schema">
-<span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.schema" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a Schema based on the KeySet.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">domains</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-<span class="gp">... </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">keyset</span><span class="o">.</span><span class="n">schema</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> 
-<span class="go">Schema({&#39;A&#39;: ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),</span>
-<span class="go">        &#39;B&#39;: ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False)})</span>
-</pre></div>
-</div>
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.size">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.size" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the size of this KeySet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -752,7 +764,7 @@ the same columns (in any order).</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 81eb23a2 at 2024-05-03 22:07.
+Built from dd39a5fe at 2024-05-16 16:16.
   </div>
   
   <div class="footer-item">

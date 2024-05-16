@@ -243,6 +243,8 @@ Classes
         - Enforce a :mod:`~tmlt.analytics.constraints.Constraint` on the current table.
       * - :meth:`.get_groups`
         - Returns a query that gets combinations of values in the listed columns.
+      * - :meth:`.get_bounds`
+        - Returns a query that gets approximate upper and lower bounds for a column.
       * - :meth:`.groupby`
         - Groups the query by the given set of keys, returning a GroupedQueryBuilder.
       * - :meth:`.count`
@@ -1448,7 +1450,7 @@ Classes
       ...     QueryBuilder("my_private_data")
       ...     .get_groups()
       ... )
-      >>> # Answering the query with infinite privacy budget
+      >>> # Answering the query
       >>> answer = sess.evaluate(
       ...     query,
       ...     sess.remaining_privacy_budget
@@ -1463,6 +1465,56 @@ Classes
                       any column marked as a *privacy ID* in a table with a
                       :class:`~tmlt.analytics.protected_change.ProtectedChange` of
                       :class:`~tmlt.analytics.protected_change.AddRowsWithID`.
+
+
+   .. py:method:: get_bounds(column)
+
+      Returns a query that gets approximate upper and lower bounds for a column.
+
+      The bounds are chosen so that most of the values fall between them. They can
+      be used as the upper and lower bounds for any of the aggregations that require
+      bounds, like sum or quantile.
+
+      .. note::
+          The algorithm is approximate, and differentially private, so the bounds
+          may not be tight, and not all input values may fall between them.
+
+      ..
+          >>> from tmlt.analytics.privacy_budget import PureDPBudget
+          >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> import tmlt.analytics.session
+          >>> import pandas as pd
+          >>> from pyspark.sql import SparkSession
+          >>> spark = SparkSession.builder.getOrCreate()
+
+      .. rubric:: Example
+
+      >>> my_private_data = spark.createDataFrame(
+      ...     pd.DataFrame(
+      ...         [[i] for i in range(100)],
+      ...         columns=["X"],
+      ...     )
+      ... )
+      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      ...     privacy_budget=PureDPBudget(float('inf')),
+      ...     source_id="my_private_data",
+      ...     dataframe=my_private_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> # Building a get_groups query
+      >>> query = (
+      ...     QueryBuilder("my_private_data")
+      ...     .get_bounds("X")
+      ... )
+      >>> # Answering the query with infinite privacy budget
+      >>> answer = sess.evaluate(
+      ...     query,
+      ...     sess.remaining_privacy_budget
+      ... )
+      >>> answer
+      (-128, 128)
+
+      :param column: Name of the column whose bounds we want to get.
 
 
    .. py:method:: groupby(by)

@@ -42,7 +42,9 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: KeySet(dataframe)
+.. py:class:: KeySet
+
+   Bases: :class:`abc.ABC`
 
    A class containing a set of values for specific columns.
 
@@ -51,19 +53,15 @@ Classes
        will raise an error if you use a KeySet that contains a null value for
        that column.
 
+   .. note::
+       The :meth:`~.KeySet.from_dict` and :meth:`~.KeySet.from_dataframe` methods
+       are the preferred way to construct KeySets. Directly constructing KeySets
+       skips checks that guarantee the uniqueness of output rows, and ``__init__``
+       methods are not guaranteed to work the same way between releases.
 
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: dataframe()
-
-      Return the dataframe associated with this KeySet.
-
-      This dataframe contains every combination of values being selected in
-      the KeySet, and its rows are guaranteed to be unique as long as the
-      KeySet was constructed safely.
 
 
    .. py:method:: from_dict(domains)
@@ -107,7 +105,118 @@ Classes
       dataframe may raise exceptions or have other unanticipated effects.
 
 
+   .. py:method:: dataframe()
+      :abstractmethod:
+
+      Return the dataframe associated with this KeySet.
+
+      This dataframe contains every combination of values being selected in
+      the KeySet, and its rows are guaranteed to be unique as long as the
+      KeySet was constructed safely.
+
+
+   .. py:method:: __getitem__(columns)
+      :abstractmethod:
+
+      ``KeySet[col, col, ...]`` returns a KeySet with those columns only.
+
+      The returned KeySet contains all unique combinations of values in the
+      given columns that were present in the original KeySet.
+
+      .. rubric:: Example
+
+      >>> domains = {
+      ...     "A": ["a1", "a2"],
+      ...     "B": ["b1", "b2"],
+      ...     "C": ["c1", "c2"],
+      ...     "D": [0, 1, 2, 3]
+      ... }
+      >>> keyset = KeySet.from_dict(domains)
+      >>> a_b_keyset = keyset["A", "B"]
+      >>> a_b_keyset.dataframe().sort("A", "B").toPandas()
+          A   B
+      0  a1  b1
+      1  a1  b2
+      2  a2  b1
+      3  a2  b2
+      >>> a_b_keyset = keyset[["A", "B"]]
+      >>> a_b_keyset.dataframe().sort("A", "B").toPandas()
+          A   B
+      0  a1  b1
+      1  a1  b2
+      2  a2  b1
+      3  a2  b2
+      >>> a_keyset = keyset["A"]
+      >>> a_keyset.dataframe().sort("A").toPandas()
+          A
+      0  a1
+      1  a2
+
+
+   .. py:method:: __eq__(other)
+
+      Override equality.
+
+      Two KeySets are equal if their dataframes contain the same values for
+      the same columns (in any order).
+
+      .. rubric:: Example
+
+      >>> keyset1 = KeySet.from_dict({"A": ["a1", "a2"]})
+      >>> keyset2 = KeySet.from_dict({"A": ["a1", "a2"]})
+      >>> keyset3 = KeySet.from_dict({"A": ["a2", "a1"]})
+      >>> keyset1 == keyset2
+      True
+      >>> keyset1 == keyset3
+      True
+      >>> different_keyset = KeySet.from_dict({"B": ["a1", "a2"]})
+      >>> keyset1 == different_keyset
+      False
+
+
+   .. py:method:: schema()
+      :abstractmethod:
+
+      Returns a Schema based on the KeySet.
+
+      .. rubric:: Example
+
+      >>> domains = {
+      ...     "A": ["a1", "a2"],
+      ...     "B": [0, 1, 2, 3],
+      ... }
+      >>> keyset = KeySet.from_dict(domains)
+      >>> schema = keyset.schema()
+      >>> schema # doctest: +NORMALIZE_WHITESPACE
+      Schema({'A': ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),
+              'B': ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False)})
+
+
+   .. py:method:: __mul__(other)
+
+      A product (``KeySet * KeySet``) returns the cross-product of both KeySets.
+
+      .. rubric:: Example
+
+      >>> keyset1 = KeySet.from_dict({"A": ["a1", "a2"]})
+      >>> keyset2 = KeySet.from_dict({"B": ["b1", "b2"]})
+      >>> product = keyset1 * keyset2
+      >>> product.dataframe().sort("A", "B").toPandas()
+          A   B
+      0  a1  b1
+      1  a1  b2
+      2  a2  b1
+      3  a2  b2
+
+
+   .. py:method:: columns()
+      :abstractmethod:
+
+      Return the list of columns used by this KeySet.
+
+
    .. py:method:: filter(condition)
+      :abstractmethod:
 
       Filter this KeySet using some condition.
 
@@ -146,96 +255,10 @@ Classes
       3  a2  3
 
 
-   .. py:method:: __getitem__(columns)
+   .. py:method:: size()
+      :abstractmethod:
 
-      ``KeySet[col, col, ...]`` returns a KeySet with those columns only.
-
-      The returned KeySet contains all unique combinations of values in the
-      given columns that were present in the original KeySet.
-
-      .. rubric:: Example
-
-      >>> domains = {
-      ...     "A": ["a1", "a2"],
-      ...     "B": ["b1", "b2"],
-      ...     "C": ["c1", "c2"],
-      ...     "D": [0, 1, 2, 3]
-      ... }
-      >>> keyset = KeySet.from_dict(domains)
-      >>> a_b_keyset = keyset["A", "B"]
-      >>> a_b_keyset.dataframe().sort("A", "B").toPandas()
-          A   B
-      0  a1  b1
-      1  a1  b2
-      2  a2  b1
-      3  a2  b2
-      >>> a_b_keyset = keyset[["A", "B"]]
-      >>> a_b_keyset.dataframe().sort("A", "B").toPandas()
-          A   B
-      0  a1  b1
-      1  a1  b2
-      2  a2  b1
-      3  a2  b2
-      >>> a_keyset = keyset["A"]
-      >>> a_keyset.dataframe().sort("A").toPandas()
-          A
-      0  a1
-      1  a2
-
-
-   .. py:method:: __mul__(other)
-
-      A product (``KeySet * KeySet``) returns the cross-product of both KeySets.
-
-      .. rubric:: Example
-
-      >>> keyset1 = KeySet.from_dict({"A": ["a1", "a2"]})
-      >>> keyset2 = KeySet.from_dict({"B": ["b1", "b2"]})
-      >>> product = keyset1 * keyset2
-      >>> product.dataframe().sort("A", "B").toPandas()
-          A   B
-      0  a1  b1
-      1  a1  b2
-      2  a2  b1
-      3  a2  b2
-
-
-   .. py:method:: __eq__(other)
-
-      Override equality.
-
-      Two KeySets are equal if their dataframes contain the same values for
-      the same columns (in any order).
-
-      .. rubric:: Example
-
-      >>> keyset1 = KeySet.from_dict({"A": ["a1", "a2"]})
-      >>> keyset2 = KeySet.from_dict({"A": ["a1", "a2"]})
-      >>> keyset3 = KeySet.from_dict({"A": ["a2", "a1"]})
-      >>> keyset1 == keyset2
-      True
-      >>> keyset1 == keyset3
-      True
-      >>> different_keyset = KeySet.from_dict({"B": ["a1", "a2"]})
-      >>> keyset1 == different_keyset
-      False
-
-
-   .. py:method:: schema()
-
-      Returns a Schema based on the KeySet.
-
-      .. rubric:: Example
-
-      >>> domains = {
-      ...     "A": ["a1", "a2"],
-      ...     "B": [0, 1, 2, 3],
-      ... }
-      >>> keyset = KeySet.from_dict(domains)
-      >>> schema = keyset.schema()
-      >>> schema # doctest: +NORMALIZE_WHITESPACE
-      Schema({'A': ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),
-              'B': ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False)})
+      Get the size of this KeySet.
 
 
 
