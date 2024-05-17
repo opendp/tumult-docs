@@ -1,0 +1,541 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>_query_expr_compiler &#8212; Tumult Analytics Pro  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../../../../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.10.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/analytics/_query_expr_compiler/index and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.10.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics-pro/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/analytics/_query_expr_compiler/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.10.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.10.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler">
+     QueryExprCompiler
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism">
+       mechanism
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure">
+       output_measure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.query_schema">
+       query_schema
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__">
+       __call__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation">
+       build_transformation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.analytics._query_expr_compiler">
+<span id="query-expr-compiler"></span><h1>_query_expr_compiler<a class="headerlink" href="#module-tmlt.analytics._query_expr_compiler" title="Permalink to this headline">#</a></h1>
+<p>Defines <a class="reference internal" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler" title="tmlt.analytics._query_expr_compiler.QueryExprCompiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprCompiler</span></code></a> for compiling query expressions.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler" title="tmlt.analytics._query_expr_compiler.QueryExprCompiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprCompiler</span></code></a></p></td>
+<td><p>Compiles a list of query expressions to a single measurement object.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QueryExprCompiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_measure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PureDP()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler" title="Permalink to this definition">#</a></dt>
+<dd><p>Compiles a list of query expressions to a single measurement object.</p>
+<p>Requires that each query is a groupby-aggregation on a sequence of transformations
+on a PrivateSource or PrivateView. If there is a PrivateView, the stability of the
+view is handled when the noise scale is calculated.</p>
+<p>A QueryExprCompiler object compiles a list of
+<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a> objects into
+a single  object (based on the privacy framework). The
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code> object can be
+run with a private data source to obtain DP answers to supplied queries.</p>
+<p>Supported <a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>s:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.PrivateSource" title="tmlt.analytics.query_expr.PrivateSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateSource</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Filter" title="tmlt.analytics.query_expr.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.FlatMap" title="tmlt.analytics.query_expr.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Map" title="tmlt.analytics.query_expr.Map"><code class="xref py py-class docutils literal notranslate"><span class="pre">Map</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Rename" title="tmlt.analytics.query_expr.Rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rename</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Select" title="tmlt.analytics.query_expr.Select"><code class="xref py py-class docutils literal notranslate"><span class="pre">Select</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.JoinPublic" title="tmlt.analytics.query_expr.JoinPublic"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinPublic</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.JoinPrivate" title="tmlt.analytics.query_expr.JoinPrivate"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinPrivate</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByCount" title="tmlt.analytics.query_expr.GroupByCount"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCount</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByCountDistinct" title="tmlt.analytics.query_expr.GroupByCountDistinct"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByCountDistinct</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSum" title="tmlt.analytics.query_expr.GroupByBoundedSum"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSum</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedAverage" title="tmlt.analytics.query_expr.GroupByBoundedAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedAverage</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByBoundedVariance" title="tmlt.analytics.query_expr.GroupByBoundedVariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedVariance</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.GroupByQuantile" title="tmlt.analytics.query_expr.GroupByQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByQuantile</span></code></a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_measure</strong> (<em>Union</em><em>[</em><em>tmlt.core.measures.PureDP</em><em>, </em><em>tmlt.core.measures.ApproxDP</em><em>, </em><em>tmlt.core.measures.RhoZCDP</em><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_measure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PureDP()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_measure</strong> (<span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code>]</span> (default: <code class="docutils literal notranslate"><span class="pre">PureDP()</span></code>)) – Distance measure for measurement’s output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mechanism</span></span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.mechanism" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the value of Core noise mechanism.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tmlt.core.measurements.aggregations.NoiseMechanism</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the distance measure for the measurement’s output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[tmlt.core.measures.PureDP, tmlt.core.measures.ApproxDP, tmlt.core.measures.RhoZCDP]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.query_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.query_schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the schema created by a given query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a>) – </p></li>
+<li><p><strong>catalog</strong> (<a class="reference internal" href="../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../_schema/index.html#tmlt.analytics._schema.Schema" title="tmlt.analytics._schema.Schema">tmlt.analytics._schema.Schema</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a compiled DP measurement and its noise information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>queries</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a><em>]</em>) – Queries representing measurements to compile.</p></li>
+<li><p><strong>privacy_budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a>) – The total privacy budget for answering the queries.</p></li>
+<li><p><strong>stability</strong> (<em>Any</em>) – The stability of the input to compiled query.</p></li>
+<li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – The input domain of the compiled query.</p></li>
+<li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – The input metric of the compiled query.</p></li>
+<li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – Public data sources for the queries.</p></li>
+<li><p><strong>catalog</strong> (<a class="reference internal" href="../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – The catalog, used only for query validation.</p></li>
+<li><p><strong>table_constraints</strong> (<em>Dict</em><em>[</em><a class="reference internal" href="../_table_identifier/index.html#tmlt.analytics._table_identifier.Identifier" title="tmlt.analytics._table_identifier.Identifier"><em>tmlt.analytics._table_identifier.Identifier</em></a><em>, </em><em>List</em><em>[</em><a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><em>tmlt.analytics.constraints.Constraint</em></a><em>]</em><em>]</em>) – A mapping of tables to the existing constraints on them.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[tmlt.core.measurements.base.Measurement, <a class="reference internal" href="../_noise_info/index.html#tmlt.analytics._noise_info.NoiseInfo" title="tmlt.analytics._noise_info.NoiseInfo">tmlt.analytics._noise_info.NoiseInfo</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation">
+<span class="sig-name descname"><span class="pre">build_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_sources</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics._query_expr_compiler.QueryExprCompiler.build_transformation" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a transformation and reference for the query.</p>
+<p>Supported
+<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>s:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Filter" title="tmlt.analytics.query_expr.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.FlatMap" title="tmlt.analytics.query_expr.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.JoinPrivate" title="tmlt.analytics.query_expr.JoinPrivate"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinPrivate</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.JoinPublic" title="tmlt.analytics.query_expr.JoinPublic"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinPublic</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Map" title="tmlt.analytics.query_expr.Map"><code class="xref py py-class docutils literal notranslate"><span class="pre">Map</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.PrivateSource" title="tmlt.analytics.query_expr.PrivateSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateSource</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Rename" title="tmlt.analytics.query_expr.Rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rename</span></code></a></p></li>
+<li><p><a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.Select" title="tmlt.analytics.query_expr.Select"><code class="xref py py-class docutils literal notranslate"><span class="pre">Select</span></code></a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<a class="reference internal" href="../query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><em>tmlt.analytics.query_expr.QueryExpr</em></a>) – A query representing a transformation to compile.</p></li>
+<li><p><strong>input_domain</strong> (<em>tmlt.core.domains.collections.DictDomain</em>) – The input domain of the compiled query.</p></li>
+<li><p><strong>input_metric</strong> (<em>tmlt.core.metrics.DictMetric</em>) – The input metric of the compiled query.</p></li>
+<li><p><strong>public_sources</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – Public data sources for the queries.</p></li>
+<li><p><strong>catalog</strong> (<a class="reference internal" href="../_catalog/index.html#tmlt.analytics._catalog.Catalog" title="tmlt.analytics._catalog.Catalog"><em>tmlt.analytics._catalog.Catalog</em></a>) – The catalog, used only for query validation.</p></li>
+<li><p><strong>table_constraints</strong> (<em>Dict</em><em>[</em><a class="reference internal" href="../_table_identifier/index.html#tmlt.analytics._table_identifier.Identifier" title="tmlt.analytics._table_identifier.Identifier"><em>tmlt.analytics._table_identifier.Identifier</em></a><em>, </em><em>List</em><em>[</em><a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><em>tmlt.analytics.constraints.Constraint</em></a><em>]</em><em>]</em>) – A mapping of tables to the existing constraints on them.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[tmlt.core.transformations.base.Transformation, <a class="reference internal" href="../_table_reference/index.html#tmlt.analytics._table_reference.TableReference" title="tmlt.analytics._table_reference.TableReference">tmlt.analytics._table_reference.TableReference</a>, List[<a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint">tmlt.analytics.constraints.Constraint</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 69359685 at 2024-05-17 15:59.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

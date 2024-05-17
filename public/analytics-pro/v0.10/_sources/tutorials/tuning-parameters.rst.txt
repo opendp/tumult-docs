@@ -1,0 +1,319 @@
+.. _Tuning parameters:
+
+Tuning Parameters
+=================
+
+..
+    Copyright Tumult Labs 2024. All rights reserved.
+    This file is part of Tumult Analytics Pro.
+    It may only be used, reproduced, modified or distributed pursuant to
+    Tumult Labs' Enterprise License Agreement or another commercial license
+    agreement entered into between you and Tumult Labs.
+    No other rights are granted to use this file in any way.
+
+.. note:: This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at info@tmlt.io.
+
+In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for *optimizing* the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the :class:`~.tuner.SessionProgramTuner` class is designed to help us do just that. Let's see how it works!
+
+Setup
+-----
+
+As in earlier tutorials, we import the necessary packages and download the data.
+
+.. testcode::
+
+    import matplotlib.pyplot as plt
+    import os
+    import pandas as pd
+    import seaborn as sns
+
+    from pyspark import SparkFiles
+    from pyspark.sql import SparkSession, DataFrame
+    from tmlt.analytics.keyset import KeySet
+    from tmlt.analytics.privacy_budget import PureDPBudget
+    from tmlt.analytics.protected_change import AddOneRow, AddMaxRows
+    from tmlt.analytics.query_builder import QueryBuilder
+    from tmlt.analytics.session import Session
+    from tmlt.analytics.program import SessionProgram
+    from tmlt.analytics.tuner import SessionProgramTuner, Tunable
+    from tmlt.analytics.metrics import MedianRelativeError, QuantileRelativeError
+
+    spark = SparkSession.builder.getOrCreate()
+    spark.sparkContext.addFile(
+        "https://tumult-public.s3.amazonaws.com/demos/library/v2/members.csv"
+    )
+    members_df = spark.read.csv(
+       SparkFiles.get("members.csv"), header=True, inferSchema=True
+    )
+
+    # ZIP code data is based on https://worldpopulationreview.com/zips/north-carolina
+    spark.sparkContext.addFile(
+        "https://tumult-public.s3.amazonaws.com/nc-zip-codes.csv"
+    )
+    nc_zip_codes_df = spark.read.csv(
+        SparkFiles.get("nc-zip-codes.csv"), header=True, inferSchema=True
+    )
+    nc_zip_codes_df = nc_zip_codes_df.withColumnRenamed("Zip Code", "zip_code")
+    nc_zip_codes_df = nc_zip_codes_df.withColumn("zip_code", nc_zip_codes_df.zip_code.cast('string'))
+    nc_zip_codes_df = nc_zip_codes_df.fillna(0)
+
+Parametrizing the SessionProgram
+--------------------------------
+
+We previously used a :class:`~.program.SessionProgram` that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:
+
+.. testcode::
+
+    nc_zip_code_keys = KeySet.from_dataframe(nc_zip_codes_df.select("zip_code"))
+    query = (
+        QueryBuilder("members")
+        .groupby(nc_zip_code_keys)
+        .sum("books_borrowed", low=0, high=500)
+    )
+
+The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first *parametrize* it. To do this, we must declare this parameter as part of our :class:`~.program.SessionProgram`, and then use it in our query.
+
+.. testcode::
+
+    class BooksByZipCodeProgram(SessionProgram):
+        class ProtectedInputs:
+            members: DataFrame
+        class UnprotectedInputs:
+            nc_zip_codes: DataFrame
+        class Outputs:
+            books_by_zip_code: DataFrame
+        class Parameters:
+            upper_clamping_bound: int
+
+        def session_interaction(self, session: Session):
+            nc_zip_codes_df = self.unprotected_inputs["nc_zip_codes"]
+            nc_zip_code_keys = KeySet.from_dataframe(nc_zip_codes_df.select("zip_code"))
+            query = (
+                QueryBuilder("members")
+                .groupby(nc_zip_code_keys)
+                .sum("books_borrowed", low=0, high=self.parameters["upper_clamping_bound"])
+            )
+            budget = session.remaining_privacy_budget
+            return {"books_by_zip_code": session.evaluate(query, budget)}
+
+Since our program now has a parameter, we must specify the parameter's value when we build it.
+
+.. testcode::
+
+    zip_code_program = (
+        BooksByZipCodeProgram.Builder()
+        .with_private_dataframe(
+            source_id="members",
+            dataframe=members_df,
+            protected_change=AddOneRow()
+        )
+        .with_public_dataframe(
+            source_id="nc_zip_codes",
+            dataframe=nc_zip_codes_df
+        )
+        .with_privacy_budget(PureDPBudget(3))
+        .with_parameter("upper_clamping_bound", 500)
+        .build()
+    )
+
+But we don’t want to specify it just yet — we first want to try different values for it, and observe which ones give us acceptable accuracy.
+
+Running Multiple Error Reports at Once
+--------------------------------------
+
+Let's define a :class:`~.tuner.SessionProgramTuner` with our program class to compute two metrics: the median and 75th percentile relative error. We've already seen similar metrics, but this time we are giving them a short name.
+
+.. testcode::
+
+    class SimpleTuner(SessionProgramTuner, program=BooksByZipCodeProgram):
+        metrics = [
+            MedianRelativeError(
+                output="books_by_zip_code",
+                measure_column="books_borrowed_sum",
+                join_columns=["zip_code"],
+                name="mre"
+            ),
+            QuantileRelativeError(
+                output="books_by_zip_code",
+                measure_column="books_borrowed_sum",
+                quantile=0.75,
+                join_columns=["zip_code"],
+                name="qre_0.75",
+            ),
+        ]
+
+
+Now that we have defined our class, let's build it. Unlike a :class:`~.SessionProgram`, a :class:`~.tuner.SessionProgramTuner` does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as :class:`~.tuner.Tunable`.
+
+
+.. testcode::
+
+    tuner = (
+        SimpleTuner.Builder()
+        .with_private_dataframe(source_id="members", dataframe=members_df, protected_change=AddOneRow())
+        .with_public_dataframe(source_id="nc_zip_codes", dataframe=nc_zip_codes_df,)
+        .with_privacy_budget(PureDPBudget(3))
+        .with_parameter("upper_clamping_bound", Tunable("upper_clamping_bound"))
+        .build()
+    )
+
+In this case, we have designated the upper clamping bound as a :class:`~.tuner.Tunable` parameter. However, as we will see later, :class:`~.tuner.Tunable` objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.
+
+Now that it's built, we can run an error report on our :class:`~.tuner.SessionProgramTuner` object by specifying concrete values for all :class:`~.tuner.Tunable` parameters.
+
+.. testcode::
+
+    tuner.error_report({"upper_clamping_bound":  500})
+
+More usefully, we can generate many error reports at once:
+
+.. testcode::
+
+    multi_error_report = tuner.multi_error_report([
+        {"upper_clamping_bound": bound} for bound in [25, 75, 150, 250, 400]
+    ])
+
+:meth:`~.tuner.SessionProgramTuner.multi_error_report` returns a :class:`~.tuner.MultiErrorReport`, which can be iterated over to get individual :class:`~.tuner.ErrorReport` objects and provides a method to get all of the metrics in a single Pandas DataFrame.
+
+.. code-block::
+
+    df = multi_error_report.to_dataframe()
+    print(df)
+
+.. testcode::
+    :hide:
+
+    # we don't want to display this output,
+    # but we should test the df schema in case
+    # the method implementation changes in the future
+    print(multi_error_report.to_dataframe().columns)
+
+.. testoutput::
+    :hide:
+    :options: +NORMALIZE_WHITESPACE
+
+    Index(['upper_clamping_bound', 'mre', 'qre_0.75'], dtype='object')
+
+.. code-block::
+
+       upper_clamping_bound    mre  qre_0.75
+    0                    25  0.451     0.537
+    1                    75  0.224     0.362
+    2                   150  0.132     0.319
+    3                   250  0.142     0.567
+    4                   400  0.167     0.689
+
+Looking at these results, we can see that the error seems to be smallest for upper clamping bounds between 150 and 250. We can run a second error report that focuses on this part of the search space:
+
+
+.. testcode::
+
+    multi_error_report = tuner.multi_error_report([
+        {"upper_clamping_bound": bound} for bound in [150, 175, 200, 225, 250]
+    ])
+
+We can then plot the results to visualize the privacy-utility trade-off.
+
+.. code-block::
+
+    df = multi_error_report.to_dataframe()
+    sns.lineplot(data=df, x="upper_clamping_bound", y="mre", label="median")
+    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75", label="75th percentile")
+    plt.ylabel("Relative Error")
+    plt.xlabel("Upper Clamping Bound")
+    plt.title("Relative Error vs. Upper Clamping Bound")
+    plt.show()
+
+.. image:: ../images/tuning-parameters-error-vs-clamping.png
+    :alt: A line chart plotting the median and 75th percentile relative error against the upper clamping bounds in the range 100 to 500.
+    :align: center
+
+Setting the clamping bound to about 175 seems to be getting us the best result.
+
+Tuning: Not Just for Parameters!
+--------------------------------
+
+We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a :class:`~.tuner.Tunable` to find out.
+
+.. testcode::
+
+    tuner = (
+        SimpleTuner.Builder()
+        .with_private_dataframe(
+            source_id="members",
+            dataframe=members_df,
+            protected_change=AddOneRow()
+        )
+        .with_public_dataframe(
+            source_id="nc_zip_codes",
+            dataframe=nc_zip_codes_df
+        )
+        .with_privacy_budget(Tunable("budget"))
+        .with_parameter("upper_clamping_bound", Tunable("upper_clamping_bound"))
+        .build()
+    )
+
+We then specify the values of our :class:`~.tuner.Tunable` parameters for methods like :meth:`~.tuner.SessionProgramTuner.error_report` and :meth:`~.tuner.SessionProgramTuner.multi_error_report`.
+
+.. testcode::
+
+    multi_error_report = tuner.multi_error_report([
+        {"budget": PureDPBudget(epsilon), "upper_clamping_bound": bound}
+        for epsilon in [1, 2, 3, 4, 5]
+        for bound in [150, 175, 200]
+    ])
+
+And plot the privacy-utility trade-off using the optimal upper clamping bound values for each privacy budget.
+
+.. code-block::
+
+    df = multi_error_report.to_dataframe()
+    # Convert 'budget' column to string representation focusing on the 'epsilon' attribute
+    df['budget'] = df['budget'].apply(lambda x: f"epsilon={x.epsilon}")
+    fig, axes = plt.subplots(2, 1, figsize=(10, 10))
+    sns.lineplot(data=df, x="upper_clamping_bound", y="mre", hue="budget", ax=axes[0])
+    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75", hue="budget", ax=axes[1])
+    axes[0].set_ylabel("Median Relative Error")
+    axes[1].set_ylabel("75th Percentile Relative Error")
+    axes[0].set_xlabel("Upper Clamping Bound")
+    axes[1].set_xlabel("Upper Clamping Bound")
+    plt.show()
+
+
+.. image:: ../images/tuning-parameters-error-vs-clamping-varied-budgets.png
+    :alt: Two line charts plotting relative error against upper clamping bounds in the range 150 to 200. The top chart shows median relative error, and the bottom chart shows 75th percentile relative error. Each chart has a line for each privacy budget, with the x-axis representing the upper clamping bound and the y-axis representing the relative error.
+    :align: center
+
+:class:`~.tuner.Tunable` s can also replace DataFrame arguments (so we can run our program on different datasets in the same Tuner), or protected changes (so we can see the impact of changing how the data is protected). 
+
+For example, if we wanted to fix the clamping bound parameter, but tune both the dataframe and protected change used by the program, we would supply a :class:`~.tuner.Tunable` for each of these arguments, like so:
+
+.. testcode::
+
+    tuner = (
+        SimpleTuner.Builder()
+        .with_private_dataframe(
+            source_id="members",
+            dataframe=Tunable("members_df"),
+            protected_change=Tunable("protected_change")
+        )
+        .with_public_dataframe(
+            source_id="nc_zip_codes",
+            dataframe=nc_zip_codes_df
+        )
+        .with_privacy_budget(PureDPBudget(3))
+        .with_parameter("upper_clamping_bound", 500)
+        .build()
+    )
+
+We can then run the error report with different values for the :class:`~.tuner.Tunable` s:
+
+.. testcode::
+
+    multi_error_report = tuner.multi_error_report([
+        {"members_df": df, "protected_change": protected_change}
+        for df in [members_df, members_df.sample(fraction=0.5)]
+        for protected_change in [AddOneRow(), AddMaxRows(2)]
+    ])
+
+For more information, consult the API references for :class:`~.tuner.Tunable` and :class:`~.tuner.SessionProgramTuner`.

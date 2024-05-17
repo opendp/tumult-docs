@@ -1,0 +1,252 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*********************
+privacy_budget
+*********************
+
+.. py:module:: tmlt.analytics.privacy_budget
+
+.. autoapi-nested-parse::
+
+   Classes for specifying privacy budgets.
+
+   For a full introduction to privacy budgets, see the
+   :ref:`privacy budget topic guide<Privacy budget fundamentals>`.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.PrivacyBudget`
+     - Base class for specifying privacy parameters.
+   * - :class:`.PureDPBudget`
+     - A privacy budget under pure differential privacy.
+   * - :class:`.ApproxDPBudget`
+     - A privacy budget under approximate differential privacy.
+   * - :class:`.RhoZCDPBudget`
+     - A privacy budget under rho-zero-concentrated differential privacy.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: PrivacyBudget
+
+   Bases: :class:`abc.ABC`
+
+   Base class for specifying privacy parameters.
+
+   A PrivacyBudget is a privacy definition, along with its associated parameters.
+   The choice of a PrivacyBudget has an impact on the accuracy of query
+   results. Smaller parameters correspond to a stronger privacy guarantee, and
+   usually lead to less accurate results.
+
+   .. note::
+       An "infinite" privacy budget means that the chosen DP algorithm will use
+       parameters that do not guarantee privacy. This is not always exactly equivalent
+       to evaluating the query without applying differential privacy.
+       Please see the individual subclasses of PrivacyBudget for details on how to
+       appropriately specify infinite budgets.
+
+
+
+
+
+
+   .. py:method:: value()
+      :property:
+
+      Return the value of the privacy budget.
+
+
+   .. py:method:: is_infinite()
+      :property:
+
+      Returns true if the privacy budget is infinite.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: PureDPBudget(epsilon)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under pure differential privacy.
+
+   This privacy definition is also known as epsilon-differential privacy, and the
+   associated value is the epsilon privacy parameter. The privacy definition can
+   be found `here <https://en.wikipedia.org/wiki/Differential_privacy#Definition_of_%CE%B5-differential_privacy>`__.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value()
+      :property:
+
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the epsilon property instead, as it will
+      represent the same value, but be more human readable.
+
+
+   .. py:method:: epsilon()
+      :property:
+
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value instead.
+
+
+   .. py:method:: is_infinite()
+      :property:
+
+      Returns true if epsilon is float('inf').
+
+
+   .. py:method:: __eq__(other)
+
+      Returns whether or not a PureDPBudget is equivalent to another PrivacyBudget.
+
+      PureDPBudgets are considered equal to ApproxDPBudgets that have delta of 0 and
+      the same epsilon.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: ApproxDPBudget(epsilon, delta)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under approximate differential privacy.
+
+   This privacy definition is also known as (ε, δ)-differential privacy, and the
+   associated privacy parameters are epsilon and delta. The formal definition can
+   be found `here <https://desfontain.es/privacy/almost-differential-privacy.html#formal-definition>`__.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value()
+      :property:
+
+      Returns self._epsilon and self._delta as an ExactNumber tuple.
+
+      For printing purposes, you might want to use the epsilon and delta properties
+      instead, as they will represent the same values, but be more human readable.
+
+
+   .. py:method:: epsilon()
+      :property:
+
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value[0] instead.
+
+
+   .. py:method:: delta()
+      :property:
+
+      Returns the value of delta as an int or float.
+
+      This is helpful for human readability. If you need to use the delta value in
+      a computation, you should use self.value[1] instead.
+
+
+   .. py:method:: is_infinite()
+      :property:
+
+      Returns true if epsilon is float('inf') or delta is 1.
+
+
+   .. py:method:: __eq__(other)
+
+      Returns whether an ApproxDPBudget is equivalent to another privacy budget.
+
+      ApproxDPBudgets that have delta of 0 are considered equal to PureDPBudgets with the same epsilon.
+      ApproxDPBudgets that provide no privacy guarantee are considered equal (for example, if one has an
+      epsilon of float('inf') and the other has a delta of 1).
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: RhoZCDPBudget(rho)
+
+   Bases: :class:`PrivacyBudget`
+
+   A privacy budget under rho-zero-concentrated differential privacy.
+
+   The definition of rho-zCDP can be found in
+   `this <https://arxiv.org/pdf/1605.02065.pdf>`_ paper under Definition 1.1.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: value()
+      :property:
+
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the rho property instead, as it will
+      represent the same value, but be more human readable.
+
+
+   .. py:method:: rho()
+      :property:
+
+      Returns the value of rho as an int or float.
+
+      This is helpful for human readability. If you need to use the rho value in
+      a computation, you should use self.value instead.
+
+
+   .. py:method:: is_infinite()
+      :property:
+
+      Returns true if rho is float('inf').
+
+
+   .. py:method:: __eq__(other)
+
+      Returns whether or not two RhoZCDPBudgets are equivalent.
+
+
+
+
+
+
+
