@@ -1,0 +1,148 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*************
+config
+*************
+
+.. py:module:: tmlt.analytics.config
+
+.. autoapi-nested-parse::
+
+   Configuration for Tumult Analytics.
+
+   This module contains various execution options for Tumult Analytics, controlling
+   experimental features and other behavior. Most users will not need to use the
+   options available in this module.
+
+
+
+
+
+
+
+
+
+Data
+====
+
+
+.. py:data:: config
+   
+
+   The current configuration of Tumult Analytics.
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.FeatureFlag`
+     - A flag for enabling an individual feature.
+   * - :class:`.Config`
+     - Configuration for Tumult Analytics.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: FeatureFlag(summary, default)
+
+   A flag for enabling an individual feature.
+
+   An instance of :class:`~FeatureFlag` can be used as a bool, or
+   :meth:`~raise_if_disabled` can raise an appropriate exception if the
+   corresponding feature is used while the flag is disabled.
+
+
+
+
+
+
+   .. py:method:: enable()
+
+      Enable the features controlled by this feature flag.
+
+
+   .. py:method:: disable()
+
+      Disable the features controlled by this feature flag.
+
+
+   .. py:method:: reset()
+
+      Reset this feature flag to its base state.
+
+
+   .. py:method:: enabled()
+
+      A context manager inside which this feature flag will be enabled.
+
+      When the context manager exits, the feature flag will be reset to the
+      state it was in before entering the context manager, ignoring any
+      changes that occurred inside the context.
+
+
+   .. py:method:: disabled()
+
+      A context manager inside which this feature flag will be disabled.
+
+      When the context manager exits, the feature flag will be reset to the
+      state it was in before entering the context manager, ignoring any
+      changes that occurred inside the context.
+
+
+   .. py:method:: raise_if_disabled()
+
+      Raise a RuntimeError if this feature flag is not enabled.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: Config
+
+   Configuration for Tumult Analytics.
+
+
+
+
+   
+   ..
+       SPDX-License-Identifier: CC-BY-SA-4.0
+       Copyright Tumult Labs 2024
+   .. py:class:: Features
+
+      Toggles for experimental features in Tumult Analytics.
+
+      Most users should not need to modify these. Any features that are
+      disabled by default are experimental and should not be used in
+      production. Their APIs may change at any time.
+
+      A particular feature can be enabled or disabled by using the methods on
+      its :class:`~FeatureFlag` instance, for example:
+
+      .. code-block::
+
+          config.features.example_feature.enable()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
