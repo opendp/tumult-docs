@@ -379,7 +379,7 @@ framework. This topic guide covers relevant information about Spark
 for Tumult Analytics users.</p>
 <section id="configuring-spark-sessions">
 <h2>Configuring Spark sessions<a class="headerlink" href="#configuring-spark-sessions" title="Permalink to this headline">#</a></h2>
-<p>Tumult Analytics uses <a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.SparkSession" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">sessions</span></code></a> to do all data processing operations.
+<p>Tumult Analytics uses <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.SparkSession.html#pyspark.sql.SparkSession" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">sessions</span></code></a> to do all data processing operations.
 As long as Spark has an active session, any calls that “create” new Spark
 sessions use that active session.</p>
 <p>If you want Tumult Analytics to use Spark sessions with any <em>specific</em> properties,
@@ -389,39 +389,7 @@ then before running Tumult Analytics code, you should create that Spark session:
 </pre></div>
 </div>
 <p>As long as this session is active, Tumult Analytics will use it.</p>
-<details class="sphinx-bs dropdown card mb-3 shadow fade-in-slide-down">
-<summary class="summary-title card-header font-weight-bold text-danger text-center">
-Trouble Using Java 11 or higher?<div class="summary-down docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
-<div class="summary-up docutils">
-<svg version="1.1" width="24" height="24" class="octicon octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
-</summary><div class="summary-content card-body bg-light docutils">
-<p class="card-text">When using Java 11, Spark requires that Java be passed some additional configuration options.</p>
-<p class="card-text">Not doing this before making calls to Tumult Analytics, or overwriting these configurations with your own,
-will result in Spark raising <code class="docutils literal notranslate"><span class="pre">java.lang.UnsupportedOperationException:</span> <span class="pre">sun.misc.Unsafe</span></code> or <code class="docutils literal notranslate"><span class="pre">java.nio.DirectByteBuffer.(long,</span> <span class="pre">int)</span> <span class="pre">not</span> <span class="pre">available</span></code>
-when evaluating queries.</p>
-<p class="card-text">Tumult Analytics attempts to set these options automatically, but if you are encountering issues, you may want to try:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.utils</span> <span class="kn">import</span> <span class="n">get_java_11_config</span>
-
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="n">get_java_11_config</span><span class="p">())</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="card-text">instead of:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="card-text">when initializing Spark. This is equivalent to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.driver.extraJavaOptions&quot;</span><span class="p">,</span> <span class="s2">&quot;-Dio.netty.tryReflectionSetAccessible=true&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.executor.extraJavaOptions&quot;</span><span class="p">,</span> <span class="s2">&quot;-Dio.netty.tryReflectionSetAccessible=true&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details><section id="connecting-to-hive">
+<section id="connecting-to-hive">
 <h3>Connecting to Hive<a class="headerlink" href="#connecting-to-hive" title="Permalink to this headline">#</a></h3>
 <p id="hive-tips">If you want to connect Spark to an existing <a class="reference external" href="https://hive.apache.org/">Hive</a>
 database, you should use the following options when creating a Spark session:</p>
@@ -523,9 +491,9 @@ documentation for how to configure Spark to use more RAM across a cluster.</p>
 <h3>Saving results (to CSV or other formats)<a class="headerlink" href="#saving-results-to-csv-or-other-formats" title="Permalink to this headline">#</a></h3>
 <p>Converting large Spark dataframes (10M rows or more) to Pandas dataframes can
 be very resource-intensive. We recommend using
-<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.write" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.write()</span></code></a> to save results
+<a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.write.html#pyspark.sql.DataFrame.write" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.write()</span></code></a> to save results
 to file, instead of using
-<a class="reference external" href="https://spark.apache.org/docs/3.0.0/api/python/pyspark.sql.html#pyspark.sql.DataFrame.toPandas" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.toPandas()</span></code></a> and then saving the Pandas
+<a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.toPandas.html#pyspark.sql.DataFrame.toPandas" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.toPandas()</span></code></a> and then saving the Pandas
 dataframe.</p>
 <p>For example, to save a dataframe as CSV, you can do this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -584,7 +552,7 @@ dataframe.</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from dd39a5fe at 2024-05-16 16:16.
+Built from 80931602 at 2024-05-16 23:04.
   </div>
   
   <div class="footer-item">
