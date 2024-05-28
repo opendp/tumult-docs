@@ -6,15 +6,30 @@
 Changelog
 =========
 
+.. _v0.10.1:
+
+0.10.1 - 2024-05-28
+-------------------
+
+This release includes a number of bug fixes.
+
+Changed
+~~~~~~~
+- |PRO| Error reports now always specify the baseline name for each metric, even if only a single baseline is used.
+
+Fixed
+~~~~~
+- |PRO| Accessing a program's unprotected inputs and parameters when creating a view on an output table now works as expected.
+- |PRO| :meth:`NoPrivacySession.evaluate <tmlt.analytics.no_privacy_session.NoPrivacySession.evaluate>` no longer performs an unnecessary DP evaluation, improving its performance considerably.
+
 .. _v0.10.0:
 
 0.10.0 - 2024-05-17
 -------------------
 
-This release adds a new `get_bounds` aggregation.
-It also includes performance improvements for `KeySets`, and other quality-of-life improvements.
-For Pro users, it includes an easier way to define custom metrics, a way for tuners to define views
-over outputs, and further quality-of-life improvements.
+This release adds a new :meth:`~tmlt.analytics.query_builder.QueryBuilder.get_bounds` aggregation.
+It also includes performance improvements for :class:`~tmlt.analytics.keyset.KeySet`\ s, and other quality-of-life improvements.
+For Pro users, it includes an easier way to define custom metrics, a way for tuners to define views over outputs, and further quality-of-life improvements.
 
 Added
 ~~~~~
@@ -29,15 +44,15 @@ Changed
   :class:`~tmlt.analytics.protected_change.AddRowsWithID` protected change,
   the relevant ID space will automatically be added to the Builder when
   :meth:`~tmlt.analytics.session.Session.Builder.build` is called.
-- |PRO| The same is true for :class:`tmlt.analytics.program.SessionProgram.Builder`
-  and :class:`tmlt.analytics.tuner.SessionProgramTuner.Builder`.
-- |PRO| Custom metrics can be defined using the :func:`@metric decorator <.tmlt.analytics.tuner.metric>`.
-- :class:`~.tmlt.analytics.keyset.KeySet` is now an abstract class, in order to
+- |PRO| The same is true for :class:`SessionProgram.Builder<tmlt.analytics.program.SessionProgram.Builder>`
+  and :class:`SessionProgramTuner.Builder<tmlt.analytics.tuner.SessionProgramTuner.Builder>`.
+- |PRO| Custom metrics can be defined using the :func:`@metric<tmlt.analytics.tuner.metric>` decorator.
+- :class:`~tmlt.analytics.keyset.KeySet` is now an abstract class, in order to
   make some KeySet operations (column selection after cross-products) more
-  efficient. 
-  Behavior is unchanged for users of the :meth:`~.tmlt.analytics.keyset.KeySet.from_dict`
-  and :meth:`~.tmlt.analytics.keyset.KeySet.from_dataframe` constructors.
-- |PRO| Allow views on output tables before applying metrics by using the :func:`@view decorator <.tmlt.analytics.tuner.view>`.
+  efficient.
+  Behavior is unchanged for users of the :meth:`~tmlt.analytics.keyset.KeySet.from_dict`
+  and :meth:`~tmlt.analytics.keyset.KeySet.from_dataframe` constructors.
+- |PRO| Allow views on output tables before applying metrics by using the :func:`@view<tmlt.analytics.tuner.view>` decorator.
   The views are persisted by default and unpersisted before the tuner is destroyed.
 
 Fixed
@@ -59,14 +74,12 @@ If this is a problem, please `reach out to us <mailto:info@tmlt.io>`_.
 
 Added
 ~~~~~
-
 - |PRO| Added :class:`~.SessionProgram` for defining structured DP programs using the :class:`~.session.Session` API.
 - |PRO| Added :class:`~.tuner.SessionProgramTuner` and a collection of :mod:`~.metrics` for tuning :class:`~.SessionProgram`\ s.
 - |PRO| Added :class:`~.no_privacy_session.NoPrivacySession`, which allows non-private query execution with the same interface as :class:`~.session.Session`.
 
 Changed
 ~~~~~~~
-
 - :class:`~tmlt.analytics.keyset.KeySet` equality is now performed without converting the underlying dataframe to Pandas.
 - :meth:`~tmlt.analytics.session.Session.partition_and_create`: the ``column`` and ``splits`` arguments are now annotated as required.
 - The minimum supported version of Tumult Core is now 0.13.0.
@@ -101,7 +114,6 @@ It is **strongly recommended** that all users update to this version of Analytic
 
 Changed
 ~~~~~~~
-
 - Increased minimum supported version of Tumult Core to 0.11.5.
   As a result:
 
@@ -127,8 +139,7 @@ This is a maintenance release that addresses a performance regression for comple
 
 Added
 ~~~~~
-
--  Added the :meth:`QueryBuilder.get_groups <tmlt.analytics.query_builder.QueryBuilder.get_groups>` function, for determining groupby keys for a table in a differentially private way.
+- Added the :meth:`QueryBuilder.get_groups <tmlt.analytics.query_builder.QueryBuilder.get_groups>` function, for determining groupby keys for a table in a differentially private way.
 
 Changed
 ~~~~~~~

@@ -167,7 +167,7 @@
 <!-- Copyright Tumult Labs 2024 -->
 <h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.0  <!-- this text may get changed later by javascript -->
+        0.10.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -177,7 +177,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables tutorials/tuning-parameters and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.10.0'}.
+     variables tutorials/tuning-parameters and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.10.1'}.
 -->
 
 <script type="text/javascript">
@@ -232,10 +232,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.0 variable.
+            // this version, rather than using sphinx's 0.10.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.0") {
+            if (entry.version == "0.10.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -515,12 +515,12 @@ function checkPageExistsAndRedirect(event) {
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">upper_clamping_bound</span>    <span class="n">mre</span>  <span class="n">qre_0</span><span class="mf">.75</span>
-<span class="mi">0</span>                    <span class="mi">25</span>  <span class="mf">0.451</span>     <span class="mf">0.537</span>
-<span class="mi">1</span>                    <span class="mi">75</span>  <span class="mf">0.224</span>     <span class="mf">0.362</span>
-<span class="mi">2</span>                   <span class="mi">150</span>  <span class="mf">0.132</span>     <span class="mf">0.319</span>
-<span class="mi">3</span>                   <span class="mi">250</span>  <span class="mf">0.142</span>     <span class="mf">0.567</span>
-<span class="mi">4</span>                   <span class="mi">400</span>  <span class="mf">0.167</span>     <span class="mf">0.689</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">upper_clamping_bound</span>    <span class="n">mre_default</span>  <span class="n">qre_0</span><span class="mf">.75</span><span class="n">_default</span>
+<span class="mi">0</span>                    <span class="mi">25</span>          <span class="mf">0.451</span>             <span class="mf">0.537</span>
+<span class="mi">1</span>                    <span class="mi">75</span>          <span class="mf">0.224</span>             <span class="mf">0.362</span>
+<span class="mi">2</span>                   <span class="mi">150</span>          <span class="mf">0.132</span>             <span class="mf">0.319</span>
+<span class="mi">3</span>                   <span class="mi">250</span>          <span class="mf">0.142</span>             <span class="mf">0.567</span>
+<span class="mi">4</span>                   <span class="mi">400</span>          <span class="mf">0.167</span>             <span class="mf">0.689</span>
 </pre></div>
 </div>
 <p>Looking at these results, we can see that the error seems to be smallest for upper clamping bounds between 150 and 250. We can run a second error report that focuses on this part of the search space:</p>
@@ -531,8 +531,8 @@ function checkPageExistsAndRedirect(event) {
 </div>
 <p>We can then plot the results to visualize the privacy-utility trade-off.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">multi_error_report</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;75th percentile&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre_default&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75_default&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;75th percentile&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Relative Error&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Upper Clamping Bound&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Relative Error vs. Upper Clamping Bound&quot;</span><span class="p">)</span>
@@ -575,8 +575,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="c1"># Convert &#39;budget&#39; column to string representation focusing on the &#39;epsilon&#39; attribute</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;budget&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;budget&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;epsilon=</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">epsilon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;mre_default&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;qre_0.75_default&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;budget&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Median Relative Error&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;75th Percentile Relative Error&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Upper Clamping Bound&quot;</span><span class="p">)</span>
@@ -662,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 69359685 at 2024-05-17 15:59.
+Built from 23136731 at 2024-05-28 13:21.
   </div>
   
   <div class="footer-item">

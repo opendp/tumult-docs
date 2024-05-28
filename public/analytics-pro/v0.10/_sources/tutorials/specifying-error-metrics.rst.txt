@@ -130,22 +130,22 @@ And finally, we can instantiate this tuner and generate an error report.
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +...+----------+--------------------------------------------------------------------------------+
-    |...| Metric   | Description                                                                    |
-    +...+==========+================================================================================+
-    |...| mre      | Median relative error for column books_borrowed_sum of table books_by_zip_code |
-    +...+----------+--------------------------------------------------------------------------------+
+    +...+----------+------------+--------------------------------------------------------------------------------+
+    |...| Metric   | Baseline   | Description                                                                    |
+    +...+==========+============+================================================================================+
+    |...| mre      | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code |
+    +...+----------+------------+--------------------------------------------------------------------------------+
 
 .. code-block::
 
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +---------+----------+--------------------------------------------------------------------------------+
-    |   Value | Metric   | Description                                                                    |
-    +=========+==========+================================================================================+
-    |    0.18 | mre      | Median relative error for column books_borrowed_sum of table books_by_zip_code |
-    +---------+----------+--------------------------------------------------------------------------------+
+    +---------+---------+------------+--------------------------------------------------------------------------------+
+    |   Value | Metric  | Baseline   | Description                                                                    |
+    +=========+=========+============+================================================================================+
+    |    0.18 | mre     | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code |
+    +---------+---------+------------+--------------------------------------------------------------------------------+
 
 Generating an error report from a single built-in metric is useful, although somewhat limited in scope. How else can we measure the error of a Tumult Analytics program? In this tutorial, we'll cover the other built-in metrics provided by Tumult Analytics,
 and show how to generate error reports using custom metrics that you write yourself.
@@ -221,34 +221,34 @@ Let's run this tuner again, with the same initialization as earlier.
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| Metric           | Description                                                                          |
-    +...+==================+======================================================================================+
-    |...| mre              | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| qre(q=0.9)       | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| spurious_rate    | Fraction of spurious rows in table books_by_zip_code                                 |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| suppression_rate | Fraction of suppressed rows in table books_by_zip_code                               |
-    +...+------------------+--------------------------------------------------------------------------------------+
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| Metric           | Baseline   | Description                                                                          |
+    +...+==================+============+======================================================================================+
+    |...| mre              | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| qre(q=0.9)       | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| spurious_rate    | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| suppression_rate | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
 
 .. code-block::
 
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    |     Value | Metric           | Description                                                                          |
-    +===========+==================+======================================================================================+
-    | 0.168     | mre              | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 6.152     | qre(q=0.9)       | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 0.608479  | spurious_rate    | Fraction of spurious rows in table books_by_zip_code                                 |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 0.0031746 | suppression_rate | Fraction of suppressed rows in table books_by_zip_code                               |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    |     Value | Metric           | Baseline   | Description                                                                          |
+    +===========+==================+============+======================================================================================+
+    | 0.168     | mre              | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 6.152     | qre(q=0.9)       | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 0.608479  | spurious_rate    | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 0.0031746 | suppression_rate | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
 
 As expected, the 90th percentile relative error is larger than the median relative error.
 
@@ -349,34 +349,34 @@ If we run the previous steps with this modification and generate the error repor
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| Metric           | Description                                                                          |
-    +...+==================+======================================================================================+
-    |...| mre              | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| qre(q=0.9)       | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| spurious_rate    | Fraction of spurious rows in table books_by_zip_code                                 |
-    +...+------------------+--------------------------------------------------------------------------------------+
-    |...| suppression_rate | Fraction of suppressed rows in table books_by_zip_code                               |
-    +...+------------------+--------------------------------------------------------------------------------------+
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| Metric           | Baseline   | Description                                                                          |
+    +...+==================+============+======================================================================================+
+    |...| mre              | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| qre(q=0.9)       | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| spurious_rate    | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
+    |...| suppression_rate | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +...+------------------+------------+--------------------------------------------------------------------------------------+
 
 .. code-block::
 
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    |     Value | Metric           | Description                                                                          |
-    +===========+==================+======================================================================================+
-    | 0.049     | mre              | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 0.276     | qre(q=0.9)       | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 0.172973  | spurious_rate    | Fraction of spurious rows in table books_by_zip_code                                 |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
-    | 0.0316456 | suppression_rate | Fraction of suppressed rows in table books_by_zip_code                               |
-    +-----------+------------------+--------------------------------------------------------------------------------------+
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    |     Value | Metric           | Baseline   | Description                                                                          |
+    +===========+==================+============+======================================================================================+
+    | 0.049     | mre              | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 0.276     | qre(q=0.9)       | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 0.172973  | spurious_rate    | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
+    | 0.0316456 | suppression_rate | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +-----------+------------------+------------+--------------------------------------------------------------------------------------+
 
 By plotting the distribution of books borrowed by ZIP code, we can see that the activity
 is concentrated around the location of the library.
@@ -458,38 +458,38 @@ When we now run our error report on this tuner, we can see our new metric:
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
-    |...| Metric                               | Description                                                                          |
-    +...+======================================+======================================================================================+
-    |...| mre                                  | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
-    |...| qre(q=0.9)                           | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
-    |...| spurious_rate                        | Fraction of spurious rows in table books_by_zip_code                                 |
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
-    |...| suppression_rate                     | Fraction of suppressed rows in table books_by_zip_code                               |
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
-    |...| relative_change_total_books_borrowed | Relative change in the total number of books borrowed                                |
-    +...+--------------------------------------+--------------------------------------------------------------------------------------+
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |...| Metric                               | Baseline   | Description                                                                          |
+    +...+======================================+============+======================================================================================+
+    |...| mre                                  | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |...| qre(q=0.9)                           | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |...| spurious_rate                        | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |...| suppression_rate                     | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |...| relative_change_total_books_borrowed | default    | Relative change in the total number of books borrowed                                |
+    +...+--------------------------------------+------------+--------------------------------------------------------------------------------------+
 
 .. code-block::
 
     Error report ran with budget PureDPBudget(epsilon=3) and no tunable parameters and no additional parameters
 
     Metric results:
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
-    |      Value | Metric                               | Description                                                                          |
-    +============+======================================+======================================================================================+
-    |  0.047     | mre                                  | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
-    |  0.211     | qre(q=0.9)                           | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
-    |  0.142045  | spurious_rate                        | Fraction of spurious rows in table books_by_zip_code                                 |
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
-    |  0.0443038 | suppression_rate                     | Fraction of suppressed rows in table books_by_zip_code                               |
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
-    | -0.0571484 | relative_change_total_books_borrowed | Relative change in the total number of books borrowed                                |
-    +------------+--------------------------------------+--------------------------------------------------------------------------------------+
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |      Value | Metric                               | Baseline   | Description                                                                          |
+    +============+======================================+============+======================================================================================+
+    |  0.047     | mre                                  | default    | Median relative error for column books_borrowed_sum of table books_by_zip_code       |
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |  0.211     | qre(q=0.9)                           | default    | 0.9-quantile relative error for column books_borrowed_sum of table books_by_zip_code |
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |  0.142045  | spurious_rate                        | default    | Fraction of spurious rows in table books_by_zip_code                                 |
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    |  0.0443038 | suppression_rate                     | default    | Fraction of suppressed rows in table books_by_zip_code                               |
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
+    | -0.0571484 | relative_change_total_books_borrowed | default    | Relative change in the total number of books borrowed                                |
+    +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
 
 
 A note about baselines
@@ -498,4 +498,4 @@ A note about baselines
 Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the :class:`~.program.SessionProgram` to a *baseline*. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.
 
 1. By default, Tumult Analytics computes a baseline by running the same queries as in the :class:`~.program.SessionProgram`, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.
-2. It is also possible to configure how the baseline is computed by passing *baseline options* to the :class:`~.tuner.SessionProgramTuner`, or by defining a fully custom baseline using the :func:`@baseline decorator<tmlt.analytics.tuner.baseline>` as demonstrated in the :mod:`~.tuner` example. 
+2. It is also possible to configure how the baseline is computed by passing *baseline options* to the :class:`~.tuner.SessionProgramTuner`, and/or by defining a fully custom baseline using the :func:`@baseline<tmlt.analytics.tuner.baseline>` decorator as demonstrated in the :mod:`~.tuner` example. To use the "default" baseline in addition to these custom baselines, you need to specify ``"default": NoPrivacySession.Options()`` in the :attr:`~tmlt.analytics.tuner.SessionProgramTuner.baseline_options` dictionary.

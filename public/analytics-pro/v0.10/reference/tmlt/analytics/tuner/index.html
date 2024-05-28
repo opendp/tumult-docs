@@ -167,7 +167,7 @@
 <!-- Copyright Tumult Labs 2024 -->
 <h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.10.0  <!-- this text may get changed later by javascript -->
+        0.10.1  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -177,7 +177,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/analytics/tuner/index and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.10.0'}.
+     variables reference/tmlt/analytics/tuner/index and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.10.1'}.
 -->
 
 <script type="text/javascript">
@@ -232,10 +232,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.10.0 variable.
+            // this version, rather than using sphinx's 0.10.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.10.0") {
+            if (entry.version == "0.10.1") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -653,10 +653,7 @@ program, users should subclass <a class="reference internal" href="#tmlt.analyti
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="nd">@baseline</span><span class="p">(</span><span class="s2">&quot;custom_baseline&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">no_clamping_bounds_baseline</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">protected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">no_clamping_bounds_baseline</span><span class="p">(</span><span class="n">protected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
 <span class="gp">... </span>        <span class="n">df</span> <span class="o">=</span> <span class="n">protected_inputs</span><span class="p">[</span><span class="s2">&quot;protected_df&quot;</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="n">sum_value</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">sf_sum</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;a_sum&#39;</span><span class="p">))</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;a_sum&quot;</span><span class="p">:</span> <span class="n">sum_value</span><span class="p">}</span>
@@ -755,8 +752,14 @@ the Tuner class.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.baseline">
 <span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.baseline" title="Permalink to this definition">#</a></dt>
 <dd><p>Decorator to define a custom baseline method for <a class="reference internal" href="#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p>
-<p>To use the default baseline in addition to this custom baseline,
-you can separately specify baseline_options.</p>
+<p>To use the “default” baseline in addition to this custom baseline,
+you need to separately specify <cite>“default”: NoPrivacySession.Options()</cite>
+in <code class="docutils literal notranslate"><span class="pre">baseline_options</span></code> class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the custom baseline.</p>
+</dd>
+</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 </pre></div>
 </div>
@@ -772,7 +775,6 @@ you can separately specify baseline_options.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nd">@baseline</span><span class="p">(</span><span class="s2">&quot;custom_baseline&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_baseline</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">protected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
 <span class="gp">... </span>        <span class="o">...</span>
@@ -790,11 +792,6 @@ you can separately specify baseline_options.</p>
 <span class="gp">... </span>    <span class="p">}</span>  <span class="c1"># This is required to keep the default baseline</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -804,6 +801,20 @@ you can separately specify baseline_options.</p>
 <p>Alternatively, you can use <a class="reference internal" href="../metrics/index.html#tmlt.analytics.metrics.CustomSingleOutputMetric" title="tmlt.analytics.metrics.CustomSingleOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomSingleOutputMetric</span></code></a> directly.</p>
 <p>To use the built-in metrics in addition to this custom metric,
 you can separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the metric.</p></li>
+<li><p><strong>description</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A description of the metric.</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The output to compute the metric for.</p></li>
+<li><p><strong>baselines</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – The name of the baseline program(s) used for the error report.
+If None, use all baselines specified as custom baseline and
+baseline options on tuner class. If no baselines are specified on tuner
+class, use default baseline. If a string, use only that baseline.
+If a list, use only those baselines.</p></li>
+</ul>
+</dd>
+</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">AbsoluteError</span>
 </pre></div>
@@ -830,22 +841,17 @@ you can separately specify <code class="docutils literal notranslate"><span clas
 <span class="gp">... </span>    <span class="p">]</span>  <span class="c1"># This is required to use the built-in metrics</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
-<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
-<li><p><strong>description</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>baselines</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.view">
 <span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.view" title="Permalink to this definition">#</a></dt>
 <dd><p>Views of the output table to be used across metrics in place of program outputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the output view.</p>
+</dd>
+</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">RelativeError</span>
 </pre></div>
@@ -862,16 +868,15 @@ you can separately specify <code class="docutils literal notranslate"><span clas
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nd">@view</span><span class="p">(</span><span class="s2">&quot;output_view&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_view1</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="o">...</span>
 <span class="gp">... </span>    <span class="nd">@view</span><span class="p">(</span><span class="s2">&quot;another_output_view&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_view2</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
 <span class="gp">... </span>        <span class="n">unprotected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># If the program has unprotected inputs or parameters, the view method</span>
 <span class="gp">... </span>        <span class="c1"># can take them as an argument.</span>
 <span class="gp">... </span>        <span class="o">...</span>
@@ -880,11 +885,6 @@ you can separately specify <code class="docutils literal notranslate"><span clas
 <span class="gp">... </span>    <span class="p">]</span> <span class="c1"># The view can be used instead of output when metric is defined</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -1406,7 +1406,7 @@ ensure that truly sensitive data is not used inappropriately.</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 69359685 at 2024-05-17 15:59.
+Built from 23136731 at 2024-05-28 13:21.
   </div>
   
   <div class="footer-item">

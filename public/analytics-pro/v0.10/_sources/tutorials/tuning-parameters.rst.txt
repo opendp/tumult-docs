@@ -192,16 +192,16 @@ More usefully, we can generate many error reports at once:
     :hide:
     :options: +NORMALIZE_WHITESPACE
 
-    Index(['upper_clamping_bound', 'mre', 'qre_0.75'], dtype='object')
+    Index(['upper_clamping_bound', 'mre_default', 'qre_0.75_default'], dtype='object')
 
 .. code-block::
 
-       upper_clamping_bound    mre  qre_0.75
-    0                    25  0.451     0.537
-    1                    75  0.224     0.362
-    2                   150  0.132     0.319
-    3                   250  0.142     0.567
-    4                   400  0.167     0.689
+       upper_clamping_bound    mre_default  qre_0.75_default
+    0                    25          0.451             0.537
+    1                    75          0.224             0.362
+    2                   150          0.132             0.319
+    3                   250          0.142             0.567
+    4                   400          0.167             0.689
 
 Looking at these results, we can see that the error seems to be smallest for upper clamping bounds between 150 and 250. We can run a second error report that focuses on this part of the search space:
 
@@ -217,8 +217,8 @@ We can then plot the results to visualize the privacy-utility trade-off.
 .. code-block::
 
     df = multi_error_report.to_dataframe()
-    sns.lineplot(data=df, x="upper_clamping_bound", y="mre", label="median")
-    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75", label="75th percentile")
+    sns.lineplot(data=df, x="upper_clamping_bound", y="mre_default", label="median")
+    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75_default", label="75th percentile")
     plt.ylabel("Relative Error")
     plt.xlabel("Upper Clamping Bound")
     plt.title("Relative Error vs. Upper Clamping Bound")
@@ -271,8 +271,8 @@ And plot the privacy-utility trade-off using the optimal upper clamping bound va
     # Convert 'budget' column to string representation focusing on the 'epsilon' attribute
     df['budget'] = df['budget'].apply(lambda x: f"epsilon={x.epsilon}")
     fig, axes = plt.subplots(2, 1, figsize=(10, 10))
-    sns.lineplot(data=df, x="upper_clamping_bound", y="mre", hue="budget", ax=axes[0])
-    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75", hue="budget", ax=axes[1])
+    sns.lineplot(data=df, x="upper_clamping_bound", y="mre_default", hue="budget", ax=axes[0])
+    sns.lineplot(data=df, x="upper_clamping_bound", y="qre_0.75_default", hue="budget", ax=axes[1])
     axes[0].set_ylabel("Median Relative Error")
     axes[1].set_ylabel("75th Percentile Relative Error")
     axes[0].set_xlabel("Upper Clamping Bound")

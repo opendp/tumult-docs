@@ -69,10 +69,7 @@ tuner
    ...     }
    ...
    ...     @baseline("custom_baseline")
-   ...     def no_clamping_bounds_baseline(
-   ...         self,
-   ...         protected_inputs: Dict[str, DataFrame],
-   ...     ) -> Dict[str, DataFrame]:
+   ...     def no_clamping_bounds_baseline(protected_inputs: Dict[str, DataFrame]) -> Dict[str, DataFrame]:
    ...         df = protected_inputs["protected_df"]
    ...         sum_value = df.agg(sf_sum("a").alias('a_sum'))
    ...         return {"a_sum": sum_value}
@@ -174,8 +171,11 @@ Functions
 
    Decorator to define a custom baseline method for :class:`~.SessionProgramTuner`.
 
-   To use the default baseline in addition to this custom baseline,
-   you can separately specify baseline_options.
+   To use the "default" baseline in addition to this custom baseline,
+   you need to separately specify `"default": NoPrivacySession.Options()`
+   in ``baseline_options`` class variable.
+
+   :param name: A name for the custom baseline.
 
    ..
 
@@ -193,7 +193,6 @@ Functions
    >>> class Tuner(SessionProgramTuner, program=Program):
    ...     @baseline("custom_baseline")
    ...     def custom_baseline(
-   ...         self,
    ...         protected_inputs: Dict[str, DataFrame],
    ...     ) -> Dict[str, DataFrame]:
    ...         ...
@@ -220,6 +219,15 @@ Functions
 
    To use the built-in metrics in addition to this custom metric,
    you can separately specify ``metrics`` class variable.
+
+   :param name: A name for the metric.
+   :param description: A description of the metric.
+   :param output: The output to compute the metric for.
+   :param baselines: The name of the baseline program(s) used for the error report.
+                     If None, use all baselines specified as custom baseline and
+                     baseline options on tuner class. If no baselines are specified on tuner
+                     class, use default baseline. If a string, use only that baseline.
+                     If a list, use only those baselines.
 
    ..
 
@@ -253,6 +261,8 @@ Functions
 
    Views of the output table to be used across metrics in place of program outputs.
 
+   :param name: A name for the output view.
+
    ..
 
        >>> from tmlt.analytics.session import Session
@@ -270,16 +280,15 @@ Functions
    >>> class Tuner(SessionProgramTuner, program=Program):
    ...     @view("output_view")
    ...     def custom_view1(
-   ...         self,
    ...         outputs: Dict[str, DataFrame],
-   ...     ) -> Dict[str, DataFrame]:
+   ...     ) -> DataFrame:
    ...         ...
    ...     @view("another_output_view")
    ...     def custom_view2(
    ...         self,
    ...         outputs: Dict[str, DataFrame],
    ...         unprotected_inputs: Dict[str, DataFrame],
-   ...     ) -> Dict[str, DataFrame]:
+   ...     ) -> DataFrame:
    ...         # If the program has unprotected inputs or parameters, the view method
    ...         # can take them as an argument.
    ...         ...
