@@ -105,6 +105,8 @@ Classes
      - Returns bounded variance of a column for each combination of groupby domains.
    * - :class:`.GroupByBoundedSTDEV`
      - Returns bounded stdev of a column for each combination of groupby domains.
+   * - :class:`.SuppressAggregates`
+     - Remove all counts that are less than the threshold.
    * - :class:`.QueryExprVisitor`
      - A base class for implementing visitors for :class:`QueryExpr`.
 
@@ -1485,6 +1487,44 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+.. py:class:: SuppressAggregates
+
+   Bases: :class:`QueryExpr`
+
+   Remove all counts that are less than the threshold.
+
+
+
+
+
+   .. py:attribute:: child
+      :annotation: :QueryExpr
+
+      The aggregate on which to suppress small counts.
+
+      Currently, only GroupByCount is supported.
+
+   .. py:attribute:: column
+      :annotation: :str
+
+      The name of the column to suppress.
+
+   .. py:attribute:: threshold
+      :annotation: :float
+
+      Threshold. All counts less than this will be suppressed.
+
+
+   .. py:method:: accept(visitor)
+
+      Visit this QueryExpr with visitor.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
 .. py:class:: QueryExprVisitor
 
    Bases: :class:`abc.ABC`
@@ -1539,6 +1579,8 @@ Classes
         - Visit a :class:`GroupByBoundedVariance`.
       * - :meth:`.visit_groupby_bounded_stdev`
         - Visit a :class:`GroupByBoundedSTDEV`.
+      * - :meth:`.visit_suppress_aggregates`
+        - Visit a :class:`SuppressAggregates`.
 
 
 
@@ -1673,6 +1715,12 @@ Classes
       :abstractmethod:
 
       Visit a :class:`GroupByBoundedSTDEV`.
+
+
+   .. py:method:: visit_suppress_aggregates(expr)
+      :abstractmethod:
+
+      Visit a :class:`SuppressAggregates`.
 
 
 

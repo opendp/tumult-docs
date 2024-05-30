@@ -1278,6 +1278,33 @@ function checkPageExistsAndRedirect(event) {
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.SuppressAggregates">
+     SuppressAggregates
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.SuppressAggregates.child">
+       child
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.SuppressAggregates.column">
+       column
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.SuppressAggregates.threshold">
+       threshold
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.SuppressAggregates.accept">
+       accept
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.QueryExprVisitor">
      QueryExprVisitor
     </a>
@@ -1390,6 +1417,11 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev">
        visit_groupby_bounded_stdev
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_suppress_aggregates">
+       visit_suppress_aggregates
       </a>
      </li>
     </ul>
@@ -1531,7 +1563,10 @@ user-friendly features.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a></p></td>
 <td><p>Returns bounded stdev of a column for each combination of groupby domains.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprVisitor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.SuppressAggregates" title="tmlt.analytics.query_expr.SuppressAggregates"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressAggregates</span></code></a></p></td>
+<td><p>Remove all counts that are less than the threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExprVisitor</span></code></a></p></td>
 <td><p>A base class for implementing visitors for <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -2956,6 +2991,46 @@ appropriate mechanism.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.SuppressAggregates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SuppressAggregates</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.SuppressAggregates" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a></p>
+<p>Remove all counts that are less than the threshold.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.SuppressAggregates.child">
+<span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="w"> </span><span class="pre">:QueryExpr</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.SuppressAggregates.child" title="Permalink to this definition">#</a></dt>
+<dd><p>The aggregate on which to suppress small counts.</p>
+<p>Currently, only GroupByCount is supported.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.SuppressAggregates.column">
+<span class="sig-name descname"><span class="pre">column</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.SuppressAggregates.column" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the column to suppress.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.SuppressAggregates.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><em class="property"><span class="w"> </span><span class="pre">:float</span></em><a class="headerlink" href="#tmlt.analytics.query_expr.SuppressAggregates.threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Threshold. All counts less than this will be suppressed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.SuppressAggregates.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visitor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.SuppressAggregates.accept" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit this QueryExpr with visitor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>visitor</strong> (<a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="tmlt.analytics.query_expr.QueryExprVisitor"><em>QueryExprVisitor</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExprVisitor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QueryExprVisitor</span></span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExprVisitor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
@@ -3032,6 +3107,9 @@ appropriate mechanism.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_groupby_bounded_stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_groupby_bounded_stdev()</span></code></a></p></td>
 <td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.GroupByBoundedSTDEV" title="tmlt.analytics.query_expr.GroupByBoundedSTDEV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByBoundedSTDEV</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_suppress_aggregates" title="tmlt.analytics.query_expr.QueryExprVisitor.visit_suppress_aggregates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit_suppress_aggregates()</span></code></a></p></td>
+<td><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.SuppressAggregates" title="tmlt.analytics.query_expr.SuppressAggregates"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressAggregates</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3343,6 +3421,20 @@ appropriate mechanism.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_expr.QueryExprVisitor.visit_suppress_aggregates">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_suppress_aggregates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_expr.QueryExprVisitor.visit_suppress_aggregates" title="Permalink to this definition">#</a></dt>
+<dd><p>Visit a <a class="reference internal" href="#tmlt.analytics.query_expr.SuppressAggregates" title="tmlt.analytics.query_expr.SuppressAggregates"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressAggregates</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expr</strong> (<a class="reference internal" href="#tmlt.analytics.query_expr.SuppressAggregates" title="tmlt.analytics.query_expr.SuppressAggregates"><em>SuppressAggregates</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -3394,7 +3486,7 @@ appropriate mechanism.</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from d0d28320 at 2024-05-30 09:21.
+Built from 0ab059f2 at 2024-05-30 17:41.
   </div>
   
   <div class="footer-item">

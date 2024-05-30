@@ -70,6 +70,8 @@ Classes
      - High-level interface for specifying DP queries.
    * - :class:`.GroupedQueryBuilder`
      - A QueryBuilder that is grouped by a set of columns and can be aggregated.
+   * - :class:`.AggregatedQueryBuilder`
+     - A query builder for post-processing aggregated data.
 
    
 ..
@@ -168,6 +170,10 @@ Classes
    ..
        >>> from tmlt.analytics.privacy_budget import PureDPBudget
        >>> from tmlt.analytics.protected_change import AddOneRow
+       >>> # Implicit doctest imports will lead to `isinstance` checks failing
+       >>> # (and to typeguard failures)
+       >>> # so we explicitly import QueryBuilder in all our doctests here.
+       >>> from tmlt.analytics.query_builder import QueryBuilder
        >>> import tmlt.analytics.session
        >>> import pandas as pd
        >>> from pyspark.sql import SparkSession
@@ -248,11 +254,11 @@ Classes
       * - :meth:`.groupby`
         - Groups the query by the given set of keys, returning a GroupedQueryBuilder.
       * - :meth:`.count`
-        - Returns a count query that is ready to be evaluated.
+        - Returns a count query ready to be evaluated.
       * - :meth:`.count_distinct`
-        - Returns a count_distinct query that is ready to be evaluated.
+        - Returns a count_distinct query ready to be evaluated.
       * - :meth:`.quantile`
-        - Returns a quantile query that is ready to be evaluated.
+        - Returns a quantile query ready to be evaluated.
       * - :meth:`.min`
         - Returns a quantile query requesting a minimum value, ready to be evaluated.
       * - :meth:`.max`
@@ -260,13 +266,13 @@ Classes
       * - :meth:`.median`
         - Returns a quantile query requesting a median value, ready to be evaluated.
       * - :meth:`.sum`
-        - Returns a sum query that is ready to be evaluated.
+        - Returns a sum query ready to be evaluated.
       * - :meth:`.average`
-        - Returns an average query that is ready to be evaluated.
+        - Returns an average query ready to be evaluated.
       * - :meth:`.variance`
-        - Returns a variance query that is ready to be evaluated.
+        - Returns a variance query ready to be evaluated.
       * - :meth:`.stdev`
-        - Returns a standard deviation query that is ready to be evaluated.
+        - Returns a standard deviation query ready to be evaluated.
 
 
 
@@ -322,6 +328,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -434,6 +441,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -540,6 +548,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -607,6 +616,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -687,6 +697,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -772,6 +783,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -856,6 +868,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -926,6 +939,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1035,6 +1049,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1121,6 +1136,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> from tmlt.analytics.keyset import KeySet
           >>> import pandas as pd
@@ -1425,6 +1441,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import ApproxDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1482,6 +1499,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1524,6 +1542,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget, ApproxDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1654,7 +1673,7 @@ Classes
 
    .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
-      Returns a count query that is ready to be evaluated.
+      Returns a count query ready to be evaluated.
 
       .. note::
           Differentially private counts may return values that are not
@@ -1664,6 +1683,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1723,7 +1743,7 @@ Classes
 
    .. py:method:: count_distinct(columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
 
-      Returns a count_distinct query that is ready to be evaluated.
+      Returns a count_distinct query ready to be evaluated.
 
       .. note::
           Differentially private counts may returns values that are not
@@ -1733,6 +1753,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1801,7 +1822,7 @@ Classes
 
    .. py:method:: quantile(column, quantile, low, high, name = None)
 
-      Returns a quantile query that is ready to be evaluated.
+      Returns a quantile query ready to be evaluated.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -1812,6 +1833,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1879,6 +1901,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -1944,6 +1967,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2009,6 +2033,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2063,7 +2088,7 @@ Classes
 
    .. py:method:: sum(column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
-      Returns a sum query that is ready to be evaluated.
+      Returns a sum query ready to be evaluated.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2082,6 +2107,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2136,7 +2162,7 @@ Classes
 
    .. py:method:: average(column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
 
-      Returns an average query that is ready to be evaluated.
+      Returns an average query ready to be evaluated.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2155,6 +2181,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2209,7 +2236,7 @@ Classes
 
    .. py:method:: variance(column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
 
-      Returns a variance query that is ready to be evaluated.
+      Returns a variance query ready to be evaluated.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2228,6 +2255,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2282,7 +2310,7 @@ Classes
 
    .. py:method:: stdev(column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
 
-      Returns a standard deviation query that is ready to be evaluated.
+      Returns a standard deviation query ready to be evaluated.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2301,6 +2329,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2364,17 +2393,49 @@ Classes
 
 
 
+   .. list-table:: Methods
+
+      * - :meth:`.query_expr`
+        - Get the query expression being built.
+      * - :meth:`.count`
+        - Returns an AggregatedQueryBuilder with a count query.
+      * - :meth:`.count_distinct`
+        - Returns an AggregatedQueryBuilder with a count_distinct query.
+      * - :meth:`.quantile`
+        - Returns an AggregatedQueryBuilder with a quantile query.
+      * - :meth:`.min`
+        - Returns an AggregatedQueryBuilder with a quantile query requesting a minimum value.
+      * - :meth:`.max`
+        - Returns an AggregatedQueryBuilder with a quantile query requesting a maximum value.
+      * - :meth:`.median`
+        - Returns an AggregatedQueryBuilder with a quantile query requesting a median value.
+      * - :meth:`.sum`
+        - Returns an AggregatedQueryBuilder with a sum query.
+      * - :meth:`.average`
+        - Returns an AggregatedQueryBuilder with an average query.
+      * - :meth:`.variance`
+        - Returns an AggregatedQueryBuilder with a variance query.
+      * - :meth:`.stdev`
+        - Returns an AggregatedQueryBuilder with a standard deviation query.
+
 
 
 
    .. automethod:: __init__
+   .. py:method:: query_expr()
+      :property:
+
+      Get the query expression being built.
+
+
    .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
-      Returns a count query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a count query.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2426,11 +2487,12 @@ Classes
 
    .. py:method:: count_distinct(columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
 
-      Returns a count_distinct query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a count_distinct query.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2489,7 +2551,7 @@ Classes
 
    .. py:method:: quantile(column, quantile, low, high, name = None)
 
-      Returns a quantile query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a quantile query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2500,6 +2562,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2558,7 +2621,7 @@ Classes
 
    .. py:method:: min(column, low, high, name = None)
 
-      Returns a quantile query requesting a minimum value, ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a quantile query requesting a minimum value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2569,6 +2632,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2629,7 +2693,7 @@ Classes
 
    .. py:method:: max(column, low, high, name = None)
 
-      Returns a quantile query requesting a maximum value, ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a quantile query requesting a maximum value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2640,6 +2704,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2700,7 +2765,7 @@ Classes
 
    .. py:method:: median(column, low, high, name = None)
 
-      Returns a quantile query requesting a median value, ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a quantile query requesting a median value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2711,6 +2776,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2767,7 +2833,7 @@ Classes
 
    .. py:method:: sum(column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
-      Returns a sum query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a sum query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2786,6 +2852,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2842,7 +2909,7 @@ Classes
 
    .. py:method:: average(column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
 
-      Returns an average query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with an average query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2861,6 +2928,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -2917,7 +2985,7 @@ Classes
 
    .. py:method:: variance(column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
 
-      Returns a variance query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a variance query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -2936,6 +3004,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> import numpy as np
@@ -2993,7 +3062,7 @@ Classes
 
    .. py:method:: stdev(column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
 
-      Returns a standard deviation query that is ready to be evaluated.
+      Returns an AggregatedQueryBuilder with a standard deviation query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3012,6 +3081,7 @@ Classes
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
           >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
           >>> import tmlt.analytics.session
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
@@ -3064,6 +3134,84 @@ Classes
                    ``f"{column}_stdev"``.
       :param mechanism: Choice of noise mechanism. By default, the framework
                         automatically selects an appropriate mechanism.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AggregatedQueryBuilder(query_expr)
+
+   A query builder for post-processing aggregated data.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: query_expr()
+      :property:
+
+      Get the aggregated query expression (before post-processing).
+
+
+   .. py:method:: suppress(threshold)
+
+      Returns a SuppressAggregates query that is ready to be evaluated.
+
+      ..
+          >>> from tmlt.analytics.privacy_budget import PureDPBudget
+          >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> import tmlt.analytics.session
+          >>> import pandas as pd
+          >>> from pyspark.sql import SparkSession
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> my_private_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+
+      .. rubric:: Example
+
+      >>> budget = PureDPBudget(float("inf"))
+      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      ...     privacy_budget=budget,
+      ...     source_id="my_private_data",
+      ...     dataframe=my_private_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> my_private_data.toPandas()
+         A  B  X
+      0  0  1  0
+      1  1  0  1
+      2  1  2  1
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_schema("my_private_data").column_types
+      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> # Building a groupby count query and suppressing results < 1
+      >>> query = (
+      ...     QueryBuilder("my_private_data")
+      ...     .groupby(KeySet.from_dict({"A": ["0", "1", "2"]}))
+      ...     .count()
+      ...     .suppress(1)
+      ... )
+      >>> # Answering the query with infinite privacy budget
+      >>> answer = sess.evaluate(
+      ...     query,
+      ...     PureDPBudget(float("inf"))
+      ... )
+      >>> answer.sort("A").toPandas()
+         A  count
+      0  0      1
+      1  1      2
+
+      :param threshold: Threshold value. All results with a lower value in the
+                        aggregated column will be suppressed.
 
 
 
