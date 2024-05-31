@@ -304,8 +304,8 @@ Because Tumult Analytics uses PySpark for computation, it also <a class="referen
 If none of these apply to you, install Python 3 and Java from your OS package manager.
 If you encounter any issues during the installation process, please <a class="reference external" href="https://gitlab.com/tumult-labs/core/-/issues">let us know</a>!</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="46649c5c-0dff-4bb7-a84f-7c652bbfd174" name="6e8a3c73-5f98-4703-8f37-062da2d076e3" type="radio">
-</input><label class="tabbed-label" for="46649c5c-0dff-4bb7-a84f-7c652bbfd174">
+<input checked="checked" id="3fd90364-f81c-4212-b8a1-971cc478f69a" name="5e3db2af-c1cc-47cd-ae8a-2d915a245418" type="radio">
+</input><label class="tabbed-label" for="3fd90364-f81c-4212-b8a1-971cc478f69a">
 Linux (Debian-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, are likely already installed.
 If they are not, install them with:</p>
@@ -318,8 +318,8 @@ If it is not, install the Java Runtime Environment with:</p>
 </pre></div>
 </div>
 </div>
-<input id="5d4f8730-6ddb-4ff9-aa5e-6743ae406acb" name="6e8a3c73-5f98-4703-8f37-062da2d076e3" type="radio">
-</input><label class="tabbed-label" for="5d4f8730-6ddb-4ff9-aa5e-6743ae406acb">
+<input id="d8c9b796-e89f-4dbd-ad56-131ddf698509" name="5e3db2af-c1cc-47cd-ae8a-2d915a245418" type="radio">
+</input><label class="tabbed-label" for="d8c9b796-e89f-4dbd-ad56-131ddf698509">
 Linux (Red Hat-based)</label><div class="tabbed-content docutils">
 <p>Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code>, Python’s package manager, may already be installed.
 On some releases, Python 2 may be installed by default, but not Python 3.
@@ -333,8 +333,8 @@ To install Python 3, run:</p>
 </div>
 <p>Note that despite the package name, this will install Java 8.</p>
 </div>
-<input id="b989b7ea-fb65-406e-89a2-a0c407449e94" name="6e8a3c73-5f98-4703-8f37-062da2d076e3" type="radio">
-</input><label class="tabbed-label" for="b989b7ea-fb65-406e-89a2-a0c407449e94">
+<input id="a4d46d32-03aa-4f8e-93c2-b8213698fb49" name="5e3db2af-c1cc-47cd-ae8a-2d915a245418" type="radio">
+</input><label class="tabbed-label" for="a4d46d32-03aa-4f8e-93c2-b8213698fb49">
 macOS</label><div class="tabbed-content docutils">
 <p>If you do not already have Homebrew, it can be installed with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
@@ -348,11 +348,16 @@ macOS</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>openjdk@11
 </pre></div>
 </div>
-<p>You may need to explicitly add this OpenJDK installation to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> for it to be detected and usable by Spark.
-This can be done by, for example, adding <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;/usr/local/opt/openjdk/bin:$PATH&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> and then restarting your shell.</p>
+<p>For the system Java wrappers to find this JDK you may need to symlink it by following the instructions that Homebrew provides upon installation.
+The command will look similar to the following, but will differ depending on your CPU architecture:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>ln<span class="w"> </span>-sfn<span class="w"> </span>/opt/homebrew/opt/openjdk@11/libexec/openjdk.jdk<span class="w"> </span>/Library/Java/JavaVirtualMachines/openjdk-11.jdk
+</pre></div>
 </div>
-<input id="df3bade5-5599-4436-92d6-6457bd611a72" name="6e8a3c73-5f98-4703-8f37-062da2d076e3" type="radio">
-</input><label class="tabbed-label" for="df3bade5-5599-4436-92d6-6457bd611a72">
+<p>If you have more than one Java version installed on your system, use Java 11 by setting <code class="docutils literal notranslate"><span class="pre">JAVA_HOME</span></code> to <code class="docutils literal notranslate"><span class="pre">$(/usr/libexec/java_home</span> <span class="pre">-v11)</span></code>.
+This can be done by, for example, adding <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">JAVA_HOME=$(/usr/libexec/java_home</span> <span class="pre">-v11)</span></code> to <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> and then restarting your shell.</p>
+</div>
+<input id="94b425d3-62bf-409a-8384-4006cc4fa25d" name="5e3db2af-c1cc-47cd-ae8a-2d915a245418" type="radio">
+</input><label class="tabbed-label" for="94b425d3-62bf-409a-8384-4006cc4fa25d">
 Windows</label><div class="tabbed-content docutils">
 <p>The only supported way to install Tumult Core on Windows is using the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>.
 Once you have installed your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Core set up.</p>
@@ -416,7 +421,7 @@ Once you have installed your preferred Linux distribution with WSL, follow the c
   <div class="footer-item">
     <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 386d344e at 2024-05-23 20:53.
+Built from 656ae69d at 2024-05-31 15:53.
   </div>
   
   <div class="footer-item">
