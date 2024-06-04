@@ -690,6 +690,8 @@ This is currently only supported for post-processing <a class="reference interna
 These can be built using the <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a> by calling <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.AggregatedQueryBuilder.suppress" title="tmlt.analytics.query_builder.AggregatedQueryBuilder.suppress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AggregatedQueryBuilder.suppress</span></code></a> after building a GroupByCount query.
 As part of this change, query builders now return an <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.AggregatedQueryBuilder" title="tmlt.analytics.query_builder.AggregatedQueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">AggregatedQueryBuilder</span></code></a> instead of a <a class="reference internal" href="reference/tmlt/analytics/query_expr/index.html#tmlt.analytics.query_expr.QueryExpr" title="tmlt.analytics.query_expr.QueryExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryExpr</span></code></a> when aggregating;
 the <a class="reference internal" href="reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.AggregatedQueryBuilder" title="tmlt.analytics.query_builder.AggregatedQueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">AggregatedQueryBuilder</span></code></a> can be passed to <a class="reference internal" href="reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Session.evaluate</span></code></a> so most existing code should not need to be migrated.</p></li>
+<li><p>Made <a class="reference internal" href="reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a>, <a class="reference internal" href="reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDPBudget</span></code></a>, and <a class="reference internal" href="reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a> immutable classes.</p></li>
+<li><p>Adjusted <a class="reference internal" href="reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a> and <a class="reference internal" href="reference/tmlt/analytics/privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDPBudget</span></code></a> so that they are no longer equal if the ApproxDPBudget has a delta of zero and the same epsilon as the PureDPBudget.</p></li>
 </ul>
 </section>
 </section>
@@ -699,8 +701,6 @@ the <a class="reference internal" href="reference/tmlt/analytics/query_builder/i
 <h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Column order is now preserved when selecting columns from a <a class="reference internal" href="reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>.</p></li>
-<li><p>Made <cite>~tmlt.analytics.privacy_budget.PureDPBudget</cite>, <cite>~tmlt.analytics.privacy_budget.ApproxDPBudget</cite>, and <cite>~tmlt.analytics.privacy_budget.RhoZCDPBudget</cite> immutable classes.</p></li>
-<li><p>Adjusted <cite>~tmlt.analytics.privacy_budget.PureDPBudget</cite> and <cite>~tmlt.analytics.privacy_budget.ApproxDPBudget</cite> so that they are no longer equal if the ApproxDPBudget has a delta of zero and the same epsilon as the PureDPBudget.</p></li>
 </ul>
 </section>
 </section>
@@ -1202,7 +1202,7 @@ They will be removed in a future version.</p></li>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from b8cf002b at 2024-06-04 22:05.
+Built from cdd4b7ba at 2024-06-04 23:03.
   </div>
   
   <div class="footer-item">
