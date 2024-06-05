@@ -1,0 +1,1026 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>_tuner &#8212; Tumult Analytics Pro  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../../../../../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.11.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/tmlt/analytics/tuner/_tuner/index and {'json_url': 'https://docs.tmlt.dev/analytics-pro/versions.json', 'version_match': '0.11.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/tmlt/analytics/tuner/_tuner/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics-pro/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/tmlt/analytics/tuner/_tuner/index.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.11.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.11.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classes">
+   Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.baseline">
+     baseline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.metric">
+     metric
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.view">
+     view
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.Tunable">
+     Tunable
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.Tunable.name">
+       name
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunablePrivateDataFrame">
+     TunablePrivateDataFrame
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin">
+     TunableDataFrameMixin
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_private_dataframe">
+       with_private_dataframe
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_public_dataframe">
+       with_public_dataframe
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_id_space">
+       with_id_space
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin">
+     TunablePrivacyBudgetMixin
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.with_privacy_budget">
+       with_privacy_budget
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner">
+     SessionProgramTuner
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder">
+       Builder
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_private_dataframe">
+         with_private_dataframe
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_public_dataframe">
+         with_public_dataframe
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_parameter">
+         with_parameter
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.build">
+         build
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_id_space">
+         with_id_space
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_privacy_budget">
+         with_privacy_budget
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.baseline_options">
+       baseline_options
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.metrics">
+       metrics
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.program">
+       program
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.__init__">
+       __init__
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.tunables">
+       tunables
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.outputs">
+       outputs
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.error_report">
+       error_report
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.multi_error_report">
+       multi_error_report
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-tmlt.analytics.tuner._tuner">
+<span id="tuner"></span><h1>_tuner<a class="headerlink" href="#module-tmlt.analytics.tuner._tuner" title="Permalink to this headline">#</a></h1>
+<p>Interface for tuning <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>s.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.baseline" title="tmlt.analytics.tuner._tuner.baseline"><code class="xref py py-func docutils literal notranslate"><span class="pre">baseline()</span></code></a></p></td>
+<td><p>Decorator to define a custom baseline method for <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.metric" title="tmlt.analytics.tuner._tuner.metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">metric()</span></code></a></p></td>
+<td><p>Decorator to define a custom metric method for <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.view" title="tmlt.analytics.tuner._tuner.view"><code class="xref py py-func docutils literal notranslate"><span class="pre">view()</span></code></a></p></td>
+<td><p>Views of the output table to be used across metrics in place of program outputs.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.baseline">
+<span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.baseline" title="Permalink to this definition">#</a></dt>
+<dd><p>Decorator to define a custom baseline method for <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p>
+<p>To use the “default” baseline in addition to this custom baseline,
+you need to separately specify <cite>“default”: NoPrivacySession.Options()</cite>
+in <code class="docutils literal notranslate"><span class="pre">baseline_options</span></code> class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the custom baseline.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">unprotected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">output_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@baseline</span><span class="p">(</span><span class="s2">&quot;custom_baseline&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_baseline</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">protected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">... </span>    <span class="nd">@baseline</span><span class="p">(</span><span class="s2">&quot;another_custom_baseline&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">another_custom_baseline</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">protected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">unprotected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="c1"># If the program has unprotected inputs or parameters, the custom</span>
+<span class="gp">... </span>        <span class="c1"># baseline method can take them as an argument.</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">... </span>    <span class="n">baseline_options</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">NoPrivacySession</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">}</span>  <span class="c1"># This is required to keep the default baseline</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baselines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Decorator to define a custom metric method for <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p>
+<p>Alternatively, you can use <a class="reference internal" href="../../metrics/index.html#tmlt.analytics.metrics.CustomSingleOutputMetric" title="tmlt.analytics.metrics.CustomSingleOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomSingleOutputMetric</span></code></a> directly.</p>
+<p>To use the built-in metrics in addition to this custom metric,
+you can separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the metric.</p></li>
+<li><p><strong>description</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A description of the metric.</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The output to compute the metric for.</p></li>
+<li><p><strong>baselines</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – The name of the baseline program(s) used for the error report.
+If None, use all baselines specified as custom baseline and
+baseline options on tuner class. If no baselines are specified on tuner
+class, use default baseline. If a string, use only that baseline.
+If a list, use only those baselines.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">AbsoluteError</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">unprotected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">output_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_df&quot;</span><span class="p">:</span> <span class="n">dp_output</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@metric</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;custom_metric&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;output_df&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_metric</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dp_outputs</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">baseline_outputs</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="p">):</span>
+<span class="gp">... </span>        <span class="c1"># If the program has unprotected inputs and/or parameters, the custom</span>
+<span class="gp">... </span>        <span class="c1">#  metric method can take them as an argument.</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">... </span>    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">AbsoluteError</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s2">&quot;output_df&quot;</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>  <span class="c1"># This is required to use the built-in metrics</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.view">
+<span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.view" title="Permalink to this definition">#</a></dt>
+<dd><p>Views of the output table to be used across metrics in place of program outputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A name for the output view.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">RelativeError</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">unprotected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">output_df</span><span class="p">:</span> <span class="n">DataFrame</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@view</span><span class="p">(</span><span class="s2">&quot;output_view&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_view1</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">... </span>    <span class="nd">@view</span><span class="p">(</span><span class="s2">&quot;another_output_view&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">custom_view2</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">unprotected_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># If the program has unprotected inputs or parameters, the view method</span>
+<span class="gp">... </span>        <span class="c1"># can take them as an argument.</span>
+<span class="gp">... </span>        <span class="o">...</span>
+<span class="gp">... </span>    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">RelativeError</span><span class="p">(</span><span class="s2">&quot;output_view&quot;</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s2">&quot;a_sum&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span> <span class="c1"># The view can be used instead of output when metric is defined</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a></p></td>
+<td><p>Named placeholder for a single input to a <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Builder</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.TunablePrivateDataFrame" title="tmlt.analytics.tuner._tuner.TunablePrivateDataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">TunablePrivateDataFrame</span></code></a></p></td>
+<td><p>A private dataframe and its protected change.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin" title="tmlt.analytics.tuner._tuner.TunableDataFrameMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TunableDataFrameMixin</span></code></a></p></td>
+<td><p>Add tunable private and public dataframe support to a builder.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin" title="tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TunablePrivacyBudgetMixin</span></code></a></p></td>
+<td><p>Add support for tunable privacy budgets to a builder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a></p></td>
+<td><p>Base class for defining an object to tune inputs to a <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.Tunable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tunable</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.Tunable" title="Permalink to this definition">#</a></dt>
+<dd><p>Named placeholder for a single input to a <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Builder</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only available on a paid version of Tumult Analytics. If you
+would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+</div>
+<p>When a <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> is passed to a <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Builder</span></code></a>, it
+is replaced with the concrete values for the tunable parameter when building
+<a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> s inside of methods like
+<a class="reference internal" href="../index.html#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="tmlt.analytics.tuner.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> and
+<a class="reference internal" href="../index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.Tunable.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#tmlt.analytics.tuner._tuner.Tunable.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the tunable parameter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunablePrivateDataFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TunablePrivateDataFrame</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunablePrivateDataFrame" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>A private dataframe and its protected change.</p>
+<p>One or both of the dataframe and protected_change can be a <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunableDataFrameMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TunableDataFrameMixin</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin" title="Permalink to this definition">#</a></dt>
+<dd><p>Add tunable private and public dataframe support to a builder.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunableDataFrameMixin.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_private_dataframe">
+<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_private_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a tunable private dataframe to the builder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p></li>
+<li><p><strong>protected_change</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_public_dataframe">
+<span class="sig-name descname"><span class="pre">with_public_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_public_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a tunable public dataframe to the builder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>, </em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_id_space">
+<span class="sig-name descname"><span class="pre">with_id_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_space</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunableDataFrameMixin.with_id_space" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds an identifier space.</p>
+<p>This defines a space of identifiers that map 1-to-1 to the identifiers
+being protected by a table with the <a class="reference internal" href="../../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected
+change. Any table with such a protected change must be a member of some
+identifier space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_space</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TunablePrivacyBudgetMixin</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin" title="Permalink to this definition">#</a></dt>
+<dd><p>Add support for tunable privacy budgets to a builder.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.with_privacy_budget">
+<span class="sig-name descname"><span class="pre">with_privacy_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.TunablePrivacyBudgetMixin.with_privacy_budget" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the privacy budget for the object being built.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>privacy_budget</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SessionProgramTuner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="Permalink to this definition">#</a></dt>
+<dd><p>Base class for defining an object to tune inputs to a <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only available on a paid version of Tumult Analytics. If you
+would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+</div>
+<p>SessionProgramTuners should not be directly constructed. Instead, users should
+create a subclass of <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, then construct their
+<a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> using the auto-generated <a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Builder</span></code></a> attribute of
+the subclass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>builder</strong> (<a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner"><em>SessionProgramTuner</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="Permalink to this definition">#</a></dt>
+<dd><p>The builder for a specific subclass of SessionProgramTuner.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_private_dataframe">
+<span class="sig-name descname"><span class="pre">with_private_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protected_change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_private_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a tunable private dataframe to the builder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p></li>
+<li><p><strong>protected_change</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><em>tmlt.analytics.protected_change.ProtectedChange</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner">SessionProgramTuner</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_public_dataframe">
+<span class="sig-name descname"><span class="pre">with_public_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_public_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a tunable public dataframe to the builder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>dataframe</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner">SessionProgramTuner</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_parameter">
+<span class="sig-name descname"><span class="pre">with_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_parameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the value of a parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.build" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an instance of the matching <code class="docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code> subtype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner" title="tmlt.analytics.tuner._tuner.SessionProgramTuner">SessionProgramTuner</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_id_space">
+<span class="sig-name descname"><span class="pre">with_id_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_space</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_id_space" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds an identifier space.</p>
+<p>This defines a space of identifiers that map 1-to-1 to the identifiers
+being protected by a table with the <a class="reference internal" href="../../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected
+change. Any table with such a protected change must be a member of some
+identifier space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_space</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_privacy_budget">
+<span class="sig-name descname"><span class="pre">with_privacy_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder.with_privacy_budget" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the privacy budget for the object being built.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>privacy_budget</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../privacy_budget/index.html#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget"><em>tmlt.analytics.privacy_budget.PrivacyBudget</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><em>Tunable</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.baseline_options">
+<span class="sig-name descname"><span class="pre">baseline_options</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[Union[Dict[str,</span> <span class="pre">tmlt.analytics.no_privacy_session.NoPrivacySession.Options],</span> <span class="pre">tmlt.analytics.no_privacy_session.NoPrivacySession.Options]]</span></em><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.baseline_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for how baseline outputs are computed.</p>
+<p>By default, a SessionProgramTuner computes both the DP outputs and the baseline
+outputs for a SessionProgram to compute metrics. The baseline outputs are computed
+by calling the <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method with a
+<a class="reference internal" href="../../no_privacy_session/index.html#tmlt.analytics.no_privacy_session.NoPrivacySession" title="tmlt.analytics.no_privacy_session.NoPrivacySession"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoPrivacySession</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">baseline_options</span></code> attribute allows you to
+override the default options for the <a class="reference internal" href="../../no_privacy_session/index.html#tmlt.analytics.no_privacy_session.NoPrivacySession" title="tmlt.analytics.no_privacy_session.NoPrivacySession"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoPrivacySession</span></code></a> used to
+compute the baseline. You can also specify multiple configurations to compute
+the baselines with different options. When multiple baseline configurations are
+specified, the metrics are computed with respect to each of the baseline
+configurations (unless specified otherwise in the metric definitions).</p>
+<p>To override the default baseline options
+(see <a class="reference internal" href="../../no_privacy_session/index.html#tmlt.analytics.no_privacy_session.NoPrivacySession.Options" title="tmlt.analytics.no_privacy_session.NoPrivacySession.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a>), you can set this to
+an <a class="reference internal" href="../../no_privacy_session/index.html#tmlt.analytics.no_privacy_session.NoPrivacySession.Options" title="tmlt.analytics.no_privacy_session.NoPrivacySession.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a> object.</p>
+<p>If you want to specify multiple baseline configurations, you can set this to a
+dictionary mapping baseline names to <a class="reference internal" href="../../no_privacy_session/index.html#tmlt.analytics.no_privacy_session.NoPrivacySession.Options" title="tmlt.analytics.no_privacy_session.NoPrivacySession.Options"><code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.metrics">
+<span class="sig-name descname"><span class="pre">metrics</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[List[tmlt.analytics.metrics.Metric]]</span></em><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of metrics to compute in each <code class="docutils literal notranslate"><span class="pre">error_report</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.program">
+<span class="sig-name descname"><span class="pre">program</span></span><em class="property"><span class="w"> </span><span class="pre">:Type[tmlt.analytics.program.SessionProgram]</span></em><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.program" title="Permalink to this definition">#</a></dt>
+<dd><p>A subclass of <a class="reference internal" href="../../program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> to be tuned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This constructor is not intended to be used directly. Use
+the automatically generated builder instead. It can be accessed using the
+<code class="docutils literal notranslate"><span class="pre">Builder</span></code> attribute of the subclass.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>builder</strong> (<a class="reference internal" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder" title="tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder"><em>tmlt.analytics.tuner._tuner.SessionProgramTuner.Builder</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.tunables">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tunables</span></span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.tunables" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a list of tunable inputs associated with this tuner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable">Tunable</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.outputs">
+<span class="sig-name descname"><span class="pre">outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tunable_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.outputs" title="Permalink to this definition">#</a></dt>
+<dd><p>Computes all outputs for a single run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tunable_values</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary mapping names of <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s
+to concrete values to use for this run. Every <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> used
+in building this tuner must have a value in this dictionary. This
+can be None only if no <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s were used.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>], Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.error_report">
+<span class="sig-name descname"><span class="pre">error_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tunable_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.error_report" title="Permalink to this definition">#</a></dt>
+<dd><p>Computes DP outputs, baseline outputs, and metrics for a single run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tunable_values</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary mapping names of <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s to concrete
+values to use for this error report. Every <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> used in building
+this tuner must have a value in this dictionary. This can be None only
+if no <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s were used.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../_error_report/index.html#tmlt.analytics.tuner._error_report.ErrorReport" title="tmlt.analytics.tuner._error_report.ErrorReport">tmlt.analytics.tuner._error_report.ErrorReport</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner._tuner.SessionProgramTuner.multi_error_report">
+<span class="sig-name descname"><span class="pre">multi_error_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tunable_values_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner._tuner.SessionProgramTuner.multi_error_report" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs the <code class="docutils literal notranslate"><span class="pre">error_report</span></code> for each set of values for the <a class="reference internal" href="#tmlt.analytics.tuner._tuner.Tunable" title="tmlt.analytics.tuner._tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tunable_values_list</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../_error_report/index.html#tmlt.analytics.tuner._error_report.MultiErrorReport" title="tmlt.analytics.tuner._error_report.MultiErrorReport">tmlt.analytics.tuner._error_report.MultiErrorReport</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 8f49a553 at 2024-06-05 22:15.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
