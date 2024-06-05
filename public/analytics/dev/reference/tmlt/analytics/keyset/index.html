@@ -392,6 +392,16 @@ function checkPageExistsAndRedirect(event) {
        size
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.cache">
+       cache
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tmlt.analytics.keyset.KeySet.unpersist">
+       unpersist
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -453,6 +463,51 @@ are the preferred way to construct KeySets. Directly constructing KeySets
 skips checks that guarantee the uniqueness of output rows, and <code class="docutils literal notranslate"><span class="pre">__init__</span></code>
 methods are not guaranteed to work the same way between releases.</p>
 </div>
+<table class="table" id="id1">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dict" title="tmlt.analytics.keyset.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a></p></td>
+<td><p>Create a KeySet from a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a></p></td>
+<td><p>Create a KeySet from a dataframe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.dataframe" title="tmlt.analytics.keyset.KeySet.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dataframe()</span></code></a></p></td>
+<td><p>Return the dataframe associated with this KeySet.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.__getitem__" title="tmlt.analytics.keyset.KeySet.__getitem__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__getitem__()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">KeySet[col,</span> <span class="pre">col,</span> <span class="pre">...]</span></code> returns a KeySet with those columns only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.__eq__" title="tmlt.analytics.keyset.KeySet.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a></p></td>
+<td><p>Override equality.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.schema" title="tmlt.analytics.keyset.KeySet.schema"><code class="xref py py-meth docutils literal notranslate"><span class="pre">schema()</span></code></a></p></td>
+<td><p>Returns a Schema based on the KeySet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.__mul__" title="tmlt.analytics.keyset.KeySet.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__mul__()</span></code></a></p></td>
+<td><p>A product (<code class="docutils literal notranslate"><span class="pre">KeySet</span> <span class="pre">*</span> <span class="pre">KeySet</span></code>) returns the cross-product of both KeySets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.columns" title="tmlt.analytics.keyset.KeySet.columns"><code class="xref py py-meth docutils literal notranslate"><span class="pre">columns()</span></code></a></p></td>
+<td><p>Return the list of columns used by this KeySet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.filter" title="tmlt.analytics.keyset.KeySet.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a></p></td>
+<td><p>Filter this KeySet using some condition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.size" title="tmlt.analytics.keyset.KeySet.size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">size()</span></code></a></p></td>
+<td><p>Get the size of this KeySet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.cache" title="tmlt.analytics.keyset.KeySet.cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cache()</span></code></a></p></td>
+<td><p>Caches the KeySet’s dataframe in memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.keyset.KeySet.unpersist" title="tmlt.analytics.keyset.KeySet.unpersist"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unpersist()</span></code></a></p></td>
+<td><p>Removes the KeySet’s dataframe from memory.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.from_dict">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domains</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.from_dict" title="Permalink to this definition">#</a></dt>
@@ -713,6 +768,28 @@ in Spark SQL. Examples of valid conditions include:</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.cache">
+<span class="sig-name descname"><span class="pre">cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.cache" title="Permalink to this definition">#</a></dt>
+<dd><p>Caches the KeySet’s dataframe in memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.keyset.KeySet.unpersist">
+<span class="sig-name descname"><span class="pre">unpersist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.keyset.KeySet.unpersist" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes the KeySet’s dataframe from memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -764,7 +841,7 @@ in Spark SQL. Examples of valid conditions include:</p>
   <div class="footer-item">
     <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from cdd4b7ba at 2024-06-04 23:03.
+Built from cb8cfdc1 at 2024-06-05 00:38.
   </div>
   
   <div class="footer-item">
