@@ -280,6 +280,8 @@ Classes
         - Add a type specific assertEqual style function to compare a type.
       * - :meth:`.addCleanup`
         - Add a function, with arguments, to be called when the test is
+      * - :meth:`.addClassCleanup`
+        - Same as addCleanup, except the cleanup items are called even if
       * - :meth:`.setUp`
         - Hook method for setting up the test fixture before exercising it.
       * - :meth:`.tearDown`
@@ -292,6 +294,8 @@ Classes
         - Return a context manager that will return the enclosed block
       * - :meth:`.doCleanups`
         - Execute all cleanup functions. Normally called for you after
+      * - :meth:`.doClassCleanups`
+        - Execute all class cleanup functions. Normally called for you after
       * - :meth:`.debug`
         - Run the test without collecting errors in a TestResult
       * - :meth:`.skipTest`
@@ -335,7 +339,7 @@ Classes
       * - :meth:`.assertDictContainsSubset`
         - Checks whether dictionary is a superset of subset.
       * - :meth:`.assertCountEqual`
-        - An unordered sequence comparison asserting that the same elements,
+        - Asserts that two iterables have the same elements, the same number of
       * - :meth:`.assertMultiLineEqual`
         - Assert that two multi-line strings are equal.
       * - :meth:`.assertLess`
@@ -428,6 +432,13 @@ Classes
       Cleanup items are called even if setUp fails (unlike tearDown).
 
 
+   .. py:method:: addClassCleanup(function, /, *args, **kwargs)
+      :classmethod:
+
+      Same as addCleanup, except the cleanup items are called even if
+      setUpClass fails (unlike tearDownClass).
+
+
    .. py:method:: setUp()
 
       Hook method for setting up the test fixture before exercising it.
@@ -465,6 +476,13 @@ Classes
 
       Execute all cleanup functions. Normally called for you after
       tearDown.
+
+
+   .. py:method:: doClassCleanups()
+      :classmethod:
+
+      Execute all class cleanup functions. Normally called for you after
+      tearDownClass.
 
 
    .. py:method:: debug()
@@ -688,9 +706,8 @@ Classes
 
    .. py:method:: assertCountEqual(first, second, msg=None)
 
-      An unordered sequence comparison asserting that the same elements,
-      regardless of order.  If the same element occurs more than once,
-      it verifies that the elements occur the same number of times.
+      Asserts that two iterables have the same elements, the same number of
+      times, without regard to order.
 
           self.assertEqual(Counter(list(first)),
                            Counter(list(second)))
@@ -814,6 +831,8 @@ Classes
         - Add a type specific assertEqual style function to compare a type.
       * - :meth:`.addCleanup`
         - Add a function, with arguments, to be called when the test is
+      * - :meth:`.addClassCleanup`
+        - Same as addCleanup, except the cleanup items are called even if
       * - :meth:`.tearDown`
         - Hook method for deconstructing the test fixture after testing it.
       * - :meth:`.shortDescription`
@@ -824,6 +843,8 @@ Classes
         - Return a context manager that will return the enclosed block
       * - :meth:`.doCleanups`
         - Execute all cleanup functions. Normally called for you after
+      * - :meth:`.doClassCleanups`
+        - Execute all class cleanup functions. Normally called for you after
       * - :meth:`.debug`
         - Run the test without collecting errors in a TestResult
       * - :meth:`.skipTest`
@@ -867,7 +888,7 @@ Classes
       * - :meth:`.assertDictContainsSubset`
         - Checks whether dictionary is a superset of subset.
       * - :meth:`.assertCountEqual`
-        - An unordered sequence comparison asserting that the same elements,
+        - Asserts that two iterables have the same elements, the same number of
       * - :meth:`.assertMultiLineEqual`
         - Assert that two multi-line strings are equal.
       * - :meth:`.assertLess`
@@ -965,6 +986,13 @@ Classes
       Cleanup items are called even if setUp fails (unlike tearDown).
 
 
+   .. py:method:: addClassCleanup(function, /, *args, **kwargs)
+      :classmethod:
+
+      Same as addCleanup, except the cleanup items are called even if
+      setUpClass fails (unlike tearDownClass).
+
+
    .. py:method:: tearDown()
 
       Hook method for deconstructing the test fixture after testing it.
@@ -997,6 +1025,13 @@ Classes
 
       Execute all cleanup functions. Normally called for you after
       tearDown.
+
+
+   .. py:method:: doClassCleanups()
+      :classmethod:
+
+      Execute all class cleanup functions. Normally called for you after
+      tearDownClass.
 
 
    .. py:method:: debug()
@@ -1220,9 +1255,8 @@ Classes
 
    .. py:method:: assertCountEqual(first, second, msg=None)
 
-      An unordered sequence comparison asserting that the same elements,
-      regardless of order.  If the same element occurs more than once,
-      it verifies that the elements occur the same number of times.
+      Asserts that two iterables have the same elements, the same number of
+      times, without regard to order.
 
           self.assertEqual(Counter(list(first)),
                            Counter(list(second)))
