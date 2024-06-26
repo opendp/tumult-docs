@@ -1,0 +1,182 @@
+
+
+
+*********
+id
+*********
+
+.. py:module:: tmlt.core.transformations.spark_transformations.id
+
+.. autoapi-nested-parse::
+
+   Add a column containing a unique id for each row in a Spark DataFrame.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information on transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.AddUniqueColumn`
+     - Adds a column containing a unique ID for each row.
+
+   
+.. py:class:: AddUniqueColumn(input_domain, column)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Adds a column containing a unique ID for each row.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     [("a1" , 0.1), ("a2", None), (None, float("nan"))],
+       ...     schema=["A", "B"]
+       ... )
+
+   >>> # Example input
+   >>> spark_dataframe.sort("A").show()
+   +----+----+
+   |   A|   B|
+   +----+----+
+   |NULL| NaN|
+   |  a1| 0.1|
+   |  a2|NULL|
+   +----+----+
+   <BLANKLINE>
+   >>> add_unique_column = AddUniqueColumn(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True),
+   ...         }
+   ...     ),
+   ...     column="ID",
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = add_unique_column(spark_dataframe)
+   >>> output_dataframe.sort("A").show(truncate=False)
+   +----+----+--------------------------------+
+   |A   |B   |ID                              |
+   +----+----+--------------------------------+
+   |NULL|NaN |5B6E756C6C2C224E614E222C2231225D|
+   |a1  |0.1 |5B226131222C22302E31222C2231225D|
+   |a2  |NULL|5B226132222C6E756C6C2C2231225D  |
+   +----+----+--------------------------------+
+   <BLANKLINE>
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.IfGroupedBy` over :class:`~.SymmetricDifference`
+
+       >>> add_unique_column.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})
+       >>> add_unique_column.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64), 'ID': SparkStringColumnDescriptor(allow_null=False)})
+       >>> add_unique_column.input_metric
+       SymmetricDifference()
+       >>> add_unique_column.output_metric
+       IfGroupedBy(column='ID', inner_metric=SymmetricDifference())
+
+       Stability Guarantee:
+           :class:`~.AddUniqueColumn`'s :meth:`~.stability_function` returns `d_in`.
+
+           >>> add_unique_column.stability_function(1)
+           1
+           >>> add_unique_column.stability_function(2)
+           2
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: column()
+      :property:
+
+      Returns name of ID column to add.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Returns DataFrame with ID column added.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+

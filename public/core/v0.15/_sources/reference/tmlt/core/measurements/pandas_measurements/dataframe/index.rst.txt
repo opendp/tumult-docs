@@ -1,0 +1,199 @@
+
+
+
+****************
+dataframe
+****************
+
+.. py:module:: tmlt.core.measurements.pandas_measurements.dataframe
+
+.. autoapi-nested-parse::
+
+   Measurements on Pandas DataFrames.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Aggregate`
+     - Aggregate a Pandas DataFrame.
+   * - :class:`.AggregateByColumn`
+     - Apply Aggregate measurements to columns of a Pandas DataFrame.
+
+   
+.. py:class:: Aggregate(input_domain, input_metric, output_measure, output_schema)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Aggregate a Pandas DataFrame.
+
+   This measurement requires the output schema be specified as a
+   :class:`pyspark.sql.types.StructType` so that it
+   can be used as a udf in Spark.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_schema()
+      :property:
+
+      Return the output schema.
+
+
+   .. py:method:: __call__(df)
+      :abstractmethod:
+
+      Perform measurement.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under `input_metric`.
+      :param d_out: Distance between outputs under `output_measure`.
+
+
+
+   
+.. py:class:: AggregateByColumn(input_domain, column_to_aggregation, hint = None)
+
+   Bases: :class:`Aggregate`
+
+   Apply Aggregate measurements to columns of a Pandas DataFrame.
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: column_to_aggregation()
+      :property:
+
+      Returns dictionary from column names to aggregation measurements.
+
+
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      Returns the sum of the :meth:`~.Measurement.privacy_function`'s on `d_in` for
+      all composed measurements.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If any of the measurements raise
+          :class:`NotImplementedError`.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Returns True only if outputs are close under close inputs.
+
+      Let `d_outs` be the d_out from the :meth:`~.Measurement.privacy_function`'s of
+      all composed measurements or the d_outs from the hint if one of them raises
+      :class:`NotImplementedError`.
+
+      And `total_d_out` to be the sum of `d_outs`.
+
+      This returns True if `total_d_out` <= `d_out` (the input argument) and each
+      composed measurement satisfies its :meth:`~.Measurement.privacy_relation` from
+      `d_in` to its d_out from `d_outs`.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_measure.
+
+
+   .. py:method:: __call__(df)
+
+      Perform the aggregation.
+
+      :param df: The DataFrame to aggregate.
+
+
+   .. py:method:: input_domain()
+      :property:
+
+      Return input domain for the measurement.
+
+
+   .. py:method:: output_schema()
+      :property:
+
+      Return the output schema.
+
+
+   .. py:method:: input_metric()
+      :property:
+
+      Distance metric on input domain.
+
+
+   .. py:method:: output_measure()
+      :property:
+
+      Distance measure on output.
+
+
+   .. py:method:: is_interactive()
+      :property:
+
+      Returns true iff the measurement is interactive.
+
+
+
+
+
+
