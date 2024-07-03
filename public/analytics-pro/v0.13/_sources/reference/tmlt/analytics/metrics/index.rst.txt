@@ -1,0 +1,2811 @@
+
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+**************
+metrics
+**************
+
+.. py:module:: tmlt.analytics.metrics
+
+.. autoapi-nested-parse::
+
+   |PRO| Metrics to measure the quality of program outputs.
+
+   Metrics are to be used in the context of program evaluation and error reporting,
+   where the goal is to compare the outputs of a program to a set of expected
+   outputs to determine the error. They are designed to be flexible and extensible,
+   allowing users to combine them in various ways and define their own metrics.
+
+   A number of pre-built metrics are provided, for example
+   :class:`~.QuantileAbsoluteError`, :class:`~.HighRelativeErrorFraction`, and
+   :class:`~.SpuriousRate`. Users can also define their own custom metrics using
+   :class:`~.CustomSingleOutputMetric` or :class:`~.CustomMultiBaselineMetric`.
+
+   Suppose we have a :class:`~.SessionProgram` that has one protected input and
+   produces one output that is a count of the number of rows in the protected input.
+
+   ..
+       >>> import math
+       >>> from typing import Dict
+       >>> import pandas as pd
+       >>> from pyspark.sql import DataFrame, SparkSession
+       >>> from tmlt.analytics.metrics import AbsoluteError
+       >>> from tmlt.analytics.metrics import CustomSingleOutputMetric
+       >>> from tmlt.analytics.privacy_budget import PureDPBudget
+       >>> from tmlt.analytics.program import SessionProgram
+       >>> from tmlt.analytics.protected_change import AddOneRow
+       >>> from tmlt.analytics.query_builder import QueryBuilder
+       >>> from tmlt.analytics.session import Session
+       >>> from tmlt.analytics.tuner import SessionProgramTuner
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> class MinimalProgram(SessionProgram):
+   ...     class ProtectedInputs:
+   ...         protected_df: DataFrame  # DataFrame type annotation is required
+   ...     class Outputs:
+   ...         total_count: DataFrame  # required here too
+   ...     def session_interaction(self, session: Session):
+   ...         count_query = QueryBuilder("protected_df").count()
+   ...         budget = self.privacy_budget  #  session.remaining_privacy_budget also works
+   ...         total_count = session.evaluate(count_query, budget)
+   ...         return {"total_count": total_count}
+
+   We can pass this information to the :class:`~.tuner.SessionProgramTuner` class,
+   which is what gives us access to error reports.
+
+   We can measure the error of the program by comparing the program output to
+   the expected output. Suppose we want to use a built-in metric: the absolute
+   error :class:`~.AbsoluteError` and a custom metric: root mean squared error.
+   We need to instantiate the metrics and include them in the list of metric
+   associated with the ``metrics`` class variable.
+
+   >>> protected_df = spark.createDataFrame(pd.DataFrame({"a": [1] * 25}))
+   >>> def compute_rmse(
+   ...    dp_outputs: DataFrame, baseline_outputs: DataFrame
+   ... ):
+   ...    total_count_dp = dp_outputs.select("count").collect()[0]["count"]
+   ...    total_count_baseline = (
+   ...        baseline_outputs.select("count").collect()[0]["count"]
+   ...    )
+   ...    squared_error = (total_count_dp - total_count_baseline) ** 2
+   ...    return math.sqrt(squared_error)
+
+   >>> class Tuner(SessionProgramTuner, program=MinimalProgram):
+   ...    metrics = [
+   ...         AbsoluteError(output="total_count", column="count"),
+   ...         CustomSingleOutputMetric(
+   ...                 func=compute_rmse,
+   ...                 name="root_mean_squared_error",
+   ...                 description="Root mean squared error",
+   ...                 output="total_count",
+   ...         ),
+   ...    ]
+   >>> tuner = (
+   ...    Tuner.Builder()
+   ...    .with_privacy_budget(PureDPBudget(epsilon=1))
+   ...    .with_private_dataframe("protected_df", protected_df, AddOneRow())
+   ...    .build()
+   ... )
+
+   Now that our SessionProgramTuner is initialized, we can get our very first error
+   report by calling the :meth:`~.tuner.SessionProgramTuner.error_report()` method.
+
+   >>> error_report = tuner.error_report()
+   >>> error_report.dp_outputs["total_count"].show()  # doctest: +SKIP
+   +-----+
+   |count|
+   +-----+
+   |   25|
+   +-----+
+   >>> error_report.baseline_outputs["default"]["total_count"].show()  # doctest: +SKIP
+   +-----+
+   |count|
+   +-----+
+   |   23|
+   +-----+
+   >>> error_report.show()  # doctest: +SKIP
+   Error report ran with budget PureDPBudget(epsilon=1) and no tunable parameters and no additional parameters
+   <BLANKLINE>
+   Metric results:
+   +---------+-------------------------+------------+------------------------------------------------------+
+   |   Value | Metric                  | Baseline   | Description                                          |
+   +=========+=========================+============+======================================================+
+   |       2 | abs_err                 | default    | Absolute error for column count of table total_count |
+   +---------+-------------------------+------------+------------------------------------------------------+
+   |       2 | root_mean_squared_error | default    | Root mean squared error                              |
+   +---------+-------------------------+------------+------------------------------------------------------+
+
+   See the tutorials starting at :ref:`Basics of error measurement` for more examples on
+   how to take advantage of :mod:`~.tmlt.analytics.metrics` and related classes.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.AbsoluteError`
+     - Computes the absolute error between two scalar values.
+   * - :class:`.QuantileAbsoluteError`
+     - Computes the quantile of the empirical absolute error.
+   * - :class:`.MedianAbsoluteError`
+     - Computes the median absolute error.
+   * - :class:`.RelativeError`
+     - Computes the relative error between two scalar values.
+   * - :class:`.QuantileRelativeError`
+     - Computes the quantile of the empirical relative error.
+   * - :class:`.MedianRelativeError`
+     - Computes the median relative error.
+   * - :class:`.HighRelativeErrorFraction`
+     - Computes the fraction of groups with relative error above a threshold.
+   * - :class:`.SpuriousRate`
+     - Computes the fraction of groups in the DP output but not in the baseline output.
+   * - :class:`.SuppressionRate`
+     - Computes the fraction of groups in the baseline output but not in the DP output.
+   * - :class:`.CustomSingleOutputMetric`
+     - Wrapper to allow users to define a metric that operates on a single output table.
+   * - :class:`.CustomMultiBaselineMetric`
+     - Wrapper to turn a function into a metric using DP and single baseline's output.
+   * - :class:`.CustomGroupedMetric`
+     - Wrapper to define a metric that operates on a grouped, joined output table.
+   * - :class:`.Metric`
+     - A generic metric.
+   * - :class:`.MetricResult`
+     - An output of a Metric with additional metadata.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AbsoluteError(output, column = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.ScalarMetric`
+
+   Computes the absolute error between two scalar values.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   How it works:
+
+   1. The algorithm takes as input two single-row tables: one representing the
+      differentially private (DP) output and the other representing the baseline
+      output.
+
+      **DP Table (dp)**: This table contains the output data generated by a
+      differentially private mechanism.
+
+      **Baseline Table (baseline)**: This table contains the output data generated by a
+      non-private or baseline mechanism. It serves as a reference point for comparison
+      with the DP output.
+
+      The scalar values are retrieved from these single-row dataframes. Both values are
+      expected to be numeric (either integers or floats). If not, the algorithm raises
+      a ``ValueError``.
+
+   2. The algorithm computes the absolute error. Absolute error is calculated as the
+      absolute difference between the DP and baseline values using the formula
+      :math:`abs(dp - baseline)`.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import AbsoluteError
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(pd.DataFrame({"X": [5]}))
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(pd.DataFrame({"X": [6]}))
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = AbsoluteError(output="O")
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   1
+   >>> metric.format(result)
+   '1'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_scalar`
+        - Computes metric value from DP and baseline values.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.column`
+        - Returns the name of the value column, if it is set.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.compute_for_baseline`
+        - Returns the metric value given the DP outputs and the baseline outputs.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_scalar(dp_value, baseline_value)
+
+      Computes metric value from DP and baseline values.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: column()
+      :property:
+
+      Returns the name of the value column, if it is set.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Returns the metric value given the DP outputs and the baseline outputs.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: QuantileAbsoluteError(output, quantile, measure_column, join_columns, grouping_columns = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.MeasureColumnMetric`
+
+   Computes the quantile of the empirical absolute error.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   How it works:
+
+   1. The algorithm takes as input two tables: one representing the differentially
+      private (DP) output and the other representing the baseline output.
+
+      **DP Table (dp)**: This table contains the output data generated by a
+      differentially private mechanism.
+
+      **Baseline Table (baseline)**: This table contains the output data generated by a
+      non-private or baseline mechanism. It serves as a reference point for comparison
+      with the DP output.
+
+      The algorithm includes error handling to ensure the validity of the input data.
+      It checks for the existence and numeric type of the ``measure_column``.
+
+      The algorithm performs an inner join between the DP and baseline tables based on
+      ``join_columns``. This join must be one-to-one, with each row in the DP table
+      matching exactly one row in the baseline table, and vice versa.
+      This ensures that there is a direct correspondence between the DP and baseline
+      outputs for each entity, allowing for accurate comparison.
+
+   2. After performing the join, the algorithm computes the absolute error for each
+      group. Absolute error is calculated as the absolute difference between the
+      corresponding values in the DP and baseline outputs using the formula
+      :math:`abs(dp - baseline)`.
+
+   3. The algorithm then calculates the n-th quantile of the absolute error across all
+      groups.
+
+      The algorithm handles cases where the quantile computation may result in an empty
+      column, returning a NaN (not a number) value in such scenarios.
+
+       .. note::
+           * Provided algorithm assumes a one-to-one join scenario.
+           * Nulls in the measure columns are dropped because the metric cannot
+             handle null values, and the absolute error computation requires valid
+             numeric values in both columns.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import QuantileAbsoluteError
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [50, 110, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [100, 100, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = QuantileAbsoluteError(
+   ...     output="O",
+   ...     quantile=0.5,
+   ...     measure_column="X",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.quantile
+   0.5
+   >>> metric.join_columns
+   ['A']
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   10
+   >>> metric.format(result)
+   '10'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes quantile relative error value from grouped dataframe.
+      * - :meth:`.measure_column`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes quantile relative error value from grouped dataframe.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MedianAbsoluteError(output, measure_column, join_columns, grouping_columns = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`QuantileAbsoluteError`
+
+   Computes the median absolute error.
+
+   Equivalent to :class:`QuantileAbsoluteError` with ``quantile = 0.5``.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import MedianAbsoluteError
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> dp_df = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3"],
+       ...             "X": [50, 110, 100]
+       ...         }
+       ...     )
+       ... )
+
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [100, 100, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = MedianAbsoluteError(
+   ...     output="O",
+   ...     measure_column="X",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.quantile
+   0.5
+   >>> metric.join_columns
+   ['A']
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   10
+   >>> metric.format(result)
+   '10'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes quantile relative error value from grouped dataframe.
+      * - :meth:`.measure_column`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes quantile relative error value from grouped dataframe.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: RelativeError(output, column = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.ScalarMetric`
+
+   Computes the relative error between two scalar values.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   How it works:
+
+   1. The algorithm takes as input two single-row tables: one representing the
+      differentially private (DP) output and the other representing the baseline
+      output.
+
+      **DP Table (dp)**: This table contains the output data generated by a
+      differentially private mechanism.
+
+      **Baseline Table (baseline)**: This table contains the output data generated by a
+      non-private or baseline mechanism. It serves as a reference point for comparison
+      with the DP output.
+
+      The scalar values are retrieved from these single-row dataframes. Both values are
+      expected to be numeric (either integers or floats). If not, the algorithm raises
+      a ``ValueError``.
+
+   2. The algorithm computes the relative error. Relative error is calculated as the
+      absolute difference between the corresponding values in the DP and baseline
+      outputs to the value in the baseline using the formula
+      :math:`abs(dp - baseline) / baseline`. If baseline is zero, it returns infinity
+      for non-zero differences (:math:`∞`) and zero for zero differences (:math:`0`).
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import RelativeError
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = RelativeError(output="O")
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0.0
+   >>> metric.format(result)
+   '0.0'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_scalar`
+        - Computes metric value from DP and baseline values.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.column`
+        - Returns the name of the value column, if it is set.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.compute_for_baseline`
+        - Returns the metric value given the DP outputs and the baseline outputs.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_scalar(dp_value, baseline_value)
+
+      Computes metric value from DP and baseline values.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: column()
+      :property:
+
+      Returns the name of the value column, if it is set.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Returns the metric value given the DP outputs and the baseline outputs.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: QuantileRelativeError(output, quantile, measure_column, join_columns, grouping_columns = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.MeasureColumnMetric`
+
+   Computes the quantile of the empirical relative error.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   How it works:
+
+   1. The algorithm takes as input two tables: one representing the differentially
+      private (DP) output and the other representing the baseline output.
+
+      **DP Table (dp)**: This table contains the output data generated by a
+      differentially private mechanism.
+
+      **Baseline Table (baseline)**: This table contains the output data generated by a
+      non-private or baseline mechanism. It serves as a reference point for comparison
+      with the DP output.
+
+      The algorithm includes error handling to ensure the validity of the input data.
+      It checks for the existence and numeric type of the ``measure_column``.
+
+      The algorithm performs an inner join between the DP and baseline tables based on
+      ``join_columns`` to produce the combined dataframe. This join must be one-to-one,
+      with each row in the DP table matches exactly one row in the baseline table, and
+      vice versa. This ensures that there is a direct correspondence between the DP and
+      baseline outputs for each entity, allowing for accurate comparison.
+
+   2. After performing the join, the algorithm computes the relative error for each
+      group. Relative error is calculated as the absolute difference between the
+      corresponding values in the DP and baseline outputs to the value in the baseline
+      using the formula :math:`abs(dp - baseline) / baseline`.
+      If baseline is zero, it returns infinity for non-zero differences (:math:`∞`) and
+      zero for zero differences (:math:`0`).
+
+   3. The algorithm then calculates the n-th quantile of the relative error across all
+      groups.
+
+      The algorithm handles cases where the quantile computation may result in an empty
+      column, returning a NaN (not a number) value in such scenarios.
+
+       .. note::
+           * Provided algorithm assumes a one-to-one join scenario.
+           * Nulls in the measure columns are dropped because the metric cannot
+             handle null values, and the absolute error computation requires valid
+             numeric values in both columns.
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import QuantileRelativeError
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [50, 110, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [100, 100, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = QuantileRelativeError(
+   ...     output="O",
+   ...     quantile=0.5,
+   ...     measure_column="X",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.quantile
+   0.5
+   >>> metric.join_columns
+   ['A']
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0.1
+   >>> metric.format(result)
+   '0.10'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes quantile relative error value from grouped dataframe.
+      * - :meth:`.measure_column`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes quantile relative error value from grouped dataframe.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MedianRelativeError(output, measure_column, join_columns, grouping_columns = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`QuantileRelativeError`
+
+   Computes the median relative error.
+
+   Equivalent to :class:`QuantileRelativeError` with ``quantile = 0.5``.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import MedianRelativeError
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [50, 110, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [100, 100, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = MedianRelativeError(
+   ...     output="O",
+   ...     measure_column="X",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.quantile
+   0.5
+   >>> metric.join_columns
+   ['A']
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0.1
+   >>> metric.format(result)
+   '0.10'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.quantile`
+        - Returns the quantile.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes quantile relative error value from grouped dataframe.
+      * - :meth:`.measure_column`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: quantile()
+      :property:
+
+      Returns the quantile.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes quantile relative error value from grouped dataframe.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: HighRelativeErrorFraction(output, relative_error_threshold, measure_column, join_columns, grouping_columns = None, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.MeasureColumnMetric`
+
+   Computes the fraction of groups with relative error above a threshold.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   How it works:
+
+
+   1. The algorithm takes as input two tables: one representing the differentially
+      private (DP) output and the other representing the baseline output.
+
+      **DP Table (dp)**: This table contains the output data generated by a
+      differentially private mechanism.
+
+      **Baseline Table (baseline)**: This table contains the output data generated by a
+      non-private or baseline mechanism. It serves as a reference point for comparison
+      with the DP output.
+
+      The algorithm includes error handling to ensure the validity of the input data.
+      It checks for the existence and numeric type of the ``measure_column``.
+
+      The algorithm performs an inner join between the DP and baseline tables based on
+      ``join_columns`` to produce the combined dataframe. This join must be one-to-one,
+      with each row in the DP table matches exactly one row in the baseline table, and
+      vice versa. This ensures that there is a direct correspondence between the DP and
+      baseline outputs for each entity, allowing for accurate comparison.
+
+   2. After performing the join, the algorithm computes the relative error for each
+      group. Relative error is calculated as the absolute difference between the
+      corresponding values in the DP and baseline outputs to the value in the baseline
+      using the formula :math:`abs(dp - baseline) / baseline`.
+      If baseline is zero, it returns infinity for non-zero differences (:math:`∞`) and
+      zero for zero differences (:math:`0`).
+
+   3. Next, the algorithm filters the relative error dataframe to include only those
+      data points where the relative error exceeds a specified threshold
+      (``relative_error_threshold``). This threshold represents the maximum allowable
+      relative error for a data point to be considered within acceptable bounds.
+
+   4. Finally, the algorithm then calculates the high relative error fraction by
+      dividing the count of data points with relative errors exceeding the threshold by
+      the total count of data points in the dataframe.
+
+      The algorithm handles cases where the resulting dataframe after relative error
+      computation is empty (i.e., it contains no data points), returning a NaN
+      (not a number) value in such scenarios.
+
+       .. note::
+           * Provided algorithm assumes a one-to-one join scenario.
+           * Nulls in the measure columns are dropped because the metric cannot
+             handle null values, and the absolute error computation requires valid
+             numeric values in both columns.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import HighRelativeErrorFraction
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [50, 110, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", "a3"],
+   ...             "X": [100, 100, 100]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = HighRelativeErrorFraction(
+   ...     output="O",
+   ...     measure_column="X",
+   ...     relative_error_threshold=0.25,
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.relative_error_threshold
+   0.25
+   >>> metric.join_columns
+   ['A']
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0.333
+   >>> metric.format(result)
+   '0.33'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.relative_error_threshold`
+        - Returns the relative error threshold.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes quantile relative error value from grouped dataframe.
+      * - :meth:`.measure_column`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: relative_error_threshold()
+      :property:
+
+      Returns the relative error threshold.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes quantile relative error value from grouped dataframe.
+
+
+   .. py:method:: measure_column()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SpuriousRate(output, join_columns, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.SingleBaselineMetric`
+
+   Computes the fraction of groups in the DP output but not in the baseline output.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   .. note::
+       Below, `released` means that the group is in the DP output, and
+       `spurious` means that the group is **not** in the baseline output.
+
+   How it works:
+
+   1. The algorithm takes two dictionaries as input:
+
+     * ``dp_outputs``: A dictionary containing the differentially private (DP) outputs,
+       where keys represent output identifiers and values represent corresponding
+       DP output. The DP output data is generated by a differentially private
+       mechanism.
+     * ``baseline_outputs``: A dictionary containing the baseline outputs, where keys
+       represent output identifiers and values represent corresponding baseline
+       table (baseline).
+
+      Before performing computations, the algorithm checks if the released count of DP
+      output (released count) is zero. If so, it returns NaN, indicating that no
+      computation can be performed due to the absence of released data. If not, the
+      algorithm performs a left anti-join between the DP and baseline tables based on
+      ``join_columns``. This returns all rows from the DP output (left dataframe) where
+      there is no match in the baseline output (right dataframe). The count of these
+      rows is the spurious released count.
+
+   2. After performing the join, the algorithm computes the spurious rate by dividing
+      the spurious released count by the total count of released data points
+      (released_count), using the formula
+      :math:`\text{spurious released count} / \text{released count}`.
+      The result represents the proportion of released data points in the DP
+      output that have no corresponding data points in the baseline output.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import SpuriousRate
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a1", "a2", "c"],
+   ...             "X": [50, 110, 100, 50]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a1", "a2", "b"],
+   ...             "X": [100, 100, 100, 50]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = SpuriousRate(
+   ...     output="O",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.join_columns
+   ['A']
+   >>> metric(dp_outputs, baseline_outputs)[0].value
+   0.25
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.compute_for_baseline`
+        - Computes spurious rate given DP and baseline outputs.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: check_compatibility_with_program(program, output_views)
+
+      Checks if the metric is compatible with the program.
+
+      This is a dynamic check and is performed by verifying whether the ``output``
+      attribute of the metric object is present in the annotations of the ``Outputs``
+      attribute of the program. If the ``output`` attribute is not found in the
+      annotations, a ``ValueError`` is raised.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes spurious rate given DP and baseline outputs.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SuppressionRate(output, join_columns, *, name = None, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.SingleBaselineMetric`
+
+   Computes the fraction of groups in the baseline output but not in the DP output.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   .. note::
+       Below, `released` means that the group is in the DP output, and
+       `spurious` means that the group is **not** in the output of the baseline.
+
+   How it works:
+
+   1. The algorithm takes two dictionaries as input:
+
+     * ``dp_outputs``: A dictionary containing the differentially private (DP) outputs,
+       where keys represent output identifiers and values represent corresponding
+       DP output. The DP output data is generated by a differentially private
+       mechanism.
+     * ``baseline_outputs``: A dictionary containing the baseline outputs, where keys
+       represent output identifiers and values represent corresponding baseline
+       table (baseline).
+
+      Before performing computations, the algorithm checks if the count of baseline
+      output (non-spurious count) is zero. If so, it returns NaN, indicating that
+      no computation can be performed due to the absence of non-spurious data in the
+      baseline outputs. If not, the algorithm performs a left anti-join between the
+      baseline and DP tables based on ``join_columns``. This returns all
+      rows from the baseline (left dataframe) where there is no match in the DP
+      output (right dataframe). The count of these rows is the non-spurious
+      non-released count.
+
+   2. After performing the join, the algorithm computes the suppression rate by
+      dividing the non-spurious non-released count by the total count of non-spurious
+      data points (non-spurious count), using the formula
+      :math:`\text{non-spurious non-released count} / \text{non-spurious count}`.
+      The result represents the proportion of non-spurious data points in the baseline
+      outputs that are not released in the DP outputs.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import SuppressionRate
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a1", "a2", "c"],
+   ...             "X": [50, 110, 100, 50]
+   ...         }
+   ...     )
+   ... )
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a1", "a2", "b"],
+   ...             "X": [100, 100, 100, 50]
+   ...         }
+   ...     )
+   ... )
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> metric = SuppressionRate(
+   ...     output="O",
+   ...     join_columns=["A"]
+   ... )
+   >>> metric.join_columns
+   ['A']
+   >>> metric(dp_outputs, baseline_outputs)[0].value
+   0.25
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.format`
+        - Returns a string representation of this object.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.compute_for_baseline`
+        - Computes suppression rate given DP and baseline outputs.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: format(value)
+
+      Returns a string representation of this object.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: check_compatibility_with_program(program, output_views)
+
+      Checks if the metric is compatible with the program.
+
+      This is a dynamic check and is performed by verifying whether the ``output``
+      attribute of the metric object is present in the annotations of the ``Outputs``
+      attribute of the program. If the ``output`` attribute is not found in the
+      annotations, a ``ValueError`` is raised.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes suppression rate given DP and baseline outputs.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: CustomSingleOutputMetric(func, output, *, name, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.SingleBaselineMetric`
+
+   Wrapper to allow users to define a metric that operates on a single output table.
+
+   Turns a function that calculates error on two dataframes (one DP, one baseline)
+   into a Metric.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import CustomSingleOutputMetric
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> def size_difference(dp_outputs: DataFrame, baseline_outputs: DataFrame):
+   ...     return baseline_outputs.count() - dp_outputs.count()
+
+   >>> metric = CustomSingleOutputMetric(
+   ...     func=size_difference,
+   ...     name="Output size difference",
+   ...     description="Difference in number of rows.",
+   ...     output="O",
+   ... )
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0
+   >>> metric.format(result)
+   '0'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.func`
+        - Returns function to be applied.
+      * - :meth:`.format`
+        - Converts value to human-readable format.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.compute_for_baseline`
+        - Returns the metric value given the DP outputs and the baseline outputs.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: func()
+      :property:
+
+      Returns function to be applied.
+
+
+   .. py:method:: format(value)
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: check_compatibility_with_program(program, output_views)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Returns the metric value given the DP outputs and the baseline outputs.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: CustomMultiBaselineMetric(output, func, *, name, description = None, baselines = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.MultiBaselineMetric`
+
+   Wrapper to turn a function into a metric using DP and single baseline's output.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.analytics.metrics import AbsoluteError
+       >>> from tmlt.analytics.metrics import CustomMultiBaselineMetric
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df1 = spark.createDataFrame(pd.DataFrame({"A": [5]}))
+   >>> baseline_df2 = spark.createDataFrame(pd.DataFrame({"A": [6]}))
+   >>> baseline_outputs = {
+   ...    "O": {"baseline1": baseline_df1, "baseline2": baseline_df2}
+   ... }
+   >>> _func = lambda dp_outputs, baseline_outputs: {
+   ...    output_key: {
+   ...         baseline_key: AbsoluteError(output_key).compute_on_scalar(
+   ...                 dp_output.first().A, baseline_output.first().A
+   ...         )
+   ...         for baseline_key, baseline_output
+   ...         in baseline_outputs[output_key].items()
+   ...     }
+   ...     for output_key, dp_output in dp_outputs.items()
+   ...  }
+
+   >>> metric = CustomMultiBaselineMetric(
+   ...     output="O",
+   ...     func=_func,
+   ...     name="Custom Metric",
+   ...     description="Custom Description",
+   ... )
+   >>> result = metric.compute_for_multiple_baselines(dp_outputs, baseline_outputs)
+   >>> result
+   {'O': {'baseline1': 0, 'baseline2': 1}}
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.func`
+        - Returns function to be applied.
+      * - :meth:`.format`
+        - Converts value to human-readable format.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.compute_for_multiple_baselines`
+        - Returns the metric value given the DP and multiple baseline outputs.
+      * - :meth:`.compute`
+        - Computes the given metric on the given DP and baseline outputs.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: func()
+      :property:
+
+      Returns function to be applied.
+
+
+   .. py:method:: format(value)
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: check_compatibility_with_program(program, output_views)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: compute_for_multiple_baselines(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Returns the metric value given the DP and multiple baseline outputs.
+
+
+   .. py:method:: compute(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      The baseline_outputs will already be filtered to only include the baselines that
+      the metric is supposed to use.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs, after filtering to
+                               only include the baselines that the metric is supposed to use.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: CustomGroupedMetric(func, output, join_columns, *, name, description = None, baselines = None, grouping_columns = None, join_how = 'inner', dropna_columns = None, indicator_column_name = None)
+
+   Bases: :class:`tmlt.analytics.metrics._base.GroupedMetric`
+
+   Wrapper to define a metric that operates on a grouped, joined output table.
+
+   Turns a function that calculates error on a GroupedData (produced by joining
+   DP and baseline tables and grouping by a user-specified set of columns)
+   into a Metric.
+
+   The GroupedData available to the user-defined function will have all the join
+   columns, and versions of all other columns with _dp and _baseline suffixes,
+   indicating which version of the data they came from.
+
+   The user-defined function should return either a single value (if there are no
+   grouping columns), or (if grouped) a DataFrame that has a column named with the
+   output_column_name variable that contains the metric's result values.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> import pyspark.sql.functions as sf
+       >>> from pyspark.sql.functions import col
+       >>> from pyspark.sql import SparkSession, GroupedData
+       >>> from tmlt.analytics.metrics import CustomSingleOutputMetric
+       >>> spark = SparkSession.builder.getOrCreate()
+
+   >>> dp_df = spark.createDataFrame(pd.DataFrame([{"A": 1, "B": "a"}]))
+   >>> dp_outputs = {"O": dp_df}
+   >>> baseline_df = spark.createDataFrame(pd.DataFrame([{"A": 5}]))
+   >>> baseline_outputs = {"default": {"O": baseline_df}}
+
+   >>> def size_difference(grouped_output: GroupedData,
+   ...                     grouping_columns: List[str],
+   ...                     output_column_name: str):
+   ...     in_dp = (col("indicator") == "both") | (col("indicator") == "dp")
+   ...     in_baseline = ((col("indicator") == "both") |
+   ...          (col("indicator") == "baseline"))
+   ...     dp_count = sf.sum(sf.when(in_dp, sf.lit(1)).otherwise(0))
+   ...     baseline_count = sf.sum(sf.when(in_baseline, sf.lit(1)).otherwise(0))
+   ...     grouped_size_difference = grouped_output.agg(
+   ...         sf.abs(dp_count - baseline_count).alias(output_column_name)
+   ...     )
+   ...     if not grouping_columns:
+   ...         size_difference = grouped_size_difference.head(1)[0]
+   ...         if (
+   ...             len(size_difference) == 0 or
+   ...             size_difference[output_column_name] is None
+   ...         ):  # this means the column is empty
+   ...             return 0
+   ...         return size_difference[output_column_name]
+   ...     else:
+   ...         return grouped_size_difference
+
+   >>> metric = CustomGroupedMetric(
+   ...     func=size_difference,
+   ...     name="Output size difference",
+   ...     description="Difference in number of rows.",
+   ...     output="O",
+   ...     join_columns=["A"],
+   ...     indicator_column_name="indicator",
+   ... )
+   >>> result = metric(dp_outputs, baseline_outputs)[0].value
+   >>> result
+   0
+   >>> metric.format(result)
+   '0'
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.func`
+        - Returns function to be applied.
+      * - :meth:`.format`
+        - Converts value to human-readable format.
+      * - :meth:`.check_compatibility_with_program`
+        - Checks if the metric is compatible with the program.
+      * - :meth:`.compute_on_grouped_output`
+        - Computes metric value from the joined, grouped DP and baseline output.
+      * - :meth:`.grouping_columns`
+        - Returns the names of the grouping columns.
+      * - :meth:`.check_compatibility_with_outputs`
+        - Check that a particular set of outputs is compatible with the metric.
+      * - :meth:`.format_as_table_row`
+        - Return a table row summarizing the metric result.
+      * - :meth:`.format_as_dataframe`
+        - Returns the results of this metric formatted as a dataframe.
+      * - :meth:`.output`
+        - Returns the name of the run output or view name.
+      * - :meth:`.join_columns`
+        - Returns the name of the join columns.
+      * - :meth:`.indicator_column_name`
+        - Returns the name of the indicator column.
+      * - :meth:`.check_join_key_uniqueness`
+        - Check if the join keys uniquely identify rows in the joined DataFrame.
+      * - :meth:`.compute_for_baseline`
+        - Computes metric value.
+      * - :meth:`.check_compatibility_with_data`
+        - Check that the outputs have all the structure the metric expects.
+      * - :meth:`.name`
+        - Returns the name of the metric.
+      * - :meth:`.description`
+        - Returns the description of the metric.
+      * - :meth:`.baselines`
+        - Returns the baselines used for the metric.
+      * - :meth:`.__call__`
+        - Computes the given metric on the given DP and baseline outputs.
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: func()
+      :property:
+
+      Returns function to be applied.
+
+
+   .. py:method:: format(value)
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: check_compatibility_with_program(program, output_views)
+
+      Checks if the metric is compatible with the program.
+
+
+   .. py:method:: compute_on_grouped_output(grouped_output, baseline_name, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value from the joined, grouped DP and baseline output.
+
+      If grouping columns are empty, the grouped output will have one group that
+      is the entire dataset.
+
+
+   .. py:method:: grouping_columns()
+      :property:
+
+      Returns the names of the grouping columns.
+
+
+   .. py:method:: check_compatibility_with_outputs(outputs, output_name)
+
+      Check that a particular set of outputs is compatible with the metric.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: format_as_table_row(result)
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: output()
+      :property:
+
+      Returns the name of the run output or view name.
+
+
+   .. py:method:: join_columns()
+      :property:
+
+      Returns the name of the join columns.
+
+
+   .. py:method:: indicator_column_name()
+      :property:
+
+      Returns the name of the indicator column.
+
+
+   .. py:method:: check_join_key_uniqueness(joined_output)
+
+      Check if the join keys uniquely identify rows in the joined DataFrame.
+
+
+   .. py:method:: compute_for_baseline(baseline_name, dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes metric value.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: Metric(name, description, baselines)
+
+   Bases: :class:`abc.ABC`
+
+   A generic metric.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: name()
+      :property:
+
+      Returns the name of the metric.
+
+
+   .. py:method:: description()
+      :property:
+
+      Returns the description of the metric.
+
+
+   .. py:method:: baselines()
+      :property:
+
+      Returns the baselines used for the metric.
+
+
+   .. py:method:: format(value)
+      :abstractmethod:
+
+      Converts value to human-readable format.
+
+
+   .. py:method:: format_as_table_row(result)
+      :abstractmethod:
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: format_as_dataframe(result)
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+   .. py:method:: check_compatibility_with_data(dp_outputs, baseline_outputs)
+      :abstractmethod:
+
+      Check that the outputs have all the structure the metric expects.
+
+      Should throw a ValueError if the metric is not compatible.
+
+
+   .. py:method:: __call__(dp_outputs, baseline_outputs, unprotected_inputs = None, program_parameters = None)
+
+      Computes the given metric on the given DP and baseline outputs.
+
+      :param dp_outputs: The differentially private outputs of the program.
+      :param baseline_outputs: The outputs of the baseline programs.
+      :param unprotected_inputs: Optional public dataframes used in error computation.
+      :param program_parameters: Optional program specific parameters used in
+                                 error computation.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: MetricResult
+
+   An output of a Metric with additional metadata.
+
+   .. note::
+
+       💡 |PRO_NOTE|
+
+
+
+
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the metric.
+
+   .. py:attribute:: description
+      :annotation: :str
+
+      The description of the metric.
+
+   .. py:attribute:: baseline
+      :annotation: :Union[str, List[str]]
+
+      The name of the baseline program(s) used for the error report.
+
+   .. py:attribute:: metric
+      :annotation: :Metric
+
+      The metric that was used.
+
+   .. py:attribute:: value
+      :annotation: :Any
+
+      The value of the metric applied to the program outputs.
+
+
+   .. py:method:: format_as_table_row()
+
+      Return a table row summarizing the metric result.
+
+
+   .. py:method:: format_as_dataframe()
+
+      Returns the results of this metric formatted as a dataframe.
+
+
+
+
+
+
+
