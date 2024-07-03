@@ -1,0 +1,715 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Doing more with privacy IDs &#8212; Tumult Analytics  documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script src="../_static/js/version-banner.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How-to guides" href="../howto-guides/index.html" />
+    <link rel="prev" title="Working with privacy IDs" href="privacy-id-basics.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../howto-guides/index.html">
+  How-to guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../topic-guides/index.html">
+  Topic guides
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/tmlt/analytics/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../changelog.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
+            <label class="sr-only">GitLab</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        0.13.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables tutorials/more-with-privacy-ids and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': '0.13.0'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "tutorials/more-with-privacy-ids.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://docs.tmlt.dev/analytics/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "tutorials/more-with-privacy-ids.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.13.0 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "0.13.0") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="first-steps.html">
+   First steps with Tumult Analytics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-budget-basics.html">
+   Working with privacy budgets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="clamping-bounds.html">
+   Numerical aggregations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby-queries.html">
+   Group-by queries
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="simple-transformations.html">
+   Simple transformations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="privacy-id-basics.html">
+   Working with privacy IDs
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Doing more with privacy IDs
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initializing-a-session-with-multiple-ids-tables">
+   Initializing a Session with multiple IDs tables
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-more-complex-query">
+   A more complex query
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#flat-maps">
+     Flat maps
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#private-joins">
+     Private joins
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#computing-the-statistic">
+     Computing the statistic
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-note-on-session-initialization">
+     A note on Session initialization
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="doing-more-with-privacy-ids">
+<span id="advanced-ids-features"></span><h1>Doing more with privacy IDs<a class="headerlink" href="#doing-more-with-privacy-ids" title="Permalink to this headline">#</a></h1>
+<p>In the previous tutorial, we covered the basics of privacy IDs: how to
+initialize a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> where each person appears in multiple rows, and run simple queries.
+But privacy IDs also make it easier to run more complex queries, especially those involving multiple
+tables. In this tutorial, we will build a
+<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that protects library patrons across multiple
+tables, and highlight the differences that arise when performing queries on tables with
+or without privacy IDs.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<p>We import the same collection of packages as in the previous tutorial:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.binning_spec</span> <span class="kn">import</span> <span class="n">BinningSpec</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.constraints</span> <span class="kn">import</span> <span class="n">MaxRowsPerID</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddRowsWithID</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span><span class="p">,</span> <span class="n">ColumnType</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
+</pre></div>
+</div>
+<p>We’ll use the same checkout logs dataset from the previous tutorial,
+as well as the library members dataset used in all other tutorials:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/checkout-logs.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
+    <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/library-members.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">checkouts_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;checkout-logs.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="initializing-a-session-with-multiple-ids-tables">
+<h2>Initializing a Session with multiple IDs tables<a class="headerlink" href="#initializing-a-session-with-multiple-ids-tables" title="Permalink to this headline">#</a></h2>
+<p>Notice that both of the dataframes we’ve loaded share a common
+identifier: the ID associated with each library member. Our goal is to
+construct a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that
+protects the addition or removal of arbitrarily many rows that share the
+same ID, <em>in both tables</em>. To do so, we have to use the
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
+again, but we also have to indicate that both tables share the same <em>ID space</em>.
+This is done as follows.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span> <span class="c1"># infinite budget for the session</span>
+<span class="n">id_space</span> <span class="o">=</span> <span class="s2">&quot;member_id_space&quot;</span>
+<span class="n">session</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">budget</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">with_id_space</span><span class="p">(</span><span class="n">id_space</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="s2">&quot;checkouts&quot;</span><span class="p">,</span>
+        <span class="n">checkouts_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
+        <span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="n">members_df</span><span class="p">,</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: [&#39;members&#39;, &#39;checkouts&#39;]
+</pre></div>
+</div>
+<p>The
+<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.Builder.with_id_space" title="tmlt.analytics.session.Session.Builder.with_id_space"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Session.Builder.with_id_space</span></code></a>
+method and the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+protected change work together to accomplish our desired notion of privacy.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">with_id_space</span></code> function defines our ID space, <code class="docutils literal notranslate"><span class="pre">member_id_space</span></code>. This is
+how we indicate that the same person is associated with the same ID in both tables.</p></li>
+<li><p>This ID space is then specified to <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code>’s <code class="docutils literal notranslate"><span class="pre">identifier</span></code>
+parameter, while the <code class="docutils literal notranslate"><span class="pre">id_column</span></code> parameter indicates
+which column in the dataframe contains the IDs.</p></li>
+</ul>
+<p>With this information, the resulting Session now protects each library member
+<em>in both tables</em>, irrespective of the number of rows each person contributed
+to each table.</p>
+</section>
+<section id="a-more-complex-query">
+<h2>A more complex query<a class="headerlink" href="#a-more-complex-query" title="Permalink to this headline">#</a></h2>
+<p>To highlight some of the differences that arise when performing transformations with
+IDs, we’ll walk through a slightly more complex query than was covered in the previous
+tutorial. Suppose we want to find out the relationship between the age of library
+members and the genres of books they read most. This information is split across our two
+private tables. We will perform this computation in three stages.</p>
+<ul class="simple">
+<li><p>First, since each book in the checkouts table can be
+associated with more than one genre, we will expand this
+table to break out each genre for a book into a separate row.</p></li>
+<li><p>Second, we will join the expanded checkouts data with the library
+members data, using the members ID as a join key.</p></li>
+<li><p>Finally, we will group the joined table by age group and genres, and obtain
+counts by genres.</p></li>
+</ul>
+<section id="flat-maps">
+<h3>Flat maps<a class="headerlink" href="#flat-maps" title="Permalink to this headline">#</a></h3>
+<p>First, let’s expand the checkout dataframe to
+associate each book to its genres, with each genre on its own separate row. To do this,
+we apply a
+<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.flat_map</span></code></a>
+and save it as a view in our existing session.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">genre</span><span class="p">}</span> <span class="k">for</span> <span class="n">genre</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)],</span>
+        <span class="p">{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">},</span>
+        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: [&#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
+</pre></div>
+</div>
+<p>We now have an expanded version of our checkouts table that contains one
+genre per row.</p>
+<p>This example is much like the flat map from the <a class="reference internal" href="simple-transformations.html#simple-transformations"><span class="std std-ref">simple transformations tutorial</span></a>, but there is one key difference: we do not need to provide a
+<code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">flat_map</span></code>. The reason is that we are protecting the
+number of unique <em>IDs</em> in the table, not the number of <em>rows</em>. Thus, we can generate
+arbitrarily many new rows per ID without needing to truncate the output table at this
+stage.</p>
+</section>
+<section id="private-joins">
+<h3>Private joins<a class="headerlink" href="#private-joins" title="Permalink to this headline">#</a></h3>
+<p>Our next step is to join the view we just generated with the library
+members data and get counts of books read, by genre, for members of each
+education level.</p>
+<p>First, we join the dataframes, and hold the result in another in-session view:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)),</span>
+    <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The join produces an error, because the ID columns in the two tables have different names:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+ValueError: Private joins between tables with the AddRowsWithID protected change are
+only possible when the ID columns of the two tables have the same name
+</pre></div>
+</div>
+<p>To fix this, we can use the <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.rename" title="tmlt.analytics.query_builder.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.rename</span></code></a>
+method to rename the ID column in the members table to match the ID column in the checkouts table:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;member_id&quot;</span><span class="p">})),</span>
+    <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Private dataframes: [&#39;checkouts_joined&#39;, &#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
+</pre></div>
+</div>
+<p>Let’s inspect the result of the join to make sure it looks right:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">&quot;checkouts_joined&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Columns:
+    - &#39;member_id&#39;         INTEGER, ID column (in ID space member_id_space)
+    - &#39;checkout_date&#39;     TIMESTAMP
+    - &#39;title&#39;             VARCHAR
+    - &#39;author&#39;            VARCHAR
+    - &#39;isbn&#39;              VARCHAR
+    - &#39;publication_date&#39;  INTEGER
+    - &#39;publisher&#39;         VARCHAR
+    - &#39;genres&#39;            VARCHAR
+    - &#39;genre&#39;             VARCHAR
+    - &#39;name&#39;              VARCHAR
+    - &#39;age&#39;               INTEGER
+    - &#39;gender&#39;            VARCHAR
+    - &#39;education_level&#39;   VARCHAR
+    - &#39;zip_code&#39;          VARCHAR
+    - &#39;books_borrowed&#39;    INTEGER
+    - &#39;favorite_genres&#39;   VARCHAR
+    - &#39;date_joined&#39;       TIMESTAMP
+</pre></div>
+</div>
+<p>Using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a> on two private tables in the same ID space works seamlessly as long as the ID
+columns are part of the join and have the same name in both tables. Like with
+<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>, no truncation is necessary.</p>
+</section>
+<section id="computing-the-statistic">
+<h3>Computing the statistic<a class="headerlink" href="#computing-the-statistic" title="Permalink to this headline">#</a></h3>
+<p>Next, we define a <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> with age
+groups and the subset of genres we’re interested in for the analysis…</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define age groups</span>
+<span class="c1"># bin edges are [0, 20, 40, ... , 100]</span>
+<span class="n">age_binspec</span> <span class="o">=</span> <span class="n">BinningSpec</span><span class="p">(</span><span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
+<span class="n">binned_age_genre_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;binned_age&quot;</span><span class="p">:</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">(),</span>
+        <span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;Mystery/thriller/crime&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;History&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Romance&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Fantasy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Classics/Literature&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>… and use it to group the data and count:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">genre_by_age</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_joined&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bin_column</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">age_binspec</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">binned_age_genre_keys</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">2.5</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now that our dataset contains all the information we need to determine
+the relationship between age and genre of choice, we can do a little bit
+of wrangling and then visualize the result:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1"># convert binned_age to categorical for ease of plotting</span>
+<span class="n">genre_by_age</span><span class="p">[</span><span class="s2">&quot;binned_age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">genre_by_age</span><span class="p">[</span><span class="s2">&quot;binned_age&quot;</span><span class="p">],</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">())</span>
+<span class="n">age_counts</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">genre_by_age</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;age_count&quot;</span><span class="p">})</span>
+<span class="p">)</span>
+<span class="c1"># compute percentage of each genre in each age group, replace negative values with 0</span>
+<span class="n">genre_by_age_pct</span> <span class="o">=</span> <span class="n">genre_by_age</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">age_counts</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span>
+<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;age_count&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pct&quot;</span><span class="p">,</span>
+    <span class="n">order</span><span class="o">=</span><span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">(),</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;genre&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">genre_by_age_pct</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age Group&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Genre (%)&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reading Preferences by Age&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Genre&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="A bar chart showing genre preferences for different age groups." class="align-center" src="../_images/chart_genres_by_age.png" />
+<p>Interesting! It looks like children are the only readers of children’s books. We may
+have expected as much, but what else can we learn from this chart?</p>
+</section>
+<section id="a-note-on-session-initialization">
+<h3>A note on Session initialization<a class="headerlink" href="#a-note-on-session-initialization" title="Permalink to this headline">#</a></h3>
+<p>You might have noticed that in the Session initialization step, we loaded the members
+table using the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+protected change; even though in tutorials 1 through 5, we used it with
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a>. For this table, both
+options are possible: there is exactly one row per person, and a unique identifier for
+each person. In such cases, which protected change should you choose?</p>
+<p>Typically, the right choice is to use
+<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>, for a couple of
+reasons.</p>
+<ul class="simple">
+<li><p>Data preparation is generally more convenient when using privacy IDs, because you
+don’t need to worry about truncating your data (when performing e.g. flat maps or
+joins) until immediately before aggregation.</p></li>
+<li><p>Truncation as a last step before aggregation can lead to better utility. Plus,
+if you want to compute multiple aggregations, you might also want to use different
+truncation parameters for each.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="privacy-id-basics.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Working with privacy IDs</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../howto-guides/index.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">How-to guides</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright Tumult Labs 2024.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from cb918c81 at 2024-07-03 17:56.
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
