@@ -34,9 +34,8 @@ query_builder
    At any point, a QueryBuilder instance can have an aggregation like
    :meth:`~tmlt.analytics.query_builder.QueryBuilder.count` applied to it,
    potentially after a
-   :meth:`~tmlt.analytics.query_builder.QueryBuilder.groupby`, yielding a
-   :class:`~tmlt.analytics.query_expr.QueryExpr` object. This QueryExpr can then be
-   passed to :func:`~tmlt.analytics.session.Session.evaluate` to obtain
+   :meth:`~tmlt.analytics.query_builder.QueryBuilder.groupby`, yielding an
+   object that can be passed to :func:`~tmlt.analytics.session.Session.evaluate` to obtain
    differentially private results to the query.
 
 
@@ -63,6 +62,18 @@ Classes
 
 .. list-table::
 
+   * - :class:`.AnalyticsDefault`
+     - Default values for each type of column in Tumult Analytics.
+   * - :class:`.CountDistinctMechanism`
+     - Enumerating the possible mechanisms used for the count_distinct aggregation.
+   * - :class:`.CountMechanism`
+     - Possible mechanisms for the count() aggregation.
+   * - :class:`.StdevMechanism`
+     - Possible mechanisms for the stdev() aggregation.
+   * - :class:`.SumMechanism`
+     - Possible mechanisms for the sum() aggregation.
+   * - :class:`.VarianceMechanism`
+     - Possible mechanisms for the variance() aggregation.
    * - :class:`.ColumnDescriptor`
      - Information about a column.
    * - :class:`.ColumnType`
@@ -73,6 +84,285 @@ Classes
      - A QueryBuilder that is grouped by a set of columns and can be aggregated.
    * - :class:`.AggregatedQueryBuilder`
      - A query builder for post-processing aggregated data.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: AnalyticsDefault
+
+   Default values for each type of column in Tumult Analytics.
+
+
+
+
+
+   .. py:attribute:: INTEGER
+      :annotation: = 0
+
+      The default value used for integers (0).
+
+   .. py:attribute:: DECIMAL
+      :annotation: = 0.0
+
+      The default value used for floats (0).
+
+   .. py:attribute:: VARCHAR
+      :annotation: = 
+
+      The default value used for VARCHARs (the empty string).
+
+   .. py:attribute:: DATE
+      
+
+      The default value used for dates (``datetime.date.fromtimestamp(0)``).
+
+      See :meth:`~.datetime.date.fromtimestamp`.
+
+   .. py:attribute:: TIMESTAMP
+      
+
+      The default value used for timestamps (``datetime.datetime.fromtimestamp(0)``).
+
+      See :meth:`~.datetime.datetime.fromtimestamp`.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: CountDistinctMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Enumerating the possible mechanisms used for the count_distinct aggregation.
+
+   Currently, the
+   :meth:`~tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct`
+   aggregation uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+      
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+      
+
+      Double-sided geometric noise is used.
+
+   .. py:attribute:: GAUSSIAN
+      
+
+      The discrete Gaussian mechanism is used. Not compatible with pure DP.
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: CountMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Possible mechanisms for the count() aggregation.
+
+   Currently, the
+   :meth:`~tmlt.analytics.query_builder.GroupedQueryBuilder.count` aggregation
+   uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+      
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+      
+
+      Double-sided geometric noise is used.
+
+   .. py:attribute:: GAUSSIAN
+      
+
+      The discrete Gaussian mechanism is used. Not compatible with pure DP.
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: StdevMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Possible mechanisms for the stdev() aggregation.
+
+   Currently, the
+   :meth:`~tmlt.analytics.query_builder.GroupedQueryBuilder.stdev`
+   aggregation uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+      
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+      
+
+      Laplace and/or double-sided geometric noise is used, depending on the
+      column type.
+
+   .. py:attribute:: GAUSSIAN
+      
+
+      Discrete and/or continuous Gaussian noise is used, depending on the column type.
+      Not compatible with pure DP.
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: SumMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Possible mechanisms for the sum() aggregation.
+
+   Currently, the
+   :meth:`~.tmlt.analytics.query_builder.GroupedQueryBuilder.sum`
+   aggregation uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+      
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+      
+
+      Laplace and/or double-sided geometric noise is used, depending on the
+      column type.
+
+   .. py:attribute:: GAUSSIAN
+      
+
+      Discrete and/or continuous Gaussian noise is used, depending on the column type.
+      Not compatible with pure DP.
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+.. py:class:: VarianceMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Possible mechanisms for the variance() aggregation.
+
+   Currently, the
+   :meth:`~tmlt.analytics.query_builder.GroupedQueryBuilder.variance`
+   aggregation uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+      
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+      
+
+      Laplace and/or double-sided geometric noise is used, depending on the
+      column type.
+
+   .. py:attribute:: GAUSSIAN
+      
+
+      Discrete and/or continuous Gaussian noise is used, depending on the column type.
+      Not compatible with pure DP.
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
 
    
 ..
@@ -630,8 +920,7 @@ Classes
       :param replace_with: A dictionary mapping column names to values used to
                            replace null and NaN values.
                            If None (or empty), all columns will have null and NaN
-                           values replaced with Analytics defaults; see
-                           :class:`tmlt.analytics.query_expr.AnalyticsDefault`.
+                           values replaced with Analytics defaults; see :class:`AnalyticsDefault`.
 
 
    .. py:method:: replace_infinity(replace_with = None)
@@ -699,8 +988,7 @@ Classes
       :param replace_with: A dictionary mapping column names to values used to
                            replace -inf and +inf.
                            If None (or empty), all columns will have infinite
-                           values replaced with Analytics defaults; see
-                           :class:`tmlt.analytics.query_expr.AnalyticsDefault`.
+                           values replaced with Analytics defaults; see :class:`AnalyticsDefault`.
 
 
    .. py:method:: drop_null_and_nan(columns)
