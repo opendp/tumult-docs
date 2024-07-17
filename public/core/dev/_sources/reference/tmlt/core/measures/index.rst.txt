@@ -59,6 +59,7 @@ Classes
 
 
 
+
    .. py:method:: __eq__(other)
 
       Return True if both measures are equal.
@@ -67,7 +68,8 @@ Classes
    .. py:method:: validate(value)
       :abstractmethod:
 
-      Raises an error if `value` not a valid distance.
+
+      Raises an error if ``value`` not a valid distance.
 
       :param value: A distance between two probability distributions under this measure.
 
@@ -75,7 +77,8 @@ Classes
    .. py:method:: compare(value1, value2)
       :abstractmethod:
 
-      Returns True if `value1` is less than or equal to `value2`.
+
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
 
@@ -103,18 +106,19 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative real or infinity
+      * ``value`` must be a nonnegative real or infinity
 
       :param value: A distance between two probability distributions under this measure.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: __eq__(other)
@@ -148,11 +152,12 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a tuple with two values: (epsilon, delta)
+      * ``value`` must be a tuple with two values: (epsilon, delta)
       * epsilon must be a nonnegative real or infinity
       * delta must be a real between 0 and 1 (inclusive)
 
@@ -161,7 +166,7 @@ Classes
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: __eq__(other)
@@ -194,18 +199,19 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative real or infinity
+      * ``value`` must be a nonnegative real or infinity
 
       :param value: A distance between two probability distributions under this measure.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: __eq__(other)
@@ -229,11 +235,20 @@ Classes
 
 
 
+   .. py:property:: value
+      :type: PrivacyBudgetValue
+
+      :abstractmethod:
+
+      Return the value of the privacy budget.
+
+
    .. automethod:: __init__
    .. py:method:: cast(measure: RhoZCDP, value: PrivacyBudgetInput) -> RhoZCDPBudget
-               cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
-               cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
+                  cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
+                  cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
       :classmethod:
+
 
       Return a privacy budget matching the passed measure.
 
@@ -241,14 +256,9 @@ Classes
       :param value: The value of the privacy budget.
 
 
-   .. py:method:: value()
-      :property:
-
-      Return the value of the privacy budget.
-
-
    .. py:method:: is_finite()
       :abstractmethod:
+
 
       Return true iff the budget is finite.
 
@@ -256,7 +266,8 @@ Classes
    .. py:method:: assert_can_spend_budget(other)
       :abstractmethod:
 
-      Return true iff we can spend budget `other`. Otherwise, raise an error.
+
+      Return true iff we can spend budget ``other``. Otherwise, raise an error.
 
       :param other: The privacy budget we would like to spend.
 
@@ -264,7 +275,8 @@ Classes
    .. py:method:: subtract(other)
       :abstractmethod:
 
-      Return a new budget after subtracting `other`.
+
+      Return a new budget after subtracting ``other``.
 
       If the budget represented by this class is infinite, return the current budget.
 
@@ -275,7 +287,7 @@ Classes
 
    .. py:method:: __eq__(other)
 
-      Check is this instance is equal to `other`.
+      Check is this instance is equal to ``other``.
 
       :param other: The other instance.
 
@@ -293,19 +305,18 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Return the value of the privacy budget.
 
-
-   .. py:method:: epsilon()
-      :property:
+   .. py:property:: epsilon
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       The pure dp privacy loss.
 
 
+   .. automethod:: __init__
    .. py:method:: is_finite()
 
       Return true iff the budget is finite.
@@ -313,14 +324,14 @@ Classes
 
    .. py:method:: assert_can_spend_budget(other)
 
-      Return true iff we can spend budget `other`. Otherwise, raise an error.
+      Return true iff we can spend budget ``other``. Otherwise, raise an error.
 
       :param other: The privacy budget we would like to spend.
 
 
    .. py:method:: subtract(other)
 
-      Return a new budget after subtracting `other`.
+      Return a new budget after subtracting ``other``.
 
       If the budget represented by this class is infinite, return the current budget.
 
@@ -330,9 +341,10 @@ Classes
 
 
    .. py:method:: cast(measure: RhoZCDP, value: PrivacyBudgetInput) -> RhoZCDPBudget
-               cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
-               cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
+                  cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
+                  cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
       :classmethod:
+
 
       Return a privacy budget matching the passed measure.
 
@@ -342,7 +354,7 @@ Classes
 
    .. py:method:: __eq__(other)
 
-      Check is this instance is equal to `other`.
+      Check is this instance is equal to ``other``.
 
       :param other: The other instance.
 
@@ -360,25 +372,23 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]
 
       Return the value of the privacy budget.
 
-
-   .. py:method:: epsilon()
-      :property:
+   .. py:property:: epsilon
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       The first component of the privacy loss.
 
-
-   .. py:method:: delta()
-      :property:
+   .. py:property:: delta
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       The second component of the privacy loss.
 
 
+   .. automethod:: __init__
    .. py:method:: is_finite()
 
       Return true iff the budget is finite.
@@ -386,14 +396,14 @@ Classes
 
    .. py:method:: assert_can_spend_budget(other)
 
-      Return true iff we can spend budget `other`. Otherwise, raise an error.
+      Return true iff we can spend budget ``other``. Otherwise, raise an error.
 
       :param other: The privacy budget we would like to spend.
 
 
    .. py:method:: subtract(other)
 
-      Return a new budget after subtracting `other`.
+      Return a new budget after subtracting ``other``.
 
       If the budget represented by this class is infinite, return the current budget.
 
@@ -403,9 +413,10 @@ Classes
 
 
    .. py:method:: cast(measure: RhoZCDP, value: PrivacyBudgetInput) -> RhoZCDPBudget
-               cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
-               cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
+                  cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
+                  cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
       :classmethod:
+
 
       Return a privacy budget matching the passed measure.
 
@@ -415,7 +426,7 @@ Classes
 
    .. py:method:: __eq__(other)
 
-      Check is this instance is equal to `other`.
+      Check is this instance is equal to ``other``.
 
       :param other: The other instance.
 
@@ -433,19 +444,18 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Return the value of the privacy budget.
 
-
-   .. py:method:: rho()
-      :property:
+   .. py:property:: rho
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       The zCDP privacy loss.
 
 
+   .. automethod:: __init__
    .. py:method:: is_finite()
 
       Return true iff the budget is finite.
@@ -453,14 +463,14 @@ Classes
 
    .. py:method:: assert_can_spend_budget(other)
 
-      Return true iff we can spend budget `other`. Otherwise, raise an error.
+      Return true iff we can spend budget ``other``. Otherwise, raise an error.
 
       :param other: The privacy budget we would like to spend.
 
 
    .. py:method:: subtract(other)
 
-      Return a new budget after subtracting `other`.
+      Return a new budget after subtracting ``other``.
 
       If the budget represented by this class is infinite, return the current budget.
 
@@ -470,9 +480,10 @@ Classes
 
 
    .. py:method:: cast(measure: RhoZCDP, value: PrivacyBudgetInput) -> RhoZCDPBudget
-               cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
-               cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
+                  cast(measure: PureDP, value: PrivacyBudgetInput) -> PureDPBudget
+                  cast(measure: ApproxDP, value: PrivacyBudgetInput) -> ApproxDPBudget
       :classmethod:
+
 
       Return a privacy budget matching the passed measure.
 
@@ -482,7 +493,7 @@ Classes
 
    .. py:method:: __eq__(other)
 
-      Check is this instance is equal to `other`.
+      Check is this instance is equal to ``other``.
 
       :param other: The other instance.
 

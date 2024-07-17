@@ -46,15 +46,35 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: num_partitions()
-      :property:
+   .. py:property:: num_partitions
+      :type: Optional[int]
 
       Returns the number of partitions produced by the transformation.
 
       If this number is not known, this returns None.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -63,30 +83,6 @@ Classes
       for more information.
 
       :param d_in: Distance between inputs under input_metric.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
 
 
    .. py:method:: stability_relation(d_in, d_out)
@@ -100,13 +96,14 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
 
    .. py:method:: __call__(data)
       :abstractmethod:
+
 
       Perform transformation.
 
@@ -203,7 +200,7 @@ Classes
        SumOf(inner_metric=SymmetricDifference())
 
        Stability Guarantee:
-           :class:`~.PartitionByKeys`' :meth:`~.stability_function` returns `d_in`.
+           :class:`~.PartitionByKeys`' :meth:`~.stability_function` returns ``d_in``.
 
            >>> partition.stability_function(1)
            1
@@ -212,58 +209,51 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.keys`
-        - Returns list of column names to partition on.
-      * - :meth:`.list_values`
-        - Returns list of values corresponding to the partition keys.
-      * - :meth:`.__call__`
-        - Returns a list of partitions of input DataFrame.
-      * - :meth:`.num_partitions`
-        - Returns the number of partitions produced by the transformation.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: keys()
-      :property:
+   .. py:property:: keys
+      :type: List[str]
 
       Returns list of column names to partition on.
 
-
-   .. py:method:: list_values()
-      :property:
+   .. py:property:: list_values
+      :type: List[Tuple]
 
       Returns list of values corresponding to the partition keys.
 
-
-   .. py:method:: __call__(sdf)
-
-      Returns a list of partitions of input DataFrame.
-
-
-   .. py:method:: num_partitions()
-      :property:
+   .. py:property:: num_partitions
+      :type: Optional[int]
 
       Returns the number of partitions produced by the transformation.
 
       If this number is not known, this returns None.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: __call__(sdf)
+
+      Returns a list of partitions of input DataFrame.
 
 
    .. py:method:: stability_function(d_in)
@@ -274,30 +264,6 @@ Classes
       for more information.
 
       :param d_in: Distance between inputs under input_metric.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
 
 
    .. py:method:: stability_relation(d_in, d_out)
@@ -311,7 +277,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

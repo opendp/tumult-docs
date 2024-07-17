@@ -67,10 +67,12 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
       :abstractmethod:
 
-      Raises an error if `value` not a valid distance.
+
+      Raises an error if ``value`` not a valid distance.
 
       :param value: A distance between two datasets under this metric.
 
@@ -78,17 +80,20 @@ Classes
    .. py:method:: compare(value1, value2)
       :abstractmethod:
 
-      Returns True if `value1` is less than or equal to `value2`.
+
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
       :abstractmethod:
+
 
       Return True if the metric is implemented for the passed domain.
 
 
    .. py:method:: distance(value1, value2, domain)
       :abstractmethod:
+
 
       Returns the metric distance between two elements of a supported domain.
 
@@ -111,10 +116,12 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
       :abstractmethod:
 
-      Raises an error if `value` not a valid distance.
+
+      Raises an error if ``value`` not a valid distance.
 
       This method is not implemented.
 
@@ -124,7 +131,8 @@ Classes
    .. py:method:: compare(value1, value2)
       :abstractmethod:
 
-      Returns True if `value1` is less than or equal to `value2`.
+
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       This method is not implemented.
 
@@ -141,6 +149,7 @@ Classes
 
    .. py:method:: distance(value1, value2, domain)
       :abstractmethod:
+
 
       Return the metric distance between two elements of a supported domain.
 
@@ -167,8 +176,10 @@ Classes
 
 
 
+
    .. py:method:: distance(value1, value2, domain)
       :abstractmethod:
+
 
       Return the metric distance between two elements of a supported domain.
 
@@ -180,7 +191,8 @@ Classes
    .. py:method:: validate(value)
       :abstractmethod:
 
-      Raises an error if `value` not a valid distance.
+
+      Raises an error if ``value`` not a valid distance.
 
       :param value: A distance between two datasets under this metric.
 
@@ -188,11 +200,13 @@ Classes
    .. py:method:: compare(value1, value2)
       :abstractmethod:
 
-      Returns True if `value1` is less than or equal to `value2`.
+
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
       :abstractmethod:
+
 
       Return True if the metric is implemented for the passed domain.
 
@@ -227,18 +241,19 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative real or infinite
+      * ``value`` must be a nonnegative real or infinite
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
@@ -322,18 +337,19 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative integer or infinity
+      * ``value`` must be a nonnegative integer or infinity
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
@@ -403,18 +419,19 @@ Classes
 
 
 
+
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative and integer or infinity
+      * ``value`` must be a nonnegative and integer or infinity
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
@@ -446,10 +463,10 @@ Classes
 
    Distances resulting from aggregating distances of its components.
 
-   Components may be elements of a series, groups of a grouped dataframe, or elements
-   of a list. This metric is parameterized by an `inner_metric` that is used to compute
-   the distances of the components. See :class:`SumOf` or :class`RootSumOfSquared` for
-   example usage.
+   Components may be elements of a series, groups of a grouped dataframe, or
+   elements of a list. This metric is parameterized by an ``inner_metric`` that
+   is used to compute the distances of the components. See :class:`SumOf` or
+   :class`RootSumOfSquared` for example usage.
 
    If the values are grouped dataframes, the groups must be the same for both values,
    or the distance is infinity.
@@ -462,16 +479,16 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: inner_metric()
-      :property:
+   .. py:property:: inner_metric
+      :type: Union[AbsoluteDifference, SymmetricDifference, HammingDistance, IfGroupedBy]
 
       Returns metric to be used for summing.
 
 
+   .. automethod:: __init__
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -496,7 +513,8 @@ Classes
    .. py:method:: validate(value)
       :abstractmethod:
 
-      Raises an error if `value` not a valid distance.
+
+      Raises an error if ``value`` not a valid distance.
 
       :param value: A distance between two datasets under this metric.
 
@@ -515,7 +533,7 @@ Classes
    Distances resulting from summing distances of its components.
 
    These components may be elements of a series, groups of a grouped dataframe, or
-   elements of a list. This metric is parameterized by an `inner_metric` that is used
+   elements of a list. This metric is parameterized by an ``inner_metric`` that is used
    to compute the distances of the components.
 
    .. rubric:: Example
@@ -570,25 +588,25 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: validate(value)
-
-      Raises an error if `value` not a valid distance.
-
-      * `value` must be a a valid distance for :attr:`~.inner_metric`
-
-      :param value: A distance between two datasets under this metric.
-
-
-   .. py:method:: inner_metric()
-      :property:
+   .. py:property:: inner_metric
+      :type: Union[AbsoluteDifference, SymmetricDifference, HammingDistance, IfGroupedBy]
 
       Returns metric to be used for summing.
 
 
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+
+      Raises an error if ``value`` not a valid distance.
+
+      * ``value`` must be a a valid distance for :attr:`~.inner_metric`
+
+      :param value: A distance between two datasets under this metric.
+
+
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -624,7 +642,7 @@ Classes
    The square root of the sum of the squares of component distances.
 
    These components may be elements of a series, groups of a grouped dataframe, or
-   elements of a list. This metric is parameterized by an `inner_metric` that is used
+   elements of a list. This metric is parameterized by an ``inner_metric`` that is used
    to compute the distances of the components.
 
    .. rubric:: Example
@@ -671,25 +689,25 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: validate(value)
-
-      Raises an error if `value` not a valid distance.
-
-      * `value` must be a nonnegative real or infinity
-
-      :param value: A distance between two datasets under this metric.
-
-
-   .. py:method:: inner_metric()
-      :property:
+   .. py:property:: inner_metric
+      :type: Union[AbsoluteDifference, SymmetricDifference, HammingDistance, IfGroupedBy]
 
       Returns metric to be used for summing.
 
 
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+
+      Raises an error if ``value`` not a valid distance.
+
+      * ``value`` must be a nonnegative real or infinity
+
+      :param value: A distance between two datasets under this metric.
+
+
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -757,31 +775,30 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: column()
-      :property:
+   .. py:property:: column
+      :type: str
 
       Return the column to apply the metric to.
 
-
-   .. py:method:: metric()
-      :property:
+   .. py:property:: metric
+      :type: Union[SumOf, RootSumOfSquared]
 
       Return the metric to apply.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a a valid distance for :attr:`~.metric`
+      * ``value`` must be a valid distance for :attr:`~.metric`
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)
@@ -848,18 +865,19 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: on_columns()
-      :property:
+   .. py:property:: on_columns
+      :type: List[OnColumn]
 
       Return the OnColumn metrics to apply.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a tuple with one value for each metric in :attr:`~.on_columns`
+      * ``value`` must be a tuple with one value for each metric
+        in :attr:`~.on_columns`
       * each value must be a valid distance for the corresponding metric
 
       :param value: A distance between two datasets under this metric.
@@ -867,7 +885,7 @@ Classes
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -948,31 +966,30 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: column()
-      :property:
+   .. py:property:: column
+      :type: str
 
       Column that DataFrame shall be grouped by.
 
-
-   .. py:method:: inner_metric()
-      :property:
+   .. py:property:: inner_metric
+      :type: Union[SumOf, RootSumOfSquared, SymmetricDifference]
 
       Metric to be applied for corresponding groups.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a a valid distance for :attr:`~.inner_metric`
+      * ``value`` must be a valid distance for :attr:`~.inner_metric`
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -1044,18 +1061,18 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: key_to_metric()
-      :property:
+   .. py:property:: key_to_metric
+      :type: Dict[Any, Metric]
 
       Returns mapping from keys to metrics.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a dictionary with the same keys as :attr:`~.key_to_metric`
+      * ``value`` must be a dictionary with the same keys as :attr:`~.key_to_metric`
       * each value in the dictionary must be a valid distance under the corresponding
         metric
 
@@ -1064,7 +1081,7 @@ Classes
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
       :param value1: A distance between two datasets under this metric.
       :param value2: A distance between two datasets under this metric.
@@ -1113,16 +1130,16 @@ Classes
    metric :class:`~SymmetricDifference`, except it is applied to a dictionary of
    dataframes, instead of a single dataframe.
 
-   `AddRemoveKeys(X)` can be described in the following way:
+   ``AddRemoveKeys(X)`` can be described in the following way:
 
    Sum over each key that appears in the key column in either
-   neighbor, where the key column for dataframe df is given by `X[df]`.
+   neighbor, where the key column for dataframe df is given by ``X[df]``.
 
-   - 0 if both neighbors "match" for `X[df] = key`
-   - 1 if only one neighbor has records for `X[df] = key`
-   - 2 if both neighbor have records for `X[df] = key`, but they don't "match"
+   - 0 if both neighbors "match" for ``X[df] = key``
+   - 1 if only one neighbor has records for ``X[df] = key``
+   - 2 if both neighbor have records for ``X[df] = key``, but they don't "match"
 
-   The key column cannot containg floating point values, and all dataframes must have
+   The key column cannot contain floating point values, and all dataframes must have
    the same type for the key column. The key columns for the different dataframes may
    have different names.
 
@@ -1198,25 +1215,25 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: df_to_key_column()
-      :property:
+   .. py:property:: df_to_key_column
+      :type: Dict[Any, str]
 
       Returns the key column.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
-      Raises an error if `value` not a valid distance.
+      Raises an error if ``value`` not a valid distance.
 
-      * `value` must be a nonnegative real or infinite
+      * ``value`` must be a nonnegative real or infinite
 
       :param value: A distance between two datasets under this metric.
 
 
    .. py:method:: compare(value1, value2)
 
-      Returns True if `value1` is less than or equal to `value2`.
+      Returns True if ``value1`` is less than or equal to ``value2``.
 
 
    .. py:method:: supports_domain(domain)

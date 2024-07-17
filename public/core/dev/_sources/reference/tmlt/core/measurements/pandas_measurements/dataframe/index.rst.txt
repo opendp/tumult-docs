@@ -47,41 +47,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: input_domain()
-      :property:
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.pandas_domains.PandasDataFrameDomain
 
       Return input domain for the measurement.
 
-
-   .. py:method:: output_schema()
-      :property:
+   .. py:property:: output_schema
+      :type: pyspark.sql.types.StructType
 
       Return the output schema.
 
-
-   .. py:method:: __call__(df)
-      :abstractmethod:
-
-      Perform measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
 
       Distance metric on input domain.
 
-
-   .. py:method:: output_measure()
-      :property:
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
 
       Distance measure on output.
 
-
-   .. py:method:: is_interactive()
-      :property:
+   .. py:property:: is_interactive
+      :type: bool
 
       Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
+   .. py:method:: __call__(df)
+      :abstractmethod:
+
+
+      Perform measurement.
 
 
    .. py:method:: privacy_function(d_in)
@@ -101,8 +98,8 @@ Classes
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -118,18 +115,43 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: column_to_aggregation()
-      :property:
+   .. py:property:: column_to_aggregation
+      :type: Dict[str, tmlt.core.measurements.pandas_measurements.series.Aggregate]
 
       Returns dictionary from column names to aggregation measurements.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.pandas_domains.PandasDataFrameDomain
 
+      Return input domain for the measurement.
+
+   .. py:property:: output_schema
+      :type: pyspark.sql.types.StructType
+
+      Return the output schema.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
 
-      Returns the sum of the :meth:`~.Measurement.privacy_function`'s on `d_in` for
+      Returns the sum of the :meth:`~.Measurement.privacy_function`'s on ``d_in`` for
       all composed measurements.
 
       :param d_in: Distance between inputs under input_metric.
@@ -142,15 +164,15 @@ Classes
 
       Returns True only if outputs are close under close inputs.
 
-      Let `d_outs` be the d_out from the :meth:`~.Measurement.privacy_function`'s of
+      Let ``d_outs`` be the d_out from the :meth:`~.Measurement.privacy_function`'s of
       all composed measurements or the d_outs from the hint if one of them raises
       :class:`NotImplementedError`.
 
-      And `total_d_out` to be the sum of `d_outs`.
+      And ``total_d_out`` to be the sum of ``d_outs``.
 
-      This returns True if `total_d_out` <= `d_out` (the input argument) and each
+      This returns True if ``total_d_out`` <= ``d_out`` (the input argument) and each
       composed measurement satisfies its :meth:`~.Measurement.privacy_relation` from
-      `d_in` to its d_out from `d_outs`.
+      ``d_in`` to its d_out from ``d_outs``.
 
       :param d_in: Distance between inputs under input_metric.
       :param d_out: Distance between outputs under output_measure.
@@ -161,36 +183,6 @@ Classes
       Perform the aggregation.
 
       :param df: The DataFrame to aggregate.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_schema()
-      :property:
-
-      Return the output schema.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
 
 
 

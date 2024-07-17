@@ -115,8 +115,8 @@ Classes
        SymmetricDifference()
 
        Stability Guarantee:
-           :class:`~.LimitRowsPerGroup`'s :meth:`~.stability_function` returns
-           `threshold * d_in` if `output_metric` is `SymmetricDifference()` and `d_in`
+           :class:`~.LimitRowsPerGroup` 's :meth:`~.stability_function` returns
+           ``threshold * d_in`` if ``output_metric`` is ``SymmetricDifference()`` and ``d_in``
            otherwise.
 
            >>> truncate.stability_function(1)
@@ -129,19 +129,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: grouping_column()
-      :property:
+   .. py:property:: grouping_column
+      :type: str
 
       Returns the column defining the groups to truncate.
 
-
-   .. py:method:: threshold()
-      :property:
+   .. py:property:: threshold
+      :type: int
 
       Returns the maximum number of rows per group after truncation.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -157,30 +176,6 @@ Classes
       Returns a truncated dataframe.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -192,7 +187,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -285,11 +280,11 @@ Classes
        IfGroupedBy(column='B', inner_metric=SumOf(inner_metric=IfGroupedBy(column='A', inner_metric=SymmetricDifference())))
 
        Stability Guarantee:
-           :class:`~.LimitKeysPerGroup`'s :meth:`~.stability_function` returns
-           `d_in` if `output_metric` is IfGroupedBy(grouping_column, SymmetricDifference()),
-           `sqrt(threshold) * d_in` if `output_metric` is
-           `IfGroupedBy(key_column, RootSumOfSquared(IfGroupedBy(grouping_column, SymmetricDifference())))`,
-           and `threshold * d_in` otherwise.
+           :class:`~.LimitKeysPerGroup` 's :meth:`~.stability_function` returns
+           ``d_in`` if ``output_metric`` is ``IfGroupedBy(grouping_column, SymmetricDifference())``,
+           ``sqrt(threshold) * d_in`` if ``output_metric`` is
+           ``IfGroupedBy(key_column, RootSumOfSquared(IfGroupedBy(grouping_column, SymmetricDifference())))``,
+           and ``threshold * d_in`` otherwise.
 
            >>> truncate.stability_function(1)
            2
@@ -298,53 +293,46 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.grouping_column`
-        - Returns the column defining the groups to truncate.
-      * - :meth:`.key_column`
-        - Returns the column defining the keys.
-      * - :meth:`.threshold`
-        - Returns the maximum number of keys per group after truncation.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Returns a truncated dataframe.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: grouping_column()
-      :property:
+   .. py:property:: grouping_column
+      :type: str
 
       Returns the column defining the groups to truncate.
 
-
-   .. py:method:: key_column()
-      :property:
+   .. py:property:: key_column
+      :type: str
 
       Returns the column defining the keys.
 
-
-   .. py:method:: threshold()
-      :property:
+   .. py:property:: threshold
+      :type: int
 
       Returns the maximum number of keys per group after truncation.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -360,30 +348,6 @@ Classes
       Returns a truncated dataframe.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -395,7 +359,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -491,9 +455,9 @@ Classes
        SymmetricDifference()
 
        Stability Guarantee:
-           :class:`~.LimitRowsPerKeyPerGroup`'s :meth:`~.stability_function` returns
-           `d_in` if `input_metric` is `IfGroupedBy(grouping_column, SymmetricDifference())`
-           and `threshold * d_in` otherwise.
+           :class:`~.LimitRowsPerKeyPerGroup` 's :meth:`~.stability_function` returns
+           ``d_in`` if ``input_metric`` is ``IfGroupedBy(grouping_column, SymmetricDifference())``
+           and ``threshold * d_in`` otherwise.
 
            >>> truncate.stability_function(1)
            2
@@ -502,53 +466,46 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.grouping_column`
-        - Returns the column defining the groups to truncate.
-      * - :meth:`.key_column`
-        - Returns the column defining the keys.
-      * - :meth:`.threshold`
-        - Returns the maximum number of rows each unique (key, grouping column value) pair may appear in after truncation.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Returns a truncated dataframe.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: grouping_column()
-      :property:
+   .. py:property:: grouping_column
+      :type: str
 
       Returns the column defining the groups to truncate.
 
-
-   .. py:method:: key_column()
-      :property:
+   .. py:property:: key_column
+      :type: str
 
       Returns the column defining the keys.
 
-
-   .. py:method:: threshold()
-      :property:
+   .. py:property:: threshold
+      :type: int
 
       Returns the maximum number of rows each unique (key, grouping column value) pair may appear in after truncation.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -564,30 +521,6 @@ Classes
       Returns a truncated dataframe.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -599,7 +532,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

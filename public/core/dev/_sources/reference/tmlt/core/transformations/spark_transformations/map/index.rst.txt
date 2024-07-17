@@ -143,21 +143,40 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: trusted_f()
-      :property:
+   .. py:property:: trusted_f
+      :type: Callable[[pyspark.sql.Row], Union[pyspark.sql.Row, Dict[str, Any]]]
 
       Returns function to be applied to each row.
 
       .. note:: Returned function object should not be mutated.
 
-
-   .. py:method:: augment()
-      :property:
+   .. py:property:: augment
+      :type: bool
 
       Returns whether input attributes need to be augmented to the output.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_relation(_, __)
 
       Returns False.
@@ -168,30 +187,6 @@ Classes
    .. py:method:: __call__(row)
 
       Map row.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
 
 
    .. py:method:: stability_function(d_in)
@@ -206,7 +201,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -322,21 +317,40 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: trusted_f()
-      :property:
+   .. py:property:: trusted_f
+      :type: Callable[[pyspark.sql.Row], Union[List[pyspark.sql.Row], List[Dict[str, Any]]]]
 
       Returns function to be applied to each row.
 
       .. note:: Returned function object should not be mutated.
 
-
-   .. py:method:: augment()
-      :property:
+   .. py:property:: augment
+      :type: bool
 
       Returns whether input attributes need to be augmented to the output.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_relation(_, __)
 
       Returns False.
@@ -347,30 +361,6 @@ Classes
    .. py:method:: __call__(row)
 
       Map row.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
 
 
    .. py:method:: stability_function(d_in)
@@ -385,7 +375,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -500,7 +490,7 @@ Classes
            - IfGroupedBy(column, SumOf(SymmetricDifference()))
            - IfGroupedBy(column, RootSumOfSquared(SymmetricDifference()))
 
-           :class:`~.FlatMap`'s :meth:`~.stability_function` returns the `d_in`
+           :class:`~.FlatMap`'s :meth:`~.stability_function` returns the ``d_in``
            times :attr:`.max_num_rows`. If :attr:`.max_num_rows` is None, it returns infinity.
 
            >>> duplicate_flat_map.stability_function(1)
@@ -512,26 +502,45 @@ Classes
 
            - IfGroupedBy(column, SymmetricDifference())
 
-           :class:`~.FlatMap`'s :meth:`~.stability_function` returns `d_in`.
+           :class:`~.FlatMap`'s :meth:`~.stability_function` returns ``d_in``.
 
 
 
 
 
 
-   .. automethod:: __init__
-   .. py:method:: max_num_rows()
-      :property:
+   .. py:property:: max_num_rows
+      :type: Optional[int]
 
       Returns the enforced stability of this transformation, or None.
 
-
-   .. py:method:: row_transformer()
-      :property:
+   .. py:property:: row_transformer
+      :type: RowToRowsTransformation
 
       Returns transformation object used for mapping rows to lists of rows.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -547,30 +556,6 @@ Classes
       Flat Map.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -582,7 +567,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -596,13 +581,13 @@ Classes
    Applies a :class:`~.RowToRowsTransformation` to each row and flattens the result.
 
    A :class:`~.GroupingFlatMap` is a special case of a :class:`~.FlatMap` that has
-   different input and output metrics (a `FlatMap`'s input and output metrics are
+   different input and output metrics (a ``FlatMap``'s input and output metrics are
    always identical) and allows for a tighter stability analysis.
 
-   Compared to a regular `FlatMap`, a `GroupingFlatMap` also requires that:
+   Compared to a regular ``FlatMap``, a ``GroupingFlatMap`` also requires that:
 
-   1. The `row_transformer` creates a single column that is augmented to the input
-   2. For each input row, the `row_transformer` creates no duplicate values in the
+   1. The ``row_transformer`` creates a single column that is augmented to the input
+   2. For each input row, the ``row_transformer`` creates no duplicate values in the
       created column (This is enforced by the implementation).
 
    .. note::
@@ -714,18 +699,18 @@ Classes
            The meth:`~.stability_function` is different depending on the output
            metric:
 
-           If the inner metric is `SumOf(SymmetricDifference())`, `d_out` is
+           If the inner metric is ``SumOf(SymmetricDifference())``, ``d_out`` is
 
-               `d_in * self.max_num_rows`
+               ``d_in * self.max_num_rows``
 
-           If the inner metric is `RootSumOfSquares(SymmetricDifference())`, we
-           can use the added structure of the `row_transformer` to achieve a
+           If the inner metric is ``RootSumOfSquared(SymmetricDifference())``, we
+           can use the added structure of the ``row_transformer`` to achieve a
            tighter analysis. We know that for each input row, the function will
            produce at most one output row per value of the new column, so in total
-           we can produce up to `d_in` rows for each of up to `self.max_num_rows`
-           values of the new column. Therefore, under `RootSumOfSquares`, `d_out` is
+           we can produce up to ``d_in`` rows for each of up to ``self.max_num_rows``
+           values of the new column. Therefore, under ``RootSumOfSquared``, ``d_out`` is
 
-               `d_in * sqrt(self.max_num_rows)`
+               ``d_in * sqrt(self.max_num_rows)``
 
            >>> add_i_flat_map.stability_function(1)
            sqrt(3)
@@ -737,19 +722,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: max_num_rows()
-      :property:
+   .. py:property:: max_num_rows
+      :type: int
 
       Returns the largest number of rows a single row can be mapped to.
 
-
-   .. py:method:: row_transformer()
-      :property:
+   .. py:property:: row_transformer
+      :type: RowToRowsTransformation
 
       Returns transformation object used for mapping rows to lists of rows.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -765,30 +769,6 @@ Classes
       Flat Map.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -800,7 +780,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -905,7 +885,7 @@ Classes
        SymmetricDifference()
 
        Stability Guarantee:
-           :class:`~.Map`'s :meth:`~.stability_function` returns `d_in`.
+           :class:`~.Map`'s :meth:`~.stability_function` returns ``d_in``.
 
            >>> rename_b_to_c_map.stability_function(1)
            1
@@ -917,13 +897,33 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: row_transformer()
-      :property:
+   .. py:property:: row_transformer
+      :type: RowToRowTransformation
 
       Returns the transformation object used for mapping rows.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -939,30 +939,6 @@ Classes
       Return mapped DataFrame.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -974,7 +950,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

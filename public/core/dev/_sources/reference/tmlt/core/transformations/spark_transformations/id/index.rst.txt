@@ -102,7 +102,7 @@ Classes
        IfGroupedBy(column='ID', inner_metric=SymmetricDifference())
 
        Stability Guarantee:
-           :class:`~.AddUniqueColumn`'s :meth:`~.stability_function` returns `d_in`.
+           :class:`~.AddUniqueColumn`'s :meth:`~.stability_function` returns ``d_in``.
 
            >>> add_unique_column.stability_function(1)
            1
@@ -114,13 +114,33 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: column()
-      :property:
+   .. py:property:: column
+      :type: str
 
       Returns name of ID column to add.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -136,30 +156,6 @@ Classes
       Returns DataFrame with ID column added.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -171,7 +167,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

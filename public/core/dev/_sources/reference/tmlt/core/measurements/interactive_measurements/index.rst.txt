@@ -35,7 +35,7 @@ Functions
 
    Returned :class:`~.DecoratedQueryable` allows transforming the private data
    and answering non-interactive :class:`~.MeasurementQuery`\ s as long as the
-   cumulative privacy budget spent does not exceed `privacy_budget`.
+   cumulative privacy budget spent does not exceed ``privacy_budget``.
 
    :param input_domain: Domain of input datasets.
    :param input_metric: Distance metric for input datasets.
@@ -54,9 +54,9 @@ Classes
    * - :class:`.Queryable`
      - Base class for Queryables.
    * - :class:`.MeasurementQuery`
-     - Contains a Measurement and the `d_out` it satisfies.
+     - Contains a Measurement and the ``d_out`` it satisfies.
    * - :class:`.TransformationQuery`
-     - Contains a Transformation and the `d_out` it satisfies.
+     - Contains a Transformation and the ``d_out`` it satisfies.
    * - :class:`.IndexQuery`
      - Contains the index of measurement to be answered.
    * - :class:`.RetireQuery`
@@ -101,8 +101,10 @@ Classes
 
 
 
+
    .. py:method:: __call__(query)
       :abstractmethod:
+
 
       Returns answer to given query.
 
@@ -111,9 +113,9 @@ Classes
    
 .. py:class:: MeasurementQuery
 
-   Contains a Measurement and the `d_out` it satisfies.
+   Contains a Measurement and the ``d_out`` it satisfies.
 
-   .. note:: The `d_in` is known by the Queryable.
+   .. note:: The ``d_in`` is known by the Queryable.
 
    Used by
 
@@ -125,12 +127,14 @@ Classes
 
 
    .. py:attribute:: measurement
-      :annotation: :tmlt.core.measurements.base.Measurement
+      :type:  tmlt.core.measurements.base.Measurement
 
       The measurement to answer.
 
    .. py:attribute:: d_out
-      :annotation: :Optional[Any]
+      :type:  Optional[Any]
+      :value: None
+
 
       The output measure value satisfied by measurement.
 
@@ -139,12 +143,13 @@ Classes
 
 
 
+
    
 .. py:class:: TransformationQuery
 
-   Contains a Transformation and the `d_out` it satisfies.
+   Contains a Transformation and the ``d_out`` it satisfies.
 
-   .. note:: The `d_in` is known by the Queryable.
+   .. note:: The ``d_in`` is known by the Queryable.
 
    Used by
 
@@ -156,17 +161,20 @@ Classes
 
 
    .. py:attribute:: transformation
-      :annotation: :tmlt.core.transformations.base.Transformation
+      :type:  tmlt.core.transformations.base.Transformation
 
       The transformation to apply.
 
    .. py:attribute:: d_out
-      :annotation: :Optional[Any]
+      :type:  Optional[Any]
+      :value: None
+
 
       The output metric value satisfied by the transformation.
 
       It is only required if the transformations's
       :meth:`.Transformation.stability_function` raises :class:`NotImplementedError`.
+
 
 
 
@@ -178,6 +186,7 @@ Classes
    Used by
 
    * :class:`~.ParallelQueryable`
+
 
 
 
@@ -202,6 +211,7 @@ Classes
 
 
 
+
    
 .. py:class:: RetirableQueryable(queryable)
 
@@ -217,20 +227,20 @@ Classes
    RetirableQueryable accepts a special :class:`~.RetireQuery` query that retires
    itself and all descendant :class:`~.Queryable`\ s.
 
-   Submitting a query `q` to a RetirableQueryable `RQ` has the following behavior:
+   Submitting a query ``q`` to a RetirableQueryable ``RQ`` has the following behavior:
 
-       * | If `q` is a :class:`~.RetireQuery`, `RQ` submits a :class:`~.RetireQuery` to
-         | each child :class:`~.RetirableQueryable`, changes its state to "retired"
-         | and returns `None`.
-       * | If `q` is not a :class:`~.RetireQuery` and `RQ` is "active", it obtains
-         | an answer `A` by submitting `q` to its inner Queryable.
+       * If ``q`` is a :class:`~.RetireQuery`, ``RQ`` submits a :class:`~.RetireQuery`
+         to each child :class:`~.RetirableQueryable`, changes its state to "retired",
+         and returns ``None``.
+       * If ``q`` is not a :class:`~.RetireQuery` and ``RQ`` is "active", it obtains
+         an answer ``A`` by submitting ``q`` to its inner Queryable.
 
-           * If `A` is not a Queryable, `RQ` returns `A`.
-           * | Otherwise, `RQ` constructs and returns a new RetirableQueryable with
-             | :class:`~.Queryable` `A`.
+           * If ``A`` is not a Queryable, ``RQ`` returns ``A``.
+           * Otherwise, ``RQ`` constructs and returns a new RetirableQueryable with
+             :class:`~.Queryable` ``A``.
 
-       * | If `q` is not a :class:`~.RetireQuery` and `RQ` is "retired", an error is
-         | raised.
+       * If ``q`` is not a :class:`~.RetireQuery` and ``RQ`` is "retired", an error is
+         raised.
 
 
 
@@ -243,8 +253,8 @@ Classes
 
       Answers query.
 
-      If `query` is :class:`~.RetireQuery`, this queryable and all descendant
-      queryables are retired. Otherwise, the `query` is routed to the wrapped
+      If ``query`` is :class:`~.RetireQuery`, this queryable and all descendant
+      queryables are retired. Otherwise, the ``query`` is routed to the wrapped
       queryable.
 
 
@@ -259,6 +269,7 @@ Classes
    All interactions with a Queryable obtained from answering an interactive
    measurement must be completed before a second interactive measurement
    can be answered.
+
 
 
 
@@ -284,6 +295,7 @@ Classes
 
 
 
+
    .. automethod:: __init__
    .. py:method:: __call__(query)
 
@@ -297,6 +309,7 @@ Classes
    Bases: :class:`Queryable`
 
    Returns answer obtained from a non-interactive measurement.
+
 
 
 
@@ -317,11 +330,12 @@ Classes
 
    Allows modifying the query to and the answer from a Queryable.
 
-   The privacy guarantee for :class:`~.DecoratedQueryable` depends on the passed
-   function `postprocess_answer` satisfying certain properties. In particular,
-   `postprocess_answer` should not use distinguishing pseudo-side channel information,
-   and should be well-defined on its abstract domain. See
+   The privacy guarantee for :class:`~.DecoratedQueryable` depends on the
+   passed function ``postprocess_answer`` satisfying certain properties. In
+   particular, ``postprocess_answer`` should not use distinguishing pseudo-side
+   channel information, and should be well-defined on its abstract domain. See
    :ref:`postprocessing-udf-assumptions`.
+
 
 
 
@@ -351,25 +365,43 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: measurement()
-      :property:
+   .. py:property:: measurement
+      :type: tmlt.core.measurements.base.Measurement
 
       Returns wrapped :class:`~.Measurement`.
 
-
-   .. py:method:: preprocess_query()
-      :property:
+   .. py:property:: preprocess_query
+      :type: Callable[[Any], Any]
 
       Returns function to preprocess queries.
 
-
-   .. py:method:: postprocess_answer()
-      :property:
+   .. py:property:: postprocess_answer
+      :type: Callable[[Any], Any]
 
       Returns function to postprocess answers.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -380,38 +412,14 @@ Classes
       Returns a :class:`~.DecoratedQueryable`.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -434,25 +442,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: d_in()
-      :property:
+   .. py:property:: d_in
+      :type: Any
 
       Returns the distance between input datasets.
 
-
-   .. py:method:: privacy_budget()
-      :property:
+   .. py:property:: privacy_budget
+      :type: tmlt.core.measures.PrivacyBudgetValue
 
       Total privacy budget across all measurements.
 
-
-   .. py:method:: output_measure()
-      :property:
+   .. py:property:: output_measure
+      :type: Union[tmlt.core.measures.PureDP, tmlt.core.measures.ApproxDP, tmlt.core.measures.RhoZCDP]
 
       Return output measure for the measurement.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -468,32 +489,14 @@ Classes
       Returns a Queryable object on input data.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -519,18 +522,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: measurements()
-      :property:
+   .. py:property:: measurements
+      :type: List[tmlt.core.measurements.base.Measurement]
 
       Returns list of composed measurements.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
 
-      Returns the largest `d_out` from the :meth:`~.Measurement.privacy_function` of
+      Returns the largest ``d_out`` from the :meth:`~.Measurement.privacy_function` of
       all of the composed measurements.
 
       :param d_in: Distance between inputs under input_metric.
@@ -545,38 +568,14 @@ Classes
       Returns a :class:`~.ParallelQueryable`.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -596,6 +595,32 @@ Classes
 
 
 
+   .. py:property:: measurement
+      :type: tmlt.core.measurements.base.Measurement
+
+      Returns wrapped non-interactive measurement.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
    .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
@@ -607,39 +632,9 @@ Classes
       Returns True only if wrapped measurement's privacy relation is satisfied.
 
 
-   .. py:method:: measurement()
-      :property:
-
-      Returns wrapped non-interactive measurement.
-
-
    .. py:method:: __call__(data)
 
       Returns a :class:`~.GetAnswerQueryable`.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
 
 
 
@@ -655,7 +650,8 @@ Classes
 
 
    .. py:attribute:: ACTIVE
-      :annotation: = 1
+      :value: 1
+
 
       The :class:`~.PrivacyAccountant` is active and can perform actions.
 
@@ -683,7 +679,8 @@ Classes
                   - This will retire all of its descendants
 
    .. py:attribute:: WAITING_FOR_SIBLING
-      :annotation: = 2
+      :value: 2
+
 
       The :class:`~.PrivacyAccountant` is waiting for the preceding sibling to retire.
 
@@ -693,7 +690,8 @@ Classes
       they appear in the list.
 
    .. py:attribute:: WAITING_FOR_CHILDREN
-      :annotation: = 3
+      :value: 3
+
 
       The :class:`~.PrivacyAccountant` has children who have not been retired.
 
@@ -704,7 +702,8 @@ Classes
               * :meth:`~.PrivacyAccountant.split` creates children
 
    .. py:attribute:: RETIRED
-      :annotation: = 4
+      :value: 4
+
 
       The :class:`.PrivacyAccountant` can no longer perform actions.
 
@@ -714,7 +713,7 @@ Classes
 
               * :meth:`~.PrivacyAccountant.retire` is called on it
               * :meth:`~.PrivacyAccountant.retire` is called on one of its ancestors with
-                `force` = True
+                ``force`` = True
               * :meth:`~.PrivacyAccountant.force_activate` is called on one of its
                 succeeding siblings.
               * :meth:`~.PrivacyAccountant.force_activate` is called on one of its
@@ -728,13 +727,14 @@ Classes
           A :class:`~.PrivacyAccountant` that is WAITING_FOR_CHILDREN will become RETIRED
           when
 
-              * :meth:`~.PrivacyAccountant.retire` is called on it with `force` = True
+              * :meth:`~.PrivacyAccountant.retire` is called on it with ``force`` = True
               * :meth:`~.PrivacyAccountant.retire` is called on its ancestor with
-                `force` = True
+                ``force`` = True
               * :meth:`~.PrivacyAccountant.force_activate` is called on one of its
                 succeeding siblings.
               * :meth:`~.PrivacyAccountant.force_activate` is called on one of its
                 ancestors.
+
 
 
    .. py:method:: name()
@@ -771,99 +771,60 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.input_domain`
-        - Returns the domain of the private data.
-      * - :meth:`.input_metric`
-        - Returns the distance metric for neighboring datasets.
-      * - :meth:`.output_measure`
-        - Returns the output measure for measurement outputs.
-      * - :meth:`.d_in`
-        - Returns the distance for neighboring datasets.
-      * - :meth:`.privacy_budget`
-        - Returns the remaining privacy budget.
-      * - :meth:`.state`
-        - Returns this :class:`~.PrivacyAccountant`'s current state.
-      * - :meth:`.parent`
-        - Returns the parent of this :class:`~.PrivacyAccountant`.
-      * - :meth:`.children`
-        - Returns the children of this :class:`~.PrivacyAccountant`.
-      * - :meth:`.launch`
-        - Returns a :class:`~.PrivacyAccountant` from a measurement and data.
-      * - :meth:`.transform_in_place`
-        - Transforms the private data inside this :class:`~.PrivacyAccountant`.
-      * - :meth:`.measure`
-        - Returns the answer to `measurement`.
-      * - :meth:`.split`
-        - Returns new :class:`~.PrivacyAccountant`\ s from splitting the private data.
-      * - :meth:`.force_activate`
-        - Set this :class:`~.PrivacyAccountant`'s state to ACTIVE.
-      * - :meth:`.retire`
-        - Set this :class:`~.PrivacyAccountant`'s state to RETIRED.
-      * - :meth:`.queue_transformation`
-        - Queue `transformation` to be executed when this :class:`~.PrivacyAccountant` becomes ACTIVE.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: input_domain()
-      :property:
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
       Returns the domain of the private data.
 
-
-   .. py:method:: input_metric()
-      :property:
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
 
       Returns the distance metric for neighboring datasets.
 
-
-   .. py:method:: output_measure()
-      :property:
+   .. py:property:: output_measure
+      :type: Union[tmlt.core.measures.PureDP, tmlt.core.measures.ApproxDP, tmlt.core.measures.RhoZCDP]
 
       Returns the output measure for measurement outputs.
 
-
-   .. py:method:: d_in()
-      :property:
+   .. py:property:: d_in
+      :type: Any
 
       Returns the distance for neighboring datasets.
 
-
-   .. py:method:: privacy_budget()
-      :property:
+   .. py:property:: privacy_budget
+      :type: tmlt.core.measures.PrivacyBudgetValue
 
       Returns the remaining privacy budget.
 
-
-   .. py:method:: state()
-      :property:
+   .. py:property:: state
+      :type: PrivacyAccountantState
 
       Returns this :class:`~.PrivacyAccountant`'s current state.
 
       See :class:`~.PrivacyAccountantState` for more information.
 
-
-   .. py:method:: parent()
-      :property:
+   .. py:property:: parent
+      :type: Optional[PrivacyAccountant]
 
       Returns the parent of this :class:`~.PrivacyAccountant`.
 
       If this is the root :class:`~.PrivacyAccountant`, this returns None.
 
-
-   .. py:method:: children()
-      :property:
+   .. py:property:: children
+      :type: List[PrivacyAccountant]
 
       Returns the children of this :class:`~.PrivacyAccountant`.
 
       Children are created by calling :meth:`split`.
 
 
+   .. automethod:: __init__
    .. py:method:: launch(measurement, data)
       :staticmethod:
+
 
       Returns a :class:`~.PrivacyAccountant` from a measurement and data.
 
@@ -924,31 +885,31 @@ Classes
 
       This method is an :ref:`action <action>`.
 
-      Requirements to apply `transformation`:
+      Requirements to apply ``transformation``:
 
       * this :class:`~.PrivacyAccountant`'s :attr:`~.state` must be ACTIVE
-      * `transformation`'s :attr:`~.Transformation.input_domain` must match this
+      * ``transformation``'s :attr:`~.Transformation.input_domain` must match this
         :class:`~.PrivacyAccountant`'s :attr:`~.input_domain`
-      * `transformation`'s :attr:`~.Transformation.input_metric` must match this
+      * ``transformation``'s :attr:`~.Transformation.input_metric` must match this
         :class:`~.PrivacyAccountant`'s :attr:`~.input_metric`
-      * if `d_out` is provided, `transformation`'s
+      * if ``d_out`` is provided, ``transformation``'s
         :meth:`~.Transformation.stability_relation` must hold for
-        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and `d_out`
+        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and ``d_out``
 
-      After applying `transformation`:
+      After applying ``transformation``:
 
       * this :class:`~.PrivacyAccountant`'s :attr:`~.input_domain` will become
-        `transformation`'s :attr:`~.Transformation.output_domain`
+        ``transformation``'s :attr:`~.Transformation.output_domain`
       * this :class:`~.PrivacyAccountant`'s :attr:`~.input_metric` will become
-        `transformation`'s :attr:`~.Transformation.output_metric`
+        ``transformation``'s :attr:`~.Transformation.output_metric`
       * this :class:`~.PrivacyAccountant`'s :attr:`~.d_in` will become
-        `transformation`'s d_out
+        ``transformation``'s d_out
 
-          - if `transformation` implements a
+          - if ``transformation`` implements a
             :meth:`~.Transformation.stability_function`, its d_out is the output of
             its stability function on this :class:`~.PrivacyAccountant`'s
             :attr:`~.d_in`
-          - otherwise it is the argument `d_out`
+          - otherwise it is the argument ``d_out``
 
       .. rubric:: Example
 
@@ -998,8 +959,8 @@ Classes
       5
 
       :param transformation: The transformation to apply.
-      :param d_out: An optional value for the output metric for `transformation`. It is
-                    only used if `transformation` does not implement a
+      :param d_out: An optional value for the output metric for ``transformation``. It is
+                    only used if ``transformation`` does not implement a
                     :meth:`~.Transformation.stability_function`.
 
       :raises InactiveAccountantError: If this :class:`~.PrivacyAccountant` is not ACTIVE.
@@ -1007,33 +968,33 @@ Classes
 
    .. py:method:: measure(measurement, d_out = None)
 
-      Returns the answer to `measurement`.
+      Returns the answer to ``measurement``.
 
       This method is an :ref:`action <action>`.
 
-      Requirements to answer `measurement`:
+      Requirements to answer ``measurement``:
 
-      * `measurement`'s :attr:`~.Measurement.input_domain` must match this
+      * ``measurement``'s :attr:`~.Measurement.input_domain` must match this
         :class:`~.PrivacyAccountant`'s :attr:`~.input_domain`
-      * `measurement`'s :attr:`~.Measurement.input_metric` must match this
+      * ``measurement``'s :attr:`~.Measurement.input_metric` must match this
         :class:`~.PrivacyAccountant`'s :attr:`~.input_metric`
-      * `measurement`'s :attr:`~.Measurement.output_measure` must match this
+      * ``measurement``'s :attr:`~.Measurement.output_measure` must match this
         :class:`~.PrivacyAccountant`'s :attr:`~.output_measure`
-      * if `d_out` is provided, `measurement`'s
+      * if ``d_out`` is provided, ``measurement``'s
         :meth:`~.Measurement.privacy_relation` must hold for
-        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and `d_out`
+        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and ``d_out``
       * this :class:`~.PrivacyAccountant`'s :attr:`~.privacy_budget` must be greater
-        than or equal to the `measurement`'s d_out
+        than or equal to the ``measurement``'s d_out
 
-          - if `measurement` implements a :meth:`~.Measurement.privacy_function`, its
+          - if ``measurement`` implements a :meth:`~.Measurement.privacy_function`, its
             d_out is the output of its privacy function on this
             :class:`~.PrivacyAccountant`'s :attr:`~.d_in`
-          - otherwise it is the argument `d_out`
+          - otherwise it is the argument ``d_out``
 
-      After answering `measurement`:
+      After answering ``measurement``:
 
       * this :class:`~.PrivacyAccountant`'s :attr:`~.privacy_budget` will decrease by
-        `measurement`'s d_out
+        ``measurement``'s d_out
 
       .. rubric:: Example
 
@@ -1090,8 +1051,8 @@ Classes
       2
 
       :param measurement: A non-interactive measurement to answer.
-      :param d_out: An optional d_out for `measurement`. It is only used if
-                    `measurement` does not implement a
+      :param d_out: An optional d_out for ``measurement``. It is only used if
+                    ``measurement`` does not implement a
                     :meth:`~.Measurement.privacy_function`.
 
       :raises InactiveAccountantError: If this :class:`~.PrivacyAccountant` is not ACTIVE.
@@ -1101,9 +1062,9 @@ Classes
 
       Returns new :class:`~.PrivacyAccountant`\ s from splitting the private data.
 
-      Uses `splitting_transformation` to split the private data into a list of new
+      Uses ``splitting_transformation`` to split the private data into a list of new
       datasets. A new :class:`~.PrivacyAccountant` is returned for each element in the
-      list created by `splitting_transformation`.
+      list created by ``splitting_transformation``.
 
       .. note::
           Unlike :meth:`~.transform_in_place`, this does *not* transform the private
@@ -1113,16 +1074,16 @@ Classes
 
       Requirements to split:
 
-      * `splitting_transformation`'s :attr:`~.Transformation.input_domain` must match
+      * ``splitting_transformation``'s :attr:`~.Transformation.input_domain` must match
         this :class:`~.PrivacyAccountant`'s :attr:`~.input_domain`
-      * `splitting_transformation`'s :attr:`~.Transformation.input_metric` must match
+      * ``splitting_transformation``'s :attr:`~.Transformation.input_metric` must match
         this :class:`~.PrivacyAccountant`'s :attr:`~.input_metric`
-      * if `d_out` is provided, `splitting_transformation`'s
+      * if ``d_out`` is provided, ``splitting_transformation``'s
         :meth:`~.Transformation.stability_relation` must hold for this
-        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and `d_out`
-      * `splitting_transformation`'s :attr:`~.Transformation.output_domain`
+        :class:`~.PrivacyAccountant`'s :attr:`~.d_in` and ``d_out``
+      * ``splitting_transformation``'s :attr:`~.Transformation.output_domain`
         must be a :class:`~.ListDomain` with a fixed :attr:`~.ListDomain.length`.
-      * `splitting_transformation`'s :attr:`~.Transformation.output_metric`
+      * ``splitting_transformation``'s :attr:`~.Transformation.output_metric`
         must be :class:`~.SumOf` if this :class:`~.PrivacyAccountant`'s
         :attr:`~.output_measure` is :class:`~.PureDP` or :class:`~.RootSumOfSquared`
         if this :class:`~.PrivacyAccountant`'s :attr:`~.output_measure` is
@@ -1131,27 +1092,27 @@ Classes
       After creating the new :class:`~.PrivacyAccountant`\ s:
 
       * this :class:`~.PrivacyAccountant`'s :attr:`~.privacy_budget` will decrease by
-        `privacy_budget`
+        ``privacy_budget``
       * this :class:`~.PrivacyAccountant`'s :attr:`~.children` will be a list with the new
         :class:`~.PrivacyAccountant`\ s
       * this :class:`~.PrivacyAccountant`'s :attr:`~.state` will become WAITING_FOR_CHILDREN
       * the new :class:`~.PrivacyAccountant`\ s' :attr:`~.input_domain` will be the
-        element domain of `splitting_transformation`'s :class:`~.ListDomain`
+        element domain of ``splitting_transformation``'s :class:`~.ListDomain`
       * the new :class:`~.PrivacyAccountant`\ s' :attr:`~.input_metric` will be the
-        inner metric of `splitting_transformation`'s :class:`~.SumOf` or
+        inner metric of ``splitting_transformation``'s :class:`~.SumOf` or
         :class:`~.RootSumOfSquared` metric
       * the new :class:`~.PrivacyAccountant`\ s' :attr:`~.output_measure` will be this
         :class:`~.PrivacyAccountant`\ s :attr:`~.output_measure`
       * the new :class:`~.PrivacyAccountant`\ s' :attr:`~.d_in` will be
-        `splitting_transformation`'s d_out
+        ``splitting_transformation``'s d_out
 
-          - if `splitting_transformation` implements a
+          - if ``splitting_transformation`` implements a
             :meth:`~.Transformation.stability_function`, its d_out is the output of
             its stability function on this :class:`~.PrivacyAccountant`'s
             :attr:`~.d_in`
-          - otherwise it is the argument `d_out`
+          - otherwise it is the argument ``d_out``
       * the new :class:`~.PrivacyAccountant`\ s' :attr:`~.privacy_budget` will be
-        `privacy_budget`
+        ``privacy_budget``
       * the first child :class:`~.PrivacyAccountant`\ 's :attr:`~.state` will be
         ACTIVE and all other child :class:`~.PrivacyAccountant`\ s' :attr:`~.state`
         will be WAITING_FOR_SIBLING.
@@ -1270,8 +1231,8 @@ Classes
       :param splitting_transformation: The transformation to apply.
       :param privacy_budget: The privacy budget to allocate to the new
                              :class:`~.PrivacyAccountant`\ s.
-      :param d_out: An optional value for the :attr:~.Transformation.output_metric` for
-                    `splitting_transformation`. It is only used if `splitting_transformation`
+      :param d_out: An optional value for the :attr:`~.Transformation.output_metric` for
+                    ``splitting_transformation``. It is only used if ``splitting_transformation``
                     does not implement a :meth:`~.Transformation.stability_function`.
 
       :raises InactiveAccountantError: If this :class:`~.PrivacyAccountant` is not ACTIVE.
@@ -1311,21 +1272,21 @@ Classes
                     if this :class:`~.PrivacyAccountant` is WAITING_FOR_CHILDREN.
 
       :raises RuntimeError: If this :class:`~.PrivacyAccountant` cannot be set to RETIRED.
-          If `force` is False, this :class:`~.PrivacyAccountant` cannot be
-          WAITING_FOR_CHILDREN. If `force` is True, :meth:`~.retire` can always
+          If ``force`` is False, this :class:`~.PrivacyAccountant` cannot be
+          WAITING_FOR_CHILDREN. If ``force`` is True, :meth:`~.retire` can always
           be called.
       :raises RuntimeWarning: If the :class:`~.PrivacyAccountant` is WAITING_FOR_SIBLING.
 
 
    .. py:method:: queue_transformation(transformation, d_out = None)
 
-      Queue `transformation` to be executed when this :class:`~.PrivacyAccountant` becomes ACTIVE.
+      Queue ``transformation`` to be executed when this :class:`~.PrivacyAccountant` becomes ACTIVE.
 
       If this :class:`~.PrivacyAccountant` is ACTIVE, this has
       the same behavior as :meth:`~.transform_in_place`.
 
       If this :class:`~.PrivacyAccountant` is WAITING_FOR_CHILDREN or
-      WAITING_FOR_SIBLING, `transformation` will be applied to the private data
+      WAITING_FOR_SIBLING, ``transformation`` will be applied to the private data
       when this :class:`~.PrivacyAccountant` becomes ACTIVE, but otherwise it
       has the same behavior as :meth:`~.transform_in_place`
       (:attr:`~.input_domain`, :attr:`~.input_metric`, and :attr:`~.d_in` are
@@ -1334,8 +1295,8 @@ Classes
       Note that multiple transformations can be queued.
 
       :param transformation: The transformation to apply.
-      :param d_out: An optional value for the output metric for `transformation`. It is
-                    only used if `transformation` does not implement a
+      :param d_out: An optional value for the output metric for ``transformation``. It is
+                    only used if ``transformation`` does not implement a
                     :meth:`~.Transformation.stability_function`.
 
 

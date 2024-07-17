@@ -20,8 +20,8 @@ exact_number
    limitations of floating point arithmetic. See
    :ref:`Handling Real Numbers <real-numbers>` for more information.
 
-   :data:`~.ExactNumberInput`'s are values which can be automatically converted into
-   :class:`~.ExactNumber`'s. They can be any of the following:
+   :data:`~.ExactNumberInput` 's are values which can be automatically converted into
+   :class:`~.ExactNumber` 's. They can be any of the following:
 
    Any :class:`int` or :class:`fractions.Fraction`:
        >>> ExactNumber(5)
@@ -110,7 +110,7 @@ exact_number
        Traceback (most recent call last):
        core.exceptions.UnsupportedSympyExprError: x + 1 contains free symbols
 
-   `float('inf')` and `-float('inf')` are allowed:
+   ``float('inf')`` and ``-float('inf')`` are allowed:
        >>> ExactNumber(float('inf'))
        oo
        >>> ExactNumber(-float('inf'))
@@ -156,7 +156,6 @@ Data
 
 
 .. py:data:: ExactNumberInput
-   
 
    A type alias for exact representations of real numbers.
 
@@ -181,14 +180,17 @@ Classes
 
 
 
+   .. list-table:: Properties
+
+      * - :attr:`expr`
+        - Returns a :class:`sympy.Expr` representation.
+      * - :attr:`is_integer`
+        - Returns whether self represents an integer.
+      * - :attr:`is_finite`
+        - Returns whether self represents a finite number.
+
    .. list-table:: Methods
 
-      * - :meth:`.expr`
-        - Returns a :class:`sympy.Expr` representation.
-      * - :meth:`.is_integer`
-        - Returns whether self represents an integer.
-      * - :meth:`.is_finite`
-        - Returns whether self represents a finite number.
       * - :meth:`.to_float`
         - Returns self as a float.
       * - :meth:`.from_float`
@@ -227,25 +229,23 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: expr()
-      :property:
+   .. py:property:: expr
+      :type: sympy.Expr
 
       Returns a :class:`sympy.Expr` representation.
 
-
-   .. py:method:: is_integer()
-      :property:
+   .. py:property:: is_integer
+      :type: bool
 
       Returns whether self represents an integer.
 
-
-   .. py:method:: is_finite()
-      :property:
+   .. py:property:: is_finite
+      :type: bool
 
       Returns whether self represents a finite number.
 
 
+   .. automethod:: __init__
    .. py:method:: to_float(round_up)
 
       Returns self as a float.
@@ -256,6 +256,7 @@ Classes
 
    .. py:method:: from_float(value, round_up)
       :staticmethod:
+
 
       Returns an :class:`~.ExactNumber` from a :class:`float`.
 
@@ -268,8 +269,8 @@ Classes
           representation is no longer needed.
 
       :param value: A :class:`float` to convert to an :class:`~.ExactNumber`.
-      :param round_up: If True, returned value is greater than or equal to `value`.
-                       Otherwise, it is less than or equal to `value`.
+      :param round_up: If True, returned value is greater than or equal to ``value``.
+                       Otherwise, it is less than or equal to ``value``.
 
 
    .. py:method:: __abs__()

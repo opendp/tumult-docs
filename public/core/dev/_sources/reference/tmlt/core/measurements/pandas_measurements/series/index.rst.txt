@@ -45,41 +45,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: output_spark_type()
-      :property:
+   .. py:property:: output_spark_type
+      :type: pyspark.sql.types.DataType
 
       Return the Spark type of the aggregated value.
 
-
-   .. py:method:: __call__(data)
-      :abstractmethod:
-
-      Perform measurement.
-
-
-   .. py:method:: input_domain()
-      :property:
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
       Return input domain for the measurement.
 
-
-   .. py:method:: input_metric()
-      :property:
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
 
       Distance metric on input domain.
 
-
-   .. py:method:: output_measure()
-      :property:
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
 
       Distance measure on output.
 
-
-   .. py:method:: is_interactive()
-      :property:
+   .. py:property:: is_interactive
+      :type: bool
 
       Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
+   .. py:method:: __call__(data)
+      :abstractmethod:
+
+
+      Perform measurement.
 
 
    .. py:method:: privacy_function(d_in)
@@ -99,8 +96,8 @@ Classes
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -113,61 +110,56 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.quantile`
-        - Returns the quantile to be computed.
-      * - :meth:`.lower`
-        - Returns the lower clamping bound.
-      * - :meth:`.upper`
-        - Returns the upper clamping bound.
-      * - :meth:`.epsilon`
-        - Returns the PureDP privacy budget to be used for producing a quantile.
-      * - :meth:`.privacy_function`
-        - Returns the smallest d_out satisfied by the measurement.
-      * - :meth:`.__call__`
-        - Return DP answer(float) to quantile query.
-      * - :meth:`.output_spark_type`
-        - Return the Spark type of the aggregated value.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_measure`
-        - Distance measure on output.
-      * - :meth:`.is_interactive`
-        - Returns true iff the measurement is interactive.
-      * - :meth:`.privacy_relation`
-        - Return True if close inputs produce close outputs.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: quantile()
-      :property:
+   .. py:property:: quantile
+      :type: float
 
       Returns the quantile to be computed.
 
-
-   .. py:method:: lower()
-      :property:
+   .. py:property:: lower
+      :type: Union[float, int]
 
       Returns the lower clamping bound.
 
-
-   .. py:method:: upper()
-      :property:
+   .. py:property:: upper
+      :type: Union[float, int]
 
       Returns the upper clamping bound.
 
-
-   .. py:method:: epsilon()
-      :property:
+   .. py:property:: epsilon
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Returns the PureDP privacy budget to be used for producing a quantile.
 
+   .. py:property:: output_spark_type
+      :type: pyspark.sql.types.DataType
 
+      Return the Spark type of the aggregated value.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -185,7 +177,7 @@ Classes
 
       where:
 
-      * :math:`d_{in}` is the input argument `d_in`
+      * :math:`d_{in}` is the input argument ``d_in``
       * :math:`\epsilon` is :attr:`~.epsilon`
 
       See :cite:`Cesar021` for the zCDP privacy analysis.
@@ -203,44 +195,14 @@ Classes
       :param data: The Series on which to compute the quantile.
 
 
-   .. py:method:: output_spark_type()
-      :property:
-
-      Return the Spark type of the aggregated value.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -256,25 +218,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: noise_measurement()
-      :property:
+   .. py:property:: noise_measurement
+      :type: Union[tmlt.core.measurements.noise_mechanisms.AddLaplaceNoise, tmlt.core.measurements.noise_mechanisms.AddGeometricNoise, tmlt.core.measurements.noise_mechanisms.AddDiscreteGaussianNoise, tmlt.core.measurements.noise_mechanisms.AddGaussianNoise]
 
       Returns measurement that adds noise to each number in pandas Series.
 
-
-   .. py:method:: input_domain()
-      :property:
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.pandas_domains.PandasSeriesDomain
 
       Return input domain for the measurement.
 
-
-   .. py:method:: output_type()
-      :property:
+   .. py:property:: output_type
+      :type: pyspark.sql.types.DataType
 
       Return the output data type after being used as a UDF.
 
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
 
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -287,32 +262,14 @@ Classes
       Adds noise to each number in the input Series.
 
 
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 

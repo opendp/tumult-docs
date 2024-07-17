@@ -129,7 +129,7 @@ Functions
 
 
 .. py:function:: get_values_summing_to_loc(loc: int, n: int) -> List[int]
-              get_values_summing_to_loc(loc: float, n: int) -> List[float]
+                 get_values_summing_to_loc(loc: float, n: int) -> List[float]
 
    Returns a list of n values that sum to loc.
 
@@ -199,6 +199,32 @@ Classes
 
 
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.pandas_domains.PandasDataFrameDomain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_schema
+      :type: pyspark.sql.types.StructType
+
+      Return the output schema.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
    .. automethod:: __init__
    .. py:method:: privacy_relation(_, __)
 
@@ -208,36 +234,6 @@ Classes
    .. py:method:: __call__(data)
 
       Perform dummy measurement.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_schema()
-      :property:
-
-      Return the output schema.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
 
 
    .. py:method:: privacy_function(d_in)
@@ -264,10 +260,13 @@ Classes
 
 
 
+   .. list-table:: Properties
+
+      * - :attr:`spark`
+        - Returns the spark session.
+
    .. list-table:: Methods
 
-      * - :meth:`.spark`
-        - Returns the spark session.
       * - :meth:`.suppress_py4j_logging`
         - Remove noise in the logs irrelevant to testing.
       * - :meth:`.setUpClass`
@@ -370,15 +369,16 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: spark()
-      :property:
+   .. py:property:: spark
+      :type: pyspark.sql.SparkSession
 
       Returns the spark session.
 
 
+   .. automethod:: __init__
    .. py:method:: suppress_py4j_logging()
       :classmethod:
+
 
       Remove noise in the logs irrelevant to testing.
 
@@ -386,17 +386,20 @@ Classes
    .. py:method:: setUpClass()
       :classmethod:
 
+
       Setup SparkSession.
 
 
    .. py:method:: tearDownClass()
       :classmethod:
 
+
       Tears down SparkSession.
 
 
    .. py:method:: assert_frame_equal_with_sort(first_df, second_df, sort_columns = None, **kwargs)
       :classmethod:
+
 
       Asserts that the two data frames are equal.
 
@@ -434,6 +437,7 @@ Classes
 
    .. py:method:: addClassCleanup(function, /, *args, **kwargs)
       :classmethod:
+
 
       Same as addCleanup, except the cleanup items are called even if
       setUpClass fails (unlike tearDownClass).
@@ -480,6 +484,7 @@ Classes
 
    .. py:method:: doClassCleanups()
       :classmethod:
+
 
       Execute all class cleanup functions. Normally called for you after
       tearDownClass.
@@ -813,12 +818,15 @@ Classes
 
 
 
+   .. list-table:: Properties
+
+      * - :attr:`spark`
+        - Returns the spark session.
+
    .. list-table:: Methods
 
       * - :meth:`.setUp`
         - Common setup for all component tests.
-      * - :meth:`.spark`
-        - Returns the spark session.
       * - :meth:`.suppress_py4j_logging`
         - Remove noise in the logs irrelevant to testing.
       * - :meth:`.setUpClass`
@@ -919,20 +927,21 @@ Classes
 
 
 
+   .. py:property:: spark
+      :type: pyspark.sql.SparkSession
+
+      Returns the spark session.
+
+
    .. automethod:: __init__
    .. py:method:: setUp()
 
       Common setup for all component tests.
 
 
-   .. py:method:: spark()
-      :property:
-
-      Returns the spark session.
-
-
    .. py:method:: suppress_py4j_logging()
       :classmethod:
+
 
       Remove noise in the logs irrelevant to testing.
 
@@ -940,17 +949,20 @@ Classes
    .. py:method:: setUpClass()
       :classmethod:
 
+
       Setup SparkSession.
 
 
    .. py:method:: tearDownClass()
       :classmethod:
 
+
       Tears down SparkSession.
 
 
    .. py:method:: assert_frame_equal_with_sort(first_df, second_df, sort_columns = None, **kwargs)
       :classmethod:
+
 
       Asserts that the two data frames are equal.
 
@@ -988,6 +1000,7 @@ Classes
 
    .. py:method:: addClassCleanup(function, /, *args, **kwargs)
       :classmethod:
+
 
       Same as addCleanup, except the cleanup items are called even if
       setUpClass fails (unlike tearDownClass).
@@ -1029,6 +1042,7 @@ Classes
 
    .. py:method:: doClassCleanups()
       :classmethod:
+
 
       Execute all class cleanup functions. Normally called for you after
       tearDownClass.
@@ -1366,42 +1380,42 @@ Classes
 
 
    .. py:attribute:: group_vals
-      :annotation: :Union[List[float], List[int]]
+      :type:  Union[List[float], List[int]]
 
       Values for each group.
 
    .. py:attribute:: num_groups
-      :annotation: :int
+      :type:  int
 
       Number of identical groups.
 
    .. py:attribute:: float_measure_column
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, measure column has floating point values.
+
+
+   .. py:property:: domain
+      :type: tmlt.core.domains.spark_domains.SparkDataFrameDomain
+
+      Return dataframe domain.
+
+   .. py:property:: lower
+      :type: tmlt.core.utils.exact_number.ExactNumber
+
+      Returns a lower bound on the values in B.
+
+   .. py:property:: upper
+      :type: tmlt.core.utils.exact_number.ExactNumber
+
+      Returns an upper bound on the values in B.
 
 
    .. py:method:: groupby(noise_mechanism)
 
       Returns appropriate GroupBy transformation.
-
-
-   .. py:method:: domain()
-      :property:
-
-      Return dataframe domain.
-
-
-   .. py:method:: lower()
-      :property:
-
-      Returns a lower bound on the values in B.
-
-
-   .. py:method:: upper()
-      :property:
-
-      Returns an upper bound on the values in B.
 
 
    .. py:method:: get_dataframe()
@@ -1420,9 +1434,11 @@ Classes
 
 
 
+
    .. automethod:: __init__
    .. py:method:: from_dict(d)
       :classmethod:
+
 
       Transform a dictionary into an KSTestCase.
 
@@ -1438,9 +1454,11 @@ Classes
 
 
 
+
    .. automethod:: __init__
    .. py:method:: from_dict(d)
       :classmethod:
+
 
       Turns a dictionary into a ChiSquaredTestCase.
 

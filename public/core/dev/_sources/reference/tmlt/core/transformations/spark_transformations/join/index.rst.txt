@@ -212,9 +212,9 @@ Classes
            - IfGroupedBy(column, SumOf(SymmetricDifference()))
            - IfGroupedBy(column, RootSumOfSquared(SymmetricDifference()))
 
-           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns the `d_in`
+           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns the ``d_in``
            times the maximum count of any combination of values in the join columns of
-           `public_df`.
+           ``public_df``.
 
            >>> # Both example transformations had a stability of 2
            >>> natural_join.join_cols
@@ -234,7 +234,7 @@ Classes
 
            - IfGroupedBy(column, SymmetricDifference())
 
-           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns `d_in`
+           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns ``d_in``
 
            >>> PublicJoin(
            ...     input_domain=SparkDataFrameDomain(
@@ -250,72 +250,59 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.join_on_nulls`
-        - Returns whether nulls are considered equal in join.
-      * - :meth:`.join_cols`
-        - Returns list of columns to be joined on.
-      * - :meth:`.public_df`
-        - Returns Pandas DataFrame being joined with.
-      * - :meth:`.how`
-        - Returns type of join to perform.
-      * - :meth:`.stability`
-        - Returns stability of public join.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Perform public join.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: join_on_nulls()
-      :property:
+   .. py:property:: join_on_nulls
+      :type: bool
 
       Returns whether nulls are considered equal in join.
 
-
-   .. py:method:: join_cols()
-      :property:
+   .. py:property:: join_cols
+      :type: List[str]
 
       Returns list of columns to be joined on.
 
-
-   .. py:method:: public_df()
-      :property:
+   .. py:property:: public_df
+      :type: pyspark.sql.DataFrame
 
       Returns Pandas DataFrame being joined with.
 
-
-   .. py:method:: how()
-      :property:
+   .. py:property:: how
+      :type: str
 
       Returns type of join to perform.
 
-
-   .. py:method:: stability()
-      :property:
+   .. py:property:: stability
+      :type: int
 
       Returns stability of public join.
 
       The stability is the maximum count of any combination of values in the join
       columns.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -332,30 +319,6 @@ Classes
       :param sdf: Private DataFrame to join public DataFrame with.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -367,7 +330,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -387,19 +350,23 @@ Classes
 
 
    .. py:attribute:: TRUNCATE
-      :annotation: = 1
+      :value: 1
+
 
       Use :func:`~.truncate_large_groups`.
 
    .. py:attribute:: DROP
-      :annotation: = 2
+      :value: 2
+
 
       Use :func:`~.drop_large_groups`.
 
    .. py:attribute:: NO_TRUNCATION
-      :annotation: = 3
+      :value: 3
+
 
       No truncation, results in infinite stability.
+
 
 
    .. py:method:: name()
@@ -545,8 +512,8 @@ Classes
 
            where:
 
-           * :math:`df_{r1} \Delta df_{r2}` is `d_in[self.right]`
-           * :math:`df_{l1} \Delta df_{l2}` is `d_in[self.left]`
+           * :math:`df_{r1} \Delta df_{r2}` is ``d_in[self.right]``
+           * :math:`df_{l1} \Delta df_{l2}` is ``d_in[self.left]``
 
            - TruncationStrategy.DROP has a stability equal to the truncation
              threshold (This is because adding a row can cause a number of rows equal
@@ -568,97 +535,74 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.left_key`
-        - Returns key to left DataFrame.
-      * - :meth:`.right_key`
-        - Returns key to right DataFrame.
-      * - :meth:`.left_truncation_strategy`
-        - Returns TruncationStrategy for truncating the left DataFrame.
-      * - :meth:`.right_truncation_strategy`
-        - Returns TruncationStrategy for truncating the right DataFrame.
-      * - :meth:`.left_truncation_threshold`
-        - Returns the threshold for truncating the left DataFrame.
-      * - :meth:`.right_truncation_threshold`
-        - Returns the threshold for truncating the right DataFrame.
-      * - :meth:`.join_cols`
-        - Returns list of column names to join on.
-      * - :meth:`.join_on_nulls`
-        - Returns whether to consider null equal to null.
-      * - :meth:`.truncation_strategy_stability`
-        - Returns the stability for the given truncation strategy.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Perform join.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: left_key()
-      :property:
+   .. py:property:: left_key
+      :type: Any
 
       Returns key to left DataFrame.
 
-
-   .. py:method:: right_key()
-      :property:
+   .. py:property:: right_key
+      :type: Any
 
       Returns key to right DataFrame.
 
-
-   .. py:method:: left_truncation_strategy()
-      :property:
+   .. py:property:: left_truncation_strategy
+      :type: TruncationStrategy
 
       Returns TruncationStrategy for truncating the left DataFrame.
 
-
-   .. py:method:: right_truncation_strategy()
-      :property:
+   .. py:property:: right_truncation_strategy
+      :type: TruncationStrategy
 
       Returns TruncationStrategy for truncating the right DataFrame.
 
-
-   .. py:method:: left_truncation_threshold()
-      :property:
+   .. py:property:: left_truncation_threshold
+      :type: Union[int, float]
 
       Returns the threshold for truncating the left DataFrame.
 
-
-   .. py:method:: right_truncation_threshold()
-      :property:
+   .. py:property:: right_truncation_threshold
+      :type: Union[int, float]
 
       Returns the threshold for truncating the right DataFrame.
 
-
-   .. py:method:: join_cols()
-      :property:
+   .. py:property:: join_cols
+      :type: List[str]
 
       Returns list of column names to join on.
 
-
-   .. py:method:: join_on_nulls()
-      :property:
+   .. py:property:: join_on_nulls
+      :type: bool
 
       Returns whether to consider null equal to null.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: truncation_strategy_stability(truncation_strategy, threshold)
       :staticmethod:
+
 
       Returns the stability for the given truncation strategy.
 
@@ -678,30 +622,6 @@ Classes
       Perform join.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -713,7 +633,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 
@@ -873,7 +793,7 @@ Classes
    AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B', 'joined': 'B'})
 
    Stability Guarantee:
-       :class:`~.PrivateJoinOnKey`'s :meth:`~.stability_function` returns `d_in`
+       :class:`~.PrivateJoinOnKey`'s :meth:`~.stability_function` returns ``d_in``
 
        >>> private_join.stability_function(1)
        1
@@ -882,69 +802,56 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.left_key`
-        - Returns key to left DataFrame.
-      * - :meth:`.right_key`
-        - Returns key to right DataFrame.
-      * - :meth:`.new_key`
-        - Returns key to output DataFrame.
-      * - :meth:`.join_cols`
-        - Returns list of column names to join on.
-      * - :meth:`.join_on_nulls`
-        - Returns whether to consider null equal to null.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Perform join.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: left_key()
-      :property:
+   .. py:property:: left_key
+      :type: Any
 
       Returns key to left DataFrame.
 
-
-   .. py:method:: right_key()
-      :property:
+   .. py:property:: right_key
+      :type: Any
 
       Returns key to right DataFrame.
 
-
-   .. py:method:: new_key()
-      :property:
+   .. py:property:: new_key
+      :type: Any
 
       Returns key to output DataFrame.
 
-
-   .. py:method:: join_cols()
-      :property:
+   .. py:property:: join_cols
+      :type: List[str]
 
       Returns list of column names to join on.
 
-
-   .. py:method:: join_on_nulls()
-      :property:
+   .. py:property:: join_on_nulls
+      :type: bool
 
       Returns whether to consider null equal to null.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
@@ -960,30 +867,6 @@ Classes
       Perform join.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
    .. py:method:: stability_relation(d_in, d_out)
 
       Returns True only if close inputs produce close outputs.
@@ -995,7 +878,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

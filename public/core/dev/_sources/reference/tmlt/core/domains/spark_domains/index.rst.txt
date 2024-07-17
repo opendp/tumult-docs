@@ -24,7 +24,6 @@ Data
 
 
 .. py:data:: SparkColumnsDescriptor
-   
 
    Mapping from column name to SparkColumnDescriptor.
 
@@ -101,8 +100,17 @@ Classes
 
 
 
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      :abstractmethod:
+
+      Returns data type associated with Spark column.
+
+
    .. py:method:: to_numpy_domain()
       :abstractmethod:
+
 
       Returns corresponding NumPy domain.
 
@@ -118,13 +126,8 @@ Classes
    .. py:method:: valid_py_value(val)
       :abstractmethod:
 
-      Returns True if `val` is valid for described Spark column.
 
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
+      Returns True if ``val`` is valid for described Spark column.
 
 
 
@@ -140,24 +143,32 @@ Classes
 
 
    .. py:attribute:: SIZE_TO_TYPE
-      
 
       Mapping from size to Spark type.
 
    .. py:attribute:: SIZE_TO_MIN_MAX
-      
 
       Mapping from size to tuple of minimum and maximum value allowed.
 
    .. py:attribute:: allow_null
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, null values are permitted in the domain.
 
    .. py:attribute:: size
-      :annotation: :int = 64
+      :type:  int
+      :value: 64
+
 
       Number of bits a member of the domain occupies. Must be 32 or 64.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
 
 
    .. py:method:: to_numpy_domain()
@@ -168,12 +179,6 @@ Classes
    .. py:method:: valid_py_value(val)
 
       Returns True if value is a valid python value for the descriptor.
-
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
 
 
    .. py:method:: validate_column(sdf, col_name)
@@ -197,31 +202,44 @@ Classes
 
 
    .. py:attribute:: SIZE_TO_TYPE
-      
 
       Mapping from size to Spark type.
 
    .. py:attribute:: allow_nan
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, NaNs are permitted in the domain.
 
    .. py:attribute:: allow_inf
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, infs are permitted in the domain.
 
    .. py:attribute:: allow_null
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, null values are permitted in the domain.
 
       .. note:: Nulls aren't supported in pd.
 
    .. py:attribute:: size
-      :annotation: :int = 64
+      :type:  int
+      :value: 64
+
 
       Number of bits a member of the domain occupies. Must be 32 or 64.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
 
 
    .. py:method:: to_numpy_domain()
@@ -243,16 +261,10 @@ Classes
 
       In particular, this returns True only if one of the following is true:
 
-      - val is `float("nan")` and NaN is allowed.
-      - val is `float("inf")` or `float("-inf")`, and inf values are allowed.
-      - val is a float that can be represented in `size` bits.
+      - val is ``float("nan")`` and NaN is allowed.
+      - val is ``float("inf")`` or ``float("-inf")``, and inf values are allowed.
+      - val is a float that can be represented in ``size`` bits.
       - val is None and nulls are allowed in the domain.
-
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
 
 
 
@@ -268,9 +280,17 @@ Classes
 
 
    .. py:attribute:: allow_null
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
 
 
    .. py:method:: to_numpy_domain()
@@ -281,12 +301,6 @@ Classes
    .. py:method:: valid_py_value(val)
 
       Returns True if value is a valid python value for the descriptor.
-
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
 
 
    .. py:method:: validate_column(sdf, col_name)
@@ -310,9 +324,17 @@ Classes
 
 
    .. py:attribute:: allow_null
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
 
 
    .. py:method:: to_numpy_domain()
@@ -328,12 +350,6 @@ Classes
    .. py:method:: valid_py_value(val)
 
       Returns True if the value is a valid Python value for the descriptor.
-
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
 
 
    .. py:method:: validate_column(sdf, col_name)
@@ -357,9 +373,17 @@ Classes
 
 
    .. py:attribute:: allow_null
-      :annotation: :bool = False
+      :type:  bool
+      :value: False
+
 
       If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
 
 
    .. py:method:: to_numpy_domain()
@@ -375,12 +399,6 @@ Classes
    .. py:method:: valid_py_value(val)
 
       Returns True if the value is a valid Python value for the descriptor.
-
-
-   .. py:method:: data_type()
-      :property:
-
-      Returns data type associated with Spark column.
 
 
    .. py:method:: validate_column(sdf, col_name)
@@ -404,15 +422,21 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: schema()
-      :property:
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
 
       Returns mapping from column names to column descriptors.
 
+   .. py:property:: carrier_type
+      :type: type
 
+      Returns carrier types for members of SparkRowDomain.
+
+
+   .. automethod:: __init__
    .. py:method:: validate(value)
       :abstractmethod:
+
 
       Raises error if value is not a row with matching schema.
 
@@ -420,18 +444,13 @@ Classes
    .. py:method:: __contains__(value)
       :abstractmethod:
 
+
       Returns True if value is a row with matching schema.
 
 
    .. py:method:: __eq__(other)
 
       Return True if the classes are equivalent.
-
-
-   .. py:method:: carrier_type()
-      :property:
-
-      Returns carrier types for members of SparkRowDomain.
 
 
 
@@ -447,49 +466,18 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: schema()
-      :property:
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
 
       Returns mapping from column names to column descriptors.
 
-
-   .. py:method:: validate(value)
-
-      Raises error if value is not a DataFrame with matching schema.
-
-
-   .. py:method:: __eq__(other)
-
-      Return True if the classes are equivalent.
-
-
-   .. py:method:: carrier_type()
-      :property:
+   .. py:property:: carrier_type
+      :type: type
 
       Returns carrier type for the domain.
 
-
-   .. py:method:: __getitem__(col_name)
-
-      Returns column descriptor for given column.
-
-
-   .. py:method:: from_spark_schema(schema)
-      :classmethod:
-
-      Returns a SparkDataFrameDomain constructed from a Spark schema.
-
-      .. note::
-
-         If schema contains float types, nans and infs are allowed since the
-         schema places no restrictions on these.
-
-      :param schema: Spark schema for constructing domain.
-
-
-   .. py:method:: spark_schema()
-      :property:
+   .. py:property:: spark_schema
+      :type: pyspark.sql.types.StructType
 
       Returns Spark schema object according to domain.
 
@@ -500,6 +488,36 @@ Classes
          information about allowing nans or infs in float columns. Other
          information may get added in the future and these cannot be represented
          with the Spark schema (StructType) object.
+
+
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+
+      Raises error if value is not a DataFrame with matching schema.
+
+
+   .. py:method:: __eq__(other)
+
+      Return True if the classes are equivalent.
+
+
+   .. py:method:: __getitem__(col_name)
+
+      Returns column descriptor for given column.
+
+
+   .. py:method:: from_spark_schema(schema)
+      :classmethod:
+
+
+      Returns a SparkDataFrameDomain constructed from a Spark schema.
+
+      .. note::
+
+         If schema contains float types, nans and infs are allowed since the
+         schema places no restrictions on these.
+
+      :param schema: Spark schema for constructing domain.
 
 
    .. py:method:: project(cols)
@@ -527,27 +545,23 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: schema()
-      :property:
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
 
       Returns mapping from column names to column descriptors.
 
-
-   .. py:method:: groupby_columns()
-      :property:
+   .. py:property:: groupby_columns
+      :type: List[str]
 
       Returns list of columns used for grouping.
 
-
-   .. py:method:: carrier_type()
-      :property:
+   .. py:property:: carrier_type
+      :type: type
 
       Returns carrier type for the domain.
 
-
-   .. py:method:: spark_schema()
-      :property:
+   .. py:property:: spark_schema
+      :type: pyspark.sql.types.StructType
 
       Returns Spark schema object according to domain.
 
@@ -560,6 +574,7 @@ Classes
          with the Spark schema (StructType) object.
 
 
+   .. automethod:: __init__
    .. py:method:: validate(value)
 
       Raises error if value is not a GroupedDataFrame with matching group_keys.

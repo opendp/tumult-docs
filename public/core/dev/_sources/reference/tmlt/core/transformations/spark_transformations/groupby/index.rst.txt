@@ -99,7 +99,7 @@ Functions
                   in the output metric.
    :param column_domains: Mapping from column name to list of distinct values.
 
-   .. note:: `column_domains` must be public.
+   .. note:: ``column_domains`` must be public.
 
 
 
@@ -167,7 +167,7 @@ Functions
    :param groupby_columns: List of column names to groupby.
    :param keys: List of distinct tuples corresponding to group keys.
 
-   .. note:: `keys` must be public list of tuples with no duplicates.
+   .. note:: ``keys`` must be public list of tuples with no duplicates.
 
 
 
@@ -264,95 +264,64 @@ Classes
        SumOf(inner_metric=SymmetricDifference())
 
        Stability Guarantee:
-           :class:`~.GroupBy`'s :meth:`~stability_function` returns the `d_in` if the
-           `input_metric` is :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`, otherwise it returns `d_in` times `2`.
+           :class:`~.GroupBy`'s :meth:`~stability_function` returns the ``d_in`` if the
+           ``input_metric`` is :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`, otherwise it returns ``d_in`` times ``2``.
 
            >>> groupby_B.stability_function(1)
            1
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.use_l2`
-        - Returns whether the output metric will use :class:`~.RootSumOfSquared`.
-      * - :meth:`.group_keys`
-        - Returns DataFrame containing group keys.
-      * - :meth:`.groupby_columns`
-        - Returns list of columns to groupby.
-      * - :meth:`.stability_function`
-        - Returns the smallest d_out satisfied by the transformation.
-      * - :meth:`.__call__`
-        - Performs groupby.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.output_metric`
-        - Distance metric on input domain.
-      * - :meth:`.stability_relation`
-        - Returns True only if close inputs produce close outputs.
-      * - :meth:`.__or__`
-        - Return this transformation chained with another component.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: use_l2()
-      :property:
+   .. py:property:: use_l2
+      :type: bool
 
       Returns whether the output metric will use :class:`~.RootSumOfSquared`.
 
-
-   .. py:method:: group_keys()
-      :property:
+   .. py:property:: group_keys
+      :type: pyspark.sql.DataFrame
 
       Returns DataFrame containing group keys.
 
-
-   .. py:method:: groupby_columns()
-      :property:
+   .. py:property:: groupby_columns
+      :type: List[str]
 
       Returns list of columns to groupby.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
       Returns the smallest d_out satisfied by the transformation.
 
-      :param d_in: Distance between inputs under `input_metric`.
+      :param d_in: Distance between inputs under ``input_metric``.
 
 
    .. py:method:: __call__(sdf)
 
       Performs groupby.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: output_metric()
-      :property:
-
-      Distance metric on input domain.
 
 
    .. py:method:: stability_relation(d_in, d_out)
@@ -366,7 +335,7 @@ Classes
 
 
    .. py:method:: __or__(other: Transformation) -> Transformation
-               __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
 
       Return this transformation chained with another component.
 

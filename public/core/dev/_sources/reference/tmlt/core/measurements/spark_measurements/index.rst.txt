@@ -52,9 +52,31 @@ Classes
 
 
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
    .. automethod:: __init__
    .. py:method:: call(val)
       :abstractmethod:
+
 
       Performs measurement.
 
@@ -70,30 +92,6 @@ Classes
 
       See :ref:`pseudo-side-channel-mitigations` for more details on the specific
       mitigations we apply here.
-
-
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
 
 
    .. py:method:: privacy_function(d_in)
@@ -113,8 +111,8 @@ Classes
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -190,8 +188,8 @@ Classes
        * Input domain - :class:`~.SparkDataFrameDomain`
        * Output type - Spark DataFrame
        * Input metric - :class:`~.OnColumn` with metric
-         `SumOf(SymmetricDifference())` (for :class:`~.PureDP`) or
-         `RootSumOfSquared(SymmetricDifference())` (for :class:`~.RhoZCDP`) on each
+         ``SumOf(SymmetricDifference())`` (for :class:`~.PureDP`) or
+         ``RootSumOfSquared(SymmetricDifference())`` (for :class:`~.RhoZCDP`) on each
          column.
        * Output measure - :class:`~.PureDP` or :class:`~.RhoZCDP`
 
@@ -214,19 +212,38 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: measure_column()
-      :property:
+   .. py:property:: measure_column
+      :type: str
 
       Returns the name of the column to add noise to.
 
-
-   .. py:method:: measurement()
-      :property:
+   .. py:property:: measurement
+      :type: tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries
 
       Returns the :class:`~.AddNoiseToSeries` measurement to apply to measure column.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -253,38 +270,14 @@ Classes
       mitigations we apply here.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -300,19 +293,33 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: aggregation_function()
-      :property:
+   .. py:property:: aggregation_function
+      :type: tmlt.core.measurements.pandas_measurements.dataframe.Aggregate
 
       Returns the aggregation function.
 
-
-   .. py:method:: input_domain()
-      :property:
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain
 
       Returns input domain.
 
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
 
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -339,32 +346,14 @@ Classes
       mitigations we apply here.
 
 
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -475,53 +464,46 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.alpha`
-        - Returns the noise scale.
-      * - :meth:`.threshold`
-        - Returns the minimum noisy count to include row.
-      * - :meth:`.count_column`
-        - Returns the count column name.
-      * - :meth:`.privacy_function`
-        - Returns the smallest d_out satisfied by the measurement.
-      * - :meth:`.call`
-        - Return the noisy counts for common rows.
-      * - :meth:`.__call__`
-        - Performs measurement and returns a DataFrame with additional protections.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_measure`
-        - Distance measure on output.
-      * - :meth:`.is_interactive`
-        - Returns true iff the measurement is interactive.
-      * - :meth:`.privacy_relation`
-        - Return True if close inputs produce close outputs.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: alpha()
-      :property:
+   .. py:property:: alpha
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Returns the noise scale.
 
-
-   .. py:method:: threshold()
-      :property:
+   .. py:property:: threshold
+      :type: int
 
       Returns the minimum noisy count to include row.
 
-
-   .. py:method:: count_column()
-      :property:
+   .. py:property:: count_column
+      :type: str
 
       Returns the count column name.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -545,38 +527,14 @@ Classes
       mitigations we apply here.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
@@ -663,67 +621,56 @@ Classes
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.bound_column`
-        - Returns the column to compute the bounds for.
-      * - :meth:`.bound_column_type`
-        - Returns the type of the bound column.
-      * - :meth:`.splits`
-        - Returns the splits.
-      * - :meth:`.alpha`
-        - Returns the alpha.
-      * - :meth:`.threshold`
-        - Returns the threshold.
-      * - :meth:`.privacy_function`
-        - Returns the smallest d_out satisfied by the measurement.
-      * - :meth:`.__call__`
-        - Returns the bounds for the given column.
-      * - :meth:`.input_domain`
-        - Return input domain for the measurement.
-      * - :meth:`.input_metric`
-        - Distance metric on input domain.
-      * - :meth:`.output_measure`
-        - Distance measure on output.
-      * - :meth:`.is_interactive`
-        - Returns true iff the measurement is interactive.
-      * - :meth:`.privacy_relation`
-        - Return True if close inputs produce close outputs.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: bound_column()
-      :property:
+   .. py:property:: bound_column
+      :type: str
 
       Returns the column to compute the bounds for.
 
-
-   .. py:method:: bound_column_type()
-      :property:
+   .. py:property:: bound_column_type
+      :type: tmlt.core.domains.spark_domains.SparkColumnDescriptor
 
       Returns the type of the bound column.
 
-
-   .. py:method:: splits()
-      :property:
+   .. py:property:: splits
+      :type: Union[List[float], List[int]]
 
       Returns the splits.
 
-
-   .. py:method:: alpha()
-      :property:
+   .. py:property:: alpha
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Returns the alpha.
 
-
-   .. py:method:: threshold()
-      :property:
+   .. py:property:: threshold
+      :type: float
 
       Returns the threshold.
 
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
 
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
    .. py:method:: privacy_function(d_in)
 
       Returns the smallest d_out satisfied by the measurement.
@@ -739,38 +686,14 @@ Classes
       Returns the bounds for the given column.
 
 
-   .. py:method:: input_domain()
-      :property:
-
-      Return input domain for the measurement.
-
-
-   .. py:method:: input_metric()
-      :property:
-
-      Distance metric on input domain.
-
-
-   .. py:method:: output_measure()
-      :property:
-
-      Distance measure on output.
-
-
-   .. py:method:: is_interactive()
-      :property:
-
-      Returns true iff the measurement is interactive.
-
-
    .. py:method:: privacy_relation(d_in, d_out)
 
       Return True if close inputs produce close outputs.
 
       See the privacy and stability tutorial (add link?) for more information.
 
-      :param d_in: Distance between inputs under `input_metric`.
-      :param d_out: Distance between outputs under `output_measure`.
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
 
 
 
