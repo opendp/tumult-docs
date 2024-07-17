@@ -1,5 +1,4 @@
 
-
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
@@ -46,9 +45,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: PrivacyBudget
 
-   Bases: :class:`abc.ABC`
+
+   Bases: :py:obj:`abc.ABC`
 
    Base class for specifying privacy parameters.
 
@@ -69,14 +75,17 @@ Classes
 
 
 
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: Union[tmlt.core.utils.exact_number.ExactNumber, Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]]
+
+      :abstractmethod:
 
       Return the value of the privacy budget.
 
+   .. py:property:: is_infinite
+      :type: bool
 
-   .. py:method:: is_infinite()
-      :property:
+      :abstractmethod:
 
       Returns true if the privacy budget is infinite.
 
@@ -86,9 +95,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: PureDPBudget(epsilon)
 
-   Bases: :class:`PrivacyBudget`
+
+   Bases: :py:obj:`PrivacyBudget`
 
    A privacy budget under pure differential privacy.
 
@@ -101,39 +117,44 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Return the value of the privacy budget as an ExactNumber.
 
       For printing purposes, you should use the epsilon property instead, as it will
       represent the same value, but be more human readable.
 
-
-   .. py:method:: epsilon()
-      :property:
+   .. py:property:: epsilon
+      :type: Union[int, float]
 
       Returns the value of epsilon as an int or float.
 
       This is helpful for human readability. If you need to use the epsilon value in
       a computation, you should use self.value instead.
 
-
-   .. py:method:: is_infinite()
-      :property:
+   .. py:property:: is_infinite
+      :type: bool
 
       Returns true if epsilon is float('inf').
 
 
+   .. automethod:: __init__
 
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: ApproxDPBudget(epsilon, delta)
 
-   Bases: :class:`PrivacyBudget`
+
+   Bases: :py:obj:`PrivacyBudget`
 
    A privacy budget under approximate differential privacy.
 
@@ -146,40 +167,37 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]
 
       Returns self._epsilon and self._delta as an ExactNumber tuple.
 
       For printing purposes, you might want to use the epsilon and delta properties
       instead, as they will represent the same values, but be more human readable.
 
-
-   .. py:method:: epsilon()
-      :property:
+   .. py:property:: epsilon
+      :type: Union[int, float]
 
       Returns the value of epsilon as an int or float.
 
       This is helpful for human readability. If you need to use the epsilon value in
       a computation, you should use self.value[0] instead.
 
-
-   .. py:method:: delta()
-      :property:
+   .. py:property:: delta
+      :type: Union[int, float]
 
       Returns the value of delta as an int or float.
 
       This is helpful for human readability. If you need to use the delta value in
       a computation, you should use self.value[1] instead.
 
-
-   .. py:method:: is_infinite()
-      :property:
+   .. py:property:: is_infinite
+      :type: bool
 
       Returns true if epsilon is float('inf') or delta is 1.
 
 
+   .. automethod:: __init__
    .. py:method:: __eq__(other)
 
       Returns True if both ApproxDPBudgets are infinite or have equal values.
@@ -190,9 +208,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: RhoZCDPBudget(rho)
 
-   Bases: :class:`PrivacyBudget`
+
+   Bases: :py:obj:`PrivacyBudget`
 
    A privacy budget under rho-zero-concentrated differential privacy.
 
@@ -204,31 +229,29 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: value()
-      :property:
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
 
       Return the value of the privacy budget as an ExactNumber.
 
       For printing purposes, you should use the rho property instead, as it will
       represent the same value, but be more human readable.
 
-
-   .. py:method:: rho()
-      :property:
+   .. py:property:: rho
+      :type: Union[int, float]
 
       Returns the value of rho as an int or float.
 
       This is helpful for human readability. If you need to use the rho value in
       a computation, you should use self.value instead.
 
-
-   .. py:method:: is_infinite()
-      :property:
+   .. py:property:: is_infinite
+      :type: bool
 
       Returns true if rho is float('inf').
 
 
+   .. automethod:: __init__
 
 
 

@@ -1,5 +1,4 @@
 
-
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
@@ -46,7 +45,6 @@ Data
 
 
 .. py:data:: SUPPORTED_SPARK_TYPES
-   
 
    Set of Spark data types supported by Tumult Analytics.
 
@@ -78,7 +76,7 @@ Data
    before loading the data into Analytics.
 
 .. py:data:: TYPE_COERCION_MAP
-   :annotation: :Dict[pyspark.sql.types.DataType, pyspark.sql.types.DataType]
+   :type:  Dict[pyspark.sql.types.DataType, pyspark.sql.types.DataType]
 
    Mapping describing how Spark's data types are coerced by Tumult Analytics.
 
@@ -87,16 +85,19 @@ Data
 Classes
 =======
 
-.. list-table::
-
-   * - :class:`.Session`
-     - Allows differentially private query evaluation on sensitive data.
 
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: Session(accountant, public_sources)
+
 
    Allows differentially private query evaluation on sensitive data.
 
@@ -110,18 +111,21 @@ Classes
       * - :class:`.Builder`
         - Builder for :class:`Session`.
 
+   .. list-table:: Properties
+
+      * - :attr:`private_sources`
+        - Returns the IDs of the private sources.
+      * - :attr:`public_sources`
+        - Returns the IDs of the public sources.
+      * - :attr:`public_source_dataframes`
+        - Returns a dictionary of public source DataFrames.
+      * - :attr:`remaining_privacy_budget`
+        - Returns the remaining privacy_budget left in the session.
+
    .. list-table:: Methods
 
       * - :meth:`.from_dataframe`
         - Initializes a DP session from a Spark dataframe.
-      * - :meth:`.private_sources`
-        - Returns the IDs of the private sources.
-      * - :meth:`.public_sources`
-        - Returns the IDs of the public sources.
-      * - :meth:`.public_source_dataframes`
-        - Returns a dictionary of public source DataFrames.
-      * - :meth:`.remaining_privacy_budget`
-        - Returns the remaining privacy_budget left in the session.
       * - :meth:`.describe`
         - Describes this session, or one of its tables, or the result of a query.
       * - :meth:`.get_schema`
@@ -152,11 +156,19 @@ Classes
    ..
        SPDX-License-Identifier: CC-BY-SA-4.0
        Copyright Tumult Labs 2024
+
+   .. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+          that appear in the deprecated query_expr module; once that module is removed,
+          this logic can go away.
+
+
    .. py:class:: Builder
 
 
 
+
       Builder for :class:`Session`.
+
 
 
 
@@ -207,9 +219,33 @@ Classes
 
 
 
-   .. automethod:: __init__
+   .. py:property:: private_sources
+      :type: List[str]
+
+      Returns the IDs of the private sources.
+
+   .. py:property:: public_sources
+      :type: List[str]
+
+      Returns the IDs of the public sources.
+
+   .. py:property:: public_source_dataframes
+      :type: Dict[str, pyspark.sql.DataFrame]
+
+      Returns a dictionary of public source DataFrames.
+
+   .. py:property:: remaining_privacy_budget
+      :type: tmlt.analytics.privacy_budget.PrivacyBudget
+
+      Returns the remaining privacy_budget left in the session.
+
+      The type of the budget (e.g., PureDP or rho-zCDP) will be the same as
+      the type of the budget the Session was initialized with.
+
+
    .. py:method:: from_dataframe(privacy_budget, source_id, dataframe, protected_change)
       :classmethod:
+
 
       Initializes a DP session from a Spark dataframe.
 
@@ -259,33 +295,6 @@ Classes
                                :class:`~tmlt.analytics.protected_change.ProtectedChange`
                                specifying what changes to the input data the resulting
                                :class:`Session` should protect.
-
-
-   .. py:method:: private_sources()
-      :property:
-
-      Returns the IDs of the private sources.
-
-
-   .. py:method:: public_sources()
-      :property:
-
-      Returns the IDs of the public sources.
-
-
-   .. py:method:: public_source_dataframes()
-      :property:
-
-      Returns a dictionary of public source DataFrames.
-
-
-   .. py:method:: remaining_privacy_budget()
-      :property:
-
-      Returns the remaining privacy_budget left in the session.
-
-      The type of the budget (e.g., PureDP or rho-zCDP) will be the same as
-      the type of the budget the Session was initialized with.
 
 
    .. py:method:: describe(obj = None)

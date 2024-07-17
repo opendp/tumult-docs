@@ -3,380 +3,506 @@
 
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Group-by queries &#8212; Tumult Analytics  documentation</title>
-<script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
-  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
-</script>
-
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/typehints.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.7062c238f19ca5d321b66b2e4218df4b.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=acabf4f6" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js"></script>
-    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
-    <script src="../_static/js/version-banner.js"></script>
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/groupby-queries';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/analytics/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <script src="../_static/js/version-banner.js?v=4aa4a05f"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Simple transformations" href="simple-transformations.html" />
     <link rel="prev" title="Numerical aggregations" href="clamping-bounds.html" />
     <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
     
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="docsearch:language" content="None">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
 
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
-    <div class="bd-header-announcement container-fluid" id="banner">
-      
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
-    </div>
-
-    
-    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
-
-  <div id="navbar-start">
-    
-    
   
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
 
 <a class="navbar-brand logo" href="../index.html">
   
   
   
   
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
-    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+    
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics  documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics  documentation - Home"/>`);</script>
   
   
-</a>
+</a></div>
     
   </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="fas fa-bars"></span>
-  </button>
-
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../howto-guides/installation.html">
-  Installation
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="index.html">
-  Tutorials
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../howto-guides/index.html">
-  How-to guides
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../topic-guides/index.html">
-  Topic guides
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../reference/tmlt/analytics/index.html">
-  API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../changelog.html">
-  Release notes
- </a>
-</li>
-
+  <div class="col-lg-9 navbar-header-items">
     
-</ul>
-      </div>
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-        <li class="nav-item">
-          <a class="nav-link" href="https://gitlab.com/tumult-labs/analytics" rel="noopener" target="_blank" title="GitLab"><span><i class="fab fa-gitlab"></i></span>
-            <label class="sr-only">GitLab</label></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://tmlt.dev/slack" rel="noopener" target="_blank" title="Slack"><span><i class="fab fa-slack"></i></span>
-            <label class="sr-only">Slack</label></a>
-        </li>
-      </ul>
-      </div>
-      
-    </div>
-  </div>
-</div>
-    </nav>
     
-
-    <div class="bd-container container-xl">
-      <div class="bd-container__inner row">
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
           
 
-<!-- Only show if we have sidebars configured, else just a small margin  -->
-<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
-  <div class="sidebar-start-items"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-<!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3><div class="dropdown" id="version_switcher">
-    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        dev  <!-- this text may get changed later by javascript -->
-        <span class="caret"></span>
-    </button>
-    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
-    <!-- dropdown will be populated by javascript on page load -->
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+      
     </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
-<!-- NOTE: this JS must live here (not in our global JS file) because it relies
-     on being processed by Jinja before it is run (specifically for replacing
-     variables tutorials/groupby-queries and {'json_url': 'https://docs.tmlt.dev/analytics/versions.json', 'version_match': 'dev'}.
--->
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
 
-<script type="text/javascript">
-// Check if corresponding page path exists in other version of docs
-// and, if so, go there instead of the homepage of the other docs version
-function checkPageExistsAndRedirect(event) {
-    const currentFilePath = "tutorials/groupby-queries.html",
-          tryUrl = event.target.getAttribute("href");
-    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
-    $.ajax({
-        type: 'HEAD',
-        url: tryUrl,
-        // if the page exists, go there
-        success: function() {
-            location.href = tryUrl;
-        }
-    }).fail(function() {
-        location.href = otherDocsHomepage;
-    });
-    // this prevents the browser from following the href of the clicked node
-    // (which is fine because this function takes care of redirecting)
-    return false;
-}
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
 
-// Populate the version switcher from the JSON config file
-(function () {
-    $.getJSON("https://docs.tmlt.dev/analytics/versions.json", function(data, textStatus, jqXHR) {
-        const currentFilePath = "tutorials/groupby-queries.html";
-        let btn = document.getElementById("version_switcher_button");
-        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
-        btn.dataset["activeVersionName"] = "";
-        btn.dataset["activeVersion"] = "";
-        // create links to the corresponding page in the other docs versions
-        $.each(data, function(index, entry) {
-            // if no custom name specified (e.g., "latest"), use version string
-            if (!("name" in entry)) {
-                entry.name = entry.version;
-            }
-            // create the node
-            const node = document.createElement("a");
-            node.setAttribute("class", "list-group-item list-group-item-action py-1");
-            node.textContent = `${entry.name}`;
-            node.setAttribute("href", `${entry.url}${currentFilePath}`);
-            // on click, AJAX calls will check if the linked page exists before
-            // trying to redirect, and if not, will redirect to the homepage
-            // for that version of the docs.
-            node.onclick = checkPageExistsAndRedirect;
-            // Add dataset values for the version and name in case people want
-            // to apply CSS styling based on this information.
-            node.dataset["versionName"] = entry.name;
-            node.dataset["version"] = entry.version;
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
 
-            $("#version_switcher_menu").append(node);
-            // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's dev variable.
-            // also highlight the dropdown entry for the currently-viewed
-            // version's entry
-            if (entry.version == "dev") {
-                node.classList.add("active");
-                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
-                btn.dataset["activeVersion"] = entry.version;
-            }
-        });
-    });
-})();
-</script><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="first-steps.html">
-   First steps with Tumult Analytics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="privacy-budget-basics.html">
-   Working with privacy budgets
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="clamping-bounds.html">
-   Numerical aggregations
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Group-by queries
-  </a>
- </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics</h3></div>
+        <div class="sidebar-primary-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="first-steps.html">First steps with Tumult Analytics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="privacy-budget-basics.html">Working with privacy budgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clamping-bounds.html">Numerical aggregations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Group-by queries</a></li>
 </ul>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="simple-transformations.html">
-   Simple transformations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="privacy-id-basics.html">
-   Working with privacy IDs
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="more-with-privacy-ids.html">
-   Doing more with privacy IDs
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="simple-transformations.html">Simple transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="privacy-id-basics.html">Working with privacy IDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-with-privacy-ids.html">Doing more with privacy IDs</a></li>
 </ul>
-
-  </div>
-</nav>
-  </div>
-  <div class="sidebar-end-items">
-  </div>
 </div>
-
-
-          
-
-
-<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
-  
-    
-    <div class="toc-item">
-      
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setup">
-   Setup
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction-to-keysets">
-   Introduction to KeySets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#multiple-columns">
-   Multiple columns
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#manipulating-keysets">
-   Manipulating KeySets
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#cross-product">
-     Cross-product
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#projection">
-     Projection
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#filters">
-     Filters
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#automatic-keyset-selection">
-   Automatic KeySet selection
-  </a>
- </li>
-</ul>
-
-</nav>
+</nav></div>
     </div>
-    
-    <div class="toc-item">
-      
-    </div>
-    
   
-</div>
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
-          
-          <div class="bd-content col-12 col-md-9 col-xl-7">
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
               
-              <article class="bd-article" role="main">
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Group-by queries</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
                 
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="group-by-queries">
-<span id="id1"></span><h1>Group-by queries<a class="headerlink" href="#group-by-queries" title="Permalink to this headline">#</a></h1>
+<span id="id1"></span><h1>Group-by queries<a class="headerlink" href="#group-by-queries" title="Permalink to this heading">#</a></h1>
 <p>In all previous tutorials, all aggregations we saw were global aggregations,
 returning a single statistic for all the data. But many common data analysis
 operations are <em>group-by queries</em>: they partition the data into groups, and
@@ -415,10 +541,10 @@ will need to indicate the list of possible <em>group-by keys</em>: the different
 categories that we are going to partition the data into. In the rest of this
 tutorial, we will demonstrate how to do this with Tumult Analytics.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
 <p>Let us follow the same setup process as in the earlier tutorials, including the
 infinite privacy budget—not to be used in production!</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
 <span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
@@ -444,7 +570,7 @@ infinite privacy budget—not to be used in production!</p>
 </div>
 </section>
 <section id="introduction-to-keysets">
-<h2>Introduction to KeySets<a class="headerlink" href="#introduction-to-keysets" title="Permalink to this headline">#</a></h2>
+<h2>Introduction to KeySets<a class="headerlink" href="#introduction-to-keysets" title="Permalink to this heading">#</a></h2>
 <p>To specify the list of group-by keys in Tumult Analytics, we use the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.keyset.KeySet</span></code></a> class. A KeySet specifies both the columns
 by which we are going to group by, and the possible values for those columns.</p>
@@ -453,7 +579,7 @@ possible values for a given column, is to use
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dict" title="tmlt.analytics.keyset.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>. For example, the following
 KeySet enumerates all possible values for the categorical column
 <cite>education_level</cite>.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">edu_levels</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_levels</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
     <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
         <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span>
@@ -468,7 +594,7 @@ KeySet enumerates all possible values for the categorical column
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.groupby" title="tmlt.analytics.query_builder.QueryBuilder.groupby"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby()</span></code></a> operation. For
 example, let us compute the average age of library members, grouped by education
 level.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">edu_average_age_query</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_average_age_query</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">edu_levels</span><span class="p">)</span>
     <span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
@@ -518,7 +644,7 @@ KeySet will not, regardless of which values appear in the actual data. For
 example, in our fake dataset, all the age values are 6 or above: younger
 children cannot be members of our library. So, what happens if we compute counts
 for age values between <em>5</em> and 17?</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">young_ages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>  <span class="c1"># [5, 6, ..., 17]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">young_ages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>  <span class="c1"># [5, 6, ..., 17]</span>
 <span class="n">young_age_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">young_ages</span><span class="p">})</span>
 <span class="n">young_age_query</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
@@ -549,12 +675,12 @@ completely absent in our dataset. This is entirely due to the noise added to the
 real value (here, 0).</p>
 </section>
 <section id="multiple-columns">
-<h2>Multiple columns<a class="headerlink" href="#multiple-columns" title="Permalink to this headline">#</a></h2>
+<h2>Multiple columns<a class="headerlink" href="#multiple-columns" title="Permalink to this heading">#</a></h2>
 <p>So far, we saw how to run group-by queries, where we grouped by a single column.
 What if we want to group by multiple columns? One simple way is to use a Python
 dictionary with multiple values. Let’s take an example, and compute counts by
 age (of teenagers and young adults) and education level.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
     <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
     <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
@@ -570,7 +696,7 @@ age (of teenagers and young adults) and education level.</p>
 <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">education_level</span></code>. To manually check what’s inside of a KeySet,
 we can call its <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.dataframe" title="tmlt.analytics.keyset.KeySet.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tmlt.analytics.keyset.KeySet.dataframe()</span></code></a> method, which
 will return the group-by keys it encapsulates, as a Spark DataFrame.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_df</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_df</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span>
 <span class="n">teen_edu_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -594,7 +720,7 @@ only showing top 12 rows
 </pre></div>
 </div>
 <p>And we can use this KeySet to perform a group-by query on multiple columns.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">teen_edu_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -636,7 +762,7 @@ the desired combinations, and initializing a KeySet with it using the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method. Here, let’s create
 such a KeySet for our age range, making some assumptions about the minimum age at
 which certain education levels can be achieved.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
     <span class="p">[</span>
         <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
@@ -662,7 +788,7 @@ which certain education levels can be achieved.</p>
 </pre></div>
 </div>
 <p>Once we have our KeySet, we can use it in the desired aggregation…</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">teen_edu_subset_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -696,19 +822,19 @@ you can load a large Spark DataFrame into a KeySet directly, without having to
 enumerate the values in a Python dictionary.</p>
 </section>
 <section id="manipulating-keysets">
-<h2>Manipulating KeySets<a class="headerlink" href="#manipulating-keysets" title="Permalink to this headline">#</a></h2>
+<h2>Manipulating KeySets<a class="headerlink" href="#manipulating-keysets" title="Permalink to this heading">#</a></h2>
 <p>Most applications of Tumult Analytics require specifying the keys to group-by
 queries. To make this process as easy as possible, we added first-class support
 for common KeySet manipulation operations. Let us review these operations.</p>
 <section id="cross-product">
-<h3>Cross-product<a class="headerlink" href="#cross-product" title="Permalink to this headline">#</a></h3>
+<h3>Cross-product<a class="headerlink" href="#cross-product" title="Permalink to this heading">#</a></h3>
 <p>When two KeySets are specifying group-by keys for different sets of columns, you
 can use the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.__mul__" title="tmlt.analytics.keyset.KeySet.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multiplication</span> <span class="pre">operator</span></code></a> to
 generate the combination of values present in both KeySets. Consider, for
 example, the combination of teen ages and education levels that we started with
 in the previous section.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
     <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
     <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
@@ -723,7 +849,7 @@ in the previous section.</p>
 <p>There is another way to specify the same KeySet: initializing one KeySet for
 each column, and taking the cross-product of both using the multiplication
 operator.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
     <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
 <span class="p">})</span>
 <span class="n">edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
@@ -744,14 +870,14 @@ operator.</p>
 </div>
 </section>
 <section id="projection">
-<h3>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">#</a></h3>
+<h3>Projection<a class="headerlink" href="#projection" title="Permalink to this heading">#</a></h3>
 <p>What if you have a large KeySet containing possible combination of values
 between multiple columns, and want to select only a subset of these columns? For
 this use case, you can use the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.__getitem__" title="tmlt.analytics.keyset.KeySet.__getitem__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">projection</span> <span class="pre">operator</span></code></a>. For
 example, taking the two-column KeySet above and projecting it on a single column
 will retrieve the original one-column KeySet.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
@@ -763,13 +889,13 @@ in the data: <code class="docutils literal notranslate"><span class="pre">teen_e
 <code class="docutils literal notranslate"><span class="pre">&quot;up-to-high-school&quot;</span></code>, even though this value appears in multiple rows in the
 original KeySet.</p>
 <p>You can easily specify multiple columns using multiple parameters, or a list.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">]])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">]])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
@@ -777,11 +903,11 @@ original KeySet.</p>
 </div>
 </section>
 <section id="filters">
-<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">#</a></h3>
+<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this heading">#</a></h3>
 <p>Finally, KeySets support the same <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.filter" title="tmlt.analytics.keyset.KeySet.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
 operation as Spark DataFrames. For example, consider the KeySet with specific
 combinations of age and education level from before.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
     <span class="p">[</span>
         <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
@@ -808,7 +934,7 @@ combinations of age and education level from before.</p>
 </div>
 <p>We could also have generated this KeySet using our larger KeySet with all
 possible combinations of the two columns, using a filter.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys_filtered</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys_filtered</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    education_level != &#39;masters-degree&#39;</span>
 <span class="s2">    AND education_level != &#39;doctorate-professional&#39;</span>
 <span class="s2">    AND NOT (education_level = &#39;bachelors-associate&#39; AND age &lt; 19)</span>
@@ -823,7 +949,7 @@ possible combinations of the two columns, using a filter.</p>
 </section>
 </section>
 <section id="automatic-keyset-selection">
-<h2>Automatic KeySet selection<a class="headerlink" href="#automatic-keyset-selection" title="Permalink to this headline">#</a></h2>
+<h2>Automatic KeySet selection<a class="headerlink" href="#automatic-keyset-selection" title="Permalink to this heading">#</a></h2>
 <p>There are some uses cases for which it is impossible, or at least very impractical,
 to enumerate the list of group-by keys without using the private data. For instance,
 suppose that we want to find out what first names are the most common among library
@@ -833,7 +959,7 @@ privacy</em> (Approx DP) in our Session, and using
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to collect a list of
 names from the private data using Approx DP. Once we collect the names, we can use them as the KeySet for subsequent queries.</p>
 <p>For more information on Approx DP, you can consult our topic guide on <a class="reference internal" href="../topic-guides/privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">Privacy budget fundamentals</span></a>.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">ApproxDPBudget</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">ApproxDPBudget</span>
 
 <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">ApproxDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">),</span>
@@ -870,11 +996,11 @@ names from the private data using Approx DP. Once we collect the names, we can u
 data. This can be converted into a KeySet using the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method mentioned
 earlier.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">names_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">names_df</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">names_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">names_df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now that we have the KeySet, we can use it in a group-by query.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">names_count_query</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">names_count_query</span> <span class="o">=</span> <span class="p">(</span>
    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">names_keyset</span><span class="p">)</span>
    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -889,7 +1015,7 @@ earlier.</p>
 did <em>not</em> return every name in the dataset, but only those associated to
 sufficiently many people (with some randomization). To see this, we can
 look at the lowest counts returned by our count query.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">name_counts_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">name_counts_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------+-----+</span>
@@ -907,7 +1033,7 @@ look at the lowest counts returned by our count query.</p>
 <p>Lastly, we can estimate how many names were suppressed during this
 operation by comparing the number of names we published using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to a noisy
 count of distinct names in the dataset.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_names_published</span> <span class="o">=</span> <span class="n">name_counts_df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_names_published</span> <span class="o">=</span> <span class="n">name_counts_df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
 <span class="n">distinct_names_count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_distinct</span><span class="p">([</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 <span class="n">distinct_names_in_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
@@ -928,61 +1054,120 @@ count of distinct names in the dataset.</p>
 </section>
 
 
-              </article>
+                </article>
               
-
               
-              <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="clamping-bounds.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="clamping-bounds.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Numerical aggregations</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Numerical aggregations</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="simple-transformations.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Simple transformations</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="simple-transformations.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Simple transformations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
-              </footer>
+                </footer>
               
-          </div>
-          
-      </div>
-    </div>
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-  
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-keysets">Introduction to KeySets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-columns">Multiple columns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manipulating-keysets">Manipulating KeySets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product">Cross-product</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection">Projection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-keyset-selection">Automatic KeySet selection</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
-<footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
-    <p class="copyright">
-    &copy; Copyright Tumult Labs 2024.<br>
-</p>
-  </div>
-  
-  <div class="footer-item">
-    <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright Tumult Labs 2024.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c123fbaf at 2024-07-17 16:44.
-  </div>
+Built from 77e0a840 at 2024-07-17 21:19.</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
   
-  <div class="footer-item">
-    <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-  </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
   
 </div>
-</footer>
+
+  </footer>
   </body>
 </html>

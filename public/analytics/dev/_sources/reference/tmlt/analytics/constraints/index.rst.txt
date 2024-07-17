@@ -1,5 +1,4 @@
 
-
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
@@ -28,10 +27,6 @@ constraints
 Functions
 =========
 
-.. list-table::
-
-   * - :func:`.simplify_constraints`
-     - Remove redundant constraints from a list of constraints.
 
 .. py:function:: simplify_constraints(constraints)
 
@@ -62,9 +57,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: Constraint
 
-   Bases: :class:`abc.ABC`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: Constraint
+   :canonical: tmlt.analytics.constraints._base.Constraint
+
+
+   Bases: :py:obj:`abc.ABC`
 
    A known, enforceable fact about a table.
 
@@ -83,13 +86,22 @@ Classes
 
 
 
+
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: MaxRowsPerID
 
-   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: MaxRowsPerID
+   :canonical: tmlt.analytics.constraints._truncation.MaxRowsPerID
+
+
+   Bases: :py:obj:`tmlt.analytics.constraints._base.Constraint`
 
    A constraint limiting the number of rows associated with each ID in a table.
 
@@ -104,9 +116,10 @@ Classes
 
 
    .. py:attribute:: max
-      :annotation: :int
+      :type:  int
 
       The maximum number of times each distinct value may appear in the column.
+
 
 
 
@@ -114,9 +127,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: MaxGroupsPerID
 
-   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: MaxGroupsPerID
+   :canonical: tmlt.analytics.constraints._truncation.MaxGroupsPerID
+
+
+   Bases: :py:obj:`tmlt.analytics.constraints._base.Constraint`
 
    A constraint limiting the number of distinct groups per ID.
 
@@ -130,15 +151,16 @@ Classes
 
 
    .. py:attribute:: grouping_column
-      :annotation: :str
+      :type:  str
 
       The name of the grouping column.
 
    .. py:attribute:: max
-      :annotation: :int
+      :type:  int
 
       The maximum number of distinct values in the grouping column
       for each distinct value in the ID column.
+
 
 
 
@@ -146,9 +168,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: MaxRowsPerGroupPerID
 
-   Bases: :class:`tmlt.analytics.constraints._base.Constraint`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: MaxRowsPerGroupPerID
+   :canonical: tmlt.analytics.constraints._truncation.MaxRowsPerGroupPerID
+
+
+   Bases: :py:obj:`tmlt.analytics.constraints._base.Constraint`
 
    A constraint limiting rows per unique (ID, grouping column) pair in a table.
 
@@ -160,14 +190,15 @@ Classes
 
 
    .. py:attribute:: grouping_column
-      :annotation: :str
+      :type:  str
 
       Name of column defining the groups to truncate.
 
    .. py:attribute:: max
-      :annotation: :int
+      :type:  int
 
       The maximum number of times each distinct value may appear in the column.
+
 
 
 

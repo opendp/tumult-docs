@@ -1,5 +1,4 @@
 
-
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
@@ -45,9 +44,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: ProtectedChange
 
-   Bases: :class:`abc.ABC`
+
+   Bases: :py:obj:`abc.ABC`
 
    A description of the largest change in a dataset that is protected under DP.
 
@@ -65,13 +71,21 @@ Classes
 
 
 
+
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AddMaxRows
 
-   Bases: :class:`ProtectedChange`
+
+   Bases: :py:obj:`ProtectedChange`
 
    Protect the addition or removal of any set of ``max_rows`` rows.
 
@@ -84,9 +98,10 @@ Classes
 
 
    .. py:attribute:: max_rows
-      :annotation: :int
+      :type:  int
 
       The maximum number of rows that may be added or removed.
+
 
 
 
@@ -94,9 +109,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AddOneRow
 
-   Bases: :class:`AddMaxRows`
+
+   Bases: :py:obj:`AddMaxRows`
 
    A shorthand for the common case of :class:`AddMaxRows` with ``max_rows = 1``.
 
@@ -106,13 +128,21 @@ Classes
 
 
 
+
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AddMaxRowsInMaxGroups
 
-   Bases: :class:`ProtectedChange`
+
+   Bases: :py:obj:`ProtectedChange`
 
    Protect the addition or removal of rows across a finite number of groups.
 
@@ -147,19 +177,20 @@ Classes
 
 
    .. py:attribute:: grouping_column
-      :annotation: :str
+      :type:  str
 
       The name of the column specifying the group.
 
    .. py:attribute:: max_groups
-      :annotation: :int
+      :type:  int
 
       The maximum number of groups that may differ.
 
    .. py:attribute:: max_rows_per_group
-      :annotation: :int
+      :type:  int
 
       The maximum number of rows which may be added to or removed from each group.
+
 
 
 
@@ -167,9 +198,16 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AddRowsWithID
 
-   Bases: :class:`ProtectedChange`
+
+   Bases: :py:obj:`ProtectedChange`
 
    Protect the addition or removal of rows with a specific identifier.
 
@@ -185,16 +223,19 @@ Classes
 
 
    .. py:attribute:: id_column
-      :annotation: :str
+      :type:  str
 
       The name of the column containing the identifier.
 
    .. py:attribute:: id_space
-      :annotation: :str = default_id_space
+      :type:  str
+      :value: 'default_id_space'
+
 
       The identifier space of the rows that may be added or removed. If not specified,
       a default will be assigned when using this protected change with
       :class:`Session.from_dataframe()<tmlt.analytics.session.Session.from_dataframe>`.
+
 
 
 

@@ -1,5 +1,4 @@
 
-
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
@@ -51,7 +50,6 @@ Data
 
 
 .. py:data:: Row
-   
 
    Type alias for a dictionary with string keys.
 
@@ -64,6 +62,8 @@ Classes
 
    * - :class:`.AnalyticsDefault`
      - Default values for each type of column in Tumult Analytics.
+   * - :class:`.AverageMechanism`
+     - Possible mechanisms for the average() aggregation.
    * - :class:`.CountDistinctMechanism`
      - Enumerating the possible mechanisms used for the count_distinct aggregation.
    * - :class:`.CountMechanism`
@@ -89,7 +89,15 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AnalyticsDefault
+   :canonical: tmlt.analytics._query_expr.AnalyticsDefault
+
 
    Default values for each type of column in Tumult Analytics.
 
@@ -98,29 +106,30 @@ Classes
 
 
    .. py:attribute:: INTEGER
-      :annotation: = 0
+      :value: 0
+
 
       The default value used for integers (0).
 
    .. py:attribute:: DECIMAL
-      :annotation: = 0.0
+      :value: 0.0
+
 
       The default value used for floats (0).
 
    .. py:attribute:: VARCHAR
-      :annotation: = 
+      :value: ''
+
 
       The default value used for VARCHARs (the empty string).
 
    .. py:attribute:: DATE
-      
 
       The default value used for dates (``datetime.date.fromtimestamp(0)``).
 
       See :meth:`~.datetime.date.fromtimestamp`.
 
    .. py:attribute:: TIMESTAMP
-      
 
       The default value used for timestamps (``datetime.datetime.fromtimestamp(0)``).
 
@@ -128,13 +137,76 @@ Classes
 
 
 
+
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: CountDistinctMechanism
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: AverageMechanism
+   :canonical: tmlt.analytics._query_expr.AverageMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
+
+   Possible mechanisms for the average() aggregation.
+
+   Currently, the
+   :meth:`~tmlt.analytics.query_builder.GroupedQueryBuilder.average`
+   aggregation uses an additive noise mechanism to achieve differential privacy.
+
+
+
+
+
+   .. py:attribute:: DEFAULT
+
+      The framework automatically selects an appropriate mechanism. This choice
+      might change over time as additional optimizations are added to the library.
+
+   .. py:attribute:: LAPLACE
+
+      Laplace and/or double-sided geometric noise is used, depending on the
+      column type.
+
+   .. py:attribute:: GAUSSIAN
+
+      Discrete and/or continuous Gaussian noise is used, depending on the column type.
+      Not compatible with pure DP.
+
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: CountDistinctMechanism
+   :canonical: tmlt.analytics._query_expr.CountDistinctMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
 
    Enumerating the possible mechanisms used for the count_distinct aggregation.
 
@@ -147,20 +219,18 @@ Classes
 
 
    .. py:attribute:: DEFAULT
-      
 
       The framework automatically selects an appropriate mechanism. This choice
       might change over time as additional optimizations are added to the library.
 
    .. py:attribute:: LAPLACE
-      
 
       Double-sided geometric noise is used.
 
    .. py:attribute:: GAUSSIAN
-      
 
       The discrete Gaussian mechanism is used. Not compatible with pure DP.
+
 
 
    .. py:method:: name()
@@ -178,9 +248,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: CountMechanism
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: CountMechanism
+   :canonical: tmlt.analytics._query_expr.CountMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
 
    Possible mechanisms for the count() aggregation.
 
@@ -193,20 +271,18 @@ Classes
 
 
    .. py:attribute:: DEFAULT
-      
 
       The framework automatically selects an appropriate mechanism. This choice
       might change over time as additional optimizations are added to the library.
 
    .. py:attribute:: LAPLACE
-      
 
       Double-sided geometric noise is used.
 
    .. py:attribute:: GAUSSIAN
-      
 
       The discrete Gaussian mechanism is used. Not compatible with pure DP.
+
 
 
    .. py:method:: name()
@@ -224,9 +300,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: StdevMechanism
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: StdevMechanism
+   :canonical: tmlt.analytics._query_expr.StdevMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
 
    Possible mechanisms for the stdev() aggregation.
 
@@ -239,22 +323,20 @@ Classes
 
 
    .. py:attribute:: DEFAULT
-      
 
       The framework automatically selects an appropriate mechanism. This choice
       might change over time as additional optimizations are added to the library.
 
    .. py:attribute:: LAPLACE
-      
 
       Laplace and/or double-sided geometric noise is used, depending on the
       column type.
 
    .. py:attribute:: GAUSSIAN
-      
 
       Discrete and/or continuous Gaussian noise is used, depending on the column type.
       Not compatible with pure DP.
+
 
 
    .. py:method:: name()
@@ -272,9 +354,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: SumMechanism
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: SumMechanism
+   :canonical: tmlt.analytics._query_expr.SumMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
 
    Possible mechanisms for the sum() aggregation.
 
@@ -287,22 +377,20 @@ Classes
 
 
    .. py:attribute:: DEFAULT
-      
 
       The framework automatically selects an appropriate mechanism. This choice
       might change over time as additional optimizations are added to the library.
 
    .. py:attribute:: LAPLACE
-      
 
       Laplace and/or double-sided geometric noise is used, depending on the
       column type.
 
    .. py:attribute:: GAUSSIAN
-      
 
       Discrete and/or continuous Gaussian noise is used, depending on the column type.
       Not compatible with pure DP.
+
 
 
    .. py:method:: name()
@@ -320,9 +408,17 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: VarianceMechanism
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: VarianceMechanism
+   :canonical: tmlt.analytics._query_expr.VarianceMechanism
+
+
+   Bases: :py:obj:`enum.Enum`
 
    Possible mechanisms for the variance() aggregation.
 
@@ -335,22 +431,20 @@ Classes
 
 
    .. py:attribute:: DEFAULT
-      
 
       The framework automatically selects an appropriate mechanism. This choice
       might change over time as additional optimizations are added to the library.
 
    .. py:attribute:: LAPLACE
-      
 
       Laplace and/or double-sided geometric noise is used, depending on the
       column type.
 
    .. py:attribute:: GAUSSIAN
-      
 
       Discrete and/or continuous Gaussian noise is used, depending on the column type.
       Not compatible with pure DP.
+
 
 
    .. py:method:: name()
@@ -368,7 +462,15 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: ColumnDescriptor
+   :canonical: tmlt.analytics._schema.ColumnDescriptor
+
 
    Information about a column.
 
@@ -396,13 +498,22 @@ Classes
 
 
 
+
    
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
-.. py:class:: ColumnType
 
-   Bases: :class:`enum.Enum`
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: ColumnType
+   :canonical: tmlt.analytics._schema.ColumnType
+
+
+   Bases: :py:obj:`enum.Enum`
 
    The supported SQL92 column types for Analytics data.
 
@@ -411,29 +522,25 @@ Classes
 
 
    .. py:attribute:: INTEGER
-      
 
       Integer column type.
 
    .. py:attribute:: DECIMAL
-      
 
       Floating-point column type.
 
    .. py:attribute:: VARCHAR
-      
 
       String column type.
 
    .. py:attribute:: DATE
-      
 
       Date column type.
 
    .. py:attribute:: TIMESTAMP
-      
 
       Timestamp column type.
+
 
 
    .. py:method:: name()
@@ -451,7 +558,14 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: QueryBuilder(source_id)
+
 
    High-level interface for specifying DP queries.
 
@@ -506,10 +620,13 @@ Classes
 
 
 
+   .. list-table:: Properties
+
+      * - :attr:`query_expr`
+        - Returns the query_expr being built.
+
    .. list-table:: Methods
 
-      * - :meth:`.query_expr`
-        - Returns the query_expr being built.
       * - :meth:`.join_public`
         - Updates the current query to join with a dataframe or public source.
       * - :meth:`.join_private`
@@ -568,13 +685,13 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: query_expr()
-      :property:
+   .. py:property:: query_expr
+      :type: tmlt.analytics._query_expr.QueryExpr
 
       Returns the query_expr being built.
 
 
+   .. automethod:: __init__
    .. py:method:: join_public(public_table, join_columns = None, how = 'inner')
 
       Updates the current query to join with a dataframe or public source.
@@ -2700,47 +2817,29 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: GroupedQueryBuilder(source_id, query_expr, groupby_keys)
+
 
    A QueryBuilder that is grouped by a set of columns and can be aggregated.
 
 
 
-   .. list-table:: Methods
-
-      * - :meth:`.query_expr`
-        - Get the query expression being built.
-      * - :meth:`.count`
-        - Returns an AggregatedQueryBuilder with a count query.
-      * - :meth:`.count_distinct`
-        - Returns an AggregatedQueryBuilder with a count_distinct query.
-      * - :meth:`.quantile`
-        - Returns an AggregatedQueryBuilder with a quantile query.
-      * - :meth:`.min`
-        - Returns an AggregatedQueryBuilder with a quantile query requesting a minimum value.
-      * - :meth:`.max`
-        - Returns an AggregatedQueryBuilder with a quantile query requesting a maximum value.
-      * - :meth:`.median`
-        - Returns an AggregatedQueryBuilder with a quantile query requesting a median value.
-      * - :meth:`.sum`
-        - Returns an AggregatedQueryBuilder with a sum query.
-      * - :meth:`.average`
-        - Returns an AggregatedQueryBuilder with an average query.
-      * - :meth:`.variance`
-        - Returns an AggregatedQueryBuilder with a variance query.
-      * - :meth:`.stdev`
-        - Returns an AggregatedQueryBuilder with a standard deviation query.
 
 
 
-
-   .. automethod:: __init__
-   .. py:method:: query_expr()
-      :property:
+   .. py:property:: query_expr
+      :type: tmlt.analytics._query_expr.QueryExpr
 
       Get the query expression being built.
 
 
+   .. automethod:: __init__
    .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
       Returns an AggregatedQueryBuilder with a count query.
@@ -3454,7 +3553,14 @@ Classes
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: AggregatedQueryBuilder(query_expr)
+
 
    A query builder for post-processing aggregated data.
 
@@ -3463,13 +3569,13 @@ Classes
 
 
 
-   .. automethod:: __init__
-   .. py:method:: query_expr()
-      :property:
+   .. py:property:: query_expr
+      :type: tmlt.analytics._query_expr.QueryExpr
 
       Get the aggregated query expression (before post-processing).
 
 
+   .. automethod:: __init__
    .. py:method:: suppress(threshold)
 
       Returns a SuppressAggregates query that is ready to be evaluated.
