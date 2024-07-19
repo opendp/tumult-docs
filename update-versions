@@ -19,6 +19,7 @@ import json
 import sys
 from pathlib import Path
 
+
 def split_version_tag(version):
     """Split a dot-separated version number into its integer components."""
     try:
@@ -50,6 +51,11 @@ def classify_versions(versions):
     return (tag_versions, dev_versions)
 
 
+def get_release_name(docs_dir, version):
+    """Get the full release name of the documentation with the given version."""
+    return (docs_dir / version / "release").read_text().strip()
+
+
 def write_versions_json(docs_dir, tag_versions, dev_versions):
     """Write versions.json to the given directory.
 
@@ -77,8 +83,15 @@ def write_versions_json(docs_dir, tag_versions, dev_versions):
     with (docs_dir / "versions.json").open("w") as fp:
         path_prefix = "/".join(docs_dir.parts[1:])
         json.dump(
-            [{"version": v, "url": f"/{path_prefix}/{v}/"} for v in sorted_versions],
-            fp
+            [
+                {
+                    "version": v,
+                    "name": get_release_name(docs_dir, v),
+                    "url": f"/{path_prefix}/{v}/",
+                }
+                for v in sorted_versions
+            ],
+            fp,
         )
 
 
@@ -133,5 +146,6 @@ def main():
     for v in dev_versions:
         write_banner_json(docs_dir, v, True)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

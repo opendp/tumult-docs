@@ -155,7 +155,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.11.6  <!-- this text may get changed later by javascript -->
+        0.11.5  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -165,7 +165,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/transformations/spark_transformations/join/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.11.6'}.
+     variables reference/tmlt/core/transformations/spark_transformations/join/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.11.5'}.
 -->
 
 <script type="text/javascript">
@@ -220,10 +220,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.11.6 variable.
+            // this version, rather than using sphinx's 0.11.5 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.11.6") {
+            if (entry.version == "0.11.5") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -500,11 +500,6 @@ function checkPageExistsAndRedirect(event) {
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy.DROP">
        DROP
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy.NO_TRUNCATION">
-       NO_TRUNCATION
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -1174,12 +1169,6 @@ columns.</p>
 <dd><p>Use <a class="reference internal" href="../../../utils/truncation/index.html#tmlt.core.utils.truncation.drop_large_groups" title="tmlt.core.utils.truncation.drop_large_groups"><code class="xref py py-func docutils literal notranslate"><span class="pre">drop_large_groups()</span></code></a>.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.TruncationStrategy.NO_TRUNCATION">
-<span class="sig-name descname"><span class="pre">NO_TRUNCATION</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy.NO_TRUNCATION" title="Permalink to this definition">#</a></dt>
-<dd><p>No truncation, results in infinite stability.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.TruncationStrategy.name">
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy.name" title="Permalink to this definition">#</a></dt>
@@ -1254,8 +1243,8 @@ it can also be set to consider null values equal to each other (unlike PySpark).
 <span class="gp">&gt;&gt;&gt; </span><span class="n">joined_dataframe</span> <span class="o">=</span> <span class="n">private_join</span><span class="p">(</span><span class="n">input_dictionary</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">joined_dataframe</span><span class="p">)</span>
 <span class="go">    B   A  X   C</span>
-<span class="go">0  b1  a1  5  c1</span>
-<span class="go">1  b1  a2 -5  c1</span>
+<span class="go">0  b1  a1  2  c1</span>
+<span class="go">1  b1  a1  3  c1</span>
 <span class="go">2  b2  a1 -1  c2</span>
 <span class="go">3  b2  a1 -1  c3</span>
 <span class="go">4  b2  a1  4  c2</span>
@@ -1300,7 +1289,6 @@ to the truncation threshold to be dropped).</p></li>
 <li><p>TruncationStrategy.TRUNCATE has a stability of 2 (This is because
 adding a new row can not only add a new row to the output, it also can
 displace another row)</p></li>
-<li><p>TruncationStrategy.NO_TRUNCATION has infinite stablity.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TRUNCATE has a stability of 2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s_r</span> <span class="o">=</span> <span class="n">s_l</span> <span class="o">=</span> <span class="n">private_join</span><span class="o">.</span><span class="n">truncation_strategy_stability</span><span class="p">(</span>
@@ -1385,8 +1373,8 @@ displace another row)</p></li>
 <li><p><strong>right_key</strong> (<em>Any</em>) – </p></li>
 <li><p><strong>left_truncation_strategy</strong> (<a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><em>TruncationStrategy</em></a>) – </p></li>
 <li><p><strong>right_truncation_strategy</strong> (<a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><em>TruncationStrategy</em></a>) – </p></li>
-<li><p><strong>left_truncation_threshold</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – </p></li>
-<li><p><strong>right_truncation_threshold</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>left_truncation_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>right_truncation_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
 <li><p><strong>join_cols</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>join_on_nulls</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
 </ul>
@@ -1417,9 +1405,9 @@ displace another row)</p></li>
 truncating the left DataFrame.</p></li>
 <li><p><strong>right_truncation_strategy</strong> (<span class="annotation terse"><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a></span><span class="annotation full"><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a></span>) – <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a> to use for
 truncating the right DataFrame.</p></li>
-<li><p><strong>left_truncation_threshold</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The maximum number of rows to allow for each
+<li><p><strong>left_truncation_threshold</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of rows to allow for each
 combination of values of <cite>join_cols</cite> in the left DataFrame.</p></li>
-<li><p><strong>right_truncation_threshold</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – The maximum number of rows to allow for each
+<li><p><strong>right_truncation_threshold</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of rows to allow for each
 combination of values of <cite>join_cols</cite> in the right DataFrame.</p></li>
 <li><p><strong>join_cols</strong> (<span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – Columns to perform join on. If None, a natural join is
 computed.</p></li>
@@ -1480,7 +1468,7 @@ both dataframes will be considered to be equal.</p></li>
 <dd><p>Returns the threshold for truncating the left DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1491,7 +1479,7 @@ both dataframes will be considered to be equal.</p></li>
 <dd><p>Returns the threshold for truncating the right DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1526,11 +1514,11 @@ both dataframes will be considered to be equal.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>truncation_strategy</strong> (<a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><em>TruncationStrategy</em></a>) – </p></li>
-<li><p><strong>threshold</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2040,7 +2028,7 @@ both dataframes will be considered to be equal.</p></li>
   </div>
   
   <div class="footer-item">
-    Built from c9f9e12d at 2024-02-21 17:12.
+    Built from 839140cc at 2023-11-29 14:16.
   </div>
   
   <div class="footer-item">
