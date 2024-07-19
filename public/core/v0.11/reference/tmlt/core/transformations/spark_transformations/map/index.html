@@ -154,7 +154,7 @@
 <div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
   <div class="sidebar-start-items"><h3>Tumult Core</h3><div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.11.6  <!-- this text may get changed later by javascript -->
+        0.11.5  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -164,7 +164,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables reference/tmlt/core/transformations/spark_transformations/map/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.11.6'}.
+     variables reference/tmlt/core/transformations/spark_transformations/map/index and {'json_url': 'https://docs.tmlt.dev/core/versions.json', 'version_match': '0.11.5'}.
 -->
 
 <script type="text/javascript">
@@ -219,10 +219,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.11.6 variable.
+            // this version, rather than using sphinx's 0.11.5 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.11.6") {
+            if (entry.version == "0.11.5") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -1083,7 +1083,7 @@ error will occur when the RowToRowTransformation is called on a row</p>
 <span class="gp">... </span>            <span class="p">{</span>
 <span class="gp">... </span>                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
-<span class="gp">... </span>                <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>                <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>            <span class="p">}</span>
 <span class="gp">... </span>        <span class="p">)</span>
 <span class="gp">... </span>    <span class="p">),</span>
@@ -1346,7 +1346,7 @@ error will occur when the RowToRowTransformation is called on a row</p>
 <li><p>IfGroupedBy(column, RootSumOfSquared(SymmetricDifference()))</p></li>
 </ul>
 <p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns the <cite>d_in</cite>
-times <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a>. If <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a> is None, it returns infinity.</p>
+times <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">duplicate_flat_map</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">duplicate_flat_map</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1518,14 +1518,13 @@ IfGroupedBy(SymmetricDifference()).</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GroupingFlatMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowToRowsTransformation</span></code></a> to each row and flattens the result.</p>
-<p>A <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupingFlatMap</span></code></a> is a special case of a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a> that has
-different input and output metrics (a <cite>FlatMap</cite>’s input and output metrics are
-always identical) and allows for a tighter stability analysis.</p>
-<p>Compared to a regular <cite>FlatMap</cite>, a <cite>GroupingFlatMap</cite> also requires that:</p>
+<p>A <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupingFlatMap</span></code></a> is a special case of a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a> that allows
+for a tighter stability analysis.</p>
+<p>The requirements are that</p>
 <ol class="arabic simple">
 <li><p>The <cite>row_transformer</cite> creates a single column that is augmented to the input</p></li>
-<li><p>For each input row, the <cite>row_transformer</cite> creates no duplicate values in the
-created column (This is enforced by the implementation).</p></li>
+<li><p>For each input row, the values in the created column are distinct (This is
+enforced by the implementation).</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1586,23 +1585,12 @@ error will occur when the RowToRowTransformation is called on a row</p>
 </pre></div>
 </div>
 <dl>
-<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupingFlatMap</span></code></a> supports two different output metrics:</p>
-<ul class="simple">
-<li><p>IfGroupedBy(column=’new_column’, inner_metric=SumOf(SummetricDifference()))</p></li>
-<li><p>IfGroupedBy(column=’new_column’, inner_metric=RootSumOfSquared(SymmetricDifference()))</p></li>
-</ul>
-<p>The meth:<cite>~.stability_function</cite> is different depending on the output
-metric:</p>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupingFlatMap</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap.stability_function" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> has two cases:</p>
 <p>If the inner metric is <cite>SumOf(SymmetricDifference())</cite>, <cite>d_out</cite> is</p>
 <blockquote>
 <div><p><cite>d_in * self.max_num_rows</cite></p>
 </div></blockquote>
-<p>If the inner metric is <cite>RootSumOfSquares(SymmetricDifference())</cite>, we
-can use the added structure of the <cite>row_transformer</cite> to achieve a
-tighter analysis. We know that for each input row, the function will
-produce at most one output row per value of the new column, so in total
-we can produce up to <cite>d_in</cite> rows for each of up to <cite>self.max_num_rows</cite>
-values of the new column. Therefore, under <cite>RootSumOfSquares</cite>, <cite>d_out</cite> is</p>
+<p>If the inner metric is <cite>RootSumOfSquared(SymmetricDifference())</cite>, <cite>d_out</cite> is</p>
 <blockquote>
 <div><p><cite>d_in * sqrt(self.max_num_rows)</cite></p>
 </div></blockquote>
@@ -2013,7 +2001,7 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
   </div>
   
   <div class="footer-item">
-    Built from c9f9e12d at 2024-02-21 17:12.
+    Built from 839140cc at 2023-11-29 14:16.
   </div>
   
   <div class="footer-item">
