@@ -305,7 +305,7 @@ Classes
       Session and all of the tables it contains.
 
       If ``obj`` is a :class:`~tmlt.analytics.query_builder.QueryBuilder` or
-      :class:`~tmlt.analytics.query_expr.QueryExpr`, ``session.describe(obj)``
+      :class:`~tmlt.analytics.query_builder.Query`, ``session.describe(obj)``
       will describe the table that would result from that query if it were
       applied to the Session.
 
@@ -336,23 +336,26 @@ Classes
       The session has a remaining privacy budget of PureDPBudget(epsilon=1).
       The following private tables are available:
       Table 'my_private_data' (no constraints):
-          Columns:
-              - 'A'  VARCHAR
-              - 'B'  INTEGER
-              - 'X'  INTEGER
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        True
+      X              INTEGER        True
       >>> # describe a query object
       >>> query = QueryBuilder("my_private_data").drop_null_and_nan(["B", "X"])
       >>> sess.describe(query) # doctest: +NORMALIZE_WHITESPACE
-      Columns:
-          - 'A'  VARCHAR
-          - 'B'  INTEGER, not null
-          - 'X'  INTEGER, not null
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        False
+      X              INTEGER        False
       >>> # describe a table by name
       >>> sess.describe("my_private_data") # doctest: +NORMALIZE_WHITESPACE
-      Columns:
-          - 'A'  VARCHAR
-          - 'B'  INTEGER
-          - 'X'  INTEGER
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        True
+      X              INTEGER        True
 
       :param obj: The table or query to be described, or None to describe the
                   whole Session.

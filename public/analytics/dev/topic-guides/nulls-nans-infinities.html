@@ -521,18 +521,20 @@ contains those values:</p>
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.QueryBuilder.flat_map()</span></code></a> are assumed to contain
 null values. If those columns are DECIMAL columns, they are also
 assumed to potentially contain NaN or infinite values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
     <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">1.5</span><span class="p">},</span>
     <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="s2">&quot;DECIMAL&quot;</span><span class="p">},</span>
     <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">query_expr</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">schema_new_columns</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">session_with_nulls</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Schema({&#39;new&#39;: ColumnDescriptor(column_type=ColumnType.DECIMAL,
-                                allow_null=True,
-                                allow_nan=True,
-                                allow_inf=True)})
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Column Name    Column Type    Nullable    NaN Allowed    Infinity Allowed
+-------------  -------------  ----------  -------------  ------------------
+name           VARCHAR        True
+age            INTEGER        True
+grade          DECIMAL        True        True           True
+new            DECIMAL        True        True           True
 </pre></div>
 </div>
 <p>If you pass in a full <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.query_builder.ColumnDescriptor</span></code></a>, then you can specify whether new
@@ -544,18 +546,20 @@ columns can contain null, NaN, or infinite values:</p>
     <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">allow_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)}</span>
-<span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;private&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
     <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">1.5</span><span class="p">},</span>
     <span class="n">new_column_types</span><span class="o">=</span><span class="n">new_column_types</span><span class="p">,</span>
     <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">query_expr</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">schema_new_columns</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">session_with_nulls</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Schema({&#39;new&#39;: ColumnDescriptor(column_type=ColumnType.DECIMAL,
-                                allow_null=False,
-                                allow_nan=False,
-                                allow_inf=False)})
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Column Name    Column Type    Nullable    NaN Allowed    Infinity Allowed
+-------------  -------------  ----------  -------------  ------------------
+name           VARCHAR        True
+age            INTEGER        True
+grade          DECIMAL        True        True           True
+new            DECIMAL        True        False          False
 </pre></div>
 </div>
 <p>If you do this, it is your responsibility to ensure that the mapping
@@ -835,7 +839,7 @@ performing your aggregation.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from e5a18e84 at 2024-07-24 18:09.</div>
+Built from 1a86ece6 at 2024-07-24 21:08.</div>
       
     </div>
   

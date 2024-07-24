@@ -78,12 +78,14 @@ Classes
      - Information about a column.
    * - :class:`.ColumnType`
      - The supported SQL92 column types for Analytics data.
+   * - :class:`.Query`
+     - Instances of the Query class represent expressions within Tumult Analytics.
+   * - :class:`.GroupbyCountQuery`
+     - Stores the plan for a differentially private groupby count calculation.
    * - :class:`.QueryBuilder`
      - High-level interface for specifying DP queries.
    * - :class:`.GroupedQueryBuilder`
      - A QueryBuilder that is grouped by a set of columns and can be aggregated.
-   * - :class:`.AggregatedQueryBuilder`
-     - A query builder for post-processing aggregated data.
 
    
 ..
@@ -564,6 +566,114 @@ Classes
        this logic can go away.
 
 
+.. py:class:: Query
+
+
+   Instances of the Query class represent expressions within Tumult Analytics.
+
+   A Query and its subclasses should not be directly constructed or deconstructed;
+   use :class:`~tmlt.analytics.query_builder.QueryBuilder` to create them.
+   A Query can be passed to :meth:`~tmlt.analytics.session.Session.evaluate` in order
+   to evaluate the query and obtain differentially private results.
+
+
+
+
+
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: GroupbyCountQuery
+
+
+   Bases: :py:obj:`Query`
+
+   Stores the plan for a differentially private groupby count calculation.
+
+
+
+
+
+
+
+   .. py:method:: suppress(threshold)
+
+      Returns a SuppressAggregates query that is ready to be evaluated.
+
+      ..
+          >>> from tmlt.analytics.privacy_budget import PureDPBudget
+          >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> import tmlt.analytics.session
+          >>> import pandas as pd
+          >>> from pyspark.sql import SparkSession
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> my_private_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+
+      .. rubric:: Example
+
+      >>> budget = PureDPBudget(float("inf"))
+      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      ...     privacy_budget=budget,
+      ...     source_id="my_private_data",
+      ...     dataframe=my_private_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> my_private_data.toPandas()
+         A  B  X
+      0  0  1  0
+      1  1  0  1
+      2  1  2  1
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_schema("my_private_data").column_types
+      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> # Building a groupby count query and suppressing results < 1
+      >>> query = (
+      ...     QueryBuilder("my_private_data")
+      ...     .groupby(KeySet.from_dict({"A": ["0", "1", "2"]}))
+      ...     .count()
+      ...     .suppress(1)
+      ... )
+      >>> # Answering the query with infinite privacy budget
+      >>> answer = sess.evaluate(
+      ...     query,
+      ...     PureDPBudget(float("inf"))
+      ... )
+      >>> answer.sort("A").toPandas()
+         A  count
+      0  0      1
+      1  1      2
+
+      :param threshold: Threshold value. All results with a lower value in the
+                        aggregated column will be suppressed.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
 .. py:class:: QueryBuilder(source_id)
 
 
@@ -619,11 +729,6 @@ Classes
    0      3
 
 
-
-   .. list-table:: Properties
-
-      * - :attr:`query_expr`
-        - Returns the query_expr being built.
 
    .. list-table:: Methods
 
@@ -684,11 +789,6 @@ Classes
 
 
 
-
-   .. py:property:: query_expr
-      :type: tmlt.analytics._query_expr.QueryExpr
-
-      Returns the query_expr being built.
 
 
    .. automethod:: __init__
@@ -906,8 +1006,7 @@ Classes
       >>> sess.create_view(
       ...     QueryBuilder("my_private_data")
       ...     .select(["A", "X"])
-      ...     .rename({"X": "C"})
-      ...     .query_expr,
+      ...     .rename({"X": "C"}),
       ...     source_id="my_private_view",
       ...     cache=False
       ... )
@@ -2833,16 +2932,11 @@ Classes
 
 
 
-   .. py:property:: query_expr
-      :type: tmlt.analytics._query_expr.QueryExpr
-
-      Get the query expression being built.
-
 
    .. automethod:: __init__
    .. py:method:: count(name = None, mechanism = CountMechanism.DEFAULT)
 
-      Returns an AggregatedQueryBuilder with a count query.
+      Returns a GroupedCountQuery with a count query.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2899,7 +2993,7 @@ Classes
 
    .. py:method:: count_distinct(columns = None, name = None, mechanism = CountDistinctMechanism.DEFAULT, cols = None)
 
-      Returns an AggregatedQueryBuilder with a count_distinct query.
+      Returns a Query with a count_distinct query.
 
       ..
           >>> from tmlt.analytics.privacy_budget import PureDPBudget
@@ -2963,7 +3057,7 @@ Classes
 
    .. py:method:: quantile(column, quantile, low, high, name = None)
 
-      Returns an AggregatedQueryBuilder with a quantile query.
+      Returns a Query with a quantile query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3033,7 +3127,7 @@ Classes
 
    .. py:method:: min(column, low, high, name = None)
 
-      Returns an AggregatedQueryBuilder with a quantile query requesting a minimum value.
+      Returns a Query with a quantile query requesting a minimum value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3105,7 +3199,7 @@ Classes
 
    .. py:method:: max(column, low, high, name = None)
 
-      Returns an AggregatedQueryBuilder with a quantile query requesting a maximum value.
+      Returns a Query with a quantile query requesting a maximum value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3177,7 +3271,7 @@ Classes
 
    .. py:method:: median(column, low, high, name = None)
 
-      Returns an AggregatedQueryBuilder with a quantile query requesting a median value.
+      Returns a Query with a quantile query requesting a median value.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3245,7 +3339,7 @@ Classes
 
    .. py:method:: sum(column, low, high, name = None, mechanism = SumMechanism.DEFAULT)
 
-      Returns an AggregatedQueryBuilder with a sum query.
+      Returns a Query with a sum query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3321,7 +3415,7 @@ Classes
 
    .. py:method:: average(column, low, high, name = None, mechanism = AverageMechanism.DEFAULT)
 
-      Returns an AggregatedQueryBuilder with an average query.
+      Returns a Query with an average query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3397,7 +3491,7 @@ Classes
 
    .. py:method:: variance(column, low, high, name = None, mechanism = VarianceMechanism.DEFAULT)
 
-      Returns an AggregatedQueryBuilder with a variance query.
+      Returns a Query with a variance query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3474,7 +3568,7 @@ Classes
 
    .. py:method:: stdev(column, low, high, name = None, mechanism = StdevMechanism.DEFAULT)
 
-      Returns an AggregatedQueryBuilder with a standard deviation query.
+      Returns a Query with a standard deviation query.
 
       .. note::
           If the column being measured contains NaN or null values, a
@@ -3546,91 +3640,6 @@ Classes
                    ``f"{column}_stdev"``.
       :param mechanism: Choice of noise mechanism. By default, the framework
                         automatically selects an appropriate mechanism.
-
-
-
-   
-..
-    SPDX-License-Identifier: CC-BY-SA-4.0
-    Copyright Tumult Labs 2024
-
-.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
-       that appear in the deprecated query_expr module; once that module is removed,
-       this logic can go away.
-
-
-.. py:class:: AggregatedQueryBuilder(query_expr)
-
-
-   A query builder for post-processing aggregated data.
-
-
-
-
-
-
-   .. py:property:: query_expr
-      :type: tmlt.analytics._query_expr.QueryExpr
-
-      Get the aggregated query expression (before post-processing).
-
-
-   .. automethod:: __init__
-   .. py:method:: suppress(threshold)
-
-      Returns a SuppressAggregates query that is ready to be evaluated.
-
-      ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
-          >>> import pandas as pd
-          >>> from pyspark.sql import SparkSession
-          >>> spark = SparkSession.builder.getOrCreate()
-          >>> my_private_data = spark.createDataFrame(
-          ...     pd.DataFrame(
-          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
-          ...     )
-          ... )
-
-      .. rubric:: Example
-
-      >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
-      ...     privacy_budget=budget,
-      ...     source_id="my_private_data",
-      ...     dataframe=my_private_data,
-      ...     protected_change=AddOneRow(),
-      ... )
-      >>> my_private_data.toPandas()
-         A  B  X
-      0  0  1  0
-      1  1  0  1
-      2  1  2  1
-      >>> sess.private_sources
-      ['my_private_data']
-      >>> sess.get_schema("my_private_data").column_types
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
-      >>> # Building a groupby count query and suppressing results < 1
-      >>> query = (
-      ...     QueryBuilder("my_private_data")
-      ...     .groupby(KeySet.from_dict({"A": ["0", "1", "2"]}))
-      ...     .count()
-      ...     .suppress(1)
-      ... )
-      >>> # Answering the query with infinite privacy budget
-      >>> answer = sess.evaluate(
-      ...     query,
-      ...     PureDPBudget(float("inf"))
-      ... )
-      >>> answer.sort("A").toPandas()
-         A  count
-      0  0      1
-      1  1      2
-
-      :param threshold: Threshold value. All results with a lower value in the
-                        aggregated column will be suppressed.
 
 
 
