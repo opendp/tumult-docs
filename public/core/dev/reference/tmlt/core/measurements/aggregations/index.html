@@ -492,8 +492,8 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.aggregations.create_partition_selection_measurement" title="tmlt.core.measurements.aggregations.create_partition_selection_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_partition_selection_measurement()</span></code></a></p></td>
 <td><p>Returns a partition selection measurement.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.aggregations.create_bound_selection_measurement" title="tmlt.core.measurements.aggregations.create_bound_selection_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_bound_selection_measurement()</span></code></a></p></td>
-<td><p>Returns a bound selection measurement.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.aggregations.create_bounds_measurement" title="tmlt.core.measurements.aggregations.create_bounds_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_bounds_measurement()</span></code></a></p></td>
+<td><p>Returns a bounds measurement.</p></td>
 </tr>
 </tbody>
 </table>
@@ -960,30 +960,45 @@ will be named “count”.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tmlt.core.measurements.aggregations.create_bound_selection_measurement">
-<span class="sig-name descname"><span class="pre">create_bound_selection_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_bound_selection_measurement" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a bound selection measurement.</p>
-<p>A bound selection measurement created by this function will have a
+<dt class="sig sig-object py" id="tmlt.core.measurements.aggregations.create_bounds_measurement">
+<span class="sig-name descname"><span class="pre">create_bounds_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_bounds_measurement" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a bounds measurement.</p>
+<p>The bounds measurement returns either a tuple of <cite>(lower bound, upper_bound)</cite> if no
+groupby transformation is provided, or a dataframe with one column for the lower
+bound and one column for the upper bound if a groupby transformation is provided.</p>
+<p>The bounds measurement created by this function will have a
 privacy guarantee such that
-<code class="docutils literal notranslate"><span class="pre">measurement.privacy_function(d_in)</span> <span class="pre">=</span> <span class="pre">epsilon</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">measurement.privacy_function(d_in)</span> <span class="pre">=</span> <span class="pre">d_out</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>input_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>) – Distance metric on input DataFrames.</p></li>
 <li><p><strong>output_measure</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><em>tmlt.core.measures.PureDP</em></a><em>, </em><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.ApproxDP" title="tmlt.core.measures.ApproxDP"><em>tmlt.core.measures.ApproxDP</em></a><em>, </em><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><em>tmlt.core.measures.RhoZCDP</em></a><em>]</em>) – Desired privacy guarantee.</p></li>
 <li><p><strong>d_out</strong> (<em>tmlt.core.measures.PrivacyBudgetInput</em>) – Desired distance between output distributions w.r.t. <code class="docutils literal notranslate"><span class="pre">d_in</span></code>. This is
 interpreted as “epsilon” if output_measure is <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a>, “rho” if it
 is <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a>, and (“epsilon”, “delta”) if it is
 <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.ApproxDP" title="tmlt.core.measures.ApproxDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApproxDP</span></code></a>.</p></li>
-<li><p><strong>bound_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Column name to calculate the bounds for. The column
+<li><p><strong>measure_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Column name to calculate the bounds for. The column
 must be an integer or floating point column.</p></li>
 <li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The threshold for the bound selection measurement.</p></li>
 <li><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – The given d_in such that
 <code class="docutils literal notranslate"><span class="pre">measurement.privacy_function(d_in)</span> <span class="pre">=</span> <span class="pre">epsilon</span></code>.</p></li>
+<li><p><strong>groupby_transformation</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../transformations/spark_transformations/groupby/index.html#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><em>tmlt.core.transformations.spark_transformations.groupby.GroupBy</em></a><em>]</em>) – If provided, this measurement returns a DataFrame with
+noisy bounds for each group obtained by applying groupby.
+If None, this measurement outputs a single tuple - the noisy bounds.</p></li>
+<li><p><strong>upper_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – If a <cite>groupby_transformation</cite> is supplied, this is
+the column name to be used for the upper bound in the DataFrame
+output by the measurement. If None, this column will be named
+“upper_bound(&lt;measure_column&gt;)”.</p></li>
+<li><p><strong>lower_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – If a <cite>groupby_transformation</cite> is supplied, this is
+the column name to be used for the lower bound in the DataFrame
+output by the measurement. If None, this column will be named
+“lower_bound(&lt;measure_column&gt;)”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement">tmlt.core.measurements.base.Measurement</a></p>
+<dd class="field-even"><p>Union[<a class="reference internal" href="../postprocess/index.html#tmlt.core.measurements.postprocess.PostProcess" title="tmlt.core.measurements.postprocess.PostProcess">tmlt.core.measurements.postprocess.PostProcess</a>, <a class="reference internal" href="../converters/index.html#tmlt.core.measurements.converters.PureDPToApproxDP" title="tmlt.core.measurements.converters.PureDPToApproxDP">tmlt.core.measurements.converters.PureDPToApproxDP</a>, <a class="reference internal" href="../converters/index.html#tmlt.core.measurements.converters.PureDPToRhoZCDP" title="tmlt.core.measurements.converters.PureDPToRhoZCDP">tmlt.core.measurements.converters.PureDPToRhoZCDP</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1099,7 +1114,7 @@ must be an integer or floating point column.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.aggregations.create_quantile_measurement"><code class="docutils literal notranslate"><span class="pre">create_quantile_measurement()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.aggregations.get_midpoint"><code class="docutils literal notranslate"><span class="pre">get_midpoint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.aggregations.create_partition_selection_measurement"><code class="docutils literal notranslate"><span class="pre">create_partition_selection_measurement()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.aggregations.create_bound_selection_measurement"><code class="docutils literal notranslate"><span class="pre">create_bound_selection_measurement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.aggregations.create_bounds_measurement"><code class="docutils literal notranslate"><span class="pre">create_bounds_measurement()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
@@ -1148,7 +1163,7 @@ must be an integer or floating point column.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 2760a404 at 2024-07-17 20:56.</div>
+Built from 4735ca78 at 2024-07-24 18:51.</div>
       
         <div class="footer-item">
 

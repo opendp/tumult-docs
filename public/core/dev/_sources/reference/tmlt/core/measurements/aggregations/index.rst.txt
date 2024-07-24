@@ -44,8 +44,8 @@ Functions
      - Returns the midpoint of lower and upper.
    * - :func:`.create_partition_selection_measurement`
      - Returns a partition selection measurement.
-   * - :func:`.create_bound_selection_measurement`
-     - Returns a bound selection measurement.
+   * - :func:`.create_bounds_measurement`
+     - Returns a bounds measurement.
 
 .. py:function:: create_count_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, d_in = 1, groupby_transformation = None, count_column = None)
 
@@ -428,25 +428,41 @@ Functions
 
 
 
-.. py:function:: create_bound_selection_measurement(input_domain, output_measure, d_out, bound_column, threshold, d_in = 1)
+.. py:function:: create_bounds_measurement(input_domain, input_metric, output_measure, d_out, measure_column, threshold, d_in = 1, groupby_transformation = None, upper_bound_column = None, lower_bound_column = None)
 
-   Returns a bound selection measurement.
+   Returns a bounds measurement.
 
-   A bound selection measurement created by this function will have a
+   The bounds measurement returns either a tuple of `(lower bound, upper_bound)` if no
+   groupby transformation is provided, or a dataframe with one column for the lower
+   bound and one column for the upper bound if a groupby transformation is provided.
+
+   The bounds measurement created by this function will have a
    privacy guarantee such that
-   ``measurement.privacy_function(d_in) = epsilon``.
+   ``measurement.privacy_function(d_in) = d_out``.
 
    :param input_domain: Domain of the input Spark DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
    :param output_measure: Desired privacy guarantee.
    :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
                  interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
                  is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
                  :class:`~.ApproxDP`.
-   :param bound_column: Column name to calculate the bounds for. The column
-                        must be an integer or floating point column.
+   :param measure_column: Column name to calculate the bounds for. The column
+                          must be an integer or floating point column.
    :param threshold: The threshold for the bound selection measurement.
    :param d_in: The given d_in such that
                 ``measurement.privacy_function(d_in) = epsilon``.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy bounds for each group obtained by applying groupby.
+                                  If None, this measurement outputs a single tuple - the noisy bounds.
+   :param upper_bound_column: If a `groupby_transformation` is supplied, this is
+                              the column name to be used for the upper bound in the DataFrame
+                              output by the measurement. If None, this column will be named
+                              "upper_bound(<measure_column>)".
+   :param lower_bound_column: If a `groupby_transformation` is supplied, this is
+                              the column name to be used for the lower bound in the DataFrame
+                              output by the measurement. If None, this column will be named
+                              "lower_bound(<measure_column>)".
 
 
 

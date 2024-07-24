@@ -478,10 +478,13 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.Aggregate" title="tmlt.core.measurements.pandas_measurements.series.Aggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregate</span></code></a></p></td>
 <td><p>Aggregate a Pandas Series and produce a float or int.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile" title="tmlt.core.measurements.pandas_measurements.series.NoisyQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoisyQuantile</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds" title="tmlt.core.measurements.pandas_measurements.series.NoisyBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoisyBounds</span></code></a></p></td>
+<td><p>Estimates the bounds of a Pandas series.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile" title="tmlt.core.measurements.pandas_measurements.series.NoisyQuantile"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoisyQuantile</span></code></a></p></td>
 <td><p>Estimates the quantile of a Pandas Series.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries" title="tmlt.core.measurements.pandas_measurements.series.AddNoiseToSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddNoiseToSeries</span></code></a></p></td>
 <td><p>A measurement that adds noise to each value in a pandas Series.</p></td>
 </tr>
 </tbody>
@@ -608,6 +611,190 @@ this measurement within a udf.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.Aggregate.privacy_relation">
 <span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.Aggregate.privacy_relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <code class="docutils literal notranslate"><span class="pre">input_metric</span></code>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <code class="docutils literal notranslate"><span class="pre">output_measure</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NoisyBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.core.measurements.pandas_measurements.series.Aggregate" title="tmlt.core.measurements.pandas_measurements.series.Aggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aggregate</span></code></a></p>
+<p>Estimates the bounds of a Pandas series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasSeriesDomain" title="tmlt.core.domains.pandas_domains.PandasSeriesDomain"><em>tmlt.core.domains.pandas_domains.PandasSeriesDomain</em></a>) – </p></li>
+<li><p><strong>alpha</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – </p></li>
+<li><p><strong>threshold_fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><span class="pre">tmlt.core.utils.exact_number.ExactNumber</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.alpha" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the alpha.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.threshold_fraction">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_fraction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.threshold_fraction" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.splits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">splits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the splits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>], List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.element_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">element_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyDomain" title="tmlt.core.domains.numpy_domains.NumpyDomain"><span class="pre">tmlt.core.domains.numpy_domains.NumpyDomain</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.element_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the element type of the series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/numpy_domains/index.html#tmlt.core.domains.numpy_domains.NumpyDomain" title="tmlt.core.domains.numpy_domains.NumpyDomain">tmlt.core.domains.numpy_domains.NumpyDomain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_spark_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_spark_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.types.DataType.html#pyspark.sql.types.DataType" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.types.DataType</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_spark_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the output Spark type after being used as a UDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.types.DataType.html#pyspark.sql.types.DataType" title="(in PySpark vmaster)">pyspark.sql.types.DataType</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><span class="pre">tmlt.core.measures.Measure</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_measure" title="Permalink to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.is_interactive" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/pandas_domains/index.html#tmlt.core.domains.pandas_domains.PandasSeriesDomain" title="tmlt.core.domains.pandas_domains.PandasSeriesDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">PandasSeriesDomain</span></code></a></span>) – PandasSeriesDomain or either integers or floats.</p></li>
+<li><p><strong>alpha</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.13.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – The noise scale parameter for Geometric noise that will be added
+to true number of values falling between the tested bounds on each
+round of the algorithm.
+Noise with scale of <span class="math notranslate nohighlight">\(\alpha / 2\)</span> will be added
+to compute the threshold.
+See <a class="reference internal" href="../../noise_mechanisms/index.html#tmlt.core.measurements.noise_mechanisms.AddGeometricNoise" title="tmlt.core.measurements.noise_mechanisms.AddGeometricNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddGeometricNoise</span></code></a> for more information.</p></li>
+<li><p><strong>threshold_fraction</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The fraction of the total count to use as the threshold.
+This value should be between (0, 1]. By default it is set to 0.95.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture guide</a> for more
+information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__call__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the bounds for the given column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.2.0)"><em>pandas.Series</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_relation" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if close inputs produce close outputs.</p>
 <p>See the privacy and stability tutorial (add link?) for more information.</p>
 <dl class="field-list simple">
@@ -753,7 +940,7 @@ this measurement within a udf.</p></li>
 <li><p><strong>quantile</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The quantile to produce.</p></li>
 <li><p><strong>lower</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – The lower clamping bound.</p></li>
 <li><p><strong>upper</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – The upper clamping bound.</p></li>
-<li><p><strong>epsilon</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.13.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – The pure-dp privacy parameter to use to produce the quantile.</p></li>
+<li><p><strong>epsilon</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.13.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – The pure-dp privacy parameter to use to produce the quantile.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1021,6 +1208,22 @@ in input pandas Series.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.Aggregate.privacy_relation"><code class="docutils literal notranslate"><span class="pre">Aggregate.privacy_relation()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds"><code class="docutils literal notranslate"><span class="pre">NoisyBounds</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.alpha"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.alpha</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.threshold_fraction"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.threshold_fraction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.splits"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.splits</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.element_type"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.element_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_spark_type"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.output_spark_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_domain"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.input_metric"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.output_measure"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.output_measure</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.is_interactive"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.is_interactive</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__init__"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_function"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.privacy_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.__call__"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyBounds.privacy_relation"><code class="docutils literal notranslate"><span class="pre">NoisyBounds.privacy_relation()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile"><code class="docutils literal notranslate"><span class="pre">NoisyQuantile</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile.quantile"><code class="docutils literal notranslate"><span class="pre">NoisyQuantile.quantile</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.pandas_measurements.series.NoisyQuantile.lower"><code class="docutils literal notranslate"><span class="pre">NoisyQuantile.lower</span></code></a></li>
@@ -1088,7 +1291,7 @@ in input pandas Series.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 2760a404 at 2024-07-17 20:56.</div>
+Built from 4735ca78 at 2024-07-24 18:51.</div>
       
         <div class="footer-item">
 
