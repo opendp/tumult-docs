@@ -143,6 +143,8 @@ Classes
      - Applies a :class:`~.Filter` to create a new element from specified value.
    * - :class:`.PublicJoinValue`
      - Applies a :class:`~.PublicJoin` to create a new element from specified value.
+   * - :class:`.FlatMapByKeyValue`
+     - Applies a :class:`~.FlatMapByKey` to create a new element from specified value.
    * - :class:`.FlatMapValue`
      - Applies a :class:`~.FlatMap` to create a new element from specified value.
    * - :class:`.MapValue`
@@ -606,6 +608,90 @@ Classes
    Applies a :class:`~.PublicJoin` to create a new element from specified value.
 
    See :class:`~.TransformValue`, and :class:`~.PublicJoin` for more information.
+
+
+
+
+
+
+   .. py:property:: transformation
+      :type: tmlt.core.transformations.base.Transformation
+
+      Returns the transformation that will be applied to create the new element.
+
+   .. py:property:: key
+      :type: Any
+
+      Returns the key for the DataFrame to transform.
+
+   .. py:property:: new_key
+      :type: Any
+
+      Returns the new key for the transformed DataFrame.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: __call__(data)
+
+      Returns a new dictionary augmented with the transformed DataFrame.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: FlatMapByKeyValue(input_domain, input_metric, key, new_key, row_transformer)
+
+   Bases: :class:`TransformValue`
+
+   Applies a :class:`~.FlatMapByKey` to create a new element from specified value.
+
+   See :class:`~.TransformValue` and :class:`~.FlatMapByKey` for more information.
 
 
 

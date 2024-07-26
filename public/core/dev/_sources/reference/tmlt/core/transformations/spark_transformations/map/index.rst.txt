@@ -33,12 +33,16 @@ Classes
      - Transforms a single row into a different row using a user defined function.
    * - :class:`.RowToRowsTransformation`
      - Transforms a single row into multiple rows using a user defined function.
+   * - :class:`.RowsToRowsTransformation`
+     - Transforms a set of rows into another set of rows using a user-defined function.
    * - :class:`.FlatMap`
      - Applies a :class:`~.RowToRowsTransformation` to each row and flattens the result.
    * - :class:`.GroupingFlatMap`
      - Applies a :class:`~.RowToRowsTransformation` to each row and flattens the result.
    * - :class:`.Map`
      - Applies a :class:`~.RowToRowTransformation` to each row in a Spark DataFrame.
+   * - :class:`.FlatMapByKey`
+     - Applies a :class:`~.RowsToRowsTransformation` to rows, grouped by key.
 
    
 .. py:class:: RowToRowTransformation(input_domain, output_domain, trusted_f, augment)
@@ -49,10 +53,10 @@ Classes
 
    .. note::
        The transformation function must not contain any objects that
-       directly or indirectly reference Spark DataFrames or Spark contexts.
-       If the function does contain an object that directly or indirectly
-       references a Spark DataFrame or a Spark context, an
-       error will occur when the RowToRowTransformation is called on a row.
+       directly or indirectly reference Spark DataFrames or Spark contexts.  If
+       the function does contain an object that directly or indirectly
+       references a Spark DataFrame or a Spark context, an error will occur
+       when the transformation is called on a row.
 
    .. rubric:: Examples
 
@@ -216,10 +220,10 @@ Classes
 
    .. note::
        The transformation function must not contain any objects that
-       directly or indirectly reference Spark DataFrames or Spark contexts.
-       If the function does contain an object that directly or indirectly
-       references a Spark DataFrame or a Spark context, an
-       error will occur when the RowToRowTransformation is called on a row
+       directly or indirectly reference Spark DataFrames or Spark contexts.  If
+       the function does contain an object that directly or indirectly
+       references a Spark DataFrame or a Spark context, an error will occur
+       when the transformation is called on a row.
 
    .. rubric:: Examples
 
@@ -294,7 +298,7 @@ Classes
 
    Transformation Contract:
        * Input domain - :class:`~.SparkRowDomain`
-       * Output domain - :class:`~.SparkRowDomain`
+       * Output domain - :class:`~.ListDomain` of :class:`~.SparkRowDomain`
        * Input metric - :class:`~.NullMetric`
        * Output metric - :class:`~.NullMetric`
 
@@ -382,6 +386,136 @@ Classes
 
 
    
+.. py:class:: RowsToRowsTransformation(input_domain, output_domain, trusted_f)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Transforms a set of rows into another set of rows using a user-defined function.
+
+   .. note::
+       The transformation function must not contain any objects that
+       directly or indirectly reference Spark DataFrames or Spark contexts.  If
+       the function does contain an object that directly or indirectly
+       references a Spark DataFrame or a Spark context, an error will occur
+       when the transformation is called on a group of rows.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkRowDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> input = [Row(A='a1', B='b1'), Row(A='a2', B='b2')]
+
+   >>> # Example input
+   >>> input
+   [Row(A='a1', B='b1'), Row(A='a2', B='b2')]
+   >>> # Create user defined function
+   >>> def merge(rows: List[Row]) -> List[Row]:
+   ...     return [Row(A=' '.join(r.A for r in rows), B=' '.join(r.B for r in rows))]
+   >>> # Create transformation
+   >>> merge_transformation = RowsToRowsTransformation(
+   ...     input_domain=ListDomain(SparkRowDomain({
+   ...         "A": SparkStringColumnDescriptor(),
+   ...         "B": SparkStringColumnDescriptor(),
+   ...     })),
+   ...     output_domain=ListDomain(SparkRowDomain({
+   ...         "A": SparkStringColumnDescriptor(),
+   ...         "B": SparkStringColumnDescriptor(),
+   ...     })),
+   ...     trusted_f=merge,
+   ... )
+   >>> transformed_rows = merge_transformation(input)
+   >>> transformed_rows
+   [Row(A='a1 a2', B='b1 b2')]
+
+   Transformation Contract:
+       * Input domain - :class:`~.ListDomain` of :class:`~.SparkRowDomain`
+       * Output domain - :class:`~.ListDomain` of :class:`~.SparkRowDomain`
+       * Input metric - :class:`~.NullMetric`
+       * Output metric - :class:`~.NullMetric`
+
+       >>> merge_transformation.input_domain
+       ListDomain(element_domain=SparkRowDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)}), length=None)
+       >>> merge_transformation.output_domain
+       ListDomain(element_domain=SparkRowDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)}), length=None)
+       >>> merge_transformation.input_metric
+       NullMetric()
+       >>> merge_transformation.output_metric
+       NullMetric()
+
+       Stability Guarantee:
+           :class:`~.RowsToRowsTransformation` is not stable! Its
+           :meth:`~.stability_relation` always returns False, and its
+           :meth:`~.stability_function` always raises :class:`NotImplementedError`.
+
+
+
+
+
+
+   .. py:property:: trusted_f
+      :type: Callable[[List[pyspark.sql.Row]], Union[List[pyspark.sql.Row], List[Dict[str, Any]]]]
+
+      The function to be applied to each group of rows.
+
+      .. note:: Returned function object should not be mutated.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_relation(_, __)
+
+      Returns False.
+
+      No values are valid for input/output metrics of this transformation.
+
+
+   .. py:method:: __call__(rows)
+
+      Map row.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If not overridden.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
 .. py:class:: FlatMap(metric, row_transformer, max_num_rows)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
@@ -393,7 +527,7 @@ Classes
        directly or indirectly reference Spark DataFrames or Spark contexts.
        If the function does contain an object that directly or indirectly
        references a Spark DataFrame or a Spark context, an
-       error will occur when the RowToRowTransformation is called on a row
+       error will occur when the transformation is applied.
 
    .. rubric:: Example
 
@@ -543,10 +677,9 @@ Classes
    .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
-      Returns the smallest d_out satisfied by the transformation.
+      Returns the smallest ``d_out`` satisfied by the transformation.
 
-      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
-      for more information.
+      See :doc:`/topic-guides/architecture` for more information.
 
       :param d_in: Distance between inputs under input_metric.
 
@@ -595,7 +728,7 @@ Classes
        directly or indirectly reference Spark DataFrames or Spark contexts.
        If the function does contain an object that directly or indirectly
        references a Spark DataFrame or a Spark context, an
-       error will occur when the RowToRowTransformation is called on a row
+       error will occur when the transformation is applied.
 
    .. rubric:: Example
 
@@ -756,10 +889,9 @@ Classes
    .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
-      Returns the smallest d_out satisfied by the transformation.
+      Returns the smallest ``d_out`` satisfied by the transformation.
 
-      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
-      for more information.
+      See :doc:`/topic-guides/architecture` for more information.
 
       :param d_in: Distance between inputs under input_metric.
 
@@ -926,10 +1058,9 @@ Classes
    .. automethod:: __init__
    .. py:method:: stability_function(d_in)
 
-      Returns the smallest d_out satisfied by the transformation.
+      Returns the smallest ``d_out`` satisfied by the transformation.
 
-      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
-      for more information on transformations.
+      See :doc:`/topic-guides/architecture` for more information.
 
       :param d_in: Distance between inputs under input_metric.
 
@@ -937,6 +1068,163 @@ Classes
    .. py:method:: __call__(sdf)
 
       Return mapped DataFrame.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: FlatMapByKey(metric, row_transformer)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Applies a :class:`~.RowsToRowsTransformation` to rows, grouped by key.
+
+   .. note::
+       The transformation function must not contain any objects that
+       directly or indirectly reference Spark DataFrames or Spark contexts.
+       If the function does contain an object that directly or indirectly
+       references a Spark DataFrame or a Spark context, an
+       error will occur when the transformation is applied.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkRowDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> # Need to import this so that the tmlt namespace is included, otherwise
+       >>> # the udf fails to pickle the RowsToRowsTransformation
+       >>> from tmlt.core.transformations.spark_transformations.map import (
+       ...     RowsToRowsTransformation,
+       ...     FlatMapByKey,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "id": ["a", "b", "c", "c"],
+       ...             "v": [1, 2, 3, 4],
+       ...         }
+       ...     )
+       ... )
+       >>> def sum_v(rows: List[Row]) -> List[Row]:
+       ...     return [{"sum": sum(r["v"] for r in rows)}]
+       >>> sum_by_key_transformation = RowsToRowsTransformation(
+       ...     input_domain=ListDomain(SparkRowDomain({
+       ...         "id": SparkStringColumnDescriptor(),
+       ...         "v": SparkIntegerColumnDescriptor(),
+       ...     })),
+       ...     output_domain=ListDomain(
+       ...         SparkRowDomain({
+       ...             "sum": SparkIntegerColumnDescriptor(),
+       ...         })
+       ...     ),
+       ...     trusted_f=sum_v,
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+     id  v
+   0  a  1
+   1  b  2
+   2  c  3
+   3  c  4
+   >>> # sum_by_key_transformation is a RowsToRowsTransformation that sums column v
+   >>> # for each ID group.
+   >>> sum_by_key = FlatMapByKey(
+   ...     metric=IfGroupedBy("id", SymmetricDifference()),
+   ...     row_transformer=sum_by_key_transformation,
+   ... )
+   >>> # Apply transformation to data
+   >>> transformed_spark_dataframe = sum_by_key(spark_dataframe)
+   >>> print_sdf(transformed_spark_dataframe)
+     id  sum
+   0  a    1
+   1  b    2
+   2  c    7
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.IfGroupedBy` with
+         inner metric :class:`~.SymmetricDifference`
+       * Output metric - :class:`~.IfGroupedBy` (matches input metric)
+
+       >>> sum_by_key.input_domain
+       SparkDataFrameDomain(schema={'id': SparkStringColumnDescriptor(allow_null=False), 'v': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> sum_by_key.output_domain
+       SparkDataFrameDomain(schema={'id': SparkStringColumnDescriptor(allow_null=False), 'sum': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> sum_by_key.input_metric
+       IfGroupedBy(column='id', inner_metric=SymmetricDifference())
+       >>> sum_by_key.output_metric
+       IfGroupedBy(column='id', inner_metric=SymmetricDifference())
+
+       Stability Guarantee:
+           :class:`~.FlatMapByKey`'s :meth:`~.stability_function` returns ``d_in``.
+
+
+
+
+
+
+   .. py:property:: row_transformer
+      :type: RowsToRowsTransformation
+
+      Returns transformation object used for mapping rows to lists of rows.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest ``d_out`` satisfied by the transformation.
+
+      See :doc:`/topic-guides/architecture` for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Apply transformation.
 
 
    .. py:method:: stability_relation(d_in, d_out)
