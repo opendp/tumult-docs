@@ -1,0 +1,354 @@
+
+
+
+*******************
+exact_number
+*******************
+
+.. py:module:: tmlt.core.utils.exact_number
+
+.. autoapi-nested-parse::
+
+   Utilities for using exact representations of real numbers.
+
+   This module contains :class:`~.ExactNumber` and :data:`~.ExactNumberInput`.
+
+   :class:`~.ExactNumber`'s are used as inputs for components that privacy guarantees
+   depend on. They are used because they can be exactly represented and manipulated using
+   `SymPy <https://www.sympy.org/en/index.html>`_, which avoids errors such as privacy
+   violations due to numerical imprecision, as well as more mundane user errors from the
+   limitations of floating point arithmetic. See
+   :ref:`Handling Real Numbers <real-numbers>` for more information.
+
+   :data:`~.ExactNumberInput` 's are values which can be automatically converted into
+   :class:`~.ExactNumber` 's. They can be any of the following:
+
+   Any :class:`int` or :class:`fractions.Fraction`:
+       >>> ExactNumber(5)
+       5
+       >>> ExactNumber(-1000000000000000)
+       -1000000000000000
+       >>> ExactNumber(Fraction(1, 10))
+       1/10
+       >>> ExactNumber(Fraction(127, 128))
+       127/128
+
+   Any :class:`sympy.Expr` that meets all of the following criteria:
+       No free symbols
+
+       >>> x = sp.symbols("x")
+       >>> x_plus_1 = x + 1
+       >>> ExactNumber(x_plus_1) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: x + 1 contains free symbols
+       >>> ExactNumber(x_plus_1.subs(x, 3))
+       4
+
+       No undefined functions
+
+       >>> f = sp.core.function.Function('f')
+       >>> ExactNumber(f(2) + 1) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: f(2) + 1 has an undefined function
+       >>> f = sp.Lambda(x, x**2)
+       >>> ExactNumber(f(2) + 1)
+       5
+
+       No floating point values
+
+       >>> ExactNumber(sp.Float(3.14)) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: 3.14000000000000 is represented using floating point precision
+       >>> ExactNumber(sp.Float(3.14) * (sp.Integer(2) ** sp.pi)) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: 3.14*2**pi is invalid: 3.14000000000000 is represented using floating point precision
+       >>> ExactNumber(sp.Rational("3.14") * (sp.Float(3) ** sp.pi)) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: 157*3.0**pi/50 is invalid: Base of 3.0**pi is invalid: 3.00000000000000 is represented using floating point precision
+
+       Is a real number (or +/- infinity)
+
+       >>> i = sp.sqrt(sp.Integer(-1))
+       >>> ExactNumber(i) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: I has an imaginary component
+       >>> ExactNumber(1 + 2*i) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: 1 + 2*I has an imaginary component
+       >>> ExactNumber(i**2)
+       -1
+       >>> ExactNumber(sp.oo)
+       oo
+       >>> ExactNumber(-sp.oo)
+       -oo
+       >>> ExactNumber(1 + sp.oo*i) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: 1 + oo*I is invalid: oo*I is invalid: I has an imaginary component
+       >>> ExactNumber(sp.oo + i) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: oo + I is invalid: I has an imaginary component
+
+   Any :class:`str` that can be:
+       1. Exactly interpreted as a Rational number or
+       2. Converted to a valid :class:`sympy.Expr` by
+          :func:`sympy.parsing.sympy_parser.parse_expr`
+
+       >>> ExactNumber("0.5")
+       1/2
+       >>> ExactNumber("0.123456789")
+       123456789/1000000000
+       >>> ExactNumber("2 + 7**2")
+       51
+       >>> ExactNumber("2 * pi**2")
+       2*pi**2
+       >>> ExactNumber("sqrt(5/3)")
+       sqrt(15)/3
+       >>> ExactNumber("pi + I") # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: pi + I has an imaginary component
+       >>> ExactNumber("x + 1") # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: x + 1 contains free symbols
+
+   ``float('inf')`` and ``-float('inf')`` are allowed:
+       >>> ExactNumber(float('inf'))
+       oo
+       >>> ExactNumber(-float('inf'))
+       -oo
+       >>> ExactNumber(3.5) # doctest: +SKIP
+       Traceback (most recent call last):
+       core.exceptions.UnsupportedSympyExprError: Expected +/-float('inf'), not 3.5
+       <BLANKLINE>
+       Floating point values typically do not exactly represent the value they are intended to represent, and so are not automatically converted. See tmlt.core.utils.exact_number.from_float for more information.
+
+   Finally :class:`~.ExactNumber`'s are allowed:
+       >>> ExactNumber(ExactNumber(3))
+       3
+       >>> ExactNumber(ExactNumber("0.5"))
+       1/2
+
+   :class:`~.ExactNumber`'s support many common mathematical operations, and can be used in
+   combination with :data:`~.ExactNumberInput`'s.
+
+   .. rubric:: Examples
+
+   >>> ExactNumber(1) + ExactNumber("0.5")
+   3/2
+   >>> ExactNumber(sp.Integer(7)) - 3
+   4
+   >>> ExactNumber(5) ** 2
+   25
+   >>> -2 ** ExactNumber(Fraction(1, 2))
+   -sqrt(2)
+   >>> 2 / ExactNumber(6)
+   1/3
+
+
+
+
+
+
+
+
+
+Data
+====
+
+
+.. py:data:: ExactNumberInput
+
+   A type alias for exact representations of real numbers.
+
+   See :mod:`.exact_number` for more information.
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ExactNumber`
+     - An exact representation of a real number or +/- infinity.
+
+   
+.. py:class:: ExactNumber(value)
+
+   An exact representation of a real number or +/- infinity.
+
+   See :mod:`~tmlt.core.utils.exact_number` for more information and examples.
+
+
+
+   .. list-table:: Properties
+
+      * - :attr:`expr`
+        - Returns a :class:`sympy.Expr` representation.
+      * - :attr:`is_integer`
+        - Returns whether self represents an integer.
+      * - :attr:`is_finite`
+        - Returns whether self represents a finite number.
+
+   .. list-table:: Methods
+
+      * - :meth:`.to_float`
+        - Returns self as a float.
+      * - :meth:`.from_float`
+        - Returns an :class:`~.ExactNumber` from a :class:`float`.
+      * - :meth:`.__abs__`
+        - Returns absolute value of self.
+      * - :meth:`.__neg__`
+        - Returns the additive inverse of self.
+      * - :meth:`.__truediv__`
+        - Returns quotient from dividing self by other.
+      * - :meth:`.__rtruediv__`
+        - Returns quotient from dividing other by self.
+      * - :meth:`.__mul__`
+        - Returns product of self and other.
+      * - :meth:`.__add__`
+        - Returns sum of self and other.
+      * - :meth:`.__sub__`
+        - Returns difference of self and other.
+      * - :meth:`.__rsub__`
+        - Returns difference of other and self.
+      * - :meth:`.__pow__`
+        - Returns power obtained by raising self to other.
+      * - :meth:`.__rpow__`
+        - Returns power obtained by raising other to self.
+      * - :meth:`.__eq__`
+        - Returns True if other and self represent the same value.
+      * - :meth:`.__lt__`
+        - Returns True if self is strictly less than other.
+      * - :meth:`.__le__`
+        - Returns True if self is less than or equal to other.
+      * - :meth:`.__gt__`
+        - Returns True if self is strictly greater than other.
+      * - :meth:`.__ge__`
+        - Returns True if self is greater than or equal to other.
+
+
+
+
+   .. py:property:: expr
+      :type: sympy.Expr
+
+      Returns a :class:`sympy.Expr` representation.
+
+   .. py:property:: is_integer
+      :type: bool
+
+      Returns whether self represents an integer.
+
+   .. py:property:: is_finite
+      :type: bool
+
+      Returns whether self represents a finite number.
+
+
+   .. automethod:: __init__
+   .. py:method:: to_float(round_up)
+
+      Returns self as a float.
+
+      :param round_up: If True, the returned value is greater than or equal to self.
+                       Otherwise, it is less than or equal to self.
+
+
+   .. py:method:: from_float(value, round_up)
+      :staticmethod:
+
+
+      Returns an :class:`~.ExactNumber` from a :class:`float`.
+
+      .. warning::
+
+          Floating point values do not have the same algebraic properties as real
+          numbers (For example, operations such as addition and multiplication are not
+          associative or distributive). It is strongly recommended to use exact
+          representations where possible and to only use this method when an exact
+          representation is no longer needed.
+
+      :param value: A :class:`float` to convert to an :class:`~.ExactNumber`.
+      :param round_up: If True, returned value is greater than or equal to ``value``.
+                       Otherwise, it is less than or equal to ``value``.
+
+
+   .. py:method:: __abs__()
+
+      Returns absolute value of self.
+
+
+   .. py:method:: __neg__()
+
+      Returns the additive inverse of self.
+
+
+   .. py:method:: __truediv__(other)
+
+      Returns quotient from dividing self by other.
+
+
+   .. py:method:: __rtruediv__(other)
+
+      Returns quotient from dividing other by self.
+
+
+   .. py:method:: __mul__(other)
+
+      Returns product of self and other.
+
+
+   .. py:method:: __add__(other)
+
+      Returns sum of self and other.
+
+
+   .. py:method:: __sub__(other)
+
+      Returns difference of self and other.
+
+
+   .. py:method:: __rsub__(other)
+
+      Returns difference of other and self.
+
+
+   .. py:method:: __pow__(other)
+
+      Returns power obtained by raising self to other.
+
+
+   .. py:method:: __rpow__(other)
+
+      Returns power obtained by raising other to self.
+
+
+   .. py:method:: __eq__(other)
+
+      Returns True if other and self represent the same value.
+
+
+   .. py:method:: __lt__(other)
+
+      Returns True if self is strictly less than other.
+
+
+   .. py:method:: __le__(other)
+
+      Returns True if self is less than or equal to other.
+
+
+   .. py:method:: __gt__(other)
+
+      Returns True if self is strictly greater than other.
+
+
+   .. py:method:: __ge__(other)
+
+      Returns True if self is greater than or equal to other.
+
+
+
+
+
+

@@ -1,0 +1,466 @@
+
+
+
+*****************
+dictionary
+*****************
+
+.. py:module:: tmlt.core.transformations.dictionary
+
+.. autoapi-nested-parse::
+
+   Transformations and utilities for manipulating dictionaries.
+
+   Note that while most transformations in this module (:class:`~.CreateDictFromValue`,
+   :class:`~.Subset`, and :class:`~.GetValue`) support the metric :class:`~.AddRemoveKeys`,
+   :class:`~.AugmentDictTransformation` does not. Because of this, none of the included
+   derived transformations (such as :func:`create_copy_and_transform_value`) support
+   :class:`~.AddRemoveKeys`. Instead, use transformations in :mod:`~.add_remove_keys`.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.create_copy_and_transform_value`
+     - Returns a transformation that transforms and re-adds a value in the input dict.
+   * - :func:`.create_rename`
+     - Returns a transformation that renames a single key.
+   * - :func:`.create_apply_dict_of_transformations`
+     - Returns a transformation that applies all given transformations to the input.
+   * - :func:`.create_transform_value`
+     - Returns a transformation that transforms a single value in the input dict.
+   * - :func:`.create_transform_all_values`
+     - Returns a transformation that transforms every value in the input dict.
+
+.. py:function:: create_copy_and_transform_value(input_domain, input_metric, key, new_key, transformation, hint)
+
+   Returns a transformation that transforms and re-adds a value in the input dict.
+
+   The returned transformation has roughly the same behavior as
+
+   .. code-block:: python
+
+       def copy_and_transform_value(data):
+           data[new_key] = transformation(data[key])
+           return data
+
+   The input is a dictionary, a single value is transformed and added to
+   the dictionary at a new key. Note that the original value is left unchanged in the
+   dictionary.
+
+   :param input_domain: The domain for the input data.
+   :param input_metric: The metric for the input data.
+   :param key: The key containing the data to transform.
+   :param new_key: The key to store the transformed data.
+   :param transformation: The transformation to apply.
+   :param hint: A hint for the transformation.
+
+
+
+.. py:function:: create_rename(input_domain, input_metric, key, new_key)
+
+   Returns a transformation that renames a single key.
+
+   The returned transformation has roughly the same behavior as
+
+   .. code-block:: python
+
+       def rename(data):
+           data[new_key] = data.pop(key)
+           return data
+
+   :param input_domain: The domain for the input data.
+   :param input_metric: The metric for the input data.
+   :param key: The original key.
+   :param new_key: The new key.
+
+
+
+.. py:function:: create_apply_dict_of_transformations(transformation_dict, hint_dict)
+
+   Returns a transformation that applies all given transformations to the input.
+
+   The returned transformation has roughly the same behavior as
+
+   .. code-block:: python
+
+       def apply_dict_of_transformations(data):
+           return {
+               key: transformation(data)
+               for key, transformation in transformation_dict.items()
+           }
+
+   The input is a single element, and the output is a dictionary where
+   each value is the input transformed by the corresponding transformation.
+
+   :param transformation_dict: A dictionary of transformations with matching input domains
+                               and input metrics.
+   :param hint_dict: A dictionary of hints for the corresponding transformations in
+                     transformation_dict.
+
+
+
+.. py:function:: create_transform_value(input_domain, input_metric, key, transformation, hint)
+
+   Returns a transformation that transforms a single value in the input dict.
+
+   The returned transformation has roughly the same behavior as
+
+   .. code-block:: python
+
+       def transform_value(data):
+           data[key] = transformation(data[key])
+           return data
+
+   Notice that the input is a dictionary, a single value is transformed, while the
+   other values are left unchanged.
+
+   :param input_domain: The domain for the input data.
+   :param input_metric: The metric for the input data.
+   :param key: The key to transform.
+   :param transformation: The transformation to apply.
+   :param hint: A hint for the transformation.
+
+
+
+.. py:function:: create_transform_all_values(transformation_dict, hint_dict)
+
+   Returns a transformation that transforms every value in the input dict.
+
+   The returned transformation has roughly the same behavior as
+
+   .. code-block:: python
+
+       def transform_all_values(data):
+           return {
+               key: transformation(data[key])
+               for key, transformation in transformation_dict.items()
+           }
+
+   Notice that the input is a dictionary, and each value in the dictionary is
+   transformed by the corresponding transformation.
+
+   :param transformation_dict: A dictionary of transformations with matching input domains
+                               and input metrics.
+   :param hint_dict: A dictionary of hints for the corresponding transformations in
+                     transformation_dict.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.CreateDictFromValue`
+     - Create a dictionary from an object.
+   * - :class:`.AugmentDictTransformation`
+     - Applies transformation to a dictionary and appends the output to the input.
+   * - :class:`.Subset`
+     - Retrieve a subset of a dictionary by keys.
+   * - :class:`.GetValue`
+     - Retrieve an object from a dictionary.
+
+   
+.. py:class:: CreateDictFromValue(input_domain, input_metric, key, use_add_remove_keys = False)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Create a dictionary from an object.
+
+
+
+
+
+
+   .. py:property:: key
+      :type: Any
+
+      Returns the key for the created dictionary.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is {self.key: d_in}.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(val)
+
+      Returns dictionary with value associated with specified key.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: AugmentDictTransformation(transformation)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Applies transformation to a dictionary and appends the output to the input.
+
+
+
+
+
+
+   .. py:property:: inner_transformation
+      :type: tmlt.core.transformations.base.Transformation
+
+      Returns the inner transformation.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied.
+
+      Returns {\*\*d_in, \*\*self.transformation.stability_function(d_in)}.
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If self.inner_transformation.stability_function(d_in)
+          raises :class:`NotImplementedError`.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True if close inputs produce close outputs.
+
+      Returns True if both of the following are true:
+
+      * d_in[key] <= d_out[key] for all augmented keys.
+      * self.inner_transformation.stability_relation(d_in, original_d_out)
+
+      where original_d_out is the subset of d_out excluding the augmented keys.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __call__(input_dict)
+
+      Applies transformation on given key to produce augmented dictionary.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: Subset(input_domain, input_metric, keys)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Retrieve a subset of a dictionary by keys.
+
+
+
+
+
+
+   .. py:property:: keys
+      :type: List[Any]
+
+      Returns the keys to keep.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is {key: d_in[key] for key in self.keys}.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(input_dict)
+
+      Returns subset of dictionary specified by keys.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: GetValue(input_domain, input_metric, key)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Retrieve an object from a dictionary.
+
+
+
+
+
+
+   .. py:property:: key
+      :type: List[Any]
+
+      Returns the key to keep.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is d_in[self.key].
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(input_dict)
+
+      Returns value for specified key.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+
