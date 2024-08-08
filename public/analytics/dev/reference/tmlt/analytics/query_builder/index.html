@@ -2254,11 +2254,20 @@ any column marked as a <em>privacy ID</em> in a table with a
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.get_bounds">
-<span class="sig-name descname"><span class="pre">get_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.get_bounds" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.get_bounds" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a query that gets approximate upper and lower bounds for a column.</p>
-<p>The bounds are chosen so that most of the values fall between them. They can
-be used as the upper and lower bounds for any of the aggregations that require
-bounds, like sum or quantile.</p>
+<p>The bounds are selected to give good performance when used as upper and lower
+bounds in other aggregations. They may not be close to the actual maximum and
+minimum values, and are not designed to give a tight representation of the data
+distribution. For any purpose other than providing a lower and upper bound to
+other aggregations we suggest using the quantile aggregation instead.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values, a
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_null_and_nan()</span></code></a> query will be performed
+first. If the column being measured contains infinite values, a
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The algorithm is approximate, and differentially private, so the bounds
@@ -2287,13 +2296,20 @@ may not be tight, and not all input values may fall between them.</p>
 <span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span>
-<span class="go">(-128, 128)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   X_upper_bound  X_lower_bound</span>
+<span class="go">0            128           -128</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the column whose bounds we want to get.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the column whose bounds we want to get.</p></li>
+<li><p><strong>lower_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Name of the column to store the lower bound. Defaults to
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_lower_bound&quot;</span></code>.</p></li>
+<li><p><strong>upper_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Name of the column to store the upper bound. Defaults to
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_upper_bound&quot;</span></code>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.query_builder.Query" title="tmlt.analytics.query_builder.Query">Query</a></p>
@@ -3113,6 +3129,44 @@ automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GroupedQueryBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder" title="Permalink to this definition">#</a></dt>
 <dd><p>A QueryBuilder that is grouped by a set of columns and can be aggregated.</p>
+<table class="table" id="id2">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.count" title="tmlt.analytics.query_builder.GroupedQueryBuilder.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a></p></td>
+<td><p>Returns a GroupedCountQuery with a count query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct" title="tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a></p></td>
+<td><p>Returns a Query with a count_distinct query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.quantile" title="tmlt.analytics.query_builder.GroupedQueryBuilder.quantile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quantile()</span></code></a></p></td>
+<td><p>Returns a Query with a quantile query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.min" title="tmlt.analytics.query_builder.GroupedQueryBuilder.min"><code class="xref py py-meth docutils literal notranslate"><span class="pre">min()</span></code></a></p></td>
+<td><p>Returns a Query with a quantile query requesting a minimum value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.max" title="tmlt.analytics.query_builder.GroupedQueryBuilder.max"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max()</span></code></a></p></td>
+<td><p>Returns a Query with a quantile query requesting a maximum value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.median" title="tmlt.analytics.query_builder.GroupedQueryBuilder.median"><code class="xref py py-meth docutils literal notranslate"><span class="pre">median()</span></code></a></p></td>
+<td><p>Returns a Query with a quantile query requesting a median value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.sum" title="tmlt.analytics.query_builder.GroupedQueryBuilder.sum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sum()</span></code></a></p></td>
+<td><p>Returns a Query with a sum query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.average" title="tmlt.analytics.query_builder.GroupedQueryBuilder.average"><code class="xref py py-meth docutils literal notranslate"><span class="pre">average()</span></code></a></p></td>
+<td><p>Returns a Query with an average query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.variance" title="tmlt.analytics.query_builder.GroupedQueryBuilder.variance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">variance()</span></code></a></p></td>
+<td><p>Returns a Query with a variance query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.stdev" title="tmlt.analytics.query_builder.GroupedQueryBuilder.stdev"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stdev()</span></code></a></p></td>
+<td><p>Returns a Query with a standard deviation query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.get_bounds" title="tmlt.analytics.query_builder.GroupedQueryBuilder.get_bounds"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bounds()</span></code></a></p></td>
+<td><p>Returns an Query that gets approximate upper and lower bounds for a column.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.__init__" title="Permalink to this definition">#</a></dt>
@@ -3781,6 +3835,73 @@ automatically selects an appropriate mechanism.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.query_builder.GroupedQueryBuilder.get_bounds">
+<span class="sig-name descname"><span class="pre">get_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.get_bounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an Query that gets approximate upper and lower bounds for a column.</p>
+<p>The bounds are selected to give good performance when used as upper and lower
+bounds in other aggregations. They may not be close to the actual maximum and
+minimum values, and are not designed to give a tight representation of the data
+distribution. For any purpose other than providing a lower and upper bound to
+other aggregations we suggest using the quantile aggregation instead.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the column being measured contains NaN or null values, a
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_null_and_nan()</span></code></a> query will be performed
+first. If the column being measured contains infinite values, a
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The algorithm is approximate, and differentially private, so the bounds
+may not be tight, and not all input values may fall between them.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">[[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span>        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a get_groups query</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]}))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  X_upper_bound  X_lower_bound</span>
+<span class="go">0  0              1             -1</span>
+<span class="go">1  1             16            -16</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the column whose bounds we want to get.</p></li>
+<li><p><strong>lower_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Name of the column to store the lower bound. Defaults to
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_lower_bound&quot;</span></code>.</p></li>
+<li><p><strong>upper_bound_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – Name of the column to store the upper bound. Defaults to
+<code class="docutils literal notranslate"><span class="pre">f&quot;{column}_upper_bound&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.query_builder.Query" title="tmlt.analytics.query_builder.Query">Query</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -3960,6 +4081,7 @@ automatically selects an appropriate mechanism.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.average"><code class="docutils literal notranslate"><span class="pre">GroupedQueryBuilder.average()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.variance"><code class="docutils literal notranslate"><span class="pre">GroupedQueryBuilder.variance()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.stdev"><code class="docutils literal notranslate"><span class="pre">GroupedQueryBuilder.stdev()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.get_bounds"><code class="docutils literal notranslate"><span class="pre">GroupedQueryBuilder.get_bounds()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -4000,7 +4122,7 @@ automatically selects an appropriate mechanism.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 05d97ceb at 2024-08-08 19:23.</div>
+Built from e83df4e7 at 2024-08-08 19:29.</div>
       
     </div>
   

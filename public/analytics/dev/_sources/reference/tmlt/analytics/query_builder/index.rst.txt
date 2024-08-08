@@ -2023,13 +2023,21 @@ Classes
                       :class:`~tmlt.analytics.protected_change.AddRowsWithID`.
 
 
-   .. py:method:: get_bounds(column)
+   .. py:method:: get_bounds(column, lower_bound_column = None, upper_bound_column = None)
 
       Returns a query that gets approximate upper and lower bounds for a column.
 
-      The bounds are chosen so that most of the values fall between them. They can
-      be used as the upper and lower bounds for any of the aggregations that require
-      bounds, like sum or quantile.
+      The bounds are selected to give good performance when used as upper and lower
+      bounds in other aggregations. They may not be close to the actual maximum and
+      minimum values, and are not designed to give a tight representation of the data
+      distribution. For any purpose other than providing a lower and upper bound to
+      other aggregations we suggest using the quantile aggregation instead.
+
+      .. note::
+          If the column being measured contains NaN or null values, a
+          :meth:`~QueryBuilder.drop_null_and_nan` query will be performed
+          first. If the column being measured contains infinite values, a
+          :meth:`~QueryBuilder.drop_infinity` query will be performed first.
 
       .. note::
           The algorithm is approximate, and differentially private, so the bounds
@@ -2068,10 +2076,15 @@ Classes
       ...     query,
       ...     sess.remaining_privacy_budget
       ... )
-      >>> answer
-      (-128, 128)
+      >>> answer.toPandas()
+         X_upper_bound  X_lower_bound
+      0            128           -128
 
       :param column: Name of the column whose bounds we want to get.
+      :param lower_bound_column: Name of the column to store the lower bound. Defaults to
+                                 ``f"{column}_lower_bound"``.
+      :param upper_bound_column: Name of the column to store the upper bound. Defaults to
+                                 ``f"{column}_upper_bound"``.
 
 
    .. py:method:: groupby(by)
@@ -2939,6 +2952,31 @@ Classes
 
 
 
+   .. list-table:: Methods
+
+      * - :meth:`.count`
+        - Returns a GroupedCountQuery with a count query.
+      * - :meth:`.count_distinct`
+        - Returns a Query with a count_distinct query.
+      * - :meth:`.quantile`
+        - Returns a Query with a quantile query.
+      * - :meth:`.min`
+        - Returns a Query with a quantile query requesting a minimum value.
+      * - :meth:`.max`
+        - Returns a Query with a quantile query requesting a maximum value.
+      * - :meth:`.median`
+        - Returns a Query with a quantile query requesting a median value.
+      * - :meth:`.sum`
+        - Returns a Query with a sum query.
+      * - :meth:`.average`
+        - Returns a Query with an average query.
+      * - :meth:`.variance`
+        - Returns a Query with a variance query.
+      * - :meth:`.stdev`
+        - Returns a Query with a standard deviation query.
+      * - :meth:`.get_bounds`
+        - Returns an Query that gets approximate upper and lower bounds for a column.
+
 
 
 
@@ -3650,6 +3688,72 @@ Classes
                    ``f"{column}_stdev"``.
       :param mechanism: Choice of noise mechanism. By default, the framework
                         automatically selects an appropriate mechanism.
+
+
+   .. py:method:: get_bounds(column, lower_bound_column = None, upper_bound_column = None)
+
+      Returns an Query that gets approximate upper and lower bounds for a column.
+
+      The bounds are selected to give good performance when used as upper and lower
+      bounds in other aggregations. They may not be close to the actual maximum and
+      minimum values, and are not designed to give a tight representation of the data
+      distribution. For any purpose other than providing a lower and upper bound to
+      other aggregations we suggest using the quantile aggregation instead.
+
+      .. note::
+          If the column being measured contains NaN or null values, a
+          :meth:`~QueryBuilder.drop_null_and_nan` query will be performed
+          first. If the column being measured contains infinite values, a
+          :meth:`~QueryBuilder.drop_infinity` query will be performed first.
+
+      .. note::
+          The algorithm is approximate, and differentially private, so the bounds
+          may not be tight, and not all input values may fall between them.
+
+      ..
+          >>> from tmlt.analytics.privacy_budget import PureDPBudget
+          >>> from tmlt.analytics.protected_change import AddOneRow
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> import tmlt.analytics.session
+          >>> import pandas as pd
+          >>> from pyspark.sql import SparkSession
+          >>> spark = SparkSession.builder.getOrCreate()
+
+      .. rubric:: Example
+
+      >>> my_private_data = spark.createDataFrame(
+      ...     pd.DataFrame(
+      ...         [["0", 1, 0], ["1", 0, 10], ["1", 2, 10], ["2", 2, 1]],
+      ...         columns=["A", "B", "X"]
+      ...     )
+      ... )
+      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      ...     privacy_budget=PureDPBudget(float('inf')),
+      ...     source_id="my_private_data",
+      ...     dataframe=my_private_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> # Building a get_groups query
+      >>> query = (
+      ...     QueryBuilder("my_private_data")
+      ...     .groupby(KeySet.from_dict({"A": ["0", "1"]}))
+      ...     .get_bounds(column="X")
+      ... )
+      >>> # Answering the query with infinite privacy budget
+      >>> answer = sess.evaluate(
+      ...     query,
+      ...     sess.remaining_privacy_budget
+      ... )
+      >>> answer.sort("A").toPandas()
+         A  X_upper_bound  X_lower_bound
+      0  0              1             -1
+      1  1             16            -16
+
+      :param column: Name of the column whose bounds we want to get.
+      :param lower_bound_column: Name of the column to store the lower bound. Defaults to
+                                 ``f"{column}_lower_bound"``.
+      :param upper_bound_column: Name of the column to store the upper bound. Defaults to
+                                 ``f"{column}_upper_bound"``.
 
 
 
