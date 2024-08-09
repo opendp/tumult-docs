@@ -284,8 +284,8 @@ Classes
       ... )
       >>> sess.private_sources
       ['my_private_data']
-      >>> sess.get_schema("my_private_data").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
 
       :param privacy_budget: The total privacy budget allocated to this session.
       :param source_id: The source id for the private source dataframe.
@@ -446,8 +446,8 @@ Classes
       ... )
       >>> sess.public_sources
       ['my_public_data']
-      >>> sess.get_schema('my_public_data').column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'C': 'INTEGER'}
+      >>> sess.get_column_types("my_public_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'C': ColumnType.INTEGER}
 
       :param source_id: The name of the public data source.
       :param dataframe: The public data source corresponding to the ``source_id``.
@@ -482,8 +482,8 @@ Classes
 
       >>> sess.private_sources
       ['my_private_data']
-      >>> sess.get_schema("my_private_data").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
       >>> sess.remaining_privacy_budget
       PureDPBudget(epsilon=1)
       >>> # Evaluate Queries
@@ -536,8 +536,8 @@ Classes
 
       >>> sess.private_sources
       ['my_private_data']
-      >>> sess.get_schema("my_private_data").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
       >>> public_spark_data.toPandas()
          A  C
       0  0  0
@@ -558,8 +558,8 @@ Classes
       ... )
       >>> sess.private_sources
       ['private_public_join', 'my_private_data']
-      >>> sess.get_schema("private_public_join").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'C': 'INTEGER'}
+      >>> sess.get_column_types("private_public_join") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'C': ColumnType.INTEGER}
       >>> # Delete the view
       >>> sess.delete_view("private_public_join")
       >>> sess.private_sources
@@ -617,8 +617,8 @@ Classes
 
       >>> sess.private_sources
       ['my_private_data']
-      >>> sess.get_schema("my_private_data").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
       >>> sess.remaining_privacy_budget
       PureDPBudget(epsilon=1)
       >>> # Partition the Session
@@ -632,14 +632,14 @@ Classes
       PureDPBudget(epsilon=0.25)
       >>> new_sessions["part0"].private_sources
       ['part0']
-      >>> new_sessions["part0"].get_schema("part0").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> new_sessions["part0"].get_column_types("part0") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
       >>> new_sessions["part0"].remaining_privacy_budget
       PureDPBudget(epsilon=0.75)
       >>> new_sessions["part1"].private_sources
       ['part1']
-      >>> new_sessions["part1"].get_schema("part1").column_types # doctest: +NORMALIZE_WHITESPACE
-      {'A': 'VARCHAR', 'B': 'INTEGER', 'X': 'INTEGER'}
+      >>> new_sessions["part1"].get_column_types("part1") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
       >>> new_sessions["part1"].remaining_privacy_budget
       PureDPBudget(epsilon=0.75)
 
