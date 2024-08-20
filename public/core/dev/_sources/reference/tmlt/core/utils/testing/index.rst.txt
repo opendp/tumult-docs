@@ -26,6 +26,8 @@ Functions
 
 .. list-table::
 
+   * - :func:`.assert_dataframe_equal`
+     - Assert that two dataframes are equal.
    * - :func:`.get_all_props`
      - Returns all properties and fields of a component.
    * - :func:`.assert_property_immutability`
@@ -50,6 +52,20 @@ Functions
      - Get noise scale per output column for an aggregation.
    * - :func:`.get_prob_functions`
      - Returns probability mass/density functions for different noise mechanisms.
+
+.. py:function:: assert_dataframe_equal(actual, expected)
+
+   Assert that two dataframes are equal.
+
+   On PySpark 3.5 and above, if both inputs are Spark dataframes this method uses
+   :func:`pyspark.testing.assertDataFrameEqual` to compare them,
+   using its default options. In this case, the comparison is correct with
+   respect to NaNs and nulls as long as the input dataframes are Spark
+   dataframes. On older versions of Spark, this method falls back on comparing the
+   dataframes in Pandas in all cases, and null and NaN values may be considered
+   equal to one another.
+
+
 
 .. py:function:: get_all_props(Component)
 
