@@ -977,22 +977,18 @@ to evaluate the query and obtain differentially private results.</p>
 <span class="sig-name descname"><span class="pre">suppress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupbyCountQuery.suppress" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a SuppressAggregates query that is ready to be evaluated.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby count query and suppressing results &lt; 1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1031,22 +1027,18 @@ aggregated column will be suppressed.</p>
 <p>Each instance corresponds to applying a transformation.
 The full graph of QueryBuilder objects can be traversed from root to a node.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
@@ -1063,49 +1055,49 @@ The full graph of QueryBuilder objects can be traversed from root to a node.</p>
 <caption><span class="caption-text">Methods</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_public()</span></code></a></p></td>
-<td><p>Updates the current query to join with a dataframe or public source.</p></td>
+<td><p>Joins the table with a DataFrame or a public source.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a></p></td>
-<td><p>Updates the current query to join with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p></td>
+<td><p>Join the table with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace_null_and_nan()</span></code></a></p></td>
-<td><p>Updates the current query to replace null and NaN values in some columns.</p></td>
+<td><p>Replaces null and NaN values in specified columns.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.replace_infinity" title="tmlt.analytics.query_builder.QueryBuilder.replace_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace_infinity()</span></code></a></p></td>
-<td><p>Updates the current query to replace +inf and -inf values in some columns.</p></td>
+<td><p>Replaces +inf and -inf values in specified columns.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_null_and_nan()</span></code></a></p></td>
-<td><p>Updates the current query to drop rows containing null or NaN values.</p></td>
+<td><p>Removes rows containing null or NaN values.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a></p></td>
-<td><p>Updates the current query to drop rows containing infinite values.</p></td>
+<td><p>Remove rows containing infinite values.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.rename" title="tmlt.analytics.query_builder.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rename()</span></code></a></p></td>
-<td><p>Updates the current query to rename the columns.</p></td>
+<td><p>Renames one or more columns in the table.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.filter" title="tmlt.analytics.query_builder.QueryBuilder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a></p></td>
-<td><p>Updates the current query to filter for rows matching a condition.</p></td>
+<td><p>Filter rows matching a condition.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.select" title="tmlt.analytics.query_builder.QueryBuilder.select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select()</span></code></a></p></td>
-<td><p>Updates the current query to select certain columns.</p></td>
+<td><p>Selects the specified columns, dropping the others.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.map" title="tmlt.analytics.query_builder.QueryBuilder.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a></p></td>
-<td><p>Updates the current query to apply a mapping function to each row.</p></td>
+<td><p>Applies a mapping function to each row.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a></p></td>
-<td><p>Updates the current query to apply a flat map.</p></td>
+<td><p>Applies a mapping function to each row, returning zero or more rows.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map_by_id" title="tmlt.analytics.query_builder.QueryBuilder.flat_map_by_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map_by_id()</span></code></a></p></td>
-<td><p>Apply a transformation to each group of records sharing an ID.</p></td>
+<td><p>Applies a transformation to each group of records sharing an ID.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.bin_column" title="tmlt.analytics.query_builder.QueryBuilder.bin_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bin_column()</span></code></a></p></td>
-<td><p>Create a new column by assigning the values in a given column to bins.</p></td>
+<td><p>Creates a new column by assigning the values in a given column to bins.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.histogram" title="tmlt.analytics.query_builder.QueryBuilder.histogram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">histogram()</span></code></a></p></td>
 <td><p>Returns a count query containing the frequency of values in specified column.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.enforce" title="tmlt.analytics.query_builder.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enforce()</span></code></a></p></td>
-<td><p>Enforce a <a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Constraint</span></code></a> on the current table.</p></td>
+<td><p>Enforces a <a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a> on the table.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a></p></td>
 <td><p>Returns a query that gets combinations of values in the listed columns.</p></td>
@@ -1167,7 +1159,7 @@ The full graph of QueryBuilder objects can be traversed from root to a node.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.join_public">
 <span class="sig-name descname"><span class="pre">join_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inner'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to join with a dataframe or public source.</p>
+<dd><p>Joins the table with a DataFrame or a public source.</p>
 <p>This operation is either an inner or left join.</p>
 <p>This operation performs a natural join between two tables. This means
 that the resulting table will contain all columns unique to each input
@@ -1203,15 +1195,10 @@ will contain <span class="math notranslate nohighlight">\(X*Y\)</span> rows for 
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> must include the
 <em>privacy ID</em> column in the join columns.</p>
 </div>
+<p>An illustrated example can be found in the
+<a class="reference internal" href="../../../../tutorials/simple-transformations.html#public-joins"><span class="std std-ref">Simple transformations</span></a> tutorial.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   A  B  X</span>
 <span class="go">0  0  1  0</span>
 <span class="go">1  1  0  1</span>
@@ -1222,6 +1209,13 @@ will contain <span class="math notranslate nohighlight">\(X*Y\)</span> rows for 
 <span class="go">1  0  1</span>
 <span class="go">2  1  1</span>
 <span class="go">3  1  2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a query joining with public_data as a dataframe:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1258,10 +1252,10 @@ will contain <span class="math notranslate nohighlight">\(X*Y\)</span> rows for 
 <span class="go">0  0      1</span>
 <span class="go">1  1      3</span>
 <span class="go">2  2      2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The join can also be a left join. This is helpful if you want to keep</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># records which are not included in the table. One use for this is to</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># find the number of records which are or aren&#39;t not included in a</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># KeySet.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The join can also be a left join. This is helpful to keep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># records which are not included in the table. One use for this</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># is to find the number of records which are or are not</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># included in a KeySet.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">sf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
@@ -1302,32 +1296,34 @@ the tables will be joined on all common columns.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.join_private">
 <span class="sig-name descname"><span class="pre">join_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">right_operand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.join_private" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to join with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p>
-<p>The current query can also join with a named private table (represented
-as a string).</p>
-<p>This operation is an inner join.</p>
-<p>This operation is a natural join, with the same behavior and requirements as
-<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>.</p>
-<p>For operations on tables with a
+<dd><p>Join the table with another <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a>.</p>
+<p>The current query can also be joined with a named private table
+(represented as a string).</p>
+<p>This operation is an inner, natural join, with the same behavior and
+requirements as <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-func docutils literal notranslate"><span class="pre">join_public()</span></code></a>.</p>
+<p>Private joins on tables with a
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> that protects
 adding or removing rows (e.g.
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>), there is a key
-difference: before the join is performed, each table is <em>truncated</em>
-based on the corresponding
-<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>.</p>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>) require
+truncation, which is specified using the two
+<a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>
+arguments.</p>
 <p>In contrast, operations on tables with a
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
 <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> do not require a
 <a class="reference internal" href="../truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, as no
-truncation is necessary while performing the join.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Tables with a <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> of
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> must include the
-<em>privacy ID</em> column in the join columns.</p>
-</div>
+truncation is necessary to perform the join. In this case, the join
+columns must include the privacy ID columns of both tables, and these
+privacy ID columns must have the same name, and be in the same ID space.</p>
+<p>An example of a private join can be found in the
+<a class="reference internal" href="../../../../tutorials/more-with-privacy-ids.html#advanced-ids-features"><span class="std std-ref">Doing more with privacy IDs</span></a> tutorial.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
@@ -1335,15 +1331,6 @@ truncation is necessary while performing the join.</p>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">TruncationStrategy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
@@ -1415,7 +1402,7 @@ the tables will be joined on all common columns.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan">
 <span class="sig-name descname"><span class="pre">replace_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace_with</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.replace_null_and_nan" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to replace null and NaN values in some columns.</p>
+<dd><p>Replaces null and NaN values in specified columns.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Null values <em>cannot</em> be replaced in the ID column of a table initialized
@@ -1427,25 +1414,21 @@ with the grouping parameter set to True.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If null values are replaced in a column, then Analytics will raise
-an error if you use a KeySet with a null value for that column.</p>
+an error if a KeySet is used with a null value for that column.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">      A    B    X</span>
+<span class="go">0  None  0.0  0.0</span>
+<span class="go">1     1  NaN  1.1</span>
+<span class="go">2     2  2.0  NaN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">      A    B    X</span>
-<span class="go">0  None  0.0  0.0</span>
-<span class="go">1     1  NaN  1.1</span>
-<span class="go">2     2  2.0  NaN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.DECIMAL, &#39;X&#39;: ColumnType.DECIMAL}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a replace_null_and_nan transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1487,24 +1470,20 @@ values replaced with Analytics defaults; see <a class="reference internal" href=
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.replace_infinity">
 <span class="sig-name descname"><span class="pre">replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace_with</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.replace_infinity" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to replace +inf and -inf values in some columns.</p>
+<dd><p>Replaces +inf and -inf values in specified columns.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A    B    X</span>
+<span class="go">0  a1  0.0  0.0</span>
+<span class="go">1  a1  NaN -inf</span>
+<span class="go">2  a2  2.0  inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A    B    X</span>
-<span class="go">0  a1  0.0  0.0</span>
-<span class="go">1  a1  NaN -inf</span>
-<span class="go">2  a2  2.0  inf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.DECIMAL, &#39;X&#39;: ColumnType.DECIMAL}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a replace_infinity transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1543,38 +1522,36 @@ values replaced with Analytics defaults; see <a class="reference internal" href=
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan">
 <span class="sig-name descname"><span class="pre">drop_null_and_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.drop_null_and_nan" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to drop rows containing null or NaN values.</p>
+<dd><p>Removes rows containing null or NaN values.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Null values <em>cannot</em> be dropped in the ID column of a table initialized
-with a <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>, nor on a column
-generated by a <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>
-with the grouping parameter set to True.</p>
+<p>Null values <em>cannot</em> be dropped in the ID column of a table
+initialized with a
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>, nor on a
+column generated by a
+<a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a> with the
+grouping parameter set to True.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If null and NaN values are dropped from a column, then Analytics will
-raise an error if you use a <a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>
-that contains a null value for that column.</p>
+raise an error if a <a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> that
+contains a null value is used for that column.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A    B    X</span>
+<span class="go">0  a1  2.0  0.0</span>
+<span class="go">1  a1  NaN  1.1</span>
+<span class="go">2  a2  2.0  NaN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A    B    X</span>
-<span class="go">0  a1  2.0  0.0</span>
-<span class="go">1  a1  NaN  1.1</span>
-<span class="go">2  a2  2.0  NaN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.DECIMAL}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Count query on the original data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1626,24 +1603,20 @@ is in will be dropped.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.drop_infinity">
 <span class="sig-name descname"><span class="pre">drop_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to drop rows containing infinite values.</p>
+<dd><p>Remove rows containing infinite values.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A  B    X</span>
+<span class="go">0  a1  1  1.1</span>
+<span class="go">1  a1  2  0.0</span>
+<span class="go">2  a2  2  inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">    A  B    X</span>
-<span class="go">0  a1  1  1.1</span>
-<span class="go">1  a1  2  0.0</span>
-<span class="go">2  a2  2  inf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.DECIMAL}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Count query on the original data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1695,24 +1668,20 @@ then the row it is in will be dropped.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.rename">
 <span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_mapper</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to rename the columns.</p>
+<dd><p>Renames one or more columns in the table.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a rename transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1745,7 +1714,7 @@ Columns not specified in the mapper will remain the same.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.filter" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to filter for rows matching a condition.</p>
+<dd><p>Filter rows matching a condition.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">condition</span></code> parameter accepts the same syntax as in PySpark’s
 <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.filter.html#pyspark.sql.DataFrame.filter" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a> method: valid expressions are
 those that can be used in a <a class="reference external" href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-where.html">WHERE clause</a>
@@ -1760,22 +1729,18 @@ in Spark SQL. Examples of valid conditions include:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">&lt;</span> <span class="pre">'2022-01-01T12:45:00'</span></code></p></li>
 </ul>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a filter transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1807,22 +1772,20 @@ greater than column B.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.select">
 <span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.select" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to select certain columns.</p>
+<dd><p>Selects the specified columns, dropping the others.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a new view using a select query</span>
@@ -1849,27 +1812,27 @@ greater than column B.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.map">
 <span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.map" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to apply a mapping function to each row.</p>
-<p>If you provide only a ColumnType for the new column types, Analytics
-assumes that all new columns created may contain null values (and that
-DECIMAL columns may contain NaN or infinite values).</p>
+<dd><p>Applies a mapping function to each row.</p>
+<p>If the new column types are specified using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a> and not
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnDescriptor</span></code></a>, Tumult
+Analytics assumes that all new columns created may contain null values,
+and that DECIMAL columns may contain NaN or infinite values.</p>
+<p>An illustrated example can be found in the
+<a class="reference internal" href="../../../../tutorials/simple-transformations.html#maps"><span class="std std-ref">Simple transformations</span></a> tutorial.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a map transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -1924,33 +1887,33 @@ If False, make the new dataframe with schema = schema_new_columns</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.flat_map">
 <span class="sig-name descname"><span class="pre">flat_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the current query to apply a flat map.</p>
-<p>If you provide only a ColumnType for the new column types, Analytics
-assumes that all new columns created may contain null values (and that
-DECIMAL columns may contain NaN or infinite values).</p>
-<p>Operations on tables with a
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
-<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a> do not require a
-<code class="docutils literal notranslate"><span class="pre">max_rows</span></code> argument, since it is not necessary to impose a limit on
-the number of new rows.</p>
+<dd><p>Applies a mapping function to each row, returning zero or more rows.</p>
+<p>If the new column types are specified using
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnType" title="tmlt.analytics.query_builder.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnType</span></code></a> and not
+<a class="reference internal" href="#tmlt.analytics.query_builder.ColumnDescriptor" title="tmlt.analytics.query_builder.ColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnDescriptor</span></code></a>, Tumult
+Analytics assumes that all new columns created may contain null values,
+and that DECIMAL columns may contain NaN or infinite values.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> argument is ignored if the table was initialized with
+the <a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+<a class="reference internal" href="../protected_change/index.html#tmlt.analytics.protected_change.ProtectedChange" title="tmlt.analytics.protected_change.ProtectedChange"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedChange</span></code></a>. Otherwise, it
+is required (and enforced).</p>
+<p>The <a class="reference internal" href="../../../../tutorials/simple-transformations.html#flat-maps"><span class="std std-ref">Simple transformations</span></a> and
+<a class="reference internal" href="../../../../tutorials/more-with-privacy-ids.html#advanced-ids-features"><span class="std std-ref">Doing more with privacy IDs</span></a> tutorials
+contain illustrated examples of flat maps.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="go">3  1  3  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="go">3  1  3  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a flat map transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2020,7 +1983,7 @@ rows will be in the output.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.flat_map_by_id">
 <span class="sig-name descname"><span class="pre">flat_map_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column_types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.flat_map_by_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Apply a transformation to each group of records sharing an ID.</p>
+<dd><p>Applies a transformation to each group of records sharing an ID.</p>
 <p>Transforms groups of records that all share a common ID into a new group
 of records with that same ID based on a user-provided function. The
 number of rows produced does not have to match the number of input
@@ -2033,21 +1996,19 @@ output.</p>
 assumes that all new columns created may contain null values (and that
 DECIMAL columns may contain NaN or infinite values).</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">  id  A</span>
+<span class="go">0  0  1</span>
+<span class="go">1  1  0</span>
+<span class="go">2  1  1</span>
+<span class="go">3  1  4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">  id  A</span>
-<span class="go">0  0  1</span>
-<span class="go">1  1  0</span>
-<span class="go">2  1  1</span>
-<span class="go">3  1  4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;id&#39;: ColumnType.VARCHAR, &#39;A&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using flat_map_by_id, each ID&#39;s records are pre-summed before</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># computing a total sum, allowing less data loss than truncating</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># and clamping each row individually without having to add</span>
@@ -2106,16 +2067,11 @@ rows from <code class="docutils literal notranslate"><span class="pre">f</span><
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.bin_column">
 <span class="sig-name descname"><span class="pre">bin_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.bin_column" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a new column by assigning the values in a given column to bins.</p>
+<dd><p>Creates a new column by assigning the values in a given column to bins.</p>
+<p>An illustrated example can be found in the
+<a class="reference internal" href="../../../../tutorials/simple-transformations.html#binning"><span class="std std-ref">Simple transformations</span></a> tutorial.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.binning_spec</span> <span class="kn">import</span> <span class="n">BinningSpec</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)),</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private_data&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   age  income</span>
 <span class="go">0   11       0</span>
 <span class="go">1   17       6</span>
@@ -2127,6 +2083,13 @@ rows from <code class="docutils literal notranslate"><span class="pre">f</span><
 <span class="go">7   91      18</span>
 <span class="go">8   48      97</span>
 <span class="go">9   53      85</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.binning_spec</span> <span class="kn">import</span> <span class="n">BinningSpec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">age_binspec</span> <span class="o">=</span> <span class="n">BinningSpec</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">include_both_endpoints</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -2241,7 +2204,7 @@ the input column name with <code class="docutils literal notranslate"><span clas
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.enforce">
 <span class="sig-name descname"><span class="pre">enforce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.enforce" title="Permalink to this definition">#</a></dt>
-<dd><p>Enforce a <a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Constraint</span></code></a> on the current table.</p>
+<dd><p>Enforces a <a class="reference internal" href="../constraints/index.html#tmlt.analytics.constraints.Constraint" title="tmlt.analytics.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a> on the table.</p>
 <p>This method can be used to enforce constraints on the current table. See
 the <a class="reference internal" href="../constraints/index.html#module-tmlt.analytics.constraints" title="tmlt.analytics.constraints"><code class="xref py py-mod docutils literal notranslate"><span class="pre">constraints</span></code></a> module for information about the
 available constraints and what they are used for.</p>
@@ -2409,8 +2372,16 @@ may not be tight, and not all input values may fall between them.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.query_builder.QueryBuilder.groupby">
 <span class="sig-name descname"><span class="pre">groupby</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.QueryBuilder.groupby" title="Permalink to this definition">#</a></dt>
 <dd><p>Groups the query by the given set of keys, returning a GroupedQueryBuilder.</p>
+<p>The aggregation will return one row for each key in the KeySet; other
+values present in the data will be discarded.</p>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/groupby-queries.html#group-by-queries"><span class="std std-ref">Group-by queries</span></a> tutorial.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
@@ -2418,15 +2389,6 @@ may not be tight, and not all input values may fall between them.</p>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 </pre></div>
 </div>
 <dl>
@@ -2447,7 +2409,7 @@ may not be tight, and not all input values may fall between them.</p>
 </pre></div>
 </div>
 </dd>
-<dt>Answering a query with an omitted domain value:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">]})</span>
+<dt>Answering a query with omitted and added domain values:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_keys</span><span class="p">)</span>
@@ -2460,24 +2422,7 @@ may not be tight, and not all input values may fall between them.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   A  count</span>
 <span class="go">0  0      1</span>
-</pre></div>
-</div>
-</dd>
-<dt>Answering a query with an added domain value:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groupby_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_keys</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  count</span>
-<span class="go">0  0      1</span>
-<span class="go">1  1      2</span>
-<span class="go">2  2      0</span>
+<span class="go">1  2      0</span>
 </pre></div>
 </div>
 </dd>
@@ -2552,22 +2497,18 @@ possible for a non-DP query - including negative values. You can enforce
 non-negativity once the query returns its results; see the example below.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a count query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2618,23 +2559,19 @@ possible for a non-DP query - including negative values. You can enforce
 non-negativity once the query returns its results; see the example below.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  0  1  0</span>
+<span class="go">2  1  0  1</span>
+<span class="go">3  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  0  1  0</span>
-<span class="go">2  1  0  1</span>
-<span class="go">3  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a count_distinct query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2693,22 +2630,18 @@ column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2755,22 +2688,18 @@ column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2815,22 +2744,18 @@ column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2875,22 +2800,18 @@ column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -2943,24 +2864,21 @@ column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a sum query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3015,24 +2933,21 @@ column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building an average query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3087,24 +3002,22 @@ column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>Consult the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial
+for more information.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a variance query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3159,24 +3072,21 @@ column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a standard deviation query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3272,22 +3182,18 @@ automatically selects an appropriate mechanism.</p></li>
 <span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CountMechanism.DEFAULT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.count" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a GroupedCountQuery with a count query.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby count query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3324,23 +3230,19 @@ automatically selects an appropriate mechanism.</p></li>
 <span class="sig-name descname"><span class="pre">count_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CountDistinctMechanism.DEFAULT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.query_builder.GroupedQueryBuilder.count_distinct" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a Query with a count_distinct query.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  0  1  0</span>
+<span class="go">2  1  0  1</span>
+<span class="go">3  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  0  1  0</span>
-<span class="go">2  1  0  1</span>
-<span class="go">3  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby count_distinct query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3389,22 +3291,18 @@ first. If the column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3453,22 +3351,18 @@ first. If the column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3515,22 +3409,18 @@ first. If the column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3577,22 +3467,18 @@ first. If the column being measured contains infinite values, a
 <a class="reference internal" href="#tmlt.analytics.query_builder.QueryBuilder.drop_infinity" title="tmlt.analytics.query_builder.QueryBuilder.drop_infinity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop_infinity()</span></code></a> query will be performed first.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a quantile query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3647,24 +3533,21 @@ first. If the column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby sum query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3721,24 +3604,21 @@ first. If the column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby average query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3795,24 +3675,21 @@ first. If the column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby variance query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -3869,24 +3746,21 @@ first. If the column being measured contains infinite values, a
 <li><p>The narrower the range, the less noise. Larger bounds mean more data                 is kept, but more noise needs to be added to the result.</p></li>
 <li><p>The clamping bounds are assumed to be public information. Avoid using                 the private data to set these values.</p></li>
 </ol>
+<p>More information can be found in the <a class="reference internal" href="../../../../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">Numerical aggregations</span></a> tutorial.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B  X</span>
+<span class="go">0  0  1  0</span>
+<span class="go">1  1  0  1</span>
+<span class="go">2  1  2  1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
-<span class="go">   A  B  X</span>
-<span class="go">0  0  1  0</span>
-<span class="go">1  1  0  1</span>
-<span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a groupby standard deviation query</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
@@ -4211,7 +4085,7 @@ may not be tight, and not all input values may fall between them.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 960fe1f7 at 2024-08-20 19:04.</div>
+Built from f1b12d15 at 2024-08-21 14:11.</div>
       
     </div>
   
