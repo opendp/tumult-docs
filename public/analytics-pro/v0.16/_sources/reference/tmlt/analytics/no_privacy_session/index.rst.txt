@@ -1,0 +1,867 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*************************
+no_privacy_session
+*************************
+
+.. py:module:: tmlt.analytics.no_privacy_session
+
+.. autoapi-nested-parse::
+
+   |PRO| Interactive query evaluation without any privacy guarantees.
+
+   .. |Session| replace:: :class:`~.session.Session`
+   .. |NoPrivacySession| replace:: :class:`NoPrivacySession`
+
+   |NoPrivacySession| can be used to evaluate queries **without differential
+   privacy** while using the same syntax as the |Session|. It is
+   primarily meant to be used by :class:`~.tuner.SessionProgramTuner` to compute
+   baselines and error metrics for tuning :class:`~.SessionProgram`\ s; in most cases,
+   using the SessionProgramTuner (instead of using a |NoPrivacySession| directly)
+   is a better choice.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: NoPrivacySession(accountant, public_sources, session_data, options)
+
+
+   Bases: :py:obj:`tmlt.analytics.session.Session`
+
+   A |Session|-like interface for evaluating queries without privacy guarantees.
+
+   .. note::
+
+       |PRO_NOTE|
+
+   A |NoPrivacySession| can be used as a plug-and-play replacement for a
+   a |Session| to evaluate queries without some
+   or all of the differential privacy features. This is useful for generating baseline
+   outputs for DP programs, which is used for error measurement and tuning. See
+   :mod:`~.tuner` for more information.
+
+   |NoPrivacySession| has the exact same API as |Session|,
+   except it has additional options to configure how queries are evaluated. See
+   :class:`NoPrivacySession.Options` for more information about available options.
+   All valid Tumult Analytics programs can be converted to use non-private query
+   evaluation by replacing the |Session| with a
+   |NoPrivacySession|; the only thing that changes is how the queries are
+   evaluated.
+
+   As its name suggests, a |NoPrivacySession| **does not provide any privacy
+   guarantees.** Only use it during tuning, not deployment, and do not share or
+   publish its outputs. Additionally, there should be little reason to use
+   |NoPrivacySession| directly; instead, use tools in :mod:`~.tuner` which
+   rely on |NoPrivacySession| internally and allow for the same level of
+   configurability.
+
+   .. warning::
+       |NoPrivacySession|\ s should not be directly constructed. Instead, they
+       should be created using :meth:`NoPrivacySession.from_dataframe` or with a
+       :class:`NoPrivacySession.Builder`.
+
+
+
+   .. list-table:: Classes
+
+      * - :class:`.Builder`
+        - Builder for |NoPrivacySession|.
+      * - :class:`.Options`
+        - Configuration for how a |NoPrivacySession| evaluates queries.
+
+   .. list-table:: Properties
+
+      * - :attr:`options`
+        - Returns the query evaluation options for this |NoPrivacySession|.
+      * - :attr:`remaining_privacy_budget`
+        - Returns the remaining privacy_budget.
+      * - :attr:`private_sources`
+        - Returns the IDs of the private sources.
+      * - :attr:`public_sources`
+        - Returns the IDs of the public sources.
+      * - :attr:`public_source_dataframes`
+        - Returns a dictionary of public source DataFrames.
+
+   .. list-table:: Methods
+
+      * - :meth:`.from_dataframe`
+        - Initializes a |NoPrivacySession| from a Spark DataFrame.
+      * - :meth:`.evaluate`
+        - Answers a query without any privacy guarantees, returning a Spark DataFrame.
+      * - :meth:`.create_view`
+        - Creates a new view from a transformation and possibly cache it.
+      * - :meth:`.delete_view`
+        - Deletes a view and decaches it if it was cached.
+      * - :meth:`.partition_and_create`
+        - Returns new |NoPrivacySession|\ s for each partition.
+      * - :meth:`.describe`
+        - Describes this session, or one of its tables, or the result of a query.
+      * - :meth:`.get_schema`
+        - Returns the schema for any data source.
+      * - :meth:`.get_column_types`
+        - Returns the column types for any data source.
+      * - :meth:`.get_grouping_column`
+        - Returns an optional column that must be grouped by in this query.
+      * - :meth:`.get_id_column`
+        - Returns the ID column of a table, if it has one.
+      * - :meth:`.get_id_space`
+        - Returns the ID space of a table, if it has one.
+      * - :meth:`.add_public_dataframe`
+        - Adds a public data source to the session.
+      * - :meth:`.stop`
+        - Closes out this session, allowing other sessions to become active.
+
+
+   
+   ..
+       SPDX-License-Identifier: CC-BY-SA-4.0
+       Copyright Tumult Labs 2024
+
+   .. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+          that appear in the deprecated query_expr module; once that module is removed,
+          this logic can go away.
+
+
+   .. py:class:: Builder
+
+
+      Bases: :py:obj:`tmlt.analytics.session.Session.Builder`
+
+      Builder for |NoPrivacySession|.
+
+
+
+
+
+
+
+      .. py:method:: with_privacy_budget(privacy_budget)
+
+         Sets the privacy budget applied to this |NoPrivacySession|.
+
+         Privacy budget accounting works in the same way as in
+         |Session|: it gets “spent” in the same way, and query
+         evaluation stops when none is left, even though the |NoPrivacySession|
+         does not provide any privacy guarantee. This is to ensure compatibility
+         with programs that rely on privacy budget accounting behavior.
+
+
+      .. py:method:: build()
+
+         Builds |NoPrivacySession| with specified configuration.
+
+
+      .. py:method:: with_private_dataframe(source_id, dataframe, protected_change)
+
+         Adds a Spark DataFrame as a private source.
+
+         Not all Spark column types are supported in private sources; see
+         :data:`tmlt.analytics.session.SUPPORTED_SPARK_TYPES` for information about
+         which types are supported.
+
+         :param source_id: Source id for the private source dataframe.
+         :param dataframe: Private source dataframe to perform queries on,
+                           corresponding to the ``source_id``.
+         :param protected_change: A
+                                  :class:`~tmlt.analytics.protected_change.ProtectedChange`
+                                  specifying what changes to the input data should be protected.
+
+
+      .. py:method:: with_public_dataframe(source_id, dataframe)
+
+         Adds a public dataframe.
+
+
+      .. py:method:: with_id_space(id_space)
+
+         Adds an identifier space.
+
+         This defines a space of identifiers that map 1-to-1 to the identifiers
+         being protected by a table with the :class:`~.AddRowsWithID` protected
+         change. Any table with such a protected change must be a member of some
+         identifier space.
+
+
+
+   
+   ..
+       SPDX-License-Identifier: CC-BY-SA-4.0
+       Copyright Tumult Labs 2024
+
+   .. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+          that appear in the deprecated query_expr module; once that module is removed,
+          this logic can go away.
+
+
+   .. py:class:: Options(enforce_keysets = False, enforce_clamping_bounds = False, enforce_constraints = False, enforce_flat_map_truncation = False, enforce_private_join_truncation = False, enforce_suppression = False)
+
+
+      Configuration for how a |NoPrivacySession| evaluates queries.
+
+      All enforcement properties default to False when a |NoPrivacySession| is
+      created. This means that, by default, a |NoPrivacySession| ignores keysets,
+      clamping bounds, constraints, and truncations when evaluating queries.
+
+      These options for a |NoPrivacySession| can be modified at any point after a
+      |NoPrivacySession| is created. In particular, this allows you to evaluate
+      different queries with different options using the same |NoPrivacySession|.
+
+      .. rubric:: Example
+
+      ..
+          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> # Get data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> spark_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]],
+          ...         columns=["A", "B", "X"],
+          ...     )
+          ... )
+
+      >>> spark_data.toPandas()
+         A  B  X
+      0  0  1  0
+      1  1  0  1
+      2  1  2  1
+      >>> # Set up session
+      >>> sess = NoPrivacySession.from_dataframe(
+      ...     privacy_budget=PureDPBudget(3),
+      ...     source_id="my_private_data",
+      ...     dataframe=spark_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> # By default enforce_keysets is False
+      >>> sess.options.enforce_keysets
+      False
+      >>> keyset = KeySet.from_dict({"A": ["0", "2"]})
+      >>> sess.evaluate(
+      ...     QueryBuilder("my_private_data").groupby(keyset).count(),
+      ...     PureDPBudget(1),
+      ... ).toPandas()
+         A  count
+      0  0      1
+      1  1      2
+      >>> sess.options.enforce_keysets = True
+      >>> # Subsequent queries will use the provided keyset to answer GroupBy
+      >>> # queries
+      >>> sess.evaluate(
+      ...     QueryBuilder("my_private_data").groupby(keyset).count(),
+      ...     PureDPBudget(1),
+      ... ).toPandas()
+         A  count
+      0  0      1
+      1  2      0
+      >>> # The `enforce_keysets` option can be set to False once again
+      >>> # All subsequent queries will ignore the keyset (unless the option
+      >>> # is set to `True` again)
+      >>> sess.options.enforce_keysets = False
+      >>> sess.evaluate(
+      ...     QueryBuilder("my_private_data").groupby(keyset).count(),
+      ...     PureDPBudget(1),
+      ... ).toPandas()
+         A  count
+      0  0      1
+      1  1      2
+
+
+
+
+
+
+      .. py:property:: enforce_keysets
+         :type: bool
+
+         Whether :class:`~.KeySet`\ s will be used to answer GroupBy queries.
+
+         This option affects:
+
+         - :meth:`~tmlt.analytics.query_builder.QueryBuilder.groupby`
+
+           - Doesn't use the `keys` parameter, and also won't use a differentially
+             private mechanism to generate a keyset if `keys` aren't provided.
+
+         Defaults to False.
+
+      .. py:property:: enforce_clamping_bounds
+         :type: bool
+
+         Whether clamping bounds will be enforced when answering queries.
+
+         This option affects:
+
+         - All aggregations with `low` and `high` parameters,
+           e.g. :meth:`~.QueryBuilder.sum` and :meth:`~.QueryBuilder.quantile`
+
+         Defaults to False.
+
+      .. py:property:: enforce_constraints
+         :type: bool
+
+         Whether :class:`~.constraints.Constraint`\ s will be enforced.
+
+         This option affects:
+
+         - :meth:`~tmlt.analytics.query_builder.QueryBuilder.enforce`
+
+           - Doesn't apply the constraint to the private data. Note that enforce
+             still must be called with the required constraints to avoid the same
+             errors as in a private session.
+
+         Defaults to False.
+
+      .. py:property:: enforce_flat_map_truncation
+         :type: bool
+
+         Whether output of flat maps will be truncated.
+
+         This option affects:
+
+         - :meth:`~tmlt.analytics.query_builder.QueryBuilder.flat_map`
+
+           - Doesn't use the `max_rows` parameter.
+
+         Defaults to False.
+
+      .. py:property:: enforce_private_join_truncation
+         :type: bool
+
+         Whether truncation will be used in private joins.
+
+         This option affects:
+
+         - :meth:`~tmlt.analytics.query_builder.QueryBuilder.join_private`
+
+           - Doesn't use the `truncation_strategy_left` and
+             `truncation_strategy_right` parameters.
+
+         Defaults to False.
+
+      .. py:property:: enforce_suppression
+         :type: bool
+
+         Whether suppression will be enforced when running SuppressAggregates.
+
+         This option affects:
+
+         - :meth:`~tmlt.analytics.query_builder.GroupbyCountQuery.suppress`
+
+           - The original results of the query are returned when suppression is not
+             enforced.
+
+         Defaults to False.
+
+
+      .. automethod:: __init__
+      .. py:method:: __eq__(other)
+
+         Returns whether this object is equal to another object.
+
+
+
+
+
+   .. py:property:: options
+      :type: Options
+
+      Returns the query evaluation options for this |NoPrivacySession|.
+
+   .. py:property:: remaining_privacy_budget
+      :type: tmlt.analytics.privacy_budget.PrivacyBudget
+
+      Returns the remaining privacy_budget.
+
+      Privacy budget accounting works in the same way as in
+      |Session|: it gets “spent” in the same way, and query
+      evaluation stops when none is left, even though the |NoPrivacySession|
+      does not provide any privacy guarantee.
+
+   .. py:property:: private_sources
+      :type: List[str]
+
+      Returns the IDs of the private sources.
+
+   .. py:property:: public_sources
+      :type: List[str]
+
+      Returns the IDs of the public sources.
+
+   .. py:property:: public_source_dataframes
+      :type: Dict[str, pyspark.sql.DataFrame]
+
+      Returns a dictionary of public source DataFrames.
+
+
+   .. py:method:: from_dataframe(privacy_budget, source_id, dataframe, protected_change)
+      :classmethod:
+
+
+      Initializes a |NoPrivacySession| from a Spark DataFrame.
+
+      Only one data source is supported with this initialization
+      method; if you need multiple data sources, use
+      :class:`NoPrivacySession.Builder`.
+
+      Not all Spark column types are supported in sources; see
+      :data:`~.session.SUPPORTED_SPARK_TYPES` for information about which types are
+      supported.
+
+      ..
+          >>> # Set up data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> spark_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+
+      .. rubric:: Example
+
+      >>> spark_data.toPandas()
+         A  B  X
+      0  0  1  0
+      1  1  0  1
+      2  1  2  1
+      >>> # Declare budget for the session.
+      >>> session_budget = PureDPBudget(1)
+      >>> # Set up Session
+      >>> sess = NoPrivacySession.from_dataframe(
+      ...     privacy_budget=session_budget,
+      ...     source_id="my_private_data",
+      ...     dataframe=spark_data,
+      ...     protected_change=AddOneRow(),
+      ... )
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+
+      :param privacy_budget: The privacy budget for the session. If a non-infinite budget is provided, it
+                             will be replaced with an infinite budget of the same type.
+      :param source_id: The source ID for the source DataFrame.
+      :param dataframe: The source DataFrame to perform queries on,
+                        corresponding to the `source_id`.
+      :param protected_change: A
+                               :class:`~tmlt.analytics.protected_change.ProtectedChange`
+                               specifying what changes to the input data the resulting
+                               |NoPrivacySession| should protect.
+
+
+   .. py:method:: evaluate(query_expr, privacy_budget)
+
+      Answers a query without any privacy guarantees, returning a Spark DataFrame.
+
+      Note that query evaluation behavior depends on :attr:`options` (see
+      :class:`NoPrivacySession.Options` for more information).
+
+      The type of ``privacy_budget`` must match the type your |NoPrivacySession| was
+      initialized with (i.e., you cannot evaluate a query using RhoZCDPBudget if
+      this |NoPrivacySession| was initialized with a PureDPBudget, and vice versa).
+      And, even though it does not provide any privacy guarantees,
+      |NoPrivacySession| keeps tracks its privacy budget just like a
+      |Session|. In particular, this method "spends" the
+      specified ``privacy_budget``.
+
+      ..
+          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics.query_builder import QueryBuilder
+          >>> # Get data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+          >>> # Create NoPrivacySession
+          >>> sess = NoPrivacySession.from_dataframe(
+          ...     privacy_budget=PureDPBudget(1),
+          ...     source_id="my_private_data",
+          ...     dataframe=data,
+          ...     protected_change=AddOneRow(),
+          ... )
+
+      .. rubric:: Example
+
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+      >>> sess.remaining_privacy_budget
+      PureDPBudget(epsilon=1)
+      >>> # Evaluate Queries
+      >>> filter_query = QueryBuilder("my_private_data").filter("A > 0")
+      >>> count_query = filter_query.groupby(KeySet.from_dict({"X": [0, 1]})).count()
+      >>> count_answer = sess.evaluate(
+      ...     query_expr=count_query,
+      ...     privacy_budget=PureDPBudget(0.5),
+      ... )
+      >>> sum_query = filter_query.sum(column="B", low=0, high=1)
+      >>> sum_answer = sess.evaluate(
+      ...     query_expr=sum_query,
+      ...     privacy_budget=PureDPBudget(0.5),
+      ... )
+      >>> count_answer # TODO(#798): Seed randomness and change to toPandas()
+      DataFrame[X: bigint, count: bigint]
+      >>> sum_answer # TODO(#798): Seed randomness and change to toPandas()
+      DataFrame[B_sum: bigint]
+      >>> sess.remaining_privacy_budget
+      PureDPBudget(epsilon=0)
+
+      :param query_expr: One query expression to answer.
+      :param privacy_budget: The privacy budget used for the query.
+
+
+   .. py:method:: create_view(query_expr, source_id, cache)
+
+      Creates a new view from a transformation and possibly cache it.
+
+      ..
+          >>> # Get data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> private_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+          >>> public_spark_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 0], ["0", 1], ["1", 1], ["1", 2]], columns=["A", "C"]
+          ...     )
+          ... )
+          >>> # Create Session
+          >>> sess = Session.from_dataframe(
+          ...     privacy_budget=PureDPBudget(1),
+          ...     source_id="my_private_data",
+          ...     dataframe=private_data,
+          ...     protected_change=AddOneRow(),
+          ... )
+
+      .. rubric:: Example
+
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+      >>> public_spark_data.toPandas()
+         A  C
+      0  0  0
+      1  0  1
+      2  1  1
+      3  1  2
+      >>> sess.add_public_dataframe("my_public_data", public_spark_data)
+      >>> # Create a view
+      >>> join_query = (
+      ...     QueryBuilder("my_private_data")
+      ...     .join_public("my_public_data")
+      ...     .select(["A", "B", "C"])
+      ... )
+      >>> sess.create_view(
+      ...     join_query,
+      ...     source_id="private_public_join",
+      ...     cache=True
+      ... )
+      >>> sess.private_sources
+      ['private_public_join', 'my_private_data']
+      >>> sess.get_column_types("private_public_join") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'C': ColumnType.INTEGER}
+      >>> # Delete the view
+      >>> sess.delete_view("private_public_join")
+      >>> sess.private_sources
+      ['my_private_data']
+
+      :param query_expr: A query that performs a transformation.
+      :param source_id: The name, or unique identifier, of the view.
+      :param cache: Whether or not to cache the view.
+
+
+   .. py:method:: delete_view(source_id)
+
+      Deletes a view and decaches it if it was cached.
+
+      :param source_id: The name of the view.
+
+
+   .. py:method:: partition_and_create(source_id, privacy_budget, column, splits)
+
+      Returns new |NoPrivacySession|\ s for each partition.
+
+      This works exactly like :meth:`~.session.Session.partition_and_create`, but
+      returns |NoPrivacySession|\ s instead of :class:`~.session.Session`\ s.
+
+      ..
+          >>> # Get data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+          >>> # Create Session
+          >>> sess = NoPrivacySession.from_dataframe(
+          ...     privacy_budget=PureDPBudget(1),
+          ...     source_id="my_private_data",
+          ...     dataframe=data,
+          ...     protected_change=AddOneRow(),
+          ... )
+          >>> import doctest
+          >>> doctest.ELLIPSIS_MARKER = '...'
+
+      .. rubric:: Example
+
+      This example partitions the session into two sessions, one with A = "0" and
+      one with A = "1". Due to parallel composition, each of these sessions are
+      given the same budget, while only one count of that budget is deducted from
+      session.
+
+      Unlike :meth:`~.session.Session.partition_and_create`, the new sessions are
+      of type :class:`~.NoPrivacySession`, and so the result of the count query
+      is exact.
+
+      >>> sess.private_sources
+      ['my_private_data']
+      >>> sess.get_column_types("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+      >>> sess.remaining_privacy_budget
+      PureDPBudget(epsilon=1)
+      >>> # Partition the Session
+      >>> new_sessions = sess.partition_and_create(
+      ...     "my_private_data",
+      ...     privacy_budget=PureDPBudget(0.75),
+      ...     column="A",
+      ...     splits={"part0":"0", "part1":"1"}
+      ... )
+      >>> sess.remaining_privacy_budget
+      PureDPBudget(epsilon=0.25)
+      >>> # The new sessions are NoPrivacySessions
+      >>> isinstance(new_sessions["part0"], NoPrivacySession)
+      True
+      >>> new_sessions["part0"].private_sources
+      ['part0']
+      >>> new_sessions["part0"].get_column_types("part0") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+      >>> new_sessions["part0"].remaining_privacy_budget
+      PureDPBudget(epsilon=0.75)
+      >>> new_sessions["part1"].private_sources
+      ['part1']
+      >>> new_sessions["part1"].get_column_types("part1") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}
+      >>> new_sessions["part1"].remaining_privacy_budget
+      PureDPBudget(epsilon=0.75)
+
+      When you are done with a new session, you can use the
+      :meth:`NoPrivacySession.stop` method to allow the next one to become
+      active:
+
+      >>> new_sessions["part0"].stop()
+      >>> new_sessions["part1"].private_sources
+      ['part1']
+      >>> count_query = QueryBuilder("part1").count()
+      >>> count_answer = new_sessions["part1"].evaluate(
+      ...     count_query,
+      ...     PureDPBudget(0.75),
+      ... )
+
+      >>> # The result is exact, because new_sessions["part1"] is a NoPrivacySession
+      >>> count_answer.toPandas() # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS
+         count
+      0    2
+
+      :param source_id: The private source to partition.
+      :param privacy_budget: Privacy budget to pass to each new session.
+      :param column: The name of the column partitioning on.
+      :param splits: Mapping of split name to value of partition.
+                     Split name is ``source_id`` in new session.
+
+
+   .. py:method:: describe(obj = None)
+
+      Describes this session, or one of its tables, or the result of a query.
+
+      If ``obj`` is not specified, ``session.describe()`` will describe the
+      Session and all of the tables it contains.
+
+      If ``obj`` is a :class:`~tmlt.analytics.query_builder.QueryBuilder` or
+      :class:`~tmlt.analytics.query_builder.Query`, ``session.describe(obj)``
+      will describe the table that would result from that query if it were
+      applied to the Session.
+
+      If ``obj`` is a string, ``session.describe(obj)`` will describe the table
+      with that name. This is a shorthand for
+      ``session.describe(QueryBuilder(obj))``.
+
+      ..
+          >>> # Set up data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> spark_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+          >>> # construct session
+          >>> sess = Session.from_dataframe(
+          ...     PureDPBudget(1),
+          ...     "my_private_data",
+          ...     spark_data,
+          ...     protected_change=AddOneRow(),
+          ... )
+
+      .. rubric:: Examples
+
+      >>> # describe a session, "sess"
+      >>> sess.describe() # doctest: +NORMALIZE_WHITESPACE
+      The session has a remaining privacy budget of PureDPBudget(epsilon=1).
+      The following private tables are available:
+      Table 'my_private_data' (no constraints):
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        True
+      X              INTEGER        True
+      >>> # describe a query object
+      >>> query = QueryBuilder("my_private_data").drop_null_and_nan(["B", "X"])
+      >>> sess.describe(query) # doctest: +NORMALIZE_WHITESPACE
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        False
+      X              INTEGER        False
+      >>> # describe a table by name
+      >>> sess.describe("my_private_data") # doctest: +NORMALIZE_WHITESPACE
+      Column Name    Column Type    Nullable
+      -------------  -------------  ----------
+      A              VARCHAR        True
+      B              INTEGER        True
+      X              INTEGER        True
+
+      :param obj: The table or query to be described, or None to describe the
+                  whole Session.
+
+
+   .. py:method:: get_schema(source_id)
+
+      Returns the schema for any data source.
+
+      This includes information on whether the columns are nullable.
+
+      :param source_id: The ID for the data source whose column types
+                        are being retrieved.
+
+
+   .. py:method:: get_column_types(source_id)
+
+      Returns the column types for any data source.
+
+      This does *not* include information on whether the columns are nullable.
+
+
+   .. py:method:: get_grouping_column(source_id)
+
+      Returns an optional column that must be grouped by in this query.
+
+      When a groupby aggregation is appended to any query on this table, it
+      must include this column as a groupby column.
+
+      :param source_id: The ID for the data source whose grouping column
+                        is being retrieved.
+
+
+   .. py:method:: get_id_column(source_id)
+
+      Returns the ID column of a table, if it has one.
+
+      :param source_id: The name of the table whose ID column is being retrieved.
+
+
+   .. py:method:: get_id_space(source_id)
+
+      Returns the ID space of a table, if it has one.
+
+      :param source_id: The name of the table whose ID space is being retrieved.
+
+
+   .. py:method:: add_public_dataframe(source_id, dataframe)
+
+      Adds a public data source to the session.
+
+      Not all Spark column types are supported in public sources; see
+      :data:`~.session.SUPPORTED_SPARK_TYPES` for information about which types are
+      supported.
+
+      ..
+          >>> # Get data
+          >>> spark = SparkSession.builder.getOrCreate()
+          >>> private_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 1, 0], ["1", 0, 1], ["1", 2, 1]], columns=["A", "B", "X"]
+          ...     )
+          ... )
+          >>> public_spark_data = spark.createDataFrame(
+          ...     pd.DataFrame(
+          ...         [["0", 0], ["0", 1], ["1", 1], ["1", 2]], columns=["A", "C"]
+          ...     )
+          ... )
+          >>> # Set up Session
+          >>> sess = Session.from_dataframe(
+          ...     privacy_budget=PureDPBudget(1),
+          ...     source_id="my_private_data",
+          ...     dataframe=private_data,
+          ...     protected_change=AddOneRow(),
+          ... )
+
+      .. rubric:: Example
+
+      >>> public_spark_data.toPandas()
+         A  C
+      0  0  0
+      1  0  1
+      2  1  1
+      3  1  2
+      >>> # Add public data
+      >>> sess.add_public_dataframe(
+      ...     source_id="my_public_data", dataframe=public_spark_data
+      ... )
+      >>> sess.public_sources
+      ['my_public_data']
+      >>> sess.get_column_types("my_public_data") # doctest: +NORMALIZE_WHITESPACE
+      {'A': ColumnType.VARCHAR, 'C': ColumnType.INTEGER}
+
+      :param source_id: The name of the public data source.
+      :param dataframe: The public data source corresponding to the ``source_id``.
+
+
+   .. py:method:: stop()
+
+      Closes out this session, allowing other sessions to become active.
+
+
+
+
+
+
+

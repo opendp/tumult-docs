@@ -1,0 +1,259 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*********************
+privacy_budget
+*********************
+
+.. py:module:: tmlt.analytics.privacy_budget
+
+.. autoapi-nested-parse::
+
+   Classes for specifying privacy budgets.
+
+   For a full introduction to privacy budgets, see the
+   :ref:`privacy budget topic guide<Privacy budget fundamentals>`.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.PrivacyBudget`
+     - Base class for specifying privacy parameters.
+   * - :class:`.PureDPBudget`
+     - A privacy budget under pure differential privacy.
+   * - :class:`.ApproxDPBudget`
+     - A privacy budget under approximate differential privacy.
+   * - :class:`.RhoZCDPBudget`
+     - A privacy budget under rho-zero-concentrated differential privacy.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: PrivacyBudget
+
+
+   Bases: :py:obj:`abc.ABC`
+
+   Base class for specifying privacy parameters.
+
+   A PrivacyBudget is a privacy definition, along with its associated parameters.
+   The choice of a PrivacyBudget has an impact on the accuracy of query
+   results. Smaller parameters correspond to a stronger privacy guarantee, and
+   usually lead to less accurate results.
+
+   .. note::
+       An "infinite" privacy budget means that the chosen DP algorithm will use
+       parameters that do not guarantee privacy. This is not always exactly equivalent
+       to evaluating the query without applying differential privacy.
+       Please see the individual subclasses of PrivacyBudget for details on how to
+       appropriately specify infinite budgets.
+
+
+
+
+
+
+   .. py:property:: value
+      :type: Union[tmlt.core.utils.exact_number.ExactNumber, Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]]
+
+      :abstractmethod:
+
+      Return the value of the privacy budget.
+
+   .. py:property:: is_infinite
+      :type: bool
+
+      :abstractmethod:
+
+      Returns true if the privacy budget is infinite.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: PureDPBudget(epsilon)
+
+
+   Bases: :py:obj:`PrivacyBudget`
+
+   A privacy budget under pure differential privacy.
+
+   This privacy definition is also known as epsilon-differential privacy, and the
+   associated value is the epsilon privacy parameter. The privacy definition can
+   be found `here <https://en.wikipedia.org/wiki/Differential_privacy#Definition>`__.
+
+
+
+
+
+
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
+
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the epsilon property instead, as it will
+      represent the same value, but be more human readable.
+
+   .. py:property:: epsilon
+      :type: Union[int, float]
+
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value instead.
+
+   .. py:property:: is_infinite
+      :type: bool
+
+      Returns true if epsilon is float('inf').
+
+
+   .. automethod:: __init__
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: ApproxDPBudget(epsilon, delta)
+
+
+   Bases: :py:obj:`PrivacyBudget`
+
+   A privacy budget under approximate differential privacy.
+
+   This privacy definition is also known as (ε, δ)-differential privacy, and the
+   associated privacy parameters are epsilon and delta. The formal definition can
+   be found `here <https://desfontain.es/privacy/almost-differential-privacy.html#formal-definition>`__.
+
+
+
+
+
+
+   .. py:property:: value
+      :type: Tuple[tmlt.core.utils.exact_number.ExactNumber, tmlt.core.utils.exact_number.ExactNumber]
+
+      Returns self._epsilon and self._delta as an ExactNumber tuple.
+
+      For printing purposes, you might want to use the epsilon and delta properties
+      instead, as they will represent the same values, but be more human readable.
+
+   .. py:property:: epsilon
+      :type: Union[int, float]
+
+      Returns the value of epsilon as an int or float.
+
+      This is helpful for human readability. If you need to use the epsilon value in
+      a computation, you should use self.value[0] instead.
+
+   .. py:property:: delta
+      :type: Union[int, float]
+
+      Returns the value of delta as an int or float.
+
+      This is helpful for human readability. If you need to use the delta value in
+      a computation, you should use self.value[1] instead.
+
+   .. py:property:: is_infinite
+      :type: bool
+
+      Returns true if epsilon is float('inf') or delta is 1.
+
+
+   .. automethod:: __init__
+   .. py:method:: __eq__(other)
+
+      Returns True if both ApproxDPBudgets are infinite or have equal values.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: RhoZCDPBudget(rho)
+
+
+   Bases: :py:obj:`PrivacyBudget`
+
+   A privacy budget under rho-zero-concentrated differential privacy.
+
+   The definition of rho-zCDP can be found in
+   `this <https://arxiv.org/pdf/1605.02065.pdf>`_ paper under Definition 1.1.
+
+
+
+
+
+
+   .. py:property:: value
+      :type: tmlt.core.utils.exact_number.ExactNumber
+
+      Return the value of the privacy budget as an ExactNumber.
+
+      For printing purposes, you should use the rho property instead, as it will
+      represent the same value, but be more human readable.
+
+   .. py:property:: rho
+      :type: Union[int, float]
+
+      Returns the value of rho as an int or float.
+
+      This is helpful for human readability. If you need to use the rho value in
+      a computation, you should use self.value instead.
+
+   .. py:property:: is_infinite
+      :type: bool
+
+      Returns true if rho is float('inf').
+
+
+   .. automethod:: __init__
+
+
+
+
+
