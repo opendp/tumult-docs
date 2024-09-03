@@ -694,8 +694,8 @@ when the transformation is called on a row.</p>
 <li><p><strong>output_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkRowDomain" title="tmlt.core.domains.spark_domains.SparkRowDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkRowDomain</span></code></a></span>) – Domain for the output row.</p></li>
 <li><p><strong>trusted_f</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference internal" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html#pyspark.sql.Row" title="pyspark.sql.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html#pyspark.sql.Row" title="pyspark.sql.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]]</span>) – Transformation function to apply to input row.</p></li>
 <li><p><strong>augment</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, the output of <code class="docutils literal notranslate"><span class="pre">trusted_f</span></code> will be augmented by the
-existing values from the input row. Note that if the column already
-exists, the original value is used.</p></li>
+existing values from the input row. In that case, <code class="docutils literal notranslate"><span class="pre">trusted_f</span></code> must
+not output values for any of the original columns.</p></li>
 </ul>
 </dd>
 </dl>
@@ -951,9 +951,9 @@ when the transformation is called on a row.</p>
 <li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkRowDomain" title="tmlt.core.domains.spark_domains.SparkRowDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkRowDomain</span></code></a></span>) – Domain for the input row.</p></li>
 <li><p><strong>output_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/collections/index.html#tmlt.core.domains.collections.ListDomain" title="tmlt.core.domains.collections.ListDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListDomain</span></code></a></span>) – Domain for the output rows.</p></li>
 <li><p><strong>trusted_f</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference internal" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html#pyspark.sql.Row" title="pyspark.sql.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html#pyspark.sql.Row" title="pyspark.sql.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]]]</span>) – Transformation function to apply to input row.</p></li>
-<li><p><strong>augment</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, the output of <code class="docutils literal notranslate"><span class="pre">trusted_f</span></code> will be augmented by the existing
-values from the input row. Note that if the column already exists, the
-original value is used.</p></li>
+<li><p><strong>augment</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, the output of <code class="docutils literal notranslate"><span class="pre">trusted_f</span></code> will be augmented by the
+existing values from the input row. In that case, <code class="docutils literal notranslate"><span class="pre">trusted_f</span></code> must
+not output values for any of the original columns.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1396,7 +1396,7 @@ times <a class="reference internal" href="#tmlt.core.transformations.spark_trans
 more rows are output, the additional rows are suppressed. If this value
 is None, the transformation will not impose a limit on the number of
 rows. None is only allowed if the metric is
-IfGroupedBy(SymmetricDifference()).</p></li>
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(SymmetricDifference())</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2289,7 +2289,7 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from ca9dcd3d at 2024-08-29 15:49.</div>
+Built from 65b6ef03 at 2024-09-03 19:42.</div>
       
     </div>
   

@@ -28,6 +28,8 @@ Functions
 
    * - :func:`.assert_dataframe_equal`
      - Assert that two dataframes are equal.
+   * - :func:`.pandas_to_spark_dataframe`
+     - Convert a Pandas dataframe into a Spark dataframe in a more general way.
    * - :func:`.get_all_props`
      - Returns all properties and fields of a component.
    * - :func:`.assert_property_immutability`
@@ -64,6 +66,19 @@ Functions
    dataframes. On older versions of Spark, this method falls back on comparing the
    dataframes in Pandas in all cases, and null and NaN values may be considered
    equal to one another.
+
+
+
+.. py:function:: pandas_to_spark_dataframe(spark, df, domain)
+
+   Convert a Pandas dataframe into a Spark dataframe in a more general way.
+
+   This function avoids some edge cases that
+   ``spark.createDataFrame(pandas_df)`` doesn't handle correctly, mostly
+   surrounding dataframes with no rows or no columns. Note that ``domain`` must
+   be a ``SparkDataFrameDomain``; the less-restrictive type annotation makes it
+   easier to use based on the input/output domain taken from a transformation
+   that is known to only allow ``SparkDataFrameDomain``\ s.
 
 
 
