@@ -97,6 +97,37 @@ Classes
       Budgets can be divided by finite integer/float values > 0.
 
 
+   .. py:method:: __add__(other)
+      :abstractmethod:
+
+
+      Budgets can be added to other budgets of compatible types.
+
+      Addition is only supported so long as the result is still a valid budget
+      (i.e. all parameters fall within valid ranges).
+
+
+   .. py:method:: __sub__(other)
+      :abstractmethod:
+
+
+      Budgets can be subtracted from other budgets of compatible types.
+
+      Subtraction is only supported so long as the result is still a valid budget
+      (i.e. all parameters fall within valid ranges).
+
+      Subtracting anything from an infinite budget will return an infinite budget.
+
+
+   .. py:method:: inf()
+      :classmethod:
+
+      :abstractmethod:
+
+
+      Get an infinite budget of this type.
+
+
 
    
 ..
@@ -150,6 +181,32 @@ Classes
    .. py:method:: __truediv__(other)
 
       Divide this budget by a finite integer/float value > 0.
+
+
+   .. py:method:: __add__(other)
+
+      Add this budget to another PureDPBudget or an ApproxDPBudget.
+
+      The resulting epsilon must be greater than zero, and the
+      resulting delta (if any) must be in [0, 1].
+
+
+   .. py:method:: __sub__(other)
+
+      Subtract a PureDPBudget from this budget.
+
+      The resulting epsilon must greater than zero. Subtracting anything from an
+      infinite budget will return an infinite budget.
+
+      Note that you cannot subtract an ApproxDPBudget from a PureDPBudget, though
+      the reverse is allowed.
+
+
+   .. py:method:: inf()
+      :classmethod:
+
+
+      Get an infinite budget of this type.
 
 
 
@@ -220,6 +277,36 @@ Classes
       Divide this budget by a finite integer/float value > 0.
 
 
+   .. py:method:: __add__(other)
+
+      Add this budget to another ApproxDPBudget or a PureDPBudget.
+
+      The resulting epsilon must greater than zero. If the resulting delta is >1 it
+      will be rounded down to 1.
+
+      Addition is performed using basic composition, and the sum is therefore a
+      (possibly loose) upper bound on the privacy loss from running two queries.
+
+
+   .. py:method:: __sub__(other)
+
+      Subtract a PureDPBudget or ApproxDPBudget from this budget.
+
+      The resulting epsilon greater than zero, and the resulting
+      delta must be in [0, 1]. Subtracting anything from an infinite
+      budget will return an infinite budget.
+
+      Note that you can subtract a PureDPBudget from an ApproxDPBudget, though
+      the reverse is not allowed.
+
+
+   .. py:method:: inf()
+      :classmethod:
+
+
+      Get an infinite budget of this type.
+
+
 
    
 ..
@@ -272,6 +359,28 @@ Classes
    .. py:method:: __truediv__(other)
 
       Divide this budget by a finite integer/float value > 0.
+
+
+   .. py:method:: __add__(other)
+
+      Add this budget to another RhoZCDPBudget.
+
+      The resulting rho must be greater than zero.
+
+
+   .. py:method:: __sub__(other)
+
+      Subtract a RhoZCDPBudget from this budget.
+
+      The resulting rho must be greater than zero. Subtracting anything
+      from an infinite budget will return an infinite budget.
+
+
+   .. py:method:: inf()
+      :classmethod:
+
+
+      Get an infinite budget of this type.
 
 
 

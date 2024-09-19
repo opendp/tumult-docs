@@ -563,6 +563,46 @@ appropriately specify infinite budgets.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PrivacyBudget.__add__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PrivacyBudget.__add__" title="Permalink to this definition">#</a></dt>
+<dd><p>Budgets can be added to other budgets of compatible types.</p>
+<p>Addition is only supported so long as the result is still a valid budget
+(i.e. all parameters fall within valid ranges).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget">PrivacyBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PrivacyBudget.__sub__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PrivacyBudget.__sub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Budgets can be subtracted from other budgets of compatible types.</p>
+<p>Subtraction is only supported so long as the result is still a valid budget
+(i.e. all parameters fall within valid ranges).</p>
+<p>Subtracting anything from an infinite budget will return an infinite budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget">PrivacyBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PrivacyBudget.inf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PrivacyBudget.inf" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Abstractmethod<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget">PrivacyBudget</a></p>
+</dd>
+</dl>
+<p>Get an infinite budget of this type.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -632,6 +672,45 @@ To specify an infinite budget, set epsilon equal to float(‘inf’).</p>
 <dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.__truediv__">
 <span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.__truediv__" title="Permalink to this definition">#</a></dt>
 <dd><p>Divide this budget by a finite integer/float value &gt; 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget">PureDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.__add__" title="Permalink to this definition">#</a></dt>
+<dd><p>Add this budget to another PureDPBudget or an ApproxDPBudget.</p>
+<p>The resulting epsilon must be greater than zero, and the
+resulting delta (if any) must be in [0, 1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PrivacyBudget" title="tmlt.analytics.privacy_budget.PrivacyBudget">PrivacyBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.__sub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Subtract a PureDPBudget from this budget.</p>
+<p>The resulting epsilon must greater than zero. Subtracting anything from an
+infinite budget will return an infinite budget.</p>
+<p>Note that you cannot subtract an ApproxDPBudget from a PureDPBudget, though
+the reverse is allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget">PureDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.PureDPBudget.inf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.PureDPBudget.inf" title="Permalink to this definition">#</a></dt>
+<dd><p>Get an infinite budget of this type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.PureDPBudget" title="tmlt.analytics.privacy_budget.PureDPBudget">PureDPBudget</a></p>
@@ -745,6 +824,48 @@ If delta is 0, this is equivalent to PureDP.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__add__" title="Permalink to this definition">#</a></dt>
+<dd><p>Add this budget to another ApproxDPBudget or a PureDPBudget.</p>
+<p>The resulting epsilon must greater than zero. If the resulting delta is &gt;1 it
+will be rounded down to 1.</p>
+<p>Addition is performed using basic composition, and the sum is therefore a
+(possibly loose) upper bound on the privacy loss from running two queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget">ApproxDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__sub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Subtract a PureDPBudget or ApproxDPBudget from this budget.</p>
+<p>The resulting epsilon greater than zero, and the resulting
+delta must be in [0, 1]. Subtracting anything from an infinite
+budget will return an infinite budget.</p>
+<p>Note that you can subtract a PureDPBudget from an ApproxDPBudget, though
+the reverse is not allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget">ApproxDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.ApproxDPBudget.inf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.inf" title="Permalink to this definition">#</a></dt>
+<dd><p>Get an infinite budget of this type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget">ApproxDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -820,6 +941,42 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__add__" title="Permalink to this definition">#</a></dt>
+<dd><p>Add this budget to another RhoZCDPBudget.</p>
+<p>The resulting rho must be greater than zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget">RhoZCDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__sub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Subtract a RhoZCDPBudget from this budget.</p>
+<p>The resulting rho must be greater than zero. Subtracting anything
+from an infinite budget will return an infinite budget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget">RhoZCDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.privacy_budget.RhoZCDPBudget.inf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.inf" title="Permalink to this definition">#</a></dt>
+<dd><p>Get an infinite budget of this type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget" title="tmlt.analytics.privacy_budget.RhoZCDPBudget">RhoZCDPBudget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -874,6 +1031,9 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.value"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.value</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.is_infinite"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.is_infinite</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.__truediv__"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.__truediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.__add__"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.__add__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.__sub__"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.__sub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PrivacyBudget.inf"><code class="docutils literal notranslate"><span class="pre">PrivacyBudget.inf()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget"><code class="docutils literal notranslate"><span class="pre">PureDPBudget</span></code></a><ul class="nav section-nav flex-column">
@@ -882,6 +1042,9 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.is_infinite"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.is_infinite</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.__init__"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.__init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.__truediv__"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.__truediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.__add__"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.__add__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.__sub__"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.__sub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.PureDPBudget.inf"><code class="docutils literal notranslate"><span class="pre">PureDPBudget.inf()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget</span></code></a><ul class="nav section-nav flex-column">
@@ -892,6 +1055,9 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__init__"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.__init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__eq__"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.__eq__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__truediv__"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.__truediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__add__"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.__add__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.__sub__"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.__sub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.ApproxDPBudget.inf"><code class="docutils literal notranslate"><span class="pre">ApproxDPBudget.inf()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget</span></code></a><ul class="nav section-nav flex-column">
@@ -900,6 +1066,9 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.is_infinite"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.is_infinite</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__init__"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.__init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__truediv__"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.__truediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__add__"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.__add__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.__sub__"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.__sub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.privacy_budget.RhoZCDPBudget.inf"><code class="docutils literal notranslate"><span class="pre">RhoZCDPBudget.inf()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -940,7 +1109,7 @@ To specify an infinite budget, set rho equal to float(‘inf’).</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 2ed24cf2 at 2024-09-19 16:59.</div>
+Built from a272bc2a at 2024-09-19 21:00.</div>
       
     </div>
   
