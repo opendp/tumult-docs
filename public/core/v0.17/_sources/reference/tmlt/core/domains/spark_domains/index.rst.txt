@@ -1,0 +1,606 @@
+
+
+
+********************
+spark_domains
+********************
+
+.. py:module:: tmlt.core.domains.spark_domains
+
+.. autoapi-nested-parse::
+
+   Domains for Spark datatypes.
+
+
+
+
+
+
+
+
+
+Data
+====
+
+
+.. py:data:: SparkColumnsDescriptor
+
+   Mapping from column name to SparkColumnDescriptor.
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.convert_spark_schema`
+     - Returns mapping from column name to SparkColumnDescriptor.
+   * - :func:`.convert_pandas_domain`
+     - Returns a mapping from column name to SparkColumnDescriptor.
+   * - :func:`.convert_numpy_domain`
+     - Returns a SparkColumnDescriptor for a NumpyDomain.
+
+.. py:function:: convert_spark_schema(spark_schema)
+
+   Returns mapping from column name to SparkColumnDescriptor.
+
+
+
+.. py:function:: convert_pandas_domain(pandas_domain)
+
+   Returns a mapping from column name to SparkColumnDescriptor.
+
+
+
+.. py:function:: convert_numpy_domain(numpy_domain)
+
+   Returns a SparkColumnDescriptor for a NumpyDomain.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.SparkColumnDescriptor`
+     - Base class for describing Spark column types.
+   * - :class:`.SparkIntegerColumnDescriptor`
+     - Describes an integer attribute in Spark.
+   * - :class:`.SparkFloatColumnDescriptor`
+     - Describes a float attribute in Spark.
+   * - :class:`.SparkStringColumnDescriptor`
+     - Describes a string attribute in Spark.
+   * - :class:`.SparkDateColumnDescriptor`
+     - Describes a date attribute in Spark.
+   * - :class:`.SparkTimestampColumnDescriptor`
+     - Describes a timestamp attribute in Spark.
+   * - :class:`.SparkRowDomain`
+     - Domain of Spark DataFrame rows.
+   * - :class:`.SparkDataFrameDomain`
+     - Domain of Spark DataFrames.
+   * - :class:`.SparkGroupedDataFrameDomain`
+     - Domain of grouped DataFrames.
+
+   
+.. py:class:: SparkColumnDescriptor
+
+   Bases: :class:`abc.ABC`
+
+   Base class for describing Spark column types.
+
+   .. attribute:: allow_null
+
+      If True, null values are permitted in the domain.
+
+
+
+
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      :abstractmethod:
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+      :abstractmethod:
+
+
+      Returns corresponding NumPy domain.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+   .. py:method:: valid_py_value(val)
+      :abstractmethod:
+
+
+      Returns True if ``val`` is valid for described Spark column.
+
+
+
+   
+.. py:class:: SparkIntegerColumnDescriptor
+
+   Bases: :class:`SparkColumnDescriptor`
+
+   Describes an integer attribute in Spark.
+
+
+
+
+
+   .. py:attribute:: SIZE_TO_TYPE
+
+      Mapping from size to Spark type.
+
+   .. py:attribute:: SIZE_TO_MIN_MAX
+
+      Mapping from size to tuple of minimum and maximum value allowed.
+
+   .. py:attribute:: allow_null
+      :type:  bool
+      :value: False
+
+
+      If True, null values are permitted in the domain.
+
+   .. py:attribute:: size
+      :type:  int
+      :value: 64
+
+
+      Number of bits a member of the domain occupies. Must be 32 or 64.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+
+      Returns corresponding NumPy domain.
+
+
+   .. py:method:: valid_py_value(val)
+
+      Returns True if value is a valid python value for the descriptor.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+
+   
+.. py:class:: SparkFloatColumnDescriptor
+
+   Bases: :class:`SparkColumnDescriptor`
+
+   Describes a float attribute in Spark.
+
+
+
+
+
+   .. py:attribute:: SIZE_TO_TYPE
+
+      Mapping from size to Spark type.
+
+   .. py:attribute:: allow_nan
+      :type:  bool
+      :value: False
+
+
+      If True, NaNs are permitted in the domain.
+
+   .. py:attribute:: allow_inf
+      :type:  bool
+      :value: False
+
+
+      If True, infs are permitted in the domain.
+
+   .. py:attribute:: allow_null
+      :type:  bool
+      :value: False
+
+
+      If True, null values are permitted in the domain.
+
+      .. note:: Nulls aren't supported in pd.
+
+   .. py:attribute:: size
+      :type:  int
+      :value: 64
+
+
+      Number of bits a member of the domain occupies. Must be 32 or 64.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+
+      Returns corresponding NumPy domain.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+   .. py:method:: valid_py_value(val)
+
+      Returns True if value is a valid python value for the descriptor.
+
+      In particular, this returns True only if one of the following is true:
+
+      - val is ``float("nan")`` and NaN is allowed.
+      - val is ``float("inf")`` or ``float("-inf")``, and inf values are allowed.
+      - val is a float that can be represented in ``size`` bits.
+      - val is None and nulls are allowed in the domain.
+
+
+
+   
+.. py:class:: SparkStringColumnDescriptor
+
+   Bases: :class:`SparkColumnDescriptor`
+
+   Describes a string attribute in Spark.
+
+
+
+
+
+   .. py:attribute:: allow_null
+      :type:  bool
+      :value: False
+
+
+      If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+
+      Returns corresponding NumPy domain.
+
+
+   .. py:method:: valid_py_value(val)
+
+      Returns True if value is a valid python value for the descriptor.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+
+   
+.. py:class:: SparkDateColumnDescriptor
+
+   Bases: :class:`SparkColumnDescriptor`
+
+   Describes a date attribute in Spark.
+
+
+
+
+
+   .. py:attribute:: allow_null
+      :type:  bool
+      :value: False
+
+
+      If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+
+      Returns corresponding NumPy domain.
+
+      .. note::
+
+         Date types are not supported in NumPy; this method always
+         raises an exception.
+
+
+   .. py:method:: valid_py_value(val)
+
+      Returns True if the value is a valid Python value for the descriptor.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+
+   
+.. py:class:: SparkTimestampColumnDescriptor
+
+   Bases: :class:`SparkColumnDescriptor`
+
+   Describes a timestamp attribute in Spark.
+
+
+
+
+
+   .. py:attribute:: allow_null
+      :type:  bool
+      :value: False
+
+
+      If True, null values are permitted in the domain.
+
+
+   .. py:property:: data_type
+      :type: pyspark.sql.types.DataType
+
+      Returns data type associated with Spark column.
+
+
+   .. py:method:: to_numpy_domain()
+
+      Returns corresponding NumPy domain.
+
+      .. note::
+
+         Timestamp types are not supported in NumPy; this method always
+         raises an exception.
+
+
+   .. py:method:: valid_py_value(val)
+
+      Returns True if the value is a valid Python value for the descriptor.
+
+
+   .. py:method:: validate_column(sdf, col_name)
+
+      Raises error if not all values in given DataFrame column match descriptor.
+
+      :param sdf: Spark DataFrame to check.
+      :param col_name: Name of column in sdf to be checked.
+
+
+
+   
+.. py:class:: SparkRowDomain(schema)
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of Spark DataFrame rows.
+
+
+
+
+
+
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
+
+      Returns mapping from column names to column descriptors.
+
+   .. py:property:: carrier_type
+      :type: type
+
+      Returns carrier types for members of SparkRowDomain.
+
+
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+      :abstractmethod:
+
+
+      Raises error if value is not a row with matching schema.
+
+
+   .. py:method:: __contains__(value)
+      :abstractmethod:
+
+
+      Returns True if value is a row with matching schema.
+
+
+   .. py:method:: __eq__(other)
+
+      Return True if the classes are equivalent.
+
+
+
+   
+.. py:class:: SparkDataFrameDomain(schema)
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of Spark DataFrames.
+
+
+
+
+
+
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
+
+      Returns mapping from column names to column descriptors.
+
+   .. py:property:: carrier_type
+      :type: type
+
+      Returns carrier type for the domain.
+
+   .. py:property:: spark_schema
+      :type: pyspark.sql.types.StructType
+
+      Returns Spark schema object according to domain.
+
+      .. note::
+
+         There isn't a one-to-one correspondence between Spark schema objects
+         and SparkDataFrameDomain objects since the domains encode additional
+         information about allowing nans or infs in float columns. Other
+         information may get added in the future and these cannot be represented
+         with the Spark schema (StructType) object.
+
+
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+
+      Raises error if value is not a DataFrame with matching schema.
+
+
+   .. py:method:: __eq__(other)
+
+      Return True if the classes are equivalent.
+
+
+   .. py:method:: __getitem__(col_name)
+
+      Returns column descriptor for given column.
+
+
+   .. py:method:: from_spark_schema(schema)
+      :classmethod:
+
+
+      Returns a SparkDataFrameDomain constructed from a Spark schema.
+
+      .. note::
+
+         If schema contains float types, nans and infs are allowed since the
+         schema places no restrictions on these.
+
+      :param schema: Spark schema for constructing domain.
+
+
+   .. py:method:: project(cols)
+
+      Project this domain to a subset of columns.
+
+      The column ordering of the schema is used if it differs from the input ordering.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+   
+.. py:class:: SparkGroupedDataFrameDomain(schema, groupby_columns)
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of grouped DataFrames.
+
+
+
+
+
+
+   .. py:property:: schema
+      :type: SparkColumnsDescriptor
+
+      Returns mapping from column names to column descriptors.
+
+   .. py:property:: groupby_columns
+      :type: List[str]
+
+      Returns list of columns used for grouping.
+
+   .. py:property:: carrier_type
+      :type: type
+
+      Returns carrier type for the domain.
+
+   .. py:property:: spark_schema
+      :type: pyspark.sql.types.StructType
+
+      Returns Spark schema object according to domain.
+
+      .. note::
+
+         There isn't a one-to-one correspondence between Spark schema objects
+         and SparkDataFrameDomain objects since the domains encode additional
+         information about allowing nans or infs in float columns. Other
+         information may get added in the future and these cannot be represented
+         with the Spark schema (StructType) object.
+
+
+   .. automethod:: __init__
+   .. py:method:: validate(value)
+
+      Raises error if value is not a GroupedDataFrame with matching group_keys.
+
+
+   .. py:method:: get_group_domain()
+
+      Return the domain for one of the groups.
+
+
+   .. py:method:: __eq__(other)
+
+      Return True if the schemas and group keys are identical.
+
+
+   .. py:method:: __getitem__(col_name)
+
+      Returns column descriptor for given column.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+
+
+

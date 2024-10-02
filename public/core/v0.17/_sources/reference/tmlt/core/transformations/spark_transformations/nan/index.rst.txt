@@ -1,0 +1,895 @@
+
+
+
+**********
+nan
+**********
+
+.. py:module:: tmlt.core.transformations.spark_transformations.nan
+
+.. autoapi-nested-parse::
+
+   Transformations to drop or replace NaNs, nulls, and infs in Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information on transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.DropInfs`
+     - Drops rows containing +inf or -inf in one or more specified columns.
+   * - :class:`.DropNaNs`
+     - Drops rows containing NaNs in one or more specified columns.
+   * - :class:`.DropNulls`
+     - Drops rows containing nulls in one or more specified columns.
+   * - :class:`.ReplaceInfs`
+     - Replaces +inf and -inf in one or more specified columns.
+   * - :class:`.ReplaceNaNs`
+     - Replaces NaNs in one or more specified columns.
+   * - :class:`.ReplaceNulls`
+     - Replaces nulls in one or more specified columns.
+
+   
+.. py:class:: DropInfs(input_domain, metric, columns)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Drops rows containing +inf or -inf in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a4"],
+       ...             "B": [0.1, float("-inf"), float("nan"), float("inf")],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A    B
+   0  a1  0.1
+   1  a2 -inf
+   2  a3  NaN
+   3  a4  inf
+   >>> drop_b_infs = DropInfs(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     columns=["B"],
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = drop_b_infs(spark_dataframe)
+   >>> print_sdf(output_dataframe)
+       A    B
+   0  a1  0.1
+   1  a3  NaN
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+
+       >>> drop_b_infs.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})
+       >>> drop_b_infs.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})
+       >>> drop_b_infs.input_metric
+       SymmetricDifference()
+       >>> drop_b_infs.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.DropInfs`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> drop_b_infs.stability_function(1)
+           1
+           >>> drop_b_infs.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: columns
+      :type: List[str]
+
+      Returns the columns to check for +inf and -inf.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Drops rows containing +inf or -inf in ``self.columns``.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: DropNaNs(input_domain, metric, columns)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Drops rows containing NaNs in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a4"],
+       ...             "B": [0.1, 1.1, float("nan"), float("inf")],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A    B
+   0  a1  0.1
+   1  a2  1.1
+   2  a3  NaN
+   3  a4  inf
+   >>> drop_b_nans = DropNaNs(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     columns=["B"],
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = drop_b_nans(spark_dataframe)
+   >>> print_sdf(output_dataframe)
+       A    B
+   0  a1  0.1
+   1  a2  1.1
+   2  a4  inf
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+
+       >>> drop_b_nans.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})
+       >>> drop_b_nans.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=False, allow_inf=True, allow_null=False, size=64)})
+       >>> drop_b_nans.input_metric
+       SymmetricDifference()
+       >>> drop_b_nans.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.DropNaNs`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> drop_b_nans.stability_function(1)
+           1
+           >>> drop_b_nans.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: columns
+      :type: List[str]
+
+      Returns the columns to check for NaNs.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Drops rows containing NaNs in ``self.columns``.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: DropNulls(input_domain, metric, columns)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Drops rows containing nulls in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     [("a1" , 0.1), ("a2", None), (None, float("nan"))],
+       ...     schema=["A", "B"]
+       ... )
+
+   >>> # Example input
+   >>> spark_dataframe.sort("A").show()
+   +----+----+
+   |   A|   B|
+   +----+----+
+   |NULL| NaN|
+   |  a1| 0.1|
+   |  a2|NULL|
+   +----+----+
+   <BLANKLINE>
+   >>> drop_b_nulls = DropNulls(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(allow_null=True),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_null=True),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     columns=["B"],
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = drop_b_nulls(spark_dataframe)
+   >>> output_dataframe.sort("A").show()
+   +----+---+
+   |   A|  B|
+   +----+---+
+   |NULL|NaN|
+   |  a1|0.1|
+   +----+---+
+   <BLANKLINE>
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+
+       >>> drop_b_nulls.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})
+       >>> drop_b_nulls.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})
+       >>> drop_b_nulls.input_metric
+       SymmetricDifference()
+       >>> drop_b_nulls.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.DropNulls`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> drop_b_nulls.stability_function(1)
+           1
+           >>> drop_b_nulls.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: columns
+      :type: List[str]
+
+      Returns the columns to check for nulls.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Drops rows containing nulls in ``self.columns``.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: ReplaceInfs(input_domain, metric, replace_map)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Replaces +inf and -inf in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     [("a1" , float("inf")), ("a2", None), (None, float("nan")), ("a3", float("-inf"))],
+       ...     schema=["A", "B"]
+       ... )
+
+   >>> # Example input
+   >>> spark_dataframe.sort("A").show()
+   +----+---------+
+   |   A|        B|
+   +----+---------+
+   |NULL|      NaN|
+   |  a1| Infinity|
+   |  a2|     NULL|
+   |  a3|-Infinity|
+   +----+---------+
+   <BLANKLINE>
+   >>> replace_infs = ReplaceInfs(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(allow_null=True),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_null=True, allow_inf=True),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     replace_map={"B": (-100.0, 100.0)},
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = replace_infs(spark_dataframe)
+   >>> output_dataframe.sort("A").show()
+   +----+------+
+   |   A|     B|
+   +----+------+
+   |NULL|   NaN|
+   |  a1| 100.0|
+   |  a2|  NULL|
+   |  a3|-100.0|
+   +----+------+
+   <BLANKLINE>
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+
+       >>> replace_infs.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=True, size=64)})
+       >>> replace_infs.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})
+       >>> replace_infs.input_metric
+       SymmetricDifference()
+       >>> replace_infs.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.DropNulls`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> replace_infs.stability_function(1)
+           1
+           >>> replace_infs.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: replace_map
+      :type: Dict[str, Tuple[float, float]]
+
+      Returns mapping used to replace infinite values.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Returns DataFrame with +inf and -inf replaced in specified columns.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: ReplaceNaNs(input_domain, metric, replace_map)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Replaces NaNs in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     [("a1" , 0.1), ("a2", None), (None, float("nan"))],
+       ...     schema=["A", "B"]
+       ... )
+
+   >>> # Example input
+   >>> spark_dataframe.sort("A").show()
+   +----+----+
+   |   A|   B|
+   +----+----+
+   |NULL| NaN|
+   |  a1| 0.1|
+   |  a2|NULL|
+   +----+----+
+   <BLANKLINE>
+   >>> replace_nans = ReplaceNaNs(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(allow_null=True),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_null=True),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     replace_map={"B": 0.0},
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = replace_nans(spark_dataframe)
+   >>> output_dataframe.sort("A").show()
+   +----+----+
+   |   A|   B|
+   +----+----+
+   |NULL| 0.0|
+   |  a1| 0.1|
+   |  a2|NULL|
+   +----+----+
+   <BLANKLINE>
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+
+       >>> replace_nans.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})
+       >>> replace_nans.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=False, allow_inf=False, allow_null=True, size=64)})
+       >>> replace_nans.input_metric
+       SymmetricDifference()
+       >>> replace_nans.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.DropNulls`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> replace_nans.stability_function(1)
+           1
+           >>> replace_nans.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: replace_map
+      :type: Dict[str, Any]
+
+      Returns mapping used to replace NaNs and nulls.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Returns DataFrame with NaNs replaced in specified columns.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: ReplaceNulls(input_domain, metric, replace_map)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Replaces nulls in one or more specified columns.
+
+   .. rubric:: Examples
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkFloatColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     [("a1" , 0.1), ("a2", None), (None, float("nan"))],
+       ...     schema=["A", "B"]
+       ... )
+
+   >>> # Example input
+   >>> spark_dataframe.sort("A").show()
+   +----+----+
+   |   A|   B|
+   +----+----+
+   |NULL| NaN|
+   |  a1| 0.1|
+   |  a2|NULL|
+   +----+----+
+   <BLANKLINE>
+   >>> replace_nulls = ReplaceNulls(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(allow_null=True),
+   ...             "B": SparkFloatColumnDescriptor(allow_nan=True, allow_null=True),
+   ...         }
+   ...     ),
+   ...     metric=HammingDistance(),
+   ...     replace_map={"A": "a0", "B": 0.0},
+   ... )
+   >>> # Apply transformation to data
+   >>> output_dataframe = replace_nulls(spark_dataframe)
+   >>> output_dataframe.sort("A").show()
+   +---+---+
+   |  A|  B|
+   +---+---+
+   | a0|NaN|
+   | a1|0.1|
+   | a2|0.0|
+   +---+---+
+   <BLANKLINE>
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`, or :class:`~.IfGroupedBy`
+
+       >>> replace_nulls.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})
+       >>> replace_nulls.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})
+       >>> replace_nulls.input_metric
+       HammingDistance()
+       >>> replace_nulls.output_metric
+       HammingDistance()
+
+       Stability Guarantee:
+           :class:`~.DropNulls`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> replace_nulls.stability_function(1)
+           1
+           >>> replace_nulls.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: replace_map
+      :type: Dict[str, Any]
+
+      Returns mapping used to replace nulls.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Returns DataFrame with nulls replaced in specified columns.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+

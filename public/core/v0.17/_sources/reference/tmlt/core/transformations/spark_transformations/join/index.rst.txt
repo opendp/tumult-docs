@@ -1,0 +1,889 @@
+
+
+
+***********
+join
+***********
+
+.. py:module:: tmlt.core.transformations.spark_transformations.join
+
+.. autoapi-nested-parse::
+
+   Transformations for joining Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information on transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.PublicJoin`
+     - Join a Spark DataFrame with a public Pandas DataFrame.
+   * - :class:`.TruncationStrategy`
+     - Enumerating truncation strategies for PrivateJoin.
+   * - :class:`.PrivateJoin`
+     - Join two private SparkDataFrames.
+   * - :class:`.PrivateJoinOnKey`
+     - Join two private SparkDataFrames including a key column.
+
+   
+.. py:class:: PublicJoin(input_domain, metric, public_df, public_df_domain = None, join_cols = None, join_on_nulls = False, how = 'inner')
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Join a Spark DataFrame with a public Pandas DataFrame.
+
+   Performs an inner join. By default, this mimics the behavior of a PySpark join, but
+   it can also be set to consider null values equal to each other (unlike PySpark).
+
+   .. rubric:: Examples
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import SparkStringColumnDescriptor
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3"],
+       ...             "B": ["b1", "b1", "b2", "b2"],
+       ...         }
+       ...     )
+       ... )
+       >>> spark_dataframe_with_null = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", None, "a3"],
+       ...             "B": ["b1", "b1", "b2", "b2"],
+       ...         }
+       ...     )
+       ... )
+
+   Natural join:
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   >>> # Create example public dataframe
+   >>> public_dataframe = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "B": ["b1", "b2", "b2"],
+   ...             "C": ["c1", "c2", "c3"],
+   ...         }
+   ...     )
+   ... )
+   >>> # Create the transformation
+   >>> natural_join = PublicJoin(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     public_df=public_dataframe,
+   ...     metric=SymmetricDifference(),
+   ... )
+   >>> # Apply transformation to data
+   >>> joined_spark_dataframe = natural_join(spark_dataframe)
+   >>> print_sdf(joined_spark_dataframe)
+       B   A   C
+   0  b1  a1  c1
+   1  b1  a2  c1
+   2  b2  a3  c2
+   3  b2  a3  c2
+   4  b2  a3  c3
+   5  b2  a3  c3
+
+   Join with some common columns excluded from join:
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   >>> # Create example public dataframe
+   >>> public_dataframe = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a1", "a2"],
+   ...             "B": ["b1", "b1", "b2"],
+   ...         }
+   ...     )
+   ... )
+   >>> # Create the transformation
+   >>> public_join = PublicJoin(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     public_df=public_dataframe,
+   ...     metric=SymmetricDifference(),
+   ...     join_cols=["A"],
+   ... )
+   >>> # Apply transformation to data
+   >>> joined_spark_dataframe = public_join(spark_dataframe)
+   >>> print_sdf(joined_spark_dataframe)
+       A B_left B_right
+   0  a1     b1      b1
+   1  a1     b1      b1
+   2  a2     b1      b2
+
+   Join on nulls
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe_with_null)
+         A   B
+   0    a1  b1
+   1    a2  b1
+   2    a3  b2
+   3  None  b2
+   >>> # Create example public dataframe
+   >>> public_dataframe = spark.createDataFrame(
+   ...     pd.DataFrame(
+   ...         {
+   ...             "A": ["a1", "a2", None],
+   ...             "C": ["c1", "c2", "c3"],
+   ...         }
+   ...     )
+   ... )
+   >>> # Create the transformation
+   >>> join_transformation = PublicJoin(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     public_df=public_dataframe,
+   ...     metric=SymmetricDifference(),
+   ...     join_on_nulls=True,
+   ... )
+   >>> # Apply transformation to data
+   >>> joined_spark_dataframe = join_transformation(spark_dataframe_with_null)
+   >>> print_sdf(joined_spark_dataframe)
+         A   B   C
+   0    a1  b1  c1
+   1    a2  b1  c2
+   2  None  b2  c3
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+         (matches input metric)
+
+       >>> public_join.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
+       >>> public_join.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B_left': SparkStringColumnDescriptor(allow_null=False), 'B_right': SparkStringColumnDescriptor(allow_null=True)})
+       >>> public_join.input_metric
+       SymmetricDifference()
+       >>> public_join.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           For
+
+           - SymmetricDifference()
+           - IfGroupedBy(column, SumOf(SymmetricDifference()))
+           - IfGroupedBy(column, RootSumOfSquared(SymmetricDifference()))
+
+           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns the ``d_in``
+           times the maximum count of any combination of values in the join columns of
+           ``public_df``.
+
+           >>> # Both example transformations had a stability of 2
+           >>> natural_join.join_cols
+           ['B']
+           >>> natural_join.public_df.toPandas()
+               B   C
+           0  b1  c1
+           1  b2  c2
+           2  b2  c3
+           >>> # Notice that 'b2' occurs twice
+           >>> natural_join.stability_function(1)
+           2
+           >>> natural_join.stability_function(2)
+           4
+
+           For
+
+           - IfGroupedBy(column, SymmetricDifference())
+
+           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns ``d_in``
+
+           >>> PublicJoin(
+           ...     input_domain=SparkDataFrameDomain(
+           ...         {
+           ...             "A": SparkStringColumnDescriptor(),
+           ...             "B": SparkStringColumnDescriptor(),
+           ...         }
+           ...     ),
+           ...     public_df=public_dataframe,
+           ...     metric=IfGroupedBy("A", SymmetricDifference()),
+           ... ).stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: join_on_nulls
+      :type: bool
+
+      Returns whether nulls are considered equal in join.
+
+   .. py:property:: join_cols
+      :type: List[str]
+
+      Returns list of columns to be joined on.
+
+   .. py:property:: public_df
+      :type: pyspark.sql.DataFrame
+
+      Returns Pandas DataFrame being joined with.
+
+   .. py:property:: how
+      :type: str
+
+      Returns type of join to perform.
+
+   .. py:property:: stability
+      :type: int
+
+      Returns stability of public join.
+
+      The stability is the maximum count of any combination of values in the join
+      columns.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Perform public join.
+
+      :param sdf: Private DataFrame to join public DataFrame with.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: TruncationStrategy
+
+   Bases: :class:`enum.Enum`
+
+   Enumerating truncation strategies for PrivateJoin.
+
+   See :meth:`~.PrivateJoin.stability_function` for the stability of each strategy.
+
+
+
+
+
+   .. py:attribute:: TRUNCATE
+      :value: 1
+
+
+      Use :func:`~.truncate_large_groups`.
+
+   .. py:attribute:: DROP
+      :value: 2
+
+
+      Use :func:`~.drop_large_groups`.
+
+   .. py:attribute:: NO_TRUNCATION
+      :value: 3
+
+
+      No truncation, results in infinite stability.
+
+
+
+   .. py:method:: name()
+
+      The name of the Enum member.
+
+
+   .. py:method:: value()
+
+      The value of the Enum member.
+
+
+
+   
+.. py:class:: PrivateJoin(input_domain, left_key, right_key, left_truncation_strategy, right_truncation_strategy, left_truncation_threshold, right_truncation_threshold, join_cols = None, join_on_nulls = False)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Join two private SparkDataFrames.
+
+   Performs an inner join. By default, this mimics the behavior of a PySpark join, but
+   it can also be set to consider null values equal to each other (unlike PySpark).
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> left_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a1", "a1", "a1", "a2"],
+       ...             "B": ["b1", "b1", "b1", "b2", "b2", "b1"],
+       ...             "X": [2, 3, 5, -1, 4, -5],
+       ...         }
+       ...     )
+       ... )
+       >>> right_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "B": ["b1", "b2", "b2"],
+       ...             "C": ["c1", "c2", "c3"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(left_spark_dataframe)
+       A   B  X
+   0  a1  b1  2
+   1  a1  b1  3
+   2  a1  b1  5
+   3  a1  b2 -1
+   4  a1  b2  4
+   5  a2  b1 -5
+   >>> print_sdf(right_spark_dataframe)
+       B   C
+   0  b1  c1
+   1  b2  c2
+   2  b2  c3
+   >>> # Create transformation
+   >>> left_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "A": SparkStringColumnDescriptor(),
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "X": SparkIntegerColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert left_spark_dataframe in left_domain
+   >>> right_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "C": SparkStringColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert right_spark_dataframe in right_domain
+   >>> private_join = PrivateJoin(
+   ...     input_domain=DictDomain(
+   ...         {
+   ...             "left": left_domain,
+   ...             "right": right_domain,
+   ...         }
+   ...     ),
+   ...     left_key="left",
+   ...     right_key="right",
+   ...     left_truncation_strategy=TruncationStrategy.TRUNCATE,
+   ...     left_truncation_threshold=2,
+   ...     right_truncation_strategy=TruncationStrategy.TRUNCATE,
+   ...     right_truncation_threshold=2,
+   ... )
+   >>> input_dictionary = {
+   ...     "left": left_spark_dataframe,
+   ...     "right": right_spark_dataframe
+   ... }
+   >>> # Apply transformation to data
+   >>> joined_dataframe = private_join(input_dictionary)
+   >>> print_sdf(joined_dataframe)
+       B   A  X   C
+   0  b1  a1  5  c1
+   1  b1  a2 -5  c1
+   2  b2  a1 -1  c2
+   3  b2  a1 -1  c3
+   4  b2  a1  4  c2
+   5  b2  a1  4  c3
+
+   .. Note:
+       This join works similarly to :class:`~.PublicJoin`, see it for more examples.
+
+   Transformation Contract:
+       * Input domain - :class:`~.DictDomain` containing two SparkDataFrame domains.
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.DictMetric` with :class:`~.SymmetricDifference` for
+         each input.
+       * Output metric - :class:`~.SymmetricDifference`
+
+       >>> private_join.input_domain
+       DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)})})
+       >>> private_join.output_domain
+       SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64), 'C': SparkStringColumnDescriptor(allow_null=False)})
+       >>> private_join.input_metric
+       DictMetric(key_to_metric={'left': SymmetricDifference(), 'right': SymmetricDifference()})
+       >>> private_join.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           Let :math:`T_l` and :math:`T_r` be the left and right truncation strategies
+           with stabilities :math:`s_l` and :math:`s_r` and thresholds :math:`\tau_l`
+           and :math:`\tau_r`.
+
+           :class:`~.PublicJoin`'s :meth:`~.stability_function` returns
+
+           .. math::
+
+               \tau_l \cdot s_r \cdot (df_{r1} \Delta df_{r2}) +
+               \tau_r \cdot s_l \cdot (df_{l1} \Delta df_{l2})
+
+           where:
+
+           * :math:`df_{r1} \Delta df_{r2}` is ``d_in[self.right]``
+           * :math:`df_{l1} \Delta df_{l2}` is ``d_in[self.left]``
+
+           - TruncationStrategy.DROP has a stability equal to the truncation
+             threshold (This is because adding a row can cause a number of rows equal
+             to the truncation threshold to be dropped).
+           - TruncationStrategy.TRUNCATE has a stability of 2 (This is because
+             adding a new row can not only add a new row to the output, it also can
+             displace another row)
+           - TruncationStrategy.NO_TRUNCATION has infinite stablity.
+
+           >>> # TRUNCATE has a stability of 2
+           >>> s_r = s_l = private_join.truncation_strategy_stability(
+           ...     TruncationStrategy.TRUNCATE, 1
+           ... )
+           >>> tau_r = tau_l = 2
+           >>> tau_l * s_r * 1 + tau_r * s_l * 1
+           8
+           >>> private_join.stability_function({"left": 1, "right": 1})
+           8
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: left_key
+      :type: Any
+
+      Returns key to left DataFrame.
+
+   .. py:property:: right_key
+      :type: Any
+
+      Returns key to right DataFrame.
+
+   .. py:property:: left_truncation_strategy
+      :type: TruncationStrategy
+
+      Returns TruncationStrategy for truncating the left DataFrame.
+
+   .. py:property:: right_truncation_strategy
+      :type: TruncationStrategy
+
+      Returns TruncationStrategy for truncating the right DataFrame.
+
+   .. py:property:: left_truncation_threshold
+      :type: Union[int, float]
+
+      Returns the threshold for truncating the left DataFrame.
+
+   .. py:property:: right_truncation_threshold
+      :type: Union[int, float]
+
+      Returns the threshold for truncating the right DataFrame.
+
+   .. py:property:: join_cols
+      :type: List[str]
+
+      Returns list of column names to join on.
+
+   .. py:property:: join_on_nulls
+      :type: bool
+
+      Returns whether to consider null equal to null.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: truncation_strategy_stability(truncation_strategy, threshold)
+      :staticmethod:
+
+
+      Returns the stability for the given truncation strategy.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(dfs)
+
+      Perform join.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: PrivateJoinOnKey(input_domain, input_metric, left_key, right_key, new_key, join_cols = None, join_on_nulls = False)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Join two private SparkDataFrames including a key column.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> left_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a1", "a1", "a1", "a2"],
+       ...             "B": ["b1", "b1", "b1", "b2", "b2", "b1"],
+       ...             "X": [2, 3, 5, -1, 4, -5],
+       ...         }
+       ...     )
+       ... )
+       >>> right_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "B": ["b1", "b2", "b2"],
+       ...             "C": ["c1", "c2", "c3"],
+       ...         }
+       ...     )
+       ... )
+       >>> # This input dataframe is not involved in the join but will be included in the output
+       >>> ignored_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "B": ["b1", "b2", "b2"],
+       ...             "D": ["d1", "d1", "d2"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(left_spark_dataframe)
+       A   B  X
+   0  a1  b1  2
+   1  a1  b1  3
+   2  a1  b1  5
+   3  a1  b2 -1
+   4  a1  b2  4
+   5  a2  b1 -5
+   >>> print_sdf(right_spark_dataframe)
+       B   C
+   0  b1  c1
+   1  b2  c2
+   2  b2  c3
+   >>> print_sdf(ignored_dataframe)
+       B   D
+   0  b1  d1
+   1  b2  d1
+   2  b2  d2
+   >>> # Create transformation
+   >>> left_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "A": SparkStringColumnDescriptor(),
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "X": SparkIntegerColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert left_spark_dataframe in left_domain
+   >>> right_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "C": SparkStringColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert right_spark_dataframe in right_domain
+   >>> ignored_domain = SparkDataFrameDomain(
+   ...     {
+   ...         "B": SparkStringColumnDescriptor(),
+   ...         "D": SparkStringColumnDescriptor(),
+   ...     },
+   ... )
+   >>> assert ignored_dataframe in ignored_domain
+   >>> private_join = PrivateJoinOnKey(
+   ...     input_domain=DictDomain(
+   ...         {
+   ...             "left": left_domain,
+   ...             "right": right_domain,
+   ...             "ignored": ignored_domain,
+   ...         }
+   ...     ),
+   ...     input_metric=AddRemoveKeys(
+   ...         {
+   ...            "left": "B",
+   ...            "right": "B",
+   ...            "ignored": "B",
+   ...         }
+   ...     ),
+   ...     left_key="left",
+   ...     right_key="right",
+   ...     new_key="joined",
+   ... )
+   >>> input_dictionary = {
+   ...     "left": left_spark_dataframe,
+   ...     "right": right_spark_dataframe,
+   ...     "ignored": ignored_dataframe,
+   ... }
+   >>> # Apply transformation to data
+   >>> output_dictionary = private_join(input_dictionary)
+   >>> assert left_spark_dataframe is output_dictionary["left"]
+   >>> assert right_spark_dataframe is output_dictionary["right"]
+   >>> assert ignored_dataframe is output_dictionary["ignored"]
+   >>> joined_dataframe = output_dictionary["joined"]
+   >>> print_sdf(joined_dataframe)
+       B   A  X   C
+   0  b1  a1  2  c1
+   1  b1  a1  3  c1
+   2  b1  a1  5  c1
+   3  b1  a2 -5  c1
+   4  b2  a1 -1  c2
+   5  b2  a1 -1  c3
+   6  b2  a1  4  c2
+   7  b2  a1  4  c3
+
+   .. Note:
+       This join works similarly to :class:`~.PublicJoin`, see it for more examples.
+
+   .. Note:
+       Unlike :class:`~.PrivateJoin`, this join allows for other dataframes to be present in the input dictionary, and
+       will output a dictionary containing all of the input dataframes along with the joined dataframe.
+       This is because of the stability analysis for AddRemoveKeys. See :mod:`~.add_remove_keys` for more details.
+
+   Transformation Contract:
+       * Input domain - :class:`~.DictDomain` containing two or more SparkDataFrame domains.
+       * Output domain - The same as the input :class:`~.DictDomain` with the addition of a new
+         :class:`~.SparkDataFrameDomain` for the joined table.
+       * Input metric - :class:`~.AddRemoveKeys`
+       * Output metric - :class:`~.AddRemoveKeys`
+
+   >>> private_join.input_domain
+   DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)})})
+   >>> private_join.output_domain
+   DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)}), 'joined': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64), 'C': SparkStringColumnDescriptor(allow_null=False)})})
+   >>> private_join.input_metric
+   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B'})
+   >>> private_join.output_metric
+   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B', 'joined': 'B'})
+
+   Stability Guarantee:
+       :class:`~.PrivateJoinOnKey`'s :meth:`~.stability_function` returns ``d_in``
+
+       >>> private_join.stability_function(1)
+       1
+       >>> private_join.stability_function(2)
+       2
+
+
+
+
+
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: left_key
+      :type: Any
+
+      Returns key to left DataFrame.
+
+   .. py:property:: right_key
+      :type: Any
+
+      Returns key to right DataFrame.
+
+   .. py:property:: new_key
+      :type: Any
+
+      Returns key to output DataFrame.
+
+   .. py:property:: join_cols
+      :type: List[str]
+
+      Returns list of column names to join on.
+
+   .. py:property:: join_on_nulls
+      :type: bool
+
+      Returns whether to consider null equal to null.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information on transformations.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(dfs)
+
+      Perform join.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+

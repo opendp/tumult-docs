@@ -1,0 +1,1138 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>exact_number &#8212; Tumult Core 0.17.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css?v=4c774bc9" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=741867f9"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/tmlt/core/utils/exact_number/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/core/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.17';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <script src="../../../../../_static/js/version-banner.js?v=d59ca292"></script>
+    <link rel="icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="grouped_dataframe" href="../grouped_dataframe/index.html" />
+    <link rel="prev" title="distributions" href="../distributions/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../../_static/logo.png" class="logo__image only-light" alt="Tumult Core 0.17.0 documentation - Home"/>
+    <script>document.write(`<img src="../../../../../_static/logo.png" class="logo__image only-dark" alt="Tumult Core 0.17.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../topic-guides/index.html">
+                        Topic Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../additional-resources/index.html">
+                        Additional Resources
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../topic-guides/index.html">
+                        Topic Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../additional-resources/index.html">
+                        Additional Resources
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Core</h3></div>
+        <div class="sidebar-primary-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<nav class="bd-docs-nav bd-links">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../domains/index.html">domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exceptions/index.html">exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../measurements/index.html">measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../measures/index.html">measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics/index.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../random/index.html">random</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../transformations/index.html">transformations</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../arb/index.html">arb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cleanup/index.html">cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../distributions/index.html">distributions</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">exact_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../grouped_dataframe/index.html">grouped_dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../join/index.html">join</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameters/index.html">parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prdp/index.html">prdp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.html">testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../truncation/index.html">truncation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../type_utils/index.html">type_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/index.html">validation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">utils</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">exact_number</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-tmlt.core.utils.exact_number">
+<span id="exact-number"></span><h1>exact_number<a class="headerlink" href="#module-tmlt.core.utils.exact_number" title="Permalink to this heading">#</a></h1>
+<p>Utilities for using exact representations of real numbers.</p>
+<p>This module contains <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> and <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumberInput" title="tmlt.core.utils.exact_number.ExactNumberInput"><code class="xref py py-data docutils literal notranslate"><span class="pre">ExactNumberInput</span></code></a>.</p>
+<p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>’s are used as inputs for components that privacy guarantees
+depend on. They are used because they can be exactly represented and manipulated using
+<a class="reference external" href="https://www.sympy.org/en/index.html">SymPy</a>, which avoids errors such as privacy
+violations due to numerical imprecision, as well as more mundane user errors from the
+limitations of floating point arithmetic. See
+<a class="reference internal" href="../../../../../topic-guides/real-numbers.html#real-numbers"><span class="std std-ref">Handling Real Numbers</span></a> for more information.</p>
+<p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumberInput" title="tmlt.core.utils.exact_number.ExactNumberInput"><code class="xref py py-data docutils literal notranslate"><span class="pre">ExactNumberInput</span></code></a> ‘s are values which can be automatically converted into
+<a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> ‘s. They can be any of the following:</p>
+<dl>
+<dt>Any <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">fractions.Fraction</span></code></a>:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="o">-</span><span class="mi">1000000000000000</span><span class="p">)</span>
+<span class="go">-1000000000000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="go">1/10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+<span class="go">127/128</span>
+</pre></div>
+</div>
+</dd>
+<dt>Any <code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.Expr</span></code> that meets all of the following criteria:</dt><dd><p>No free symbols</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_plus_1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">x_plus_1</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">x + 1 contains free symbols</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">x_plus_1</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<p>No undefined functions</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">f(2) + 1 has an undefined function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>No floating point values</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.14</span><span class="p">))</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">3.14000000000000 is represented using floating point precision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">3.14</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">3.14*2**pi is invalid: 3.14000000000000 is represented using floating point precision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Rational</span><span class="p">(</span><span class="s2">&quot;3.14&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">**</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">157*3.0**pi/50 is invalid: Base of 3.0**pi is invalid: 3.00000000000000 is represented using floating point precision</span>
+</pre></div>
+</div>
+<p>Is a real number (or +/- infinity)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">I has an imaginary component</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">1 + 2*I has an imaginary component</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">-1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">)</span>
+<span class="go">oo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">)</span>
+<span class="go">-oo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="o">*</span><span class="n">i</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">1 + oo*I is invalid: oo*I is invalid: I has an imaginary component</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">oo</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">oo + I is invalid: I has an imaginary component</span>
+</pre></div>
+</div>
+</dd>
+<dt>Any <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> that can be:</dt><dd><ol class="arabic simple">
+<li><p>Exactly interpreted as a Rational number or</p></li>
+<li><p>Converted to a valid <code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.Expr</span></code> by
+<a class="reference external" href="https://docs.sympy.org/latest/modules/parsing.html#sympy.parsing.sympy_parser.parse_expr" title="(in SymPy v1.13.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sympy.parsing.sympy_parser.parse_expr()</span></code></a></p></li>
+</ol>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;0.5&quot;</span><span class="p">)</span>
+<span class="go">1/2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;0.123456789&quot;</span><span class="p">)</span>
+<span class="go">123456789/1000000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;2 + 7**2&quot;</span><span class="p">)</span>
+<span class="go">51</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;2 * pi**2&quot;</span><span class="p">)</span>
+<span class="go">2*pi**2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;sqrt(5/3)&quot;</span><span class="p">)</span>
+<span class="go">sqrt(15)/3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;pi + I&quot;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">pi + I has an imaginary component</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;x + 1&quot;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">x + 1 contains free symbols</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">float('inf')</span></code> and <code class="docutils literal notranslate"><span class="pre">-float('inf')</span></code> are allowed:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+<span class="go">oo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+<span class="go">-oo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mf">3.5</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">core.exceptions.UnsupportedSympyExprError</span>: <span class="n">Expected +/-float(&#39;inf&#39;), not 3.5</span>
+
+<span class="x">Floating point values typically do not exactly represent the value they are intended to represent, and so are not automatically converted. See tmlt.core.utils.exact_number.from_float for more information.</span>
+</pre></div>
+</div>
+</dd>
+<dt>Finally <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>’s are allowed:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;0.5&quot;</span><span class="p">))</span>
+<span class="go">1/2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>’s support many common mathematical operations, and can be used in
+combination with <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumberInput" title="tmlt.core.utils.exact_number.ExactNumberInput"><code class="xref py py-data docutils literal notranslate"><span class="pre">ExactNumberInput</span></code></a>’s.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">ExactNumber</span><span class="p">(</span><span class="s2">&quot;0.5&quot;</span><span class="p">)</span>
+<span class="go">3/2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span> <span class="o">-</span> <span class="mi">3</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ExactNumber</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="go">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">-</span><span class="mi">2</span> <span class="o">**</span> <span class="n">ExactNumber</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">-sqrt(2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">/</span> <span class="n">ExactNumber</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">1/3</span>
+</pre></div>
+</div>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumberInput">
+<span class="sig-name descname"><span class="pre">ExactNumberInput</span></span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumberInput" title="Permalink to this definition">#</a></dt>
+<dd><p>A type alias for exact representations of real numbers.</p>
+<p>See <a class="reference internal" href="#module-tmlt.core.utils.exact_number" title="tmlt.core.utils.exact_number"><code class="xref py py-mod docutils literal notranslate"><span class="pre">exact_number</span></code></a> for more information.</p>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a></p></td>
+<td><p>An exact representation of a real number or +/- infinity.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExactNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber" title="Permalink to this definition">#</a></dt>
+<dd><p>An exact representation of a real number or +/- infinity.</p>
+<p>See <a class="reference internal" href="#module-tmlt.core.utils.exact_number" title="tmlt.core.utils.exact_number"><code class="xref py py-mod docutils literal notranslate"><span class="pre">exact_number</span></code></a> for more information and examples.</p>
+<table class="table" id="id1">
+<caption><span class="caption-text">Properties</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.expr" title="tmlt.core.utils.exact_number.ExactNumber.expr"><code class="xref py py-attr docutils literal notranslate"><span class="pre">expr</span></code></a></p></td>
+<td><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.Expr</span></code> representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.is_integer" title="tmlt.core.utils.exact_number.ExactNumber.is_integer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_integer</span></code></a></p></td>
+<td><p>Returns whether self represents an integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.is_finite" title="tmlt.core.utils.exact_number.ExactNumber.is_finite"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_finite</span></code></a></p></td>
+<td><p>Returns whether self represents a finite number.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table" id="id2">
+<caption><span class="caption-text">Methods</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.to_float" title="tmlt.core.utils.exact_number.ExactNumber.to_float"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_float()</span></code></a></p></td>
+<td><p>Returns self as a float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.from_float" title="tmlt.core.utils.exact_number.ExactNumber.from_float"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_float()</span></code></a></p></td>
+<td><p>Returns an <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> from a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__abs__" title="tmlt.core.utils.exact_number.ExactNumber.__abs__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__abs__()</span></code></a></p></td>
+<td><p>Returns absolute value of self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__neg__" title="tmlt.core.utils.exact_number.ExactNumber.__neg__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__neg__()</span></code></a></p></td>
+<td><p>Returns the additive inverse of self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__truediv__" title="tmlt.core.utils.exact_number.ExactNumber.__truediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__truediv__()</span></code></a></p></td>
+<td><p>Returns quotient from dividing self by other.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__rtruediv__" title="tmlt.core.utils.exact_number.ExactNumber.__rtruediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__rtruediv__()</span></code></a></p></td>
+<td><p>Returns quotient from dividing other by self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__mul__" title="tmlt.core.utils.exact_number.ExactNumber.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__mul__()</span></code></a></p></td>
+<td><p>Returns product of self and other.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__add__" title="tmlt.core.utils.exact_number.ExactNumber.__add__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__add__()</span></code></a></p></td>
+<td><p>Returns sum of self and other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__sub__" title="tmlt.core.utils.exact_number.ExactNumber.__sub__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__sub__()</span></code></a></p></td>
+<td><p>Returns difference of self and other.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__rsub__" title="tmlt.core.utils.exact_number.ExactNumber.__rsub__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__rsub__()</span></code></a></p></td>
+<td><p>Returns difference of other and self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__pow__" title="tmlt.core.utils.exact_number.ExactNumber.__pow__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__pow__()</span></code></a></p></td>
+<td><p>Returns power obtained by raising self to other.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__rpow__" title="tmlt.core.utils.exact_number.ExactNumber.__rpow__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__rpow__()</span></code></a></p></td>
+<td><p>Returns power obtained by raising other to self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__eq__" title="tmlt.core.utils.exact_number.ExactNumber.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a></p></td>
+<td><p>Returns True if other and self represent the same value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__lt__" title="tmlt.core.utils.exact_number.ExactNumber.__lt__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__lt__()</span></code></a></p></td>
+<td><p>Returns True if self is strictly less than other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__le__" title="tmlt.core.utils.exact_number.ExactNumber.__le__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__le__()</span></code></a></p></td>
+<td><p>Returns True if self is less than or equal to other.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__gt__" title="tmlt.core.utils.exact_number.ExactNumber.__gt__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__gt__()</span></code></a></p></td>
+<td><p>Returns True if self is strictly greater than other.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber.__ge__" title="tmlt.core.utils.exact_number.ExactNumber.__ge__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__ge__()</span></code></a></p></td>
+<td><p>Returns True if self is greater than or equal to other.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.expr">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">sympy.Expr</span></em><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.expr" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.Expr</span></code> representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sympy.Expr</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.is_integer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_integer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.is_integer" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether self represents an integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.is_finite">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_finite</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.is_finite" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns whether self represents a finite number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.13.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – An <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumberInput" title="tmlt.core.utils.exact_number.ExactNumberInput"><code class="xref py py-data docutils literal notranslate"><span class="pre">ExactNumberInput</span></code></a> that represents a real number or +/-
+infinity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.to_float">
+<span class="sig-name descname"><span class="pre">to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">round_up</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.to_float" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns self as a float.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>round_up</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If True, the returned value is greater than or equal to self.
+Otherwise, it is less than or equal to self.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.from_float">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_up</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.from_float" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a> from a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Floating point values do not have the same algebraic properties as real
+numbers (For example, operations such as addition and multiplication are not
+associative or distributive). It is strongly recommended to use exact
+representations where possible and to only use this method when an exact
+representation is no longer needed.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – A <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> to convert to an <a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>.</p></li>
+<li><p><strong>round_up</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If True, returned value is greater than or equal to <code class="docutils literal notranslate"><span class="pre">value</span></code>.
+Otherwise, it is less than or equal to <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__abs__">
+<span class="sig-name descname"><span class="pre">__abs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__abs__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns absolute value of self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__neg__">
+<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__neg__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the additive inverse of self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__truediv__">
+<span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__truediv__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns quotient from dividing self by other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__rtruediv__">
+<span class="sig-name descname"><span class="pre">__rtruediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__rtruediv__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns quotient from dividing other by self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__mul__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns product of self and other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__add__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns sum of self and other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__sub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns difference of self and other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__rsub__">
+<span class="sig-name descname"><span class="pre">__rsub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__rsub__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns difference of other and self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__pow__">
+<span class="sig-name descname"><span class="pre">__pow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__pow__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns power obtained by raising self to other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__rpow__">
+<span class="sig-name descname"><span class="pre">__rpow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__rpow__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns power obtained by raising other to self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>ExactNumberInput</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__eq__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if other and self represent the same value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__lt__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if self is strictly less than other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__le__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if self is less than or equal to other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__gt__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if self is strictly greater than other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.exact_number.ExactNumber.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.exact_number.ExactNumber.__ge__" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns True if self is greater than or equal to other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../distributions/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">distributions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../grouped_dataframe/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">grouped_dataframe</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumberInput"><code class="docutils literal notranslate"><span class="pre">ExactNumberInput</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber"><code class="docutils literal notranslate"><span class="pre">ExactNumber</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.expr"><code class="docutils literal notranslate"><span class="pre">ExactNumber.expr</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.is_integer"><code class="docutils literal notranslate"><span class="pre">ExactNumber.is_integer</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.is_finite"><code class="docutils literal notranslate"><span class="pre">ExactNumber.is_finite</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__init__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.to_float"><code class="docutils literal notranslate"><span class="pre">ExactNumber.to_float()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.from_float"><code class="docutils literal notranslate"><span class="pre">ExactNumber.from_float()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__abs__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__abs__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__neg__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__neg__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__truediv__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__truediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__rtruediv__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__rtruediv__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__mul__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__mul__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__add__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__add__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__sub__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__sub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__rsub__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__rsub__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__pow__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__pow__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__rpow__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__rpow__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__eq__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__eq__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__lt__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__lt__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__le__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__le__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__gt__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__gt__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.exact_number.ExactNumber.__ge__"><code class="docutils literal notranslate"><span class="pre">ExactNumber.__ge__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 9f654e7e at 2024-10-02 16:55.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

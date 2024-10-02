@@ -1,0 +1,288 @@
+
+
+
+****************
+partition
+****************
+
+.. py:module:: tmlt.core.transformations.spark_transformations.partition
+
+.. autoapi-nested-parse::
+
+   Transformations for partitioning Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information on transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Partition`
+     - Base class for partition transformations.
+   * - :class:`.PartitionByKeys`
+     - Partition a Spark DataFrame by a list of keys and corresponding domain.
+
+   
+.. py:class:: Partition(input_domain, input_metric, output_metric, num_partitions = None)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Base class for partition transformations.
+
+
+
+
+
+
+   .. py:property:: num_partitions
+      :type: Optional[int]
+
+      Returns the number of partitions produced by the transformation.
+
+      If this number is not known, this returns None.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+   .. py:method:: __call__(data)
+      :abstractmethod:
+
+
+      Perform transformation.
+
+
+
+   
+.. py:class:: PartitionByKeys(input_domain, input_metric, use_l2, keys, list_values)
+
+   Bases: :class:`Partition`
+
+   Partition a Spark DataFrame by a list of keys and corresponding domain.
+
+   .. rubric:: Example
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkStringColumnDescriptor,
+       ...     SparkIntegerColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a1", "a1", "a1", "a1", "a2"],
+       ...             "B": ["b1", "b1", "b1", "b2", "b2", "b1"],
+       ...             "X": [2, 3, 5, -1, 4, -5],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B  X
+   0  a1  b1  2
+   1  a1  b1  3
+   2  a1  b1  5
+   3  a1  b2 -1
+   4  a1  b2  4
+   5  a2  b1 -5
+   >>> # notice that ("a2", "b1") is skipped,
+   >>> # and that there were no values for ("a2", "b2") in the input data
+   >>> list_values = [("a1", "b1"), ("a1", "b2"), ("a2", "b2")]
+   >>> # Create the transformation
+   >>> partition = PartitionByKeys(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...             "X": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     input_metric=SymmetricDifference(),
+   ...     use_l2=False,
+   ...     keys=["A", "B"],
+   ...     list_values=list_values,
+   ... )
+   >>> # Apply transformation to data
+   >>> partitioned_dataframes = partition(spark_dataframe)
+   >>> for list_value, dataframe in zip(list_values, partitioned_dataframes):
+   ...     print(list_value)
+   ...     print_sdf(dataframe)
+   ('a1', 'b1')
+       A   B  X
+   0  a1  b1  2
+   1  a1  b1  3
+   2  a1  b1  5
+   ('a1', 'b2')
+       A   B  X
+   0  a1  b2 -1
+   1  a1  b2  4
+   ('a2', 'b2')
+   Empty DataFrame
+   Columns: [A, B, X]
+   Index: []
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.ListDomain` of :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SumOf` or :class:`~.RootSumOfSquared` of
+         :class:`~.SymmetricDifference` or :class:`~.IfGroupedBy`
+
+       >>> partition.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> partition.output_domain
+       ListDomain(element_domain=SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), length=3)
+       >>> partition.input_metric
+       SymmetricDifference()
+       >>> partition.output_metric
+       SumOf(inner_metric=SymmetricDifference())
+
+       Stability Guarantee:
+           :class:`~.PartitionByKeys`' :meth:`~.stability_function` returns ``d_in``.
+
+           >>> partition.stability_function(1)
+           1
+           >>> partition.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: keys
+      :type: List[str]
+
+      Returns list of column names to partition on.
+
+   .. py:property:: list_values
+      :type: List[Tuple]
+
+      Returns list of values corresponding to the partition keys.
+
+   .. py:property:: num_partitions
+      :type: Optional[int]
+
+      Returns the number of partitions produced by the transformation.
+
+      If this number is not known, this returns None.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+      Return input domain for the measurement.
+
+
+   .. automethod:: __init__
+   .. py:method:: __call__(sdf)
+
+      Returns a list of partitions of input DataFrame.
+
+
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+
