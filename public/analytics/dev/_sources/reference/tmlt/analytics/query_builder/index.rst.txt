@@ -551,10 +551,12 @@ Classes
       Returns a SuppressAggregates query that is ready to be evaluated.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -572,7 +574,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -619,13 +621,15 @@ Classes
    The full graph of QueryBuilder objects can be traversed from root to a node.
 
    ..
-       >>> from tmlt.analytics.privacy_budget import PureDPBudget
-       >>> from tmlt.analytics.protected_change import AddOneRow
        >>> # Implicit doctest imports will lead to `isinstance` checks failing
        >>> # (and to typeguard failures)
        >>> # so we explicitly import QueryBuilder in all our doctests here.
-       >>> from tmlt.analytics.query_builder import QueryBuilder
-       >>> import tmlt.analytics.session
+       >>> from tmlt.analytics import (
+       ...     AddOneRow,
+       ...     PureDPBudget,
+       ...     QueryBuilder,
+       ...     Session,
+       ... )
        >>> import pandas as pd
        >>> from pyspark.sql import SparkSession
        >>> spark = SparkSession.builder.getOrCreate()
@@ -643,7 +647,7 @@ Classes
    1  1  0  1
    2  1  2  1
    >>> budget = PureDPBudget(float("inf"))
-   >>> sess = tmlt.analytics.session.Session.from_dataframe(
+   >>> sess = Session.from_dataframe(
    ...     privacy_budget=budget,
    ...     source_id="my_private_data",
    ...     dataframe=my_private_data,
@@ -771,10 +775,12 @@ Classes
       :ref:`Simple transformations <Public joins>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -803,7 +809,7 @@ Classes
       2  1  1
       3  1  2
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -906,10 +912,12 @@ Classes
       :ref:`Doing more with privacy IDs <Advanced IDs features>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -927,13 +935,13 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
       ...     protected_change=AddOneRow(),
       ... )
-      >>> from tmlt.analytics.query_builder import TruncationStrategy
+      >>> from tmlt.analytics import TruncationStrategy
       >>> sess.create_view(
       ...     QueryBuilder("my_private_data")
       ...     .select(["A", "X"])
@@ -1008,10 +1016,12 @@ Classes
           an error if a KeySet is used with a null value for that column.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1030,7 +1040,7 @@ Classes
       1     1  NaN  1.1
       2     2  2.0  NaN
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1071,10 +1081,12 @@ Classes
       Replaces +inf and -inf values in specified columns.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1097,7 +1109,7 @@ Classes
       1  a1  NaN -inf
       2  a2  2.0  inf
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1149,10 +1161,12 @@ Classes
           contains a null value is used for that column.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> from pyspark.sql.types import (
@@ -1180,7 +1194,7 @@ Classes
       1  a1  NaN  1.1
       2  a2  2.0  NaN
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1231,10 +1245,12 @@ Classes
       Remove rows containing infinite values.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> from pyspark.sql.types import (
@@ -1262,7 +1278,7 @@ Classes
       1  a1  2  0.0
       2  a2  2  inf
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1312,10 +1328,12 @@ Classes
       Renames one or more columns in the table.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1333,7 +1351,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1379,10 +1397,12 @@ Classes
       * ``time < '2022-01-01T12:45:00'``
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1400,7 +1420,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1431,11 +1451,12 @@ Classes
       Selects the specified columns, dropping the others.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> # Typeguard doesn't like implicit doctest imports
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1453,7 +1474,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1488,10 +1509,12 @@ Classes
       :ref:`Simple transformations <Maps>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1509,7 +1532,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1576,11 +1599,13 @@ Classes
       contain illustrated examples of flat maps.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
-          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     KeySet,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1600,7 +1625,7 @@ Classes
       2  1  2  1
       3  1  3  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1681,12 +1706,14 @@ Classes
       DECIMAL columns may contain NaN or infinite values).
 
       ..
-          >>> from tmlt.analytics.constraints import MaxRowsPerID
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddRowsWithID
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
-          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics import (
+          ...     AddRowsWithID,
+          ...     KeySet,
+          ...     MaxRowsPerID,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1706,7 +1733,7 @@ Classes
       2  1  1
       3  1  4
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -1765,11 +1792,13 @@ Classes
       :ref:`Simple transformations <Binning>` tutorial.
 
       ..
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> from tmlt.analytics.session import Session
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     KeySet,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> from pyspark.sql import SparkSession
           >>> import pandas as pd
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1796,7 +1825,7 @@ Classes
       7   91      18
       8   48      97
       9   53      85
-      >>> from tmlt.analytics.binning_spec import BinningSpec
+      >>> from tmlt.analytics import BinningSpec
       >>> sess = Session.from_dataframe(
       ...     PureDPBudget(float("inf")),
       ...     source_id="private_data",
@@ -1851,18 +1880,20 @@ Classes
       Returns a count query containing the frequency of values in specified column.
 
       ..
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> from tmlt.analytics.session import Session
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.keyset import KeySet
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     KeySet,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> from pyspark.sql import SparkSession
           >>> import pandas as pd
           >>> spark = SparkSession.builder.getOrCreate()
 
       .. rubric:: Example
 
-      >>> from tmlt.analytics.binning_spec import BinningSpec
+      >>> from tmlt.analytics import BinningSpec
       >>> private_data = spark.createDataFrame(
       ...     pd.DataFrame(
       ...         {
@@ -1915,11 +1946,13 @@ Classes
       available constraints and what they are used for.
 
       ..
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.session import Session
-          >>> from tmlt.analytics.protected_change import AddRowsWithID
-          >>> from tmlt.analytics.constraints import MaxRowsPerID
+          >>> from tmlt.analytics import (
+          ...     AddRowsWithID,
+          ...     MaxRowsPerID,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1974,10 +2007,12 @@ Classes
           datasets that have few values for each set of group keys.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import ApproxDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     ApproxDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -1991,7 +2026,7 @@ Classes
       ...         columns=["A", "B", "X"],
       ...     )
       ... )
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=ApproxDPBudget(1, 1e-5),
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2040,10 +2075,12 @@ Classes
           may not be tight, and not all input values may fall between them.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2056,7 +2093,7 @@ Classes
       ...         columns=["X"],
       ...     )
       ... )
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=PureDPBudget(float('inf')),
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2093,10 +2130,13 @@ Classes
       More information can be found in the :ref:`Group-by queries` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget, ApproxDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     ApproxDPBudget,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2108,14 +2148,14 @@ Classes
 
       .. rubric:: Examples
 
-      >>> from tmlt.analytics.keyset import KeySet
+      >>> from tmlt.analytics import KeySet
       >>> my_private_data.toPandas()
          A  B  X
       0  0  1  0
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2214,10 +2254,12 @@ Classes
           non-negativity once the query returns its results; see the example below.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2235,7 +2277,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2280,10 +2322,12 @@ Classes
           non-negativity once the query returns its results; see the example below.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2303,7 +2347,7 @@ Classes
       2  1  0  1
       3  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2356,10 +2400,12 @@ Classes
           :meth:`~drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2379,7 +2425,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2420,10 +2466,12 @@ Classes
           :meth:`~drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2443,7 +2491,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2482,10 +2530,12 @@ Classes
           :meth:`~drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2505,7 +2555,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2544,10 +2594,12 @@ Classes
           :meth:`~drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2567,7 +2619,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2617,10 +2669,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2638,7 +2692,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2690,10 +2744,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2711,7 +2767,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2763,10 +2819,12 @@ Classes
           for more information.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2784,7 +2842,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2836,10 +2894,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2857,7 +2917,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2940,10 +3000,12 @@ Classes
       Returns a GroupedCountQuery with a count query.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -2961,7 +3023,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -2993,10 +3055,12 @@ Classes
       Returns a Query with a count_distinct query.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3016,7 +3080,7 @@ Classes
       2  1  0  1
       3  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3059,10 +3123,12 @@ Classes
           :meth:`~QueryBuilder.drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3082,7 +3148,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3125,10 +3191,12 @@ Classes
           :meth:`~QueryBuilder.drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3148,7 +3216,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3193,10 +3261,12 @@ Classes
           :meth:`~QueryBuilder.drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3216,7 +3286,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3261,10 +3331,12 @@ Classes
           :meth:`~QueryBuilder.drop_infinity` query will be performed first.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3284,7 +3356,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3336,10 +3408,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3357,7 +3431,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3411,10 +3485,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3432,7 +3508,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3486,10 +3562,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> import numpy as np
           >>> from pyspark.sql import SparkSession
@@ -3508,7 +3586,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3562,10 +3640,12 @@ Classes
           <Clamping bounds>` tutorial.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3583,7 +3663,7 @@ Classes
       1  1  0  1
       2  1  2  1
       >>> budget = PureDPBudget(float("inf"))
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=budget,
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
@@ -3636,10 +3716,12 @@ Classes
           may not be tight, and not all input values may fall between them.
 
       ..
-          >>> from tmlt.analytics.privacy_budget import PureDPBudget
-          >>> from tmlt.analytics.protected_change import AddOneRow
-          >>> from tmlt.analytics.query_builder import QueryBuilder
-          >>> import tmlt.analytics.session
+          >>> from tmlt.analytics import (
+          ...     AddOneRow,
+          ...     PureDPBudget,
+          ...     QueryBuilder,
+          ...     Session,
+          ... )
           >>> import pandas as pd
           >>> from pyspark.sql import SparkSession
           >>> spark = SparkSession.builder.getOrCreate()
@@ -3652,7 +3734,7 @@ Classes
       ...         columns=["A", "B", "X"]
       ...     )
       ... )
-      >>> sess = tmlt.analytics.session.Session.from_dataframe(
+      >>> sess = Session.from_dataframe(
       ...     privacy_budget=PureDPBudget(float('inf')),
       ...     source_id="my_private_data",
       ...     dataframe=my_private_data,
