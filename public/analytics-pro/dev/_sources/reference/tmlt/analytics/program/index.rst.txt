@@ -73,7 +73,6 @@ program
    The program can then be run to produce the expected outputs.
 
    >>> program.run()
-   >>> program.outputs
    {'total_count': DataFrame[count: bigint]}
 
    Each instance of a program has the same privacy guarantee as a
@@ -279,7 +278,6 @@ Classes
       ... )
       >>> program.run()
       Private sources: ['protected_df']
-      >>> program.outputs
       {'total_count': DataFrame[count: bigint]}
 
 
@@ -356,7 +354,6 @@ Classes
       ... )
       >>> program.run()
       Public sources: ['public_df']
-      >>> program.outputs
       {'total_count': DataFrame[count: bigint]}
 
 
@@ -430,7 +427,6 @@ Classes
       ...     .build()
       ... )
       >>> program.run()
-      >>> program.outputs
       {'a_sum': DataFrame[a_sum: bigint]}
 
 
@@ -491,7 +487,6 @@ Classes
       ...     .build()
       ... )
       >>> program.run()
-      >>> program.outputs
       {'total_count': DataFrame[count: bigint]}
 
 
@@ -518,11 +513,6 @@ Classes
 
       The parameters for this program.
 
-   .. py:property:: outputs
-      :type: Dict[str, pyspark.sql.DataFrame]
-
-      Outputs after running this program.
-
 
    .. py:method:: output_types()
       :classmethod:
@@ -533,10 +523,7 @@ Classes
 
    .. py:method:: run()
 
-      Runs the program.
-
-      The results of the program can be accessed using the :attr:`outputs` property
-      **after** calling this method.
+      Runs the program and return its outputs.
 
       Note that this method can only be called once. If you need to run the program
       again, you must create a new instance of the program.

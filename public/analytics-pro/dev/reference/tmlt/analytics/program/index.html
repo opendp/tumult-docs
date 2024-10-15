@@ -515,7 +515,6 @@ generated builder for that class. It has a very similar interface to
 </div>
 <p>The program can then be run to produce the expected outputs.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">outputs</span>
 <span class="go">{&#39;total_count&#39;: DataFrame[count: bigint]}</span>
 </pre></div>
 </div>
@@ -702,7 +701,6 @@ private source with the same name in the given Session.</p>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="go">Private sources: [&#39;protected_df&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">outputs</span>
 <span class="go">{&#39;total_count&#39;: DataFrame[count: bigint]}</span>
 </pre></div>
 </div>
@@ -749,7 +747,6 @@ public source with the same name in the given session, or through the
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="go">Public sources: [&#39;public_df&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">outputs</span>
 <span class="go">{&#39;total_count&#39;: DataFrame[count: bigint]}</span>
 </pre></div>
 </div>
@@ -793,7 +790,6 @@ use in the <a class="reference internal" href="#tmlt.analytics.program.SessionPr
 <span class="gp">... </span>    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">outputs</span>
 <span class="go">{&#39;a_sum&#39;: DataFrame[a_sum: bigint]}</span>
 </pre></div>
 </div>
@@ -825,7 +821,6 @@ DataFrames.</p>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">program</span><span class="o">.</span><span class="n">outputs</span>
 <span class="go">{&#39;total_count&#39;: DataFrame[count: bigint]}</span>
 </pre></div>
 </div>
@@ -864,17 +859,6 @@ DataFrames.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="tmlt.analytics.program.SessionProgram.outputs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.analytics.program.SessionProgram.outputs" title="Permalink to this definition">#</a></dt>
-<dd><p>Outputs after running this program.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.program.SessionProgram.output_types">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.program.SessionProgram.output_types" title="Permalink to this definition">#</a></dt>
@@ -889,11 +873,14 @@ DataFrames.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.program.SessionProgram.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.program.SessionProgram.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Runs the program.</p>
-<p>The results of the program can be accessed using the <a class="reference internal" href="#tmlt.analytics.program.SessionProgram.outputs" title="tmlt.analytics.program.SessionProgram.outputs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">outputs</span></code></a> property
-<strong>after</strong> calling this method.</p>
+<dd><p>Runs the program and return its outputs.</p>
 <p>Note that this method can only be called once. If you need to run the program
 again, you must create a new instance of the program.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -986,7 +973,6 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.privacy_budget"><code class="docutils literal notranslate"><span class="pre">SessionProgram.privacy_budget</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.unprotected_inputs"><code class="docutils literal notranslate"><span class="pre">SessionProgram.unprotected_inputs</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.parameters"><code class="docutils literal notranslate"><span class="pre">SessionProgram.parameters</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.outputs"><code class="docutils literal notranslate"><span class="pre">SessionProgram.outputs</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.output_types"><code class="docutils literal notranslate"><span class="pre">SessionProgram.output_types()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.run"><code class="docutils literal notranslate"><span class="pre">SessionProgram.run()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.session_interaction"><code class="docutils literal notranslate"><span class="pre">SessionProgram.session_interaction()</span></code></a></li>
@@ -1030,7 +1016,7 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from a2db2681 at 2024-10-15 20:45.</div>
+Built from badf4f93 at 2024-10-15 20:57.</div>
       
     </div>
   
