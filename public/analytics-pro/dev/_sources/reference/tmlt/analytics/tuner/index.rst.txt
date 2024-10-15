@@ -120,12 +120,10 @@ tuner
    ...     .build()
    ... )
 
-   The :meth:`~.tuner.SessionProgramTuner.outputs` method can be used to run the program
-   to get the outputs of the DP and baseline programs.
+   The :meth:`~.tuner.SessionProgramTuner.run` method can be used to run the
+   program to get the outputs of the DP and baseline programs.
 
-   >>> dp_outputs, baseline_outputs = (
-   ...     tuner.outputs({"budget": PureDPBudget(1), "high": 1})
-   ... )
+   >>> outputs = tuner.run({"budget": PureDPBudget(1), "high": 1})
 
    The :meth:`~.tuner.SessionProgramTuner.error_report` method on the tuner can be used to
    run the program to get the DP and baseline outputs as well as the metrics defined in
@@ -525,6 +523,8 @@ Classes
 
 .. list-table::
 
+   * - :class:`.RunOutputs`
+     - The results of a single run of the DP program and the baselines.
    * - :class:`.SessionProgramTuner`
      - Base class for defining an object to tune inputs to a :class:`~.SessionProgram`.
    * - :class:`.Tunable`
@@ -539,6 +539,49 @@ Classes
      - An unprotected input that was used for an :class:`~.ErrorReport`.
    * - :class:`.ProtectedInput`
      - A protected input that was used for an :class:`~.ErrorReport`.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: RunOutputs
+   :canonical: tmlt.analytics.tuner._tuner.RunOutputs
+
+
+   The results of a single run of the DP program and the baselines.
+
+   .. note::
+
+       |PRO_NOTE|
+
+
+
+
+
+
+   .. py:attribute:: tunable_values
+      :type:  Optional[Dict[str, Any]]
+
+      The tunable values used for this run.
+
+   .. py:attribute:: dp_outputs
+      :type:  Dict[str, pyspark.sql.DataFrame]
+
+      The outputs of the DP program.
+
+   .. py:attribute:: baseline_outputs
+      :type:  Dict[str, Dict[str, pyspark.sql.DataFrame]]
+
+      The outputs of the baselines.
+
+
+
 
    
 ..
@@ -705,7 +748,7 @@ Classes
       :raises ValueError: If baseline options are not distinct or not of appropriate type.
 
 
-   .. py:method:: outputs(tunable_values = None)
+   .. py:method:: run(tunable_values = None)
 
       Computes all outputs for a single run.
 
