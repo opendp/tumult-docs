@@ -1,0 +1,155 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+********************
+API Reference
+********************
+
+.. py:module:: tmlt.analytics
+
+.. autoapi-nested-parse::
+
+   Tumult Analytics is a differentially private analytics library from `Tumult Labs`_.
+
+   .. _Tumult Labs: https://tmlt.io
+
+   The library is broken up into a number of modules that enable complex differentially
+   private queries to be defined and run. A typical workflow is for users to instantiate
+   PySpark and read in their data; create a :class:`~.session.Session` object with
+   private datasets, their corresponding privacy protection, and a privacy budget; define
+   differentially private queries using a :class:`~.query_builder.QueryBuilder` object,
+   and then evaluating these queries with :meth:`~.session.Session.evaluate`.
+
+   **For specifying privacy guarantees**:
+
+   * :mod:`~.session` defines the :class:`~.session.Session`, an interactive
+     interface for evaluating differentially private queries.
+
+   * :mod:`~.privacy_budget` contains types for representing privacy budgets.
+
+   * :mod:`~.protected_change` contains types for expressing what changes in input
+     tables are protected by differential privacy.
+
+   **For defining queries**:
+
+   * :mod:`~.query_builder` provides an interface for constructing differentially
+     private queries from basic query operations.
+
+   * :mod:`~.keyset` defines :class:`~.keyset.KeySet`, a type for specifying the
+     keys used in group-by operations.
+
+   * :mod:`~.constraints` contains types for representing constraints used when
+     evaluating queries on data with the :class:`~.protected_change.AddRowsWithID`
+     protected change.
+
+   * :mod:`~.truncation_strategy` and :mod:`~.binning_spec` provide types that are used
+     to define certain types of queries.
+
+   |PRO| **For evaluating error**:
+
+   * :mod:`~.program` provides an interface for defining a particular differentially
+     private computation as a reusable program object.
+
+   * :mod:`~.tuner` provides an interface for evaluating and tuning the error of a program.
+
+   * :mod:`~.metrics` defines a collection of metrics which can be used as part of
+     the tuning process.
+
+
+Modules
+=======
+
+.. list-table::
+
+   * - :mod:`.binning_spec`
+     - A BinningSpec defines a binning operation on a column.
+   * - :mod:`.config`
+     - Configuration for Tumult Analytics.
+   * - :mod:`.constraints`
+     - Defines :class:`~tmlt.analytics.constraints.Constraint` types.
+   * - :mod:`.keyset`
+     - A KeySet specifies a list of values for one or more columns.
+   * - :mod:`.metrics`
+     - |PRO| Metrics to measure the quality of program outputs.
+   * - :mod:`.no_privacy_session`
+     - |PRO| Interactive query evaluation without any privacy guarantees.
+   * - :mod:`.privacy_budget`
+     - Classes for specifying privacy budgets.
+   * - :mod:`.program`
+     - |PRO| SessionProgram and SessionProgram.Builder interfaces.
+   * - :mod:`.protected_change`
+     - Types for programmatically specifying what changes in input tables are protected.
+   * - :mod:`.query_builder`
+     - An API for building differentially private queries from basic operations.
+   * - :mod:`.session`
+     - Interactive query evaluation using a differential privacy framework.
+   * - :mod:`.truncation_strategy`
+     - Defines strategies for performing truncation in private joins.
+   * - :mod:`.tuner`
+     - |PRO| Interface for tuning SessionPrograms.
+   * - :mod:`.utils`
+     - Utility functions.
+
+.. toctree::
+   :hidden:
+
+   binning_spec/index.rst
+   config/index.rst
+   constraints/index.rst
+   keyset/index.rst
+   metrics/index.rst
+   no_privacy_session/index.rst
+   privacy_budget/index.rst
+   program/index.rst
+   protected_change/index.rst
+   query_builder/index.rst
+   session/index.rst
+   truncation_strategy/index.rst
+   tuner/index.rst
+   utils/index.rst
+
+
+
+
+
+
+
+
+
+
+
+Exceptions
+==========
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:exception:: AnalyticsInternalError(message)
+   :canonical: tmlt.analytics._utils.AnalyticsInternalError
+
+
+   Bases: :py:obj:`AssertionError`
+
+   Generic error to raise for internal analytics errors.
+
+
+
+
+
+
+
+This diagram shows the basic workflow for most Analytics operations. (Click
+to see full-size image.)
+
+.. thumbnail:: ../../../images/tmlt_api_overview_diagram.svg
