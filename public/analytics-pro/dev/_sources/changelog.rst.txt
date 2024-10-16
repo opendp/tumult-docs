@@ -19,8 +19,9 @@ Changed
 - |PRO| *Backwards-incompatible* :class:`~tmlt.analytics.metrics.MetricResult` no longer contains the ``metric`` field.
   In its place, some key information from the metric is now included in the :class:`~tmlt.analytics.metrics.MetricResult`, and some :class:`~tmlt.analytics.metrics.Metric` classes have their own :class:`~tmlt.analytics.metrics.MetricResult` subclasses that add further information (e.g. :class:`~tmlt.analytics.metrics.JoinedOutputMetricResult` for :class:`~tmlt.analytics.metrics.JoinedOutputMetric`).
 - |PRO| *Backwards-incompatible* :meth:`~tmlt.analytics.program.SessionProgram.run` now returns the program outputs. ``SessionProgram.outputs`` has been removed.
-- |PRO| *Backwards-incompatible* ``SessionProgramTuner.outputs`` was replaced by :meth:`~tmlt.analytics.tuner.SessionProgramTuner.run`.
-- |PRO| *Backwards-incompatible* ``program_parameters`` renamed to ``parameters`` across :class:`~tmlt.analytics.tuner.SessionProgramTuner` metrics, baselines, and views.
+- |PRO| *Backwards-incompatible* ``SessionProgramTuner.outputs`` was replaced by a new :meth:`~tmlt.analytics.tuner.SessionProgramTuner.run` method.
+- |PRO| *Backwards-incompatible* ``program_parameters`` was renamed to ``parameters`` across :class:`~tmlt.analytics.tuner.SessionProgramTuner` metrics, baselines, and views.
+- |PRO| *Backwards-incompatible* ``ErrorReport.result_dataframes()`` and ``MultiErrorReport.result_dataframes()`` were removed in favor of :meth:`tmlt.analytics.tuner.ErrorReport.dataframes()` and :meth:`tmlt.analytics.tuner.MultiErrorReport.dataframes()`.
 - Upgraded to typeguard 4.
 - Privacy budgets support division, multiplication, addition and subtraction.
 
@@ -54,7 +55,7 @@ Added
 
 Deprecated
 ~~~~~~~~~~
-- |PRO| Deprecated :meth:`tmlt.analytics.tuner.ErrorReport.result_dataframes()` and :meth:`tmlt.analytics.tuner.MultiErrorReport.result_dataframes()` in favor of new :meth:`tmlt.analytics.tuner.ErrorReport.dataframes()` and :meth:`tmlt.analytics.tuner.MultiErrorReport.dataframes()` methods.
+- |PRO| Deprecated ``ErrorReport.result_dataframes()`` and ``MultiErrorReport.result_dataframes()`` in favor of new :meth:`tmlt.analytics.tuner.ErrorReport.dataframes()` and :meth:`tmlt.analytics.tuner.MultiErrorReport.dataframes()` methods.
 
 Fixed
 ~~~~~
@@ -137,7 +138,7 @@ Changed
 ~~~~~~~
 - Mechanism enums (e.g. :class:`~tmlt.analytics.query_builder.CountMechanism`) should now be imported from :mod:`tmlt.analytics.query_builder`.
   The current query expression module (``tmlt.analytics.query_expr``) will be removed from the public API in an upcoming release.
-- |PRO| Made the return type of :meth:`ErrorReport.result_dataframes <tmlt.analytics.tuner.ErrorReport.result_dataframes>` consistent with :meth:`MultiErrorReport.result_dataframes <tmlt.analytics.tuner.MultiErrorReport.result_dataframes>`.
+- |PRO| Made the return type of ``ErrorReport.result_dataframes`` consistent with ``MultiErrorReport.result_dataframes``.
 
 Removed
 ~~~~~~~
