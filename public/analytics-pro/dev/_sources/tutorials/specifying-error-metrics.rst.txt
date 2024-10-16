@@ -23,13 +23,15 @@ As usual, we first import our packages...
     from pyspark.sql import DataFrame, SparkSession
     from pyspark.sql.functions import col
     import pyspark.sql.functions as sf
-    from tmlt.analytics.keyset import KeySet
-    from tmlt.analytics.privacy_budget import PureDPBudget
-    from tmlt.analytics.protected_change import AddOneRow
-    from tmlt.analytics.query_builder import QueryBuilder
-    from tmlt.analytics.session import Session
-    from tmlt.analytics.program import SessionProgram
-    from tmlt.analytics.tuner import SessionProgramTuner, Tunable
+    from tmlt.analytics import (
+        AddOneRow,
+        KeySet,
+        PureDPBudget,
+        QueryBuilder,
+        Session,
+        SessionProgram,
+    )
+    from tmlt.tune import SessionProgramTuner, Tunable
 
 
 ... and download the datasets, in case we haven't already done so.
@@ -85,7 +87,7 @@ Next, we create our tuner by subclassing :class:`~.tuner.SessionProgramTuner` an
 
 .. testcode::
 
-    from tmlt.analytics.metrics import MedianRelativeError
+    from tmlt.tune import MedianRelativeError
 
     class SimpleTuner(SessionProgramTuner, program=BooksByZipCodeProgram):
         metrics = [
@@ -154,7 +156,7 @@ Let's add three more metrics :class:`~.metrics.QuantileRelativeError`, :class:`~
 
 .. testcode::
 
-    from tmlt.analytics.metrics import QuantileRelativeError, SpuriousRate, SuppressionRate
+    from tmlt.tune import QuantileRelativeError, SpuriousRate, SuppressionRate
 
     class SimpleTuner(SessionProgramTuner, program=BooksByZipCodeProgram):
         metrics = [
@@ -390,7 +392,7 @@ The custom metric method takes a :class:`~pyspark.sql.DataFrame` which contains 
 
 .. testcode::
 
-    from tmlt.analytics.tuner import joined_output_metric
+    from tmlt.tune import joined_output_metric
 
     class SimpleTuner(SessionProgramTuner, program=BooksByZipCodeProgram):
 

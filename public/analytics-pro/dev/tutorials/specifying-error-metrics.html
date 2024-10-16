@@ -478,13 +478,15 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
 <span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">sf</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.program</span> <span class="kn">import</span> <span class="n">SessionProgram</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.tuner</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AddOneRow</span><span class="p">,</span>
+    <span class="n">KeySet</span><span class="p">,</span>
+    <span class="n">PureDPBudget</span><span class="p">,</span>
+    <span class="n">QueryBuilder</span><span class="p">,</span>
+    <span class="n">Session</span><span class="p">,</span>
+    <span class="n">SessionProgram</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
 </pre></div>
 </div>
 <p>… and download the datasets, in case we haven’t already done so.</p>
@@ -535,7 +537,7 @@ document.write(`
 </pre></div>
 </div>
 <p>Next, we create our tuner by subclassing <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and defining the error metric we want to compute.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
 
 <span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
@@ -582,7 +584,7 @@ and show how to generate error reports using custom metrics that you write yours
 <h2>Exploring built-in metrics<a class="headerlink" href="#exploring-built-in-metrics" title="Permalink to this heading">#</a></h2>
 <p>Tumult Analytics provides other built-in metrics that we can use to measure the error of our program. You can find a full list in the API reference.</p>
 <p>Let’s add three more metrics <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.QuantileRelativeError" title="tmlt.analytics.metrics.QuantileRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileRelativeError</span></code></a>, <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SpuriousRate" title="tmlt.analytics.metrics.SpuriousRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpuriousRate</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SuppressionRate" title="tmlt.analytics.metrics.SuppressionRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressionRate</span></code></a> to our <code class="docutils literal notranslate"><span class="pre">metrics</span></code> list from earlier.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
 
 <span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
@@ -701,7 +703,7 @@ is concentrated around the location of the library.</p>
 <h2>Using custom metrics<a class="headerlink" href="#using-custom-metrics" title="Permalink to this heading">#</a></h2>
 <p>What if we need to measure our program’s error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.joined_output_metric" title="tmlt.analytics.tuner.joined_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;joined_output_metric</span> <span class="pre">decorator</span></code></a> and defining a method that computes our metric.</p>
 <p>The custom metric method takes a <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> which contains the DP data joined to the baseline data, and should return either a single value (if there are no grouping columns), or (if grouped) a DataFrame that has a column named with the <code class="docutils literal notranslate"><span class="pre">result_column_name</span></code> variable that contains the metric’s result values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics.tuner</span> <span class="kn">import</span> <span class="n">joined_output_metric</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">joined_output_metric</span>
 
 <span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
 
@@ -875,7 +877,7 @@ is concentrated around the location of the library.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 4f9a215d at 2024-10-16 06:32.</div>
+Built from b92dc9af at 2024-10-16 14:51.</div>
       
     </div>
   
