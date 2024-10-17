@@ -80,6 +80,8 @@ Classes
         - Create a KeySet from a dictionary.
       * - :meth:`.from_dataframe`
         - Create a KeySet from a dataframe.
+      * - :meth:`.from_tuples`
+        - Create a KeySet from a list of tuples and column names.
       * - :meth:`.dataframe`
         - Return the dataframe associated with this KeySet.
       * - :meth:`.__getitem__`
@@ -146,6 +148,27 @@ Classes
       of the KeySet. If the dataframe becomes invalid, for example because its
       Spark session is closed, this method or any uses of the resulting
       dataframe may raise exceptions or have other unanticipated effects.
+
+
+   .. py:method:: from_tuples(tuples, columns)
+      :classmethod:
+
+
+      Create a KeySet from a list of tuples and column names.
+
+      .. rubric:: Example
+
+      >>> tuples = [
+      ...   ("a1", "b1"),
+      ...   ("a2", "b1"),
+      ...   ("a3", "b3"),
+      ... ]
+      >>> keyset = KeySet.from_tuples(tuples, ("A", "B"))
+      >>> keyset.dataframe().sort("A", "B").toPandas()
+          A   B
+      0  a1  b1
+      1  a2  b1
+      2  a3  b3
 
 
    .. py:method:: dataframe()
