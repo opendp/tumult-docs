@@ -752,20 +752,28 @@ Classes
 
       Computes all outputs for a single run.
 
+      Does not compute views nor metrics.
+
       :param tunable_values: A dictionary mapping names of |Tunable|\ s
                              to concrete values to use for this run. Every |Tunable| used
                              in building this tuner must have a value in this dictionary. This
                              can be None only if no |Tunable|\ s were used.
 
 
-   .. py:method:: error_report(tunable_values = None)
+   .. py:method:: error_report(spec = None)
 
-      Computes DP outputs, baseline outputs, and metrics for a single run.
+      Computes a single error report.
 
-      :param tunable_values: A dictionary mapping names of |Tunable|\ s to concrete
-                             values to use for this error report. Every |Tunable| used in building
-                             this tuner must have a value in this dictionary. This can be None only
-                             if no |Tunable|\ s were used.
+      An error report can be computed by specifying a concrete value for each
+      |Tunable| in the tuner (this can be None if no |Tunable| was used), or
+      by passing the output of a previous :meth:`run`. In the former case, DP
+      outputs and baseline outputs are first computed, before computing the
+      views and the metrics. In the latter case, the contents of the
+      :class:`RunOutputs` will be used to compute the views and the metrics.
+
+      :param spec: Either a dictionary specifying a concrete value for each
+                   |Tunable| in this tuner, or the output of a previous
+                   :meth:`run`.
 
 
    .. py:method:: multi_error_report(tunable_values_list)

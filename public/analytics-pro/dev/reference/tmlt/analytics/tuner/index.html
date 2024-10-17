@@ -1201,6 +1201,7 @@ either Options objects or callables for custom baselines.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.SessionProgramTuner.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tunable_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.SessionProgramTuner.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Computes all outputs for a single run.</p>
+<p>Does not compute views nor metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tunable_values</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary mapping names of <a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s
@@ -1216,14 +1217,19 @@ can be None only if no <a class="reference internal" href="#tmlt.analytics.tuner
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.SessionProgramTuner.error_report">
-<span class="sig-name descname"><span class="pre">error_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tunable_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes DP outputs, baseline outputs, and metrics for a single run.</p>
+<span class="sig-name descname"><span class="pre">error_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="Permalink to this definition">#</a></dt>
+<dd><p>Computes a single error report.</p>
+<p>An error report can be computed by specifying a concrete value for each
+<a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> in the tuner (this can be None if no <a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> was used), or
+by passing the output of a previous <a class="reference internal" href="#tmlt.analytics.tuner.SessionProgramTuner.run" title="tmlt.analytics.tuner.SessionProgramTuner.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>. In the former case, DP
+outputs and baseline outputs are first computed, before computing the
+views and the metrics. In the latter case, the contents of the
+<a class="reference internal" href="#tmlt.analytics.tuner.RunOutputs" title="tmlt.analytics.tuner.RunOutputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunOutputs</span></code></a> will be used to compute the views and the metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tunable_values</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary mapping names of <a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s to concrete
-values to use for this error report. Every <a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> used in building
-this tuner must have a value in this dictionary. This can be None only
-if no <a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>s were used.</p>
+<dd class="field-odd"><p><strong>spec</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>Any</em><em>]</em><em>, </em><a class="reference internal" href="#tmlt.analytics.tuner.RunOutputs" title="tmlt.analytics.tuner.RunOutputs"><em>RunOutputs</em></a><em>]</em><em>]</em>) – Either a dictionary specifying a concrete value for each
+<a class="reference internal" href="#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> in this tuner, or the output of a previous
+<a class="reference internal" href="#tmlt.analytics.tuner.SessionProgramTuner.run" title="tmlt.analytics.tuner.SessionProgramTuner.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport" title="tmlt.analytics.tuner._error_report.ErrorReport">tmlt.analytics.tuner._error_report.ErrorReport</a></p>
@@ -1799,7 +1805,7 @@ ensure that truly sensitive data is not used inappropriately.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from a5fc95aa at 2024-10-16 19:07.</div>
+Built from 310c27ff at 2024-10-17 10:03.</div>
       
     </div>
   
