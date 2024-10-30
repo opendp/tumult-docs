@@ -77,27 +77,27 @@ Classes
    .. list-table:: Methods
 
       * - :meth:`.from_dict`
-        - Create a KeySet from a dictionary.
+        - Creates a KeySet from a dictionary.
       * - :meth:`.from_dataframe`
-        - Create a KeySet from a dataframe.
+        - Creates a KeySet from a dataframe.
       * - :meth:`.from_tuples`
-        - Create a KeySet from a list of tuples and column names.
+        - Creates a KeySet from a list of tuples and column names.
       * - :meth:`.dataframe`
-        - Return the dataframe associated with this KeySet.
+        - Returns the dataframe associated with this KeySet.
       * - :meth:`.__getitem__`
         - ``KeySet[col, col, ...]`` returns a KeySet with those columns only.
       * - :meth:`.__eq__`
-        - Override equality.
+        - Returns whether two KeySets are equal.
       * - :meth:`.schema`
         - Returns the KeySet's schema.
       * - :meth:`.__mul__`
         - A product (``KeySet * KeySet``) returns the cross-product of both KeySets.
       * - :meth:`.columns`
-        - Return the list of columns used by this KeySet.
+        - Returns the list of columns used in this KeySet.
       * - :meth:`.filter`
-        - Filter this KeySet using some condition.
+        - Filters this KeySet using some condition.
       * - :meth:`.size`
-        - Get the size of this KeySet.
+        - Returns the size of this KeySet.
       * - :meth:`.cache`
         - Caches the KeySet's dataframe in memory.
       * - :meth:`.uncache`
@@ -111,7 +111,7 @@ Classes
       :classmethod:
 
 
-      Create a KeySet from a dictionary.
+      Creates a KeySet from a dictionary.
 
       The ``domains`` dictionary should map column names to the desired values
       for those columns. The KeySet returned is the cross-product of those
@@ -137,7 +137,7 @@ Classes
       :classmethod:
 
 
-      Create a KeySet from a dataframe.
+      Creates a KeySet from a dataframe.
 
       This DataFrame should contain every combination of values being selected
       in the KeySet. If there are duplicate rows in the dataframe, only one
@@ -154,7 +154,7 @@ Classes
       :classmethod:
 
 
-      Create a KeySet from a list of tuples and column names.
+      Creates a KeySet from a list of tuples and column names.
 
       .. rubric:: Example
 
@@ -175,7 +175,7 @@ Classes
       :abstractmethod:
 
 
-      Return the dataframe associated with this KeySet.
+      Returns the dataframe associated with this KeySet.
 
       This dataframe contains every combination of values being selected in
       the KeySet, and its rows are guaranteed to be unique as long as the
@@ -223,7 +223,7 @@ Classes
 
    .. py:method:: __eq__(other)
 
-      Override equality.
+      Returns whether two KeySets are equal.
 
       Two KeySets are equal if their dataframes contain the same values for
       the same columns (in any order).
@@ -282,14 +282,14 @@ Classes
       :abstractmethod:
 
 
-      Return the list of columns used by this KeySet.
+      Returns the list of columns used in this KeySet.
 
 
    .. py:method:: filter(condition)
       :abstractmethod:
 
 
-      Filter this KeySet using some condition.
+      Filters this KeySet using some condition.
 
       This method accepts the same syntax as
       :meth:`pyspark.sql.DataFrame.filter`: valid conditions are those that
@@ -330,7 +330,13 @@ Classes
       :abstractmethod:
 
 
-      Get the size of this KeySet.
+      Returns the size of this KeySet.
+
+      .. note::
+          A KeySet with no rows and no columns has a size of 1, because
+          queries grouped on such an empty KeySet will return one row
+          (aggregating data over the entire dataset). A KeySet with no rows
+          but non-zero columns has a size of 0.
 
 
    .. py:method:: cache()
