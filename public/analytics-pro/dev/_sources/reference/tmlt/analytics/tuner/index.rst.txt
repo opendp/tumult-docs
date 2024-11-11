@@ -244,20 +244,19 @@ Functions
 
    It may also have the following optional parameters:
 
-   * ``result_column_name``: if the function returns a dataframe, the metric results
+   * ``result_column_name``: if the function returns a DataFrame, the metric results
      should be in a column with this name
    * ``unprotected_inputs``: A dictionary containing the program's unprotected inputs.
    * ``parameters``: A dictionary containing the program's parameters.
 
-   The function should return a single numeric value if there are no grouping columns,
-   or a dataframe with one column for each grouping column, and one numeric result
-   column with the specified name.
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
 
-
-   Alternatively, you can use :class:`~.metrics.Metric` directly.
-
-   To use the built-in metrics in addition to this custom metric,
-   you can separately specify ``metrics`` class variable.
+   To use the built-in metrics in addition to this custom metric, you can
+   separately specify ``metrics`` class variable.
 
    :param name: A name for the metric.
    :param description: A description of the metric.
@@ -374,13 +373,11 @@ Functions
    * ``unprotected_inputs``: A dictionary containing the program's unprotected inputs.
    * ``parameters``: A dictionary containing the program's parameters.
 
-   The function should return a single numeric value if there are no grouping columns,
-   or a dataframe with one column for each grouping column, and one numeric result
-   column with the specified name.
-
-
-   Alternatively, you can use :class:`~.metrics.SingleOutputMetric`
-   directly.
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
 
    To use the built-in metrics in addition to this custom metric,
    you can separately specify ``metrics`` class variable.
@@ -455,8 +452,11 @@ Functions
    or a dataframe with one column for each grouping column, and one numeric result
    column with the specified name.
 
-
-   Alternatively, you can use :class:`~.metrics.JoinedOutputMetric` directly.
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
 
    To use the built-in metrics in addition to this custom metric,
    you can separately specify ``metrics`` class variable.
@@ -953,7 +953,9 @@ Classes
    .. list-table:: Methods
 
       * - :meth:`.dataframes`
-        - Return the result dataframes for each metric, keyed by the value column.
+        - Returns a DataFrame for each metric, keyed by the result column name.
+      * - :meth:`.dataframe`
+        - Returns a DataFrame representation of the error report.
       * - :meth:`.format`
         - Return a string representation of this object.
       * - :meth:`.show`
@@ -1006,7 +1008,22 @@ Classes
 
    .. py:method:: dataframes()
 
-      Return the result dataframes for each metric, keyed by the value column.
+      Returns a DataFrame for each metric, keyed by the result column name.
+
+
+   .. py:method:: dataframe()
+
+      Returns a DataFrame representation of the error report.
+
+      The DataFrame will have a column for each parameter, tunable, and
+      metric. If all metrics have the same grouping columns, the dataframe
+      will have one row per combination of grouping columns values. If the
+      metrics have different groupings columns, this method will throw an
+      error.
+
+      If some combinations of grouping columns values are associated with only
+      some of the metrics, the missing metrics appear as null values in the
+      output DataFrame.
 
 
    .. py:method:: format()
@@ -1065,20 +1082,22 @@ Classes
 
       Return the result dataframes for each metric combined across runs.
 
-      Each metric produces a separate dataframe. The dataframes are keyed
+      Each metric produces a separate DataFrame. The DataFrames are keyed
       by the result column names.
 
 
    .. py:method:: dataframe()
 
-      Return a dataframe representation of the error reports.
+      Return a DataFrame representation of the error reports.
 
-      The dataframe will have a row for each error report (run) and a column for each
-      parameter and metric. If grouped metrics are specified, the dataframe will
-      also have a row for the grouping columns.
+      The DataFrame will have a column for each parameter and metric. If all
+      metrics have the same grouping columns, the DataFrame will include these
+      grouping columns. If not all metrics have the same (or no) grouping
+      column, this method will throw an error.
 
-      If not all metrics have the same (or no) grouping column, this will throw an
-      error.
+      If some combinations of grouping columns values are associated with only
+      some of the metrics, the missing metrics appear as null values in the
+      output DataFrame.
 
 
 
@@ -1112,7 +1131,7 @@ Classes
    .. py:attribute:: dataframe
       :type:  pyspark.sql.DataFrame
 
-      A dataframe containing the unprotected data used for the report.
+      A DataFrame containing the unprotected data used for the report.
 
 
 
@@ -1160,7 +1179,7 @@ Classes
    .. py:attribute:: dataframe
       :type:  pyspark.sql.DataFrame
 
-      A dataframe containing the protected data used for the report.
+      A DataFrame containing the protected data used for the report.
 
    .. py:attribute:: protected_change
       :type:  tmlt.analytics.protected_change.ProtectedChange

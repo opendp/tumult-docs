@@ -2937,6 +2937,25 @@ Classes
 
        |PRO_NOTE|
 
+   This function (the ``func`` argument) must have the following parameters:
+
+   * ``dp_outputs``: a dictionary of DataFrames containing the program's outputs.
+   * ``baseline_outputs``: a dictionary mapping baseline names to dictionaries of
+     output DataFrames.
+
+   It may also have the following optional parameters:
+
+   * ``result_column_name``: if the function returns a DataFrame, the metric results
+     should be in a column with this name
+   * ``unprotected_inputs``: A dictionary containing the program's unprotected inputs.
+   * ``parameters``: A dictionary containing the program's parameters.
+
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
+
    .. rubric:: Example
 
    ..
@@ -3069,11 +3088,28 @@ Classes
 
    A metric computed from a single output table, defined using a function.
 
-   Applies to a single baseline.
-
    .. note::
 
        |PRO_NOTE|
+
+   This metric is defined using a function ``func``. This function must have
+   the following parameters:
+
+   * ``dp_output``: the chosen DP output DataFrame.
+   * ``baseline_output``: the chosen baseline output DataFrame.
+
+   It may also have the following optional parameters:
+
+   * ``result_column_name``: if the function returns a DataFrame, the metric results
+     should be in a column with this name
+   * ``unprotected_inputs``: A dictionary containing the program's unprotected inputs.
+   * ``parameters``: A dictionary containing the program's parameters.
+
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
 
    .. rubric:: Example
 
@@ -3275,19 +3311,28 @@ Classes
 
    A metric computed from a join between a single DP and baseline output.
 
-   Defined using a function.
-
    .. note::
 
        |PRO_NOTE|
 
-   Subclasses of ``JoinedOutputMetric`` define a
-   ``compute_on_joined_output`` method which takes in a single dataframe, the
-   result of joining the specified table from the DP and baseline outputs on
-   the given list of columns, and returns the metric value. The joined table is
-   the result of performing a join (default inner join) between the DP and baseline
-   tables on the given join columns. The DP table is the left argument, and the
-   baseline table is the right (``dp_table.join(baseline_table)``).
+   The metric is defined using a function ``func``. This function must have the
+   following parameters:
+
+   * ``joined_output``: A DataFrame created by joining the selected DP and baseline
+     outputs.
+
+   It may also have the following optional parameters:
+
+   * ``result_column_name``: if the function returns a dataframe, the metric results
+     should be in a column with this name
+   * ``unprotected_inputs``: A dictionary containing the program's unprotected inputs.
+   * ``parameters``: A dictionary containing the program's parameters.
+
+   If the metric does not have grouping columns, the function must return a
+   numeric value, a boolean, or a string. If the metric has grouping columns,
+   then it must return a DataFrame. This DataFrame should contain the grouping
+   columns, and exactly one additional column containing the metric value for
+   each group. This column's type should be numeric, boolean, or string.
 
    .. rubric:: Example
 
@@ -3583,7 +3628,7 @@ Classes
 
    .. py:method:: format_as_dataframe()
 
-      Returns the results of this metric formatted as a dataframe.
+      Returns the results of this metric formatted as a DataFrame.
 
 
 
@@ -3655,7 +3700,7 @@ Classes
 
    .. py:method:: format_as_dataframe()
 
-      Returns the results of this metric formatted as a dataframe.
+      Returns the results of this metric formatted as a DataFrame.
 
 
    .. py:method:: result_column_name()
@@ -3743,7 +3788,7 @@ Classes
 
    .. py:method:: format_as_dataframe()
 
-      Returns the results of this metric formatted as a dataframe.
+      Returns the results of this metric formatted as a DataFrame.
 
 
 

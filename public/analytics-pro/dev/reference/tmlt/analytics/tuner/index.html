@@ -670,17 +670,18 @@ output DataFrames.</p></li>
 </ul>
 <p>It may also have the following optional parameters:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">result_column_name</span></code>: if the function returns a dataframe, the metric results
+<li><p><code class="docutils literal notranslate"><span class="pre">result_column_name</span></code>: if the function returns a DataFrame, the metric results
 should be in a column with this name</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">unprotected_inputs</span></code>: A dictionary containing the program’s unprotected inputs.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: A dictionary containing the program’s parameters.</p></li>
 </ul>
-<p>The function should return a single numeric value if there are no grouping columns,
-or a dataframe with one column for each grouping column, and one numeric result
-column with the specified name.</p>
-<p>Alternatively, you can use <a class="reference internal" href="../metrics/index.html#tmlt.analytics.metrics.Metric" title="tmlt.analytics.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> directly.</p>
-<p>To use the built-in metrics in addition to this custom metric,
-you can separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
+<p>To use the built-in metrics in addition to this custom metric, you can
+separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -801,11 +802,11 @@ should be in a column with this name</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">unprotected_inputs</span></code>: A dictionary containing the program’s unprotected inputs.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: A dictionary containing the program’s parameters.</p></li>
 </ul>
-<p>The function should return a single numeric value if there are no grouping columns,
-or a dataframe with one column for each grouping column, and one numeric result
-column with the specified name.</p>
-<p>Alternatively, you can use <a class="reference internal" href="../metrics/index.html#tmlt.analytics.metrics.SingleOutputMetric" title="tmlt.analytics.metrics.SingleOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleOutputMetric</span></code></a>
-directly.</p>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
 <p>To use the built-in metrics in addition to this custom metric,
 you can separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
 <dl class="field-list simple">
@@ -881,7 +882,11 @@ should be in a column with this name</p></li>
 <p>The function should return a single numeric value if there are no grouping columns,
 or a dataframe with one column for each grouping column, and one numeric result
 column with the specified name.</p>
-<p>Alternatively, you can use <a class="reference internal" href="../metrics/index.html#tmlt.analytics.metrics.JoinedOutputMetric" title="tmlt.analytics.metrics.JoinedOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinedOutputMetric</span></code></a> directly.</p>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
 <p>To use the built-in metrics in addition to this custom metric,
 you can separately specify <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable.</p>
 <dl class="field-list simple">
@@ -1421,12 +1426,15 @@ the <a class="reference internal" href="#tmlt.analytics.tuner.SessionProgramTune
 <caption><span class="caption-text">Methods</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.dataframes" title="tmlt.analytics.tuner.ErrorReport.dataframes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dataframes()</span></code></a></p></td>
-<td><p>Return the result dataframes for each metric, keyed by the value column.</p></td>
+<td><p>Returns a DataFrame for each metric, keyed by the result column name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.format" title="tmlt.analytics.tuner.ErrorReport.format"><code class="xref py py-meth docutils literal notranslate"><span class="pre">format()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.dataframe" title="tmlt.analytics.tuner.ErrorReport.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dataframe()</span></code></a></p></td>
+<td><p>Returns a DataFrame representation of the error report.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.format" title="tmlt.analytics.tuner.ErrorReport.format"><code class="xref py py-meth docutils literal notranslate"><span class="pre">format()</span></code></a></p></td>
 <td><p>Return a string representation of this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.show" title="tmlt.analytics.tuner.ErrorReport.show"><code class="xref py py-meth docutils literal notranslate"><span class="pre">show()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.tuner.ErrorReport.show" title="tmlt.analytics.tuner.ErrorReport.show"><code class="xref py py-meth docutils literal notranslate"><span class="pre">show()</span></code></a></p></td>
 <td><p>Prints the error report in a nicely-formatted, human-readable way.</p></td>
 </tr>
 </tbody>
@@ -1483,10 +1491,29 @@ non-tunable).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.ErrorReport.dataframes">
 <span class="sig-name descname"><span class="pre">dataframes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.ErrorReport.dataframes" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the result dataframes for each metric, keyed by the value column.</p>
+<dd><p>Returns a DataFrame for each metric, keyed by the result column name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, <a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.tuner.ErrorReport.dataframe">
+<span class="sig-name descname"><span class="pre">dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.ErrorReport.dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a DataFrame representation of the error report.</p>
+<p>The DataFrame will have a column for each parameter, tunable, and
+metric. If all metrics have the same grouping columns, the dataframe
+will have one row per combination of grouping columns values. If the
+metrics have different groupings columns, this method will throw an
+error.</p>
+<p>If some combinations of grouping columns values are associated with only
+some of the metrics, the missing metrics appear as null values in the
+output DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1564,7 +1591,7 @@ method.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.MultiErrorReport.dataframes">
 <span class="sig-name descname"><span class="pre">dataframes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.MultiErrorReport.dataframes" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the result dataframes for each metric combined across runs.</p>
-<p>Each metric produces a separate dataframe. The dataframes are keyed
+<p>Each metric produces a separate DataFrame. The DataFrames are keyed
 by the result column names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1576,12 +1603,14 @@ by the result column names.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.MultiErrorReport.dataframe">
 <span class="sig-name descname"><span class="pre">dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.tuner.MultiErrorReport.dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a dataframe representation of the error reports.</p>
-<p>The dataframe will have a row for each error report (run) and a column for each
-parameter and metric. If grouped metrics are specified, the dataframe will
-also have a row for the grouping columns.</p>
-<p>If not all metrics have the same (or no) grouping column, this will throw an
-error.</p>
+<dd><p>Return a DataFrame representation of the error reports.</p>
+<p>The DataFrame will have a column for each parameter and metric. If all
+metrics have the same grouping columns, the DataFrame will include these
+grouping columns. If not all metrics have the same (or no) grouping
+column, this method will throw an error.</p>
+<p>If some combinations of grouping columns values are associated with only
+some of the metrics, the missing metrics appear as null values in the
+output DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a></p>
@@ -1605,7 +1634,7 @@ error.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.UnprotectedInput.dataframe">
 <span class="sig-name descname"><span class="pre">dataframe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a></em><a class="headerlink" href="#tmlt.analytics.tuner.UnprotectedInput.dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>A dataframe containing the unprotected data used for the report.</p>
+<dd><p>A DataFrame containing the unprotected data used for the report.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1636,7 +1665,7 @@ ensure that truly sensitive data is not used inappropriately.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.tuner.ProtectedInput.dataframe">
 <span class="sig-name descname"><span class="pre">dataframe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a></em><a class="headerlink" href="#tmlt.analytics.tuner.ProtectedInput.dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>A dataframe containing the protected data used for the report.</p>
+<dd><p>A DataFrame containing the protected data used for the report.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1752,6 +1781,7 @@ ensure that truly sensitive data is not used inappropriately.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.baseline_outputs"><code class="docutils literal notranslate"><span class="pre">ErrorReport.baseline_outputs</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.metric_results"><code class="docutils literal notranslate"><span class="pre">ErrorReport.metric_results</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.dataframes"><code class="docutils literal notranslate"><span class="pre">ErrorReport.dataframes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.dataframe"><code class="docutils literal notranslate"><span class="pre">ErrorReport.dataframe()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.format"><code class="docutils literal notranslate"><span class="pre">ErrorReport.format()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.tuner.ErrorReport.show"><code class="docutils literal notranslate"><span class="pre">ErrorReport.show()</span></code></a></li>
 </ul>
@@ -1813,7 +1843,7 @@ ensure that truly sensitive data is not used inappropriately.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from ffdd182e at 2024-11-08 19:17.</div>
+Built from c4745805 at 2024-11-11 13:48.</div>
       
     </div>
   

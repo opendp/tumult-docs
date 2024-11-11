@@ -5191,6 +5191,24 @@ error computation.</p></li>
 <p>This is only available on a paid version of Tumult Analytics. If you
 would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
+<p>This function (the <code class="docutils literal notranslate"><span class="pre">func</span></code> argument) must have the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dp_outputs</span></code>: a dictionary of DataFrames containing the program’s outputs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline_outputs</span></code>: a dictionary mapping baseline names to dictionaries of
+output DataFrames.</p></li>
+</ul>
+<p>It may also have the following optional parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result_column_name</span></code>: if the function returns a DataFrame, the metric results
+should be in a column with this name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unprotected_inputs</span></code>: A dictionary containing the program’s unprotected inputs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: A dictionary containing the program’s parameters.</p></li>
+</ul>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dp_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]}))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dp_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="n">dp_df</span><span class="p">}</span>
@@ -5301,17 +5319,9 @@ would like to hear more, please contact us at <a class="reference external" href
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A name for the metric.</p></li>
 <li><p><strong>description</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – A description of the metric.</p></li>
-<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. The function must
-have two parameters named <cite>dp_outputs</cite> (a dictionary of DataFrames
-containing the program’s outputs) and <cite>baseline_outputs</cite> (a dictionary
-mapping baseline names to dictionaries of output DataFrames).
-It may also have parameters named <cite>self</cite> (a reference to this Metric),
-<cite>output_column_name</cite> (if the function returns a dataframe, the metric
-results should be in a column with this name), <cite>unprotected_inputs</cite>,
-and <cite>parameters</cite> (if the program includes them). The function
-should return a single numeric value if there are no grouping columns,
-or a dataframe with one column for each grouping column, and one
-numeric result column of the specified name.</p></li>
+<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. See the
+docstring for <a class="reference internal" href="#tmlt.analytics.metrics.Metric" title="tmlt.analytics.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> for detail on the allowed
+input/output types of this function.</p></li>
 <li><p><strong>grouping_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – If specified, the metric should group the outputs by the
 given columns, and calculate the metric for each group.</p></li>
 <li><p><strong>measure_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – If specified, the column in the outputs to measure.</p></li>
@@ -5421,12 +5431,29 @@ error computation.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SingleOutputMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.metrics.SingleOutputMetric" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.metrics.Metric" title="tmlt.analytics.metrics.Metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metric</span></code></a></p>
 <p>A metric computed from a single output table, defined using a function.</p>
-<p>Applies to a single baseline.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is only available on a paid version of Tumult Analytics. If you
 would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
+<p>This metric is defined using a function <code class="docutils literal notranslate"><span class="pre">func</span></code>. This function must have
+the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dp_output</span></code>: the chosen DP output DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline_output</span></code>: the chosen baseline output DataFrame.</p></li>
+</ul>
+<p>It may also have the following optional parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result_column_name</span></code>: if the function returns a DataFrame, the metric results
+should be in a column with this name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unprotected_inputs</span></code>: A dictionary containing the program’s unprotected inputs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: A dictionary containing the program’s parameters.</p></li>
+</ul>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dp_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]}))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dp_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="n">dp_df</span><span class="p">}</span>
@@ -5625,15 +5652,9 @@ would like to hear more, please contact us at <a class="reference external" href
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A name for the metric.</p></li>
-<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. The function must
-have two dataframe parameters named <cite>dp_output</cite> and <cite>baseline_output</cite>.
-It may also have parameters named <cite>self</cite> (a reference to this Metric),
-<cite>result_column_name</cite> (if the function returns a dataframe, the metric
-results should be in a column with this name), <cite>unprotected_inputs</cite>,
-and <cite>parameters</cite> (if the program includes them). The function
-should return a single numeric value if there are no grouping columns,
-or a dataframe with one column for each grouping column, and one
-numeric result column of the specified name.</p></li>
+<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. See the
+docstring for <a class="reference internal" href="#tmlt.analytics.metrics.SingleOutputMetric" title="tmlt.analytics.metrics.SingleOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleOutputMetric</span></code></a> for detail on the
+allowed input/output types of this function.</p></li>
 <li><p><strong>description</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – A description of the metric.</p></li>
 <li><p><strong>baseline</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – The name of the baseline program used for the error report.
 If None, the tuner must have a single baseline (which will be used).</p></li>
@@ -5788,19 +5809,29 @@ error computation.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JoinedOutputMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inner'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropna_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.metrics.JoinedOutputMetric" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.metrics.SingleOutputMetric" title="tmlt.analytics.metrics.SingleOutputMetric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleOutputMetric</span></code></a></p>
 <p>A metric computed from a join between a single DP and baseline output.</p>
-<p>Defined using a function.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is only available on a paid version of Tumult Analytics. If you
 would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
-<p>Subclasses of <code class="docutils literal notranslate"><span class="pre">JoinedOutputMetric</span></code> define a
-<code class="docutils literal notranslate"><span class="pre">compute_on_joined_output</span></code> method which takes in a single dataframe, the
-result of joining the specified table from the DP and baseline outputs on
-the given list of columns, and returns the metric value. The joined table is
-the result of performing a join (default inner join) between the DP and baseline
-tables on the given join columns. The DP table is the left argument, and the
-baseline table is the right (<code class="docutils literal notranslate"><span class="pre">dp_table.join(baseline_table)</span></code>).</p>
+<p>The metric is defined using a function <code class="docutils literal notranslate"><span class="pre">func</span></code>. This function must have the
+following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">joined_output</span></code>: A DataFrame created by joining the selected DP and baseline
+outputs.</p></li>
+</ul>
+<p>It may also have the following optional parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result_column_name</span></code>: if the function returns a dataframe, the metric results
+should be in a column with this name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unprotected_inputs</span></code>: A dictionary containing the program’s unprotected inputs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: A dictionary containing the program’s parameters.</p></li>
+</ul>
+<p>If the metric does not have grouping columns, the function must return a
+numeric value, a boolean, or a string. If the metric has grouping columns,
+then it must return a DataFrame. This DataFrame should contain the grouping
+columns, and exactly one additional column containing the metric value for
+each group. This column’s type should be numeric, boolean, or string.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dp_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">}]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dp_outputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="n">dp_df</span><span class="p">}</span>
@@ -6046,15 +6077,9 @@ baseline table is the right (<code class="docutils literal notranslate"><span cl
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A name for the metric.</p></li>
-<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. The function must
-have a single dataframe parameter named <cite>joined_output</cite>.
-It may also have parameters named <cite>self</cite> (a reference to this Metric),
-<cite>result_column_name</cite> (if the function returns a dataframe, the metric
-results should be in a column with this name), <cite>unprotected_inputs</cite>,
-and <cite>parameters</cite> (if the program includes them). The function
-should return a single numeric value if there are no grouping columns,
-or a dataframe with one column for each grouping column, and one
-numeric result column of the specified name.</p></li>
+<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">staticmethod</span></code>]</span>) – The function that calculates the metric result. See the
+docstring for <a class="reference internal" href="#tmlt.analytics.metrics.JoinedOutputMetric" title="tmlt.analytics.metrics.JoinedOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinedOutputMetric</span></code></a> for detail on the
+allowed input/output types of this function.</p></li>
 <li><p><strong>join_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – The columns to join on.</p></li>
 <li><p><strong>description</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – A description of the metric.</p></li>
 <li><p><strong>baseline</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – The name of the baseline program used for the error report.
@@ -6302,7 +6327,7 @@ would like to hear more, please contact us at <a class="reference external" href
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.metrics.JoinedOutputMetricResult.format_as_dataframe">
 <span class="sig-name descname"><span class="pre">format_as_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.metrics.JoinedOutputMetricResult.format_as_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the results of this metric formatted as a dataframe.</p>
+<dd><p>Returns the results of this metric formatted as a DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a></p>
@@ -6377,7 +6402,7 @@ would like to hear more, please contact us at <a class="reference external" href
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.metrics.MetricResult.format_as_dataframe">
 <span class="sig-name descname"><span class="pre">format_as_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.metrics.MetricResult.format_as_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the results of this metric formatted as a dataframe.</p>
+<dd><p>Returns the results of this metric formatted as a DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a></p>
@@ -6477,7 +6502,7 @@ would like to hear more, please contact us at <a class="reference external" href
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.metrics.SingleOutputMetricResult.format_as_dataframe">
 <span class="sig-name descname"><span class="pre">format_as_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.metrics.SingleOutputMetricResult.format_as_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the results of this metric formatted as a dataframe.</p>
+<dd><p>Returns the results of this metric formatted as a DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.0)">pandas.DataFrame</a></p>
@@ -7761,7 +7786,7 @@ error computation.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from ffdd182e at 2024-11-08 19:17.</div>
+Built from c4745805 at 2024-11-11 13:48.</div>
       
     </div>
   
