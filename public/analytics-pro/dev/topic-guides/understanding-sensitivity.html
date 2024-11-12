@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -460,7 +460,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="understanding-sensitivity">
-<span id="id1"></span><h1>Understanding sensitivity<a class="headerlink" href="#understanding-sensitivity" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Understanding sensitivity<a class="headerlink" href="#understanding-sensitivity" title="Link to this heading">#</a></h1>
 <p>This topic guide goes into detail on the concept of <em>sensitivity</em> in
 differential privacy.</p>
 <p>Sensitivity is the maximum impact that a protected change can have on a query’s
@@ -477,7 +477,7 @@ straightforward to estimate. In this topic guide, we will examine how different 
 query can affect its sensitivity. Understand this relationship will help you
 choose what transformations to use to ensure accurate results while maintaining strong privacy guarantees.</p>
 <section id="queries-on-tables-using-addmaxrows">
-<h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code><a class="headerlink" href="#queries-on-tables-using-addmaxrows" title="Permalink to this heading">#</a></h2>
+<h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code><a class="headerlink" href="#queries-on-tables-using-addmaxrows" title="Link to this heading">#</a></h2>
 <p>Queries on tables using the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> or
 <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change
 protect the addition or removal of rows in the table. This means that any
@@ -490,12 +490,13 @@ scales <em>linearly</em> with the protected change.</p>
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">public</span> <span class="pre">joins</span></code></a>, and
 <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">private</span> <span class="pre">joins</span></code></a>.</p>
 <section id="flat-maps">
-<h3>Flat maps<a class="headerlink" href="#flat-maps" title="Permalink to this heading">#</a></h3>
+<h3>Flat maps<a class="headerlink" href="#flat-maps" title="Link to this heading">#</a></h3>
 <p>A <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map</span></code></a> maps each
 input row to zero or more new rows. Consider the example from
 <a class="reference internal" href="../tutorials/simple-transformations.html#flat-maps"><span class="std std-ref">Simple transformations</span></a> tutorial, where each input row is mapped to up
 to three new rows, using to the <code class="docutils literal notranslate"><span class="pre">max_rows=3</span></code> parameter. On a per-row basis, this operation might look like this:</p>
-<img alt="On the left, one row containing a list of genres. On the right, three rows, each containing one genre from the list." class="align-center" src="../_images/flat_map_row_example.svg" /><p>In this example, the input table was initialized with the
+<img alt="On the left, one row containing a list of genres. On the right, three rows, each containing one genre from the list." class="align-center" src="../_images/flat_map_row_example.svg" />
+<p>In this example, the input table was initialized with the
 <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change,
 which is equivalent to
 <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> with
@@ -511,11 +512,12 @@ the same if all the input rows only had 1 or 2 genres, and no input row produced
 </div>
 </section>
 <section id="public-joins">
-<h3>Public joins<a class="headerlink" href="#public-joins" title="Permalink to this heading">#</a></h3>
+<h3>Public joins<a class="headerlink" href="#public-joins" title="Link to this heading">#</a></h3>
 <p>Suppose we have two tables, <code class="docutils literal notranslate"><span class="pre">People</span></code> (private table) and <code class="docutils literal notranslate"><span class="pre">States</span></code> (public table),
 which share a common column, <code class="docutils literal notranslate"><span class="pre">zipcode</span></code>. A public join between these tables might look
 like:</p>
-<img alt="On top left, a private table with names, ages, and zipcodes. On top right, a public table with states and zipcodes. On the bottom, the result of a public join between the two top tables: a private table with names, ages, states, and zipcodes." class="align-center" src="../_images/public_join_example_zips.svg" /><p>The join output contains one row for each match between the two tables. In this example,
+<img alt="On top left, a private table with names, ages, and zipcodes. On top right, a public table with states and zipcodes. On the bottom, the result of a public join between the two top tables: a private table with names, ages, states, and zipcodes." class="align-center" src="../_images/public_join_example_zips.svg" />
+<p>The join output contains one row for each match between the two tables. In this example,
 Susie’s ZIP code happens to cross state boundaries: the <code class="docutils literal notranslate"><span class="pre">zipcode</span></code> value 37752 appears
 twice in the <code class="docutils literal notranslate"><span class="pre">States</span></code> table! This means that Susie’s name and age appear in two rows
 in the output table. To hide her contribution to the joined table, we need to increase
@@ -531,14 +533,15 @@ number of rows in the public table with each value of the join key.</p>
 </div>
 </section>
 <section id="private-joins">
-<h3>Private joins<a class="headerlink" href="#private-joins" title="Permalink to this heading">#</a></h3>
+<h3>Private joins<a class="headerlink" href="#private-joins" title="Link to this heading">#</a></h3>
 <p>With private joins, <em>both</em> tables are private. This means that, unlike with a public
 table in a public join, we cannot use the contents of either table directly to determine
 the sensitivity: doing so would reveal information about individuals within the tables,
 thus violating the privacy guarantee.</p>
 <p>Suppose we have two tables, a <code class="docutils literal notranslate"><span class="pre">Users</span></code> table and a <code class="docutils literal notranslate"><span class="pre">Purchases</span></code> table, which share a
 common column, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. Each are initialized with a protected change of <code class="docutils literal notranslate"><span class="pre">AddMaxRows(max_rows=1)</span></code>:</p>
-<img alt="On the left, a private table with names, user ids and payment information. On the right, a private table with user_ids and purchase information." class="align-center" src="../_images/private_join_tables.svg" /><p>Since both tables contain sensitive information, we cannot look at
+<img alt="On the left, a private table with names, user ids and payment information. On the right, a private table with user_ids and purchase information." class="align-center" src="../_images/private_join_tables.svg" />
+<p>Since both tables contain sensitive information, we cannot look at
 the data directly to calculate the sensitivity. Therefore, we need to truncate both tables by specifying a
 <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a> for
 each. The sensitivity computation is more complicated than before:</p>
@@ -554,7 +557,8 @@ each. The sensitivity computation is more complicated than before:</p>
 <p>In this example, if we choose a truncation strategy of <code class="docutils literal notranslate"><span class="pre">DropExcess(max_rows=2)</span></code> for
 both tables, they will be truncated to include no more than two rows for each value of
 our join key, <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. The private join might look something like:</p>
-<img alt="On the left, a private table with names, user ids and emails. On the right, a private table with user_ids and purchase information. On the bottom, the result of a private join between the two top tables: a private table with names, user ids, emails, and purchase information." class="align-center" src="../_images/private_join_example.svg" /><p>In this case, our <code class="docutils literal notranslate"><span class="pre">DropExcess()</span></code> truncation strategies each had bounds of
+<img alt="On the left, a private table with names, user ids and emails. On the right, a private table with user_ids and purchase information. On the bottom, the result of a private join between the two top tables: a private table with names, user ids, emails, and purchase information." class="align-center" src="../_images/private_join_example.svg" />
+<p>In this case, our <code class="docutils literal notranslate"><span class="pre">DropExcess()</span></code> truncation strategies each had bounds of
 <code class="docutils literal notranslate"><span class="pre">max_rows=2</span></code>, and our tables each had a protected change of
 <code class="docutils literal notranslate"><span class="pre">AddMaxRows(max_rows=1)</span></code>. The sensitivity of the join is then:
 <span class="math notranslate nohighlight">\(\text{sensitivity} = 2 * 2 * 1 + 2 * 2 * 1 = 8\)</span>.</p>
@@ -579,7 +583,7 @@ Using <code class="docutils literal notranslate"><span class="pre">DropExcess(ma
 </section>
 </section>
 <section id="queries-on-tables-using-addrowswithid">
-<h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code><a class="headerlink" href="#queries-on-tables-using-addrowswithid" title="Permalink to this heading">#</a></h2>
+<h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code><a class="headerlink" href="#queries-on-tables-using-addrowswithid" title="Link to this heading">#</a></h2>
 <p>Queries on tables using the
 <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
 protect the presence of arbitrarily many rows associated with the same privacy ID. In this case,
@@ -717,7 +721,7 @@ to reach out to us on <a class="reference external" href="https://www.tmlt.dev/s
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -728,7 +732,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

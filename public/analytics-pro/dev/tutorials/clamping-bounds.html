@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -467,7 +467,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="numerical-aggregations">
-<span id="clamping-bounds"></span><h1>Numerical aggregations<a class="headerlink" href="#numerical-aggregations" title="Permalink to this heading">#</a></h1>
+<span id="clamping-bounds"></span><h1>Numerical aggregations<a class="headerlink" href="#numerical-aggregations" title="Link to this heading">#</a></h1>
 <p>Counting queries, which we saw in tutorials <a class="reference internal" href="first-steps.html#first-steps"><span class="std std-ref">first steps tutorial</span></a> and
 <a class="reference internal" href="privacy-budget-basics.html#working-with-privacy-budgets"><span class="std std-ref">working with privacy budgets tutorial</span></a>, are very useful, but we often need a
 little more: sums, averages, medians… In this tutorial, we’ll see how to compute
@@ -476,7 +476,7 @@ require us to learn and use a new concept: <em>clamping bounds</em>. In this tut
 we’ll tell you what these are, how they work, and how to specify them in
 practice.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>The setup process is the same as in the earlier tutorials.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -509,7 +509,7 @@ production!</p>
 </div>
 </section>
 <section id="simple-cases">
-<h2>Simple cases<a class="headerlink" href="#simple-cases" title="Permalink to this heading">#</a></h2>
+<h2>Simple cases<a class="headerlink" href="#simple-cases" title="Link to this heading">#</a></h2>
 <p>Let’s start by answering a simple query: what is the average age of members of
 our library?</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean_age_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
@@ -540,7 +540,7 @@ were younger than 120 years old, and that ages have to be a non-negative value.<
 complex cases, let’s first explain what these clamping bounds actually <em>do</em>.</p>
 </section>
 <section id="what-do-clamping-bounds-actually-do">
-<h2>What do clamping bounds actually do?<a class="headerlink" href="#what-do-clamping-bounds-actually-do" title="Permalink to this heading">#</a></h2>
+<h2>What do clamping bounds actually do?<a class="headerlink" href="#what-do-clamping-bounds-actually-do" title="Link to this heading">#</a></h2>
 <p>These minimum and maximum values for numerical columns aren’t just additional
 pieces of metadata: they directly affect the value of the computed statistics,
 possibly dramatically. In particular, they have two major effects.</p>
@@ -552,7 +552,7 @@ size of the clamping bounds.</p></li>
 </ol>
 <p>Let’s look at each of these in turn.</p>
 <section id="clamping-the-data">
-<h3>Clamping the data<a class="headerlink" href="#clamping-the-data" title="Permalink to this heading">#</a></h3>
+<h3>Clamping the data<a class="headerlink" href="#clamping-the-data" title="Link to this heading">#</a></h3>
 <p>When you specify clamping bounds, Tumult Analytics will <em>enforce</em> that the input
 data is within these bounds. If one of the values is too small, it will be
 converted to the lower clamping bound. And if a value is too large, it will be
@@ -565,7 +565,7 @@ data almost only has negative values, but the lower bound is set to 0, then all
 this data will be clamped to 0, and you might get wildly inaccurate results.</p>
 </section>
 <section id="adjusting-the-perturbation">
-<h3>Adjusting the perturbation<a class="headerlink" href="#adjusting-the-perturbation" title="Permalink to this heading">#</a></h3>
+<h3>Adjusting the perturbation<a class="headerlink" href="#adjusting-the-perturbation" title="Link to this heading">#</a></h3>
 <p>Once the data is clamped to a specific interval, Tumult Analytics can know how
 much perturbation (<em>noise</em>) must be used in the differentially private
 algorithm. The larger the bounds, the more noise must be added.</p>
@@ -582,7 +582,7 @@ much, to limit the magnitude of the perturbation used for the computation.</p>
 </section>
 </section>
 <section id="choosing-clamping-bounds">
-<h2>Choosing clamping bounds<a class="headerlink" href="#choosing-clamping-bounds" title="Permalink to this heading">#</a></h2>
+<h2>Choosing clamping bounds<a class="headerlink" href="#choosing-clamping-bounds" title="Link to this heading">#</a></h2>
 <p>While there were obvious clamping bounds for <code class="docutils literal notranslate"><span class="pre">age</span></code>, in other cases, choosing
 the clamping bounds may be a little more difficult. Say we have a column
 capturing the number of books borrowed by each library member over the course of
@@ -623,7 +623,7 @@ acceptable, but taking e.g. the exact maximum value in the data isn’t: it woul
 directly leak the value of a single data point.</p>
 </section>
 <section id="final-words">
-<h2>Final words<a class="headerlink" href="#final-words" title="Permalink to this heading">#</a></h2>
+<h2>Final words<a class="headerlink" href="#final-words" title="Link to this heading">#</a></h2>
 <p>Having to set clamping bounds is a little annoying, but you will find that it
 can often make your data analysis <em>more</em> robust: it reduces the contribution of
 outlier data points, which could otherwise have an outsized influence on the
@@ -728,7 +728,7 @@ we’ll explain how to compute histogram-like queries using Tumult Analytics.</p
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -739,7 +739,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

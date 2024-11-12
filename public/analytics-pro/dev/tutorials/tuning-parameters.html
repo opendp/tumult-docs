@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -467,14 +467,14 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="tuning-parameters">
-<span id="id1"></span><h1>Tuning parameters<a class="headerlink" href="#tuning-parameters" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Tuning parameters<a class="headerlink" href="#tuning-parameters" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
 <p>In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for <em>optimizing</em> the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> class is designed to help us do just that. Let’s see how it works!</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>As in earlier tutorials, we import the necessary packages and download the data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -522,7 +522,7 @@ document.write(`
 </div>
 </section>
 <section id="parametrizing-the-sessionprogram">
-<h2>Parametrizing the SessionProgram<a class="headerlink" href="#parametrizing-the-sessionprogram" title="Permalink to this heading">#</a></h2>
+<h2>Parametrizing the SessionProgram<a class="headerlink" href="#parametrizing-the-sessionprogram" title="Link to this heading">#</a></h2>
 <p>We previously used a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
 <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
@@ -576,7 +576,7 @@ document.write(`
 <p>But we don’t want to specify it just yet — we first want to try different values for it, and observe which ones give us acceptable accuracy.</p>
 </section>
 <section id="running-multiple-error-reports-at-once">
-<h2>Running multiple error reports at once<a class="headerlink" href="#running-multiple-error-reports-at-once" title="Permalink to this heading">#</a></h2>
+<h2>Running multiple error reports at once<a class="headerlink" href="#running-multiple-error-reports-at-once" title="Link to this heading">#</a></h2>
 <p>Let’s define a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> with our program class to compute two metrics: the median and 75th percentile relative error. We’ve already seen similar metrics, but this time we are giving them a short name.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
@@ -659,7 +659,7 @@ Done!
 <p>Setting the clamping bound to about 175 seems to be getting us the best result.</p>
 </section>
 <section id="tuning-not-just-for-parameters">
-<h2>Tuning: not just for parameters!<a class="headerlink" href="#tuning-not-just-for-parameters" title="Permalink to this heading">#</a></h2>
+<h2>Tuning: not just for parameters!<a class="headerlink" href="#tuning-not-just-for-parameters" title="Link to this heading">#</a></h2>
 <p>We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> to find out.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
@@ -824,7 +824,7 @@ Done!
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -835,7 +835,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

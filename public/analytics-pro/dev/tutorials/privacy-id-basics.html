@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -467,7 +467,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="working-with-privacy-ids">
-<span id="id1"></span><h1>Working with privacy IDs<a class="headerlink" href="#working-with-privacy-ids" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Working with privacy IDs<a class="headerlink" href="#working-with-privacy-ids" title="Link to this heading">#</a></h1>
 <p>In previous tutorials, we were working with a table where each person in the
 data was associated with exactly one row. But this is not always the case: in
 some datasets, the same person can appears in many rows. In this case, it is
@@ -484,7 +484,7 @@ as our privacy ID. We will then use this data to determine which books at
 the library are the most popular, and how many people have checked out those
 books.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>We import Python packages…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -502,7 +502,8 @@ books.</p>
 </div>
 <p>… and download two datasets: one containing books checked out from
 the library, and one that contains a list of the books that the library has. The checkout logs might look like:</p>
-<img alt="An 8x6 table demonstrating the checkout logs data structure. The columns of the table are checkout_date, member_id, title, author, isbn, publication_date, publisher, and genres. The rows of the table are the individual checkouts. The checkout_date column contains dates, the member_id column contains integers, the title, author, isbn, publication_date, publisher, and genres columns contain strings." class="align-center" src="../_images/mock_checkout_logs.svg" /><p>Notice that the <em>same member</em> may have checked out <em>many books</em>, as illustrated by the highlighted rows. This is a defining characteristic of data fit for use with privacy IDs, as we will see in a moment.</p>
+<img alt="An 8x6 table demonstrating the checkout logs data structure. The columns of the table are checkout_date, member_id, title, author, isbn, publication_date, publisher, and genres. The rows of the table are the individual checkouts. The checkout_date column contains dates, the member_id column contains integers, the title, author, isbn, publication_date, publisher, and genres columns contain strings." class="align-center" src="../_images/mock_checkout_logs.svg" />
+<p>Notice that the <em>same member</em> may have checked out <em>many books</em>, as illustrated by the highlighted rows. This is a defining characteristic of data fit for use with privacy IDs, as we will see in a moment.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
     <span class="s2">&quot;https://tumult-public.s3.amazonaws.com/checkout-logs.csv&quot;</span>
@@ -520,7 +521,7 @@ the library, and one that contains a list of the books that the library has. The
 </div>
 </section>
 <section id="creating-a-session-with-privacy-ids">
-<h2>Creating a Session with privacy IDs<a class="headerlink" href="#creating-a-session-with-privacy-ids" title="Permalink to this heading">#</a></h2>
+<h2>Creating a Session with privacy IDs<a class="headerlink" href="#creating-a-session-with-privacy-ids" title="Link to this heading">#</a></h2>
 <p>Let’s initialize our <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> with a
 private dataframe containing books checked out from the library.</p>
 <p>Since each library member could have checked out any number of books,
@@ -560,7 +561,7 @@ genres            VARCHAR        False                       True
 the ‘member_id’ column is marked as our ID column.</p>
 </section>
 <section id="a-simple-query-with-privacy-ids">
-<h2>A simple query with privacy IDs<a class="headerlink" href="#a-simple-query-with-privacy-ids" title="Permalink to this heading">#</a></h2>
+<h2>A simple query with privacy IDs<a class="headerlink" href="#a-simple-query-with-privacy-ids" title="Link to this heading">#</a></h2>
 <p>Let’s find out what the most popular books in our library are! We can do this
 by counting how many times each book has been checked out.</p>
 <p>This sounds like a simple query combining a group-by operation and a count;
@@ -626,7 +627,7 @@ step is also called <em>truncation</em>: we dropped (or <em>truncated</em>) some
 to enforce the desired constraint.</p>
 </section>
 <section id="more-constraints">
-<h2>More constraints<a class="headerlink" href="#more-constraints" title="Permalink to this heading">#</a></h2>
+<h2>More constraints<a class="headerlink" href="#more-constraints" title="Link to this heading">#</a></h2>
 <p>Limiting the number of rows per privacy ID is not the only way to truncate the
 data and perform queries with privacy IDs. Another option is to limit the
 number of <em>groups</em> that each ID can appear in, and limit the number of
@@ -720,13 +721,14 @@ Tumult Analytics understands that each ID can contribute at most once per group.
 <img alt="A bar chart plotting the number of unique library members who have checked out each book. The most popular book (The Alchemist) has been checked out by about 750 people; each book after that has been checked out by fewer people, with the last book (Comfort Me With...) having been checked out by just under 500 people." class="align-center" src="../_images/chart_books_by_unique_members.png" />
 </section>
 <section id="summary">
-<span id="flow-chart-truncation"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<span id="flow-chart-truncation"></span><h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We’ve seen that when using privacy IDs, we need to truncate the data to limit
 how much each privacy ID can contribute to the final statistic. There are two
 ways of doing so: using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
 or using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
 <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>.</p>
-<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" /><p>As a reminder:</p>
+<img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" />
+<p>As a reminder:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a> limits the number of rows
 associated with each privacy ID in a table.</p></li>
@@ -827,7 +829,7 @@ privacy IDs, you can proceed to the <a class="reference internal" href="more-wit
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -838,7 +840,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

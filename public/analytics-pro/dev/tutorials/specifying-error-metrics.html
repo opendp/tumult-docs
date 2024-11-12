@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -467,7 +467,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="specifying-error-metrics">
-<span id="id1"></span><h1>Specifying error metrics<a class="headerlink" href="#specifying-error-metrics" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Specifying error metrics<a class="headerlink" href="#specifying-error-metrics" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
@@ -581,7 +581,7 @@ document.write(`
 <p>Generating an error report from a single built-in metric is useful, although somewhat limited in scope. How else can we measure the error of a Tumult Analytics program? In this tutorial, we’ll cover the other built-in metrics provided by Tumult Analytics,
 and show how to generate error reports using custom metrics that you write yourself.</p>
 <section id="exploring-built-in-metrics">
-<h2>Exploring built-in metrics<a class="headerlink" href="#exploring-built-in-metrics" title="Permalink to this heading">#</a></h2>
+<h2>Exploring built-in metrics<a class="headerlink" href="#exploring-built-in-metrics" title="Link to this heading">#</a></h2>
 <p>Tumult Analytics provides other built-in metrics that we can use to measure the error of our program. You can find a full list in the API reference.</p>
 <p>Let’s add three more metrics <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.QuantileRelativeError" title="tmlt.analytics.metrics.QuantileRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileRelativeError</span></code></a>, <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SpuriousRate" title="tmlt.analytics.metrics.SpuriousRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpuriousRate</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SuppressionRate" title="tmlt.analytics.metrics.SuppressionRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressionRate</span></code></a> to our <code class="docutils literal notranslate"><span class="pre">metrics</span></code> list from earlier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
@@ -700,7 +700,7 @@ is concentrated around the location of the library.</p>
 <img alt="A geoplot of the books borrowed by zip code." class="align-center" src="../_images/chart_books_borrowed_by_zip.png" />
 </section>
 <section id="using-custom-metrics">
-<h2>Using custom metrics<a class="headerlink" href="#using-custom-metrics" title="Permalink to this heading">#</a></h2>
+<h2>Using custom metrics<a class="headerlink" href="#using-custom-metrics" title="Link to this heading">#</a></h2>
 <p>What if we need to measure our program’s error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.joined_output_metric" title="tmlt.analytics.tuner.joined_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;joined_output_metric</span> <span class="pre">decorator</span></code></a> and defining a method that computes our metric.</p>
 <p>The custom metric method takes a <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> which contains the DP data joined to the baseline data, and should return either a single value (if there are no grouping columns), or (if grouped) a DataFrame that has a column named with the <code class="docutils literal notranslate"><span class="pre">result_column_name</span></code> variable that contains the metric’s result values.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">joined_output_metric</span>
@@ -785,7 +785,7 @@ is concentrated around the location of the library.</p>
 <p>If your metric doesn’t need to join the DP and baseline outputs, you can use the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.single_output_metric" title="tmlt.analytics.tuner.single_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;single_output_metric</span> <span class="pre">decorator</span></code></a> or <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.metric" title="tmlt.analytics.tuner.metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;metric</span> <span class="pre">decorator</span></code></a> decorators instead. These decorators do less work for you, and offer a less-processed view into the program’s outputs.</p>
 </section>
 <section id="a-note-about-baselines">
-<h2>A note about baselines<a class="headerlink" href="#a-note-about-baselines" title="Permalink to this heading">#</a></h2>
+<h2>A note about baselines<a class="headerlink" href="#a-note-about-baselines" title="Link to this heading">#</a></h2>
 <p>Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> to a <em>baseline</em>. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.</p>
 <ol class="arabic simple">
 <li><p>By default, Tumult Analytics computes a baseline by running the same queries as in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.</p></li>
@@ -877,7 +877,7 @@ is concentrated around the location of the library.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -888,7 +888,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

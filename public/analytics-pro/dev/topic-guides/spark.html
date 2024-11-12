@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -459,12 +459,12 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="spark">
-<span id="id1"></span><h1>Spark<a class="headerlink" href="#spark" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Spark<a class="headerlink" href="#spark" title="Link to this heading">#</a></h1>
 <p>Tumult Analytics uses Spark as its underlying data processing
 framework. This topic guide covers relevant information about Spark
 for Tumult Analytics users.</p>
 <section id="configuring-spark-sessions">
-<h2>Configuring Spark sessions<a class="headerlink" href="#configuring-spark-sessions" title="Permalink to this heading">#</a></h2>
+<h2>Configuring Spark sessions<a class="headerlink" href="#configuring-spark-sessions" title="Link to this heading">#</a></h2>
 <p>Tumult Analytics uses <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.SparkSession.html#pyspark.sql.SparkSession" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">sessions</span></code></a> to do all data processing operations.
 As long as Spark has an active session, any calls that “create” new Spark
 sessions use that active session.</p>
@@ -477,7 +477,7 @@ then before running Tumult Analytics code, you should create that Spark session:
 <p>As long as this session is active, Tumult Analytics will use it.</p>
 </section>
 <section id="disabling-spark-s-progress-bar">
-<span id="progress-bar"></span><h2>Disabling Spark’s progress bar<a class="headerlink" href="#disabling-spark-s-progress-bar" title="Permalink to this heading">#</a></h2>
+<span id="progress-bar"></span><h2>Disabling Spark’s progress bar<a class="headerlink" href="#disabling-spark-s-progress-bar" title="Link to this heading">#</a></h2>
 <p>By default, Spark displays a progress bar when running computations.
 Tumult Analytics will often perform many Spark computations, so this per-computation progress bar is not very useful.
 For long-running operations like <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SessionProgramTuner.multi_error_report</span></code></a>, Tumult Analytics provides a more useful progress bar instead.
@@ -488,7 +488,7 @@ Enabling it requires disabling Spark’s native progress bar by setting <code cl
 </div>
 <p>This must be done the <strong>first time</strong> the Spark session is initialized; doing it later on has no effect.</p>
 <section id="connecting-to-hive">
-<h3>Connecting to Hive<a class="headerlink" href="#connecting-to-hive" title="Permalink to this heading">#</a></h3>
+<h3>Connecting to Hive<a class="headerlink" href="#connecting-to-hive" title="Link to this heading">#</a></h3>
 <p id="hive-tips">If you want to connect Spark to an existing <a class="reference external" href="https://hive.apache.org/">Hive</a>
 database, you should use the following options when creating a Spark session:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -511,7 +511,7 @@ to view the
 </section>
 </section>
 <section id="materialization-and-data-cleanup">
-<h2>Materialization and data cleanup<a class="headerlink" href="#materialization-and-data-cleanup" title="Permalink to this heading">#</a></h2>
+<h2>Materialization and data cleanup<a class="headerlink" href="#materialization-and-data-cleanup" title="Link to this heading">#</a></h2>
 <p>Tumult Analytics is built on top of Tumult Core, which
 implements all of the differential privacy primitives that Tumult Analytics uses.
 Tumult Core uses a Spark database (named “<code class="docutils literal notranslate"><span class="pre">tumult_temp_&lt;time&gt;_&lt;uuid&gt;</span></code>”) to
@@ -527,7 +527,7 @@ materialization step changes the active Spark database. (The active database is
 changed back to the original database at the end of the materialization step.)</p></li>
 </ul>
 <section id="automatically-cleaning-up-temporary-data">
-<h3>Automatically cleaning up temporary data<a class="headerlink" href="#automatically-cleaning-up-temporary-data" title="Permalink to this heading">#</a></h3>
+<h3>Automatically cleaning up temporary data<a class="headerlink" href="#automatically-cleaning-up-temporary-data" title="Link to this heading">#</a></h3>
 <p>Tumult Core registers a cleanup function with <code class="docutils literal notranslate"><span class="pre">atexit</span></code>
 (see <a class="reference external" href="https://docs.python.org/3/library/atexit.html">Python’s atexit documentation</a>).
 If a Spark session is still active when the program exits normally, this cleanup
@@ -540,7 +540,7 @@ to call at any time in a single-threaded program. (If
 Core will create a new materialization database.)</p>
 </section>
 <section id="finding-and-removing-leftover-temporary-data">
-<h3>Finding and removing leftover temporary data<a class="headerlink" href="#finding-and-removing-leftover-temporary-data" title="Permalink to this heading">#</a></h3>
+<h3>Finding and removing leftover temporary data<a class="headerlink" href="#finding-and-removing-leftover-temporary-data" title="Link to this heading">#</a></h3>
 <p>The materialization database is stored as a folder in your Spark
 warehouse directory.  If your program exits unexpectedly (for example,
 because it was terminated with Ctrl-C),
@@ -561,12 +561,12 @@ Deleting the folder will delete the database.</p>
 </section>
 </section>
 <section id="performance-and-profiling">
-<h2>Performance and profiling<a class="headerlink" href="#performance-and-profiling" title="Permalink to this heading">#</a></h2>
+<h2>Performance and profiling<a class="headerlink" href="#performance-and-profiling" title="Link to this heading">#</a></h2>
 <p>All queries made with Tumult Analytics are executed by Spark. If you are having
 performance problems, you will probably want to look at
 <a class="reference external" href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">Spark performance-tuning options</a>.</p>
 <section id="ram-usage">
-<h3>RAM usage<a class="headerlink" href="#ram-usage" title="Permalink to this heading">#</a></h3>
+<h3>RAM usage<a class="headerlink" href="#ram-usage" title="Link to this heading">#</a></h3>
 <p>By default, Spark allocates itself 1GB of RAM
 (see <a class="reference external" href="https://spark.apache.org/docs/latest/configuration.html#application-properties">Spark’s configuration documentation</a>).
 Tumult Analytics programs often need more RAM than this.
@@ -586,7 +586,7 @@ can run this code:</p>
 documentation for how to configure Spark to use more RAM across a cluster.</p>
 </section>
 <section id="saving-results-to-csv-or-other-formats">
-<h3>Saving results (to CSV or other formats)<a class="headerlink" href="#saving-results-to-csv-or-other-formats" title="Permalink to this heading">#</a></h3>
+<h3>Saving results (to CSV or other formats)<a class="headerlink" href="#saving-results-to-csv-or-other-formats" title="Link to this heading">#</a></h3>
 <p>Converting large Spark dataframes (10M rows or more) to Pandas dataframes can
 be very resource-intensive. We recommend using
 <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.write.html#pyspark.sql.DataFrame.write" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.write()</span></code></a> to save results
@@ -699,7 +699,7 @@ dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -710,7 +710,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

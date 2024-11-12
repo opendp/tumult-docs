@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -467,7 +467,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="group-by-queries">
-<span id="id1"></span><h1>Group-by queries<a class="headerlink" href="#group-by-queries" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>Group-by queries<a class="headerlink" href="#group-by-queries" title="Link to this heading">#</a></h1>
 <p>In all previous tutorials, all aggregations we saw were global aggregations,
 returning a single statistic for all the data. But many common data analysis
 operations are <em>group-by queries</em>: they partition the data into groups, and
@@ -506,7 +506,7 @@ will need to indicate the list of possible <em>group-by keys</em>: the different
 categories that we are going to partition the data into. In the rest of this
 tutorial, we will demonstrate how to do this with Tumult Analytics.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Let us follow the same setup process as in the earlier tutorials, including the
 infinite privacy budget—not to be used in production!</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
@@ -537,7 +537,7 @@ infinite privacy budget—not to be used in production!</p>
 </div>
 </section>
 <section id="introduction-to-keysets">
-<h2>Introduction to KeySets<a class="headerlink" href="#introduction-to-keysets" title="Permalink to this heading">#</a></h2>
+<h2>Introduction to KeySets<a class="headerlink" href="#introduction-to-keysets" title="Link to this heading">#</a></h2>
 <p>To specify the list of group-by keys in Tumult Analytics, we use the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> class. A KeySet specifies both the
 columns by which we are going to group by, and the possible values for those
@@ -643,7 +643,7 @@ completely absent in our dataset. This is entirely due to the noise added to the
 real value (here, 0).</p>
 </section>
 <section id="multiple-columns">
-<h2>Multiple columns<a class="headerlink" href="#multiple-columns" title="Permalink to this heading">#</a></h2>
+<h2>Multiple columns<a class="headerlink" href="#multiple-columns" title="Link to this heading">#</a></h2>
 <p>So far, we saw how to run group-by queries, where we grouped by a single column.
 What if we want to group by multiple columns? One simple way is to use a Python
 dictionary with multiple values. Let’s take an example, and compute counts by
@@ -790,12 +790,12 @@ you can load a large Spark DataFrame into a KeySet directly, without having to
 enumerate the values in a Python dictionary.</p>
 </section>
 <section id="manipulating-keysets">
-<h2>Manipulating KeySets<a class="headerlink" href="#manipulating-keysets" title="Permalink to this heading">#</a></h2>
+<h2>Manipulating KeySets<a class="headerlink" href="#manipulating-keysets" title="Link to this heading">#</a></h2>
 <p>Most applications of Tumult Analytics require specifying the keys to group-by
 queries. To make this process as easy as possible, we added first-class support
 for common KeySet manipulation operations. Let us review these operations.</p>
 <section id="cross-product">
-<h3>Cross-product<a class="headerlink" href="#cross-product" title="Permalink to this heading">#</a></h3>
+<h3>Cross-product<a class="headerlink" href="#cross-product" title="Link to this heading">#</a></h3>
 <p>When two KeySets are specifying group-by keys for different sets of columns, you
 can use the
 <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.__mul__" title="tmlt.analytics.keyset.KeySet.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multiplication</span> <span class="pre">operator</span></code></a> to
@@ -838,7 +838,7 @@ operator.</p>
 </div>
 </section>
 <section id="projection">
-<h3>Projection<a class="headerlink" href="#projection" title="Permalink to this heading">#</a></h3>
+<h3>Projection<a class="headerlink" href="#projection" title="Link to this heading">#</a></h3>
 <p>What if you have a large KeySet containing possible combination of values
 between multiple columns, and want to select only a subset of these columns? For
 this use case, you can use the
@@ -871,7 +871,7 @@ original KeySet.</p>
 </div>
 </section>
 <section id="filters">
-<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this heading">#</a></h3>
+<h3>Filters<a class="headerlink" href="#filters" title="Link to this heading">#</a></h3>
 <p>Finally, KeySets support the same <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.filter" title="tmlt.analytics.keyset.KeySet.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
 operation as Spark DataFrames. For example, consider the KeySet with specific
 combinations of age and education level from before.</p>
@@ -917,7 +917,7 @@ possible combinations of the two columns, using a filter.</p>
 </section>
 </section>
 <section id="automatic-keyset-selection">
-<h2>Automatic KeySet selection<a class="headerlink" href="#automatic-keyset-selection" title="Permalink to this heading">#</a></h2>
+<h2>Automatic KeySet selection<a class="headerlink" href="#automatic-keyset-selection" title="Link to this heading">#</a></h2>
 <p>There are some uses cases for which it is impossible, or at least very impractical,
 to enumerate the list of group-by keys without using the private data. For instance,
 suppose that we want to find out what first names are the most common among library
@@ -1111,7 +1111,7 @@ count of distinct names in the dataset.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from c4745805 at 2024-11-11 13:48.</div>
+Built from 771a4a12 at 2024-11-12 15:24.</div>
       
     </div>
   
@@ -1122,7 +1122,7 @@ Built from c4745805 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
