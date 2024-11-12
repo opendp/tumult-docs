@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" data-theme="light">
+<html lang="en" data-content_root="../" data-theme="light">
 
   <head>
     <meta charset="utf-8" />
@@ -31,7 +31,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -42,9 +42,9 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=fbd91e05"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -482,11 +482,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="using-tumult-analytics-on-aws-glue">
-<h1>Using Tumult Analytics on AWS Glue<a class="headerlink" href="#using-tumult-analytics-on-aws-glue" title="Permalink to this heading">#</a></h1>
+<h1>Using Tumult Analytics on AWS Glue<a class="headerlink" href="#using-tumult-analytics-on-aws-glue" title="Link to this heading">#</a></h1>
 <p>This guide covers using Tumult Analytics as part of an <a class="reference external" href="https://aws.amazon.com/glue/">AWS Glue</a> data pipeline.
 The instructions use <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/what-is-glue-studio.html">AWS Glue Studio</a>, Glue’s visual job editor and management interface, but the general steps apply to other ways of configuring Glue jobs as well.</p>
 <section id="setting-up-requirements">
-<h2>Setting up requirements<a class="headerlink" href="#setting-up-requirements" title="Permalink to this heading">#</a></h2>
+<h2>Setting up requirements<a class="headerlink" href="#setting-up-requirements" title="Link to this heading">#</a></h2>
 <p>Before creating a Glue job, it may be necessary to set up some additional AWS resources for the pipeline to use.
 The job we will build requires two such resources:</p>
 <ul class="simple">
@@ -533,7 +533,7 @@ The JSON for an appropriate policy is given below; note that the <code class="do
 </ol>
 </section>
 <section id="configuring-the-glue-job">
-<h2>Configuring the Glue job<a class="headerlink" href="#configuring-the-glue-job" title="Permalink to this heading">#</a></h2>
+<h2>Configuring the Glue job<a class="headerlink" href="#configuring-the-glue-job" title="Link to this heading">#</a></h2>
 <p>When using Tumult Analytics in an AWS Glue job, it is run as a single step in a pipeline, consuming the outputs from existing steps and having its output consumed like any other Glue transform.
 In this guide, we will perform the following operations:</p>
 <ul class="simple">
@@ -570,7 +570,8 @@ This handles converting the custom transform output, which is required to be a c
 Here, the target location might be <code class="docutils literal notranslate"><span class="pre">s3://tumult-analytics-glue/output/</span></code>, but it can be anywhere in S3 that your Glue IAM role can write to.</p></li>
 </ul>
 <p>Once all of this is done, the job should look something like this:</p>
-<a class="reference internal image-reference" href="../_images/glue_graph.png"><img alt="A view of the Glue Studio console, showing a job with two &quot;Data source - S3 bucket&quot; input nodes, one labeled &quot;books&quot; and the other &quot;checkouts&quot;. Below these is a &quot;Transform - Custom code&quot; node labeled &quot;dp-analytics&quot; with arrows pointing to it from the two input nodes. Below this is a &quot;Transform - SelectFromCollection&quot; node labeled &quot;select-dp-output&quot; with an arrow from the custom code node pointing to it. Last, below this is a &quot;Data target - S3 bucket&quot; node labeled &quot;output&quot; with an arrow from the SelectFromCollection pointing to it." class="align-center" src="../_images/glue_graph.png" style="width: 616.6999999999999px; height: 648.1999999999999px;" /></a>
+<a class="reference internal image-reference" href="../_images/glue_graph.png"><img alt="A view of the Glue Studio console, showing a job with two &quot;Data source - S3 bucket&quot; input nodes, one labeled &quot;books&quot; and the other &quot;checkouts&quot;. Below these is a &quot;Transform - Custom code&quot; node labeled &quot;dp-analytics&quot; with arrows pointing to it from the two input nodes. Below this is a &quot;Transform - SelectFromCollection&quot; node labeled &quot;select-dp-output&quot; with an arrow from the custom code node pointing to it. Last, below this is a &quot;Data target - S3 bucket&quot; node labeled &quot;output&quot; with an arrow from the SelectFromCollection pointing to it." class="align-center" src="../_images/glue_graph.png" style="width: 616.6999999999999px; height: 648.1999999999999px;" />
+</a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -619,7 +620,7 @@ The query output is then converted into a <code class="docutils literal notransl
 The name used (here, <code class="docutils literal notranslate"><span class="pre">dp-results</span></code>) is not important.</p>
 </section>
 <section id="running-the-job">
-<h2>Running the job<a class="headerlink" href="#running-the-job" title="Permalink to this heading">#</a></h2>
+<h2>Running the job<a class="headerlink" href="#running-the-job" title="Link to this heading">#</a></h2>
 <p>At this point, everything should be in place to run the job you have created.
 Give it a name if you haven’t already, click “Save”, then “Run”.
 Move over to the “Runs” tab and select the run you just started.
@@ -713,7 +714,7 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 8b687883 at 2024-11-11 13:48.</div>
+Built from e67a0c68 at 2024-11-12 15:21.</div>
       
     </div>
   
@@ -724,7 +725,7 @@ Built from 8b687883 at 2024-11-11 13:48.</div>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
