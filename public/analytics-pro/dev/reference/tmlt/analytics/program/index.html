@@ -539,6 +539,16 @@ you will want to take advantage of tools like <a class="reference internal" href
 how to take advantage of <a class="reference internal" href="#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> and related classes.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a></p></td>
+<td><p>Base class for defining a structured DP program that uses the Session API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.program.NamedValue" title="tmlt.analytics.program.NamedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">NamedValue</span></code></a></p></td>
+<td><p>A parameter value associated with a human-readable name.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.program.SessionProgram">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SessionProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.program.SessionProgram" title="Link to this definition">#</a></dt>
@@ -909,6 +919,35 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.program.NamedValue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NamedValue</span></span><a class="headerlink" href="#tmlt.analytics.program.NamedValue" title="Link to this definition">#</a></dt>
+<dd><p>A parameter value associated with a human-readable name.</p>
+<p>A <a class="reference internal" href="#tmlt.analytics.program.NamedValue" title="tmlt.analytics.program.NamedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">NamedValue</span></code></a> can be used as a parameter in
+<a class="reference internal" href="../tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> methods. This name is then used when printing
+error reports and converting them to DataFrames, which can be useful when using
+parameters that do not have a simple string representation.</p>
+<p>When using a <a class="reference internal" href="#tmlt.analytics.program.NamedValue" title="tmlt.analytics.program.NamedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">NamedValue</span></code></a> to specify a parameter of a <a class="reference internal" href="#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, the
+name is ignored: initializing the program using <code class="docutils literal notranslate"><span class="pre">.with_parameter(&quot;param&quot;,</span>
+<span class="pre">NamedValue(42))</span></code> is exactly equivalent to initializing it using
+<code class="docutils literal notranslate"><span class="pre">.with_parameter(&quot;param&quot;,</span> <span class="pre">42)</span></code>. Similarly, a parameter passed as a
+<a class="reference internal" href="#tmlt.analytics.program.NamedValue" title="tmlt.analytics.program.NamedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">NamedValue</span></code></a> is unwrapped before being passed to a
+<a class="reference internal" href="../tuner/index.html#tmlt.analytics.tuner.view" title="tmlt.analytics.tuner.view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">view()</span></code></a>, a custom <a class="reference internal" href="../tuner/index.html#tmlt.analytics.tuner.metric" title="tmlt.analytics.tuner.metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metric()</span></code></a>,
+or a custom <a class="reference internal" href="../tuner/index.html#tmlt.analytics.tuner.baseline" title="tmlt.analytics.tuner.baseline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">baseline()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.program.NamedValue.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.analytics.program.NamedValue.value" title="Link to this definition">#</a></dt>
+<dd><p>The value passed as a parameter to the program.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.program.NamedValue.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.program.NamedValue.name" title="Link to this definition">#</a></dt>
+<dd><p>The human-readable name of the value.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -979,6 +1018,11 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.SessionProgram.session_interaction"><code class="docutils literal notranslate"><span class="pre">SessionProgram.session_interaction()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.NamedValue"><code class="docutils literal notranslate"><span class="pre">NamedValue</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.NamedValue.value"><code class="docutils literal notranslate"><span class="pre">NamedValue.value</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.program.NamedValue.name"><code class="docutils literal notranslate"><span class="pre">NamedValue.name</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1017,7 +1061,7 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from b562128c at 2024-11-13 19:24.</div>
+Built from cda79e1e at 2024-11-13 20:10.</div>
       
     </div>
   

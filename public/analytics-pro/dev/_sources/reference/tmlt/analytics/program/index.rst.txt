@@ -110,6 +110,12 @@ program
 Classes
 =======
 
+.. list-table::
+
+   * - :class:`.SessionProgram`
+     - Base class for defining a structured DP program that uses the Session API.
+   * - :class:`.NamedValue`
+     - A parameter value associated with a human-readable name.
 
    
 ..
@@ -549,6 +555,51 @@ Classes
 
       :param session: The Session to interact with. It will be initialized with the
                       protected and unprotected DataFrames as well as the privacy budget.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: NamedValue
+
+
+   A parameter value associated with a human-readable name.
+
+   A :class:`~.NamedValue` can be used as a parameter in
+   :class:`~.tuner.SessionProgramTuner` methods. This name is then used when printing
+   error reports and converting them to DataFrames, which can be useful when using
+   parameters that do not have a simple string representation.
+
+   When using a :class:`~.NamedValue` to specify a parameter of a |SessionProgram|, the
+   name is ignored: initializing the program using ``.with_parameter("param",
+   NamedValue(42))`` is exactly equivalent to initializing it using
+   ``.with_parameter("param", 42)``. Similarly, a parameter passed as a
+   :class:`~.NamedValue` is unwrapped before being passed to a
+   :meth:`~tmlt.analytics.tuner.view`, a custom :meth:`~tmlt.analytics.tuner.metric`,
+   or a custom :meth:`~tmlt.analytics.tuner.baseline`.
+
+
+
+
+
+   .. py:attribute:: value
+      :type:  Any
+
+      The value passed as a parameter to the program.
+
+   .. py:attribute:: name
+      :type:  str
+
+      The human-readable name of the value.
+
 
 
 
