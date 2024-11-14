@@ -9,6 +9,12 @@ Changelog
 Unreleased
 ----------
 
+This release adds an initial version of Tumult Synthetics, Tumult Labs' new differentially private synthetic data generator.
+The API for this generator, located in :mod:`tmlt.synthetics <tmlt.analytics.synthetics>`, is still under development and may undergo significant changes.
+
+Additionally, this release increases the minimum supported Python version to 3.9, and the minimum supported PySpark version to 3.3.1.
+
+
 Added
 ~~~~~
 - |PRO| Added :meth:`.ErrorReport.dataframe`, which combines the metric results in this error in a single DataFrame, if possible.
@@ -16,21 +22,14 @@ Added
 
 Changed
 ~~~~~~~
+- |PRO| *Backwards-incompatible*: The ``with_cache_enabled`` method on Tuner builders has been renamed to :meth:`.SessionProgramTuner.Builder.with_cache`.
 - |PRO| :meth:`.ErrorReport.dataframes` and :meth:`.MultiErrorReport.dataframes` now return an empty dict if there are no metrics.
 - |PRO| Pandas DataFrames produced by :meth:`.ErrorReport.dataframe`, :meth:`.ErrorReport.dataframes`, and equivalent :class:`~tmlt.analytics.tuner.MultiErrorReport` methods now have column types that allow null values.
 
 Fixed
 ~~~~~
-- |PRO| Fixes a bug where some metric values would be matched to incorrect parameters when calling :meth:`.MultiErrorReport.dataframe`.
-
-This release adds an initial version of Tumult Synthetics, Tumult Labs' new differentially private synthetic data generator.
-The API for this generator, located in :mod:`tmlt.synthetics <tmlt.analytics.synthetics>`, is still under development and may undergo significant changes.
-
-Additionally, this release increases the minimum supported Python version to 3.9, and the minimum supported PySpark version to 3.3.1.
-
-Fixed
-~~~~~
 - The ``columns`` argument to :meth:`.KeySet.from_tuples` is no longer required to be a tuple, any sequence type (e.g. a list) is now acceptable.
+- |PRO| Fixes a bug where some metric values would be matched to incorrect parameters when calling :meth:`.MultiErrorReport.dataframe`.
 
 .. _v0.17.0:
 
@@ -39,7 +38,7 @@ Fixed
 
 This release provides a number of quality of life improvements, including a new :meth:`.KeySet.from_tuples` method and support for basic arithmetic on privacy budgets.
 
-For Pro users, it also introduces query caching in :class:`.SessionProgramTuner`\ s, which can be enabled by using :meth:`.SessionProgramTuner.Builder.with_cache_enabled` when initializing the tuner.
+For Pro users, it also introduces query caching in :class:`.SessionProgramTuner`\ s, which can be enabled by using ``with_cache_enabled`` when initializing the tuner.
 This stores query results so that they can be reused in subsequent runs that evaluate the same queries.
 It also includes some significant changes to metrics and error reports, some new metrics, and minor changes to :class:`.SessionProgram`.
 
@@ -71,7 +70,7 @@ Added
 - KeySets can now be initialized directly from a collection of Python tuples using :meth:`.KeySet.from_tuples`.
 - |PRO| Added new metrics: :class:`~tmlt.analytics.metrics.SpuriousCount`, :class:`~tmlt.analytics.metrics.SuppressionCount`, :class:`~tmlt.analytics.metrics.HighRelativeErrorCount`, :class:`~tmlt.analytics.metrics.CountReleasedRows`, and :class:`~tmlt.analytics.metrics.CountBaselineRows`.
 - |PRO| Added a :meth:`~tmlt.analytics.program.SessionProgram.output_types` method that returns the types of a program's outputs.
-- |PRO| Added a new tuner builder method, :meth:`.SessionProgramTuner.Builder.with_cache_enabled`, for storing query results in cache so that they can be reused in subsequent runs for same queries.
+- |PRO| Added a new tuner builder method, ``with_cache_enabled``, for storing query results in cache so that they can be reused in subsequent runs for same queries.
 
 Fixed
 ~~~~~
