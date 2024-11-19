@@ -110,7 +110,7 @@ Functions
 =========
 
 
-.. py:function:: generate_synthetic_data(session, keyset, measurement_strategies, clamping_bounds = None, count_structural_zeroes = None, sum_structural_zeroes = None, source_id = None, privacy_budget = None, split_columns = None, max_rows_per_id = None, model_iterations = 3000)
+.. py:function:: generate_synthetic_data(session, keyset, measurement_strategies, clamping_bounds = None, binning_strategies = None, count_structural_zeroes = None, sum_structural_zeroes = None, source_id = None, privacy_budget = None, split_columns = None, max_rows_per_id = None, model_iterations = 3000)
 
    Generate synthetic data using differential privacy techniques.
 
@@ -118,7 +118,18 @@ Functions
                    the private data.
    :param keyset: Full domain for the synthetic data, before removing structural zeroes.
    :param measurement_strategies: Strategies for measuring data aggregates.
-   :param clamping_bounds: Clamping bounds for the numeric columns to generate.
+   :param clamping_bounds: Clamping bounds for the numeric columns to generate. An
+                           alternative to using a binning strategy. Note that these columns should not
+                           have binning strategies or be included in count marginals, but rather should
+                           be included in sum marginals. This is useful for preserving the accuracy of
+                           groupby sum queries on the synthetic data, but at the cost of having a less
+                           accurate distribution of values.
+   :param binning_strategies: Alternative to clamping bounds, specifies how to bin numeric
+                              or timestamp/date columns for measurement. Note that these columns should
+                              not have clamping bounds or be included in sum marginals, but rather should
+                              be included in count marginals. This is useful for capturing the
+                              distribution of values of the column, while clamping bounds/sums are useful
+                              for capturing the accuracy of groupby sum queries on the synthetic data.
    :param count_structural_zeroes: Structural zeroes for the count measurements. Each
                                    DataFrame in the list corresponds to a different combination of values
                                    for which the count is zero (no records will be generated with these
@@ -146,6 +157,8 @@ Classes
 
 .. list-table::
 
+   * - :class:`.BinningStrategy`
+     - Binning strategy for generating synthetic data.
    * - :class:`.AutomaticBounds`
      - Clamping bounds for a magnitude column is automatically set using DP.
    * - :class:`.ClampingBounds`
@@ -168,6 +181,41 @@ Classes
      - A marginal sum.
    * - :class:`.WeightedMarginal`
      - Interface for specifying a weighted DP groupby aggregate.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: BinningStrategy
+   :canonical: tmlt.analytics.synthetics._binning_strategy.BinningStrategy
+
+
+   Binning strategy for generating synthetic data.
+
+
+
+
+
+   .. py:attribute:: spec
+      :type:  tmlt.analytics.binning_spec.BinningSpec
+
+      Binning specification for a numeric column.
+
+   .. py:attribute:: generate_nulls
+      :type:  bool
+
+      Whether to generate nulls for the column.
+
+      Note that out of range values, NaNs, and nulls will become null.
+
+
+
 
    
 ..
