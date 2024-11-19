@@ -1,0 +1,1664 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>synthetics &#8212; Tumult Analytics Pro 0.18.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=b0446eb5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=ba2e7b09"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/tmlt/analytics/synthetics/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/analytics-pro/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.18';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <script src="../../../../_static/js/version-banner.js?v=676bed35"></script>
+    <link rel="icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="truncation_strategy" href="../truncation_strategy/index.html" />
+    <link rel="prev" title="session" href="../session/index.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro 0.18.0 documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro 0.18.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Analytics Pro</h3></div>
+        <div class="sidebar-primary-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<nav class="bd-docs-nav bd-links">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../binning_spec/index.html">binning_spec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraints/index.html">constraints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keyset/index.html">keyset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../no_privacy_session/index.html">no_privacy_session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../privacy_budget/index.html">privacy_budget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../program/index.html">program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../protected_change/index.html">protected_change</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query_builder/index.html">query_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session/index.html">session</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">synthetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../truncation_strategy/index.html">truncation_strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuner/index.html">tuner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">utils</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">synthetics</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-tmlt.analytics.synthetics">
+<span id="synthetics"></span><h1>synthetics<a class="headerlink" href="#module-tmlt.analytics.synthetics" title="Link to this heading">#</a></h1>
+<p>Tumult Synthetics is a differentially private synthetic data generator built on Tumult Analytics.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The public API of Tumult Synthetics is still under active development, and
+will change over upcoming releases.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">Row</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.synthetics</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">generate_synthetic_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">Count</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">Sum</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">FixedMarginals</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ClampingBounds</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="n">ApproxDPBudget</span><span class="p">,</span> <span class="n">AddRowsWithID</span><span class="p">,</span> <span class="n">KeySet</span><span class="p">,</span> <span class="n">Session</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create toy data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Row</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;California&#39;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;Engineer&#39;</span><span class="p">,</span> <span class="n">salary</span><span class="o">=</span><span class="mi">100000</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Row</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;California&#39;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s1">&#39;Sunnyvale&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;Teacher&#39;</span><span class="p">,</span> <span class="n">salary</span><span class="o">=</span><span class="mi">70000</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Row</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;Washington&#39;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;Doctor&#39;</span><span class="p">,</span> <span class="n">salary</span><span class="o">=</span><span class="mi">150000</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Row</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;California&#39;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;Unemployed&#39;</span><span class="p">,</span> <span class="n">salary</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define keysets and domain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state_city_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="s2">&quot;California&quot;</span><span class="p">,</span> <span class="s2">&quot;San Francisco&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;California&quot;</span><span class="p">,</span> <span class="s2">&quot;Sunnyvale&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Washington&quot;</span><span class="p">,</span> <span class="s2">&quot;Seattle&quot;</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">state_city_df</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="o">*</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span><span class="p">]})</span>
+<span class="gp">... </span>    <span class="o">*</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">101</span><span class="p">))})</span>
+<span class="gp">... </span>    <span class="o">*</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;occupation&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Engineer&quot;</span><span class="p">,</span> <span class="s2">&quot;Teacher&quot;</span><span class="p">,</span> <span class="s2">&quot;Doctor&quot;</span><span class="p">,</span> <span class="s2">&quot;Unemployed&quot;</span><span class="p">]})</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clamping_bounds</span> <span class="o">=</span> <span class="n">ClampingBounds</span><span class="p">({</span><span class="s2">&quot;salary&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200000</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define measurement strategies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement_strategies</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">FixedMarginals</span><span class="p">(</span><span class="n">marginals</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Count</span><span class="p">(</span><span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>        <span class="n">Count</span><span class="p">(</span><span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>        <span class="n">Count</span><span class="p">(</span><span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;occupation&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>        <span class="n">Sum</span><span class="p">(</span><span class="n">groupby_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;occupation&#39;</span><span class="p">],</span> <span class="n">measure_column</span><span class="o">=</span><span class="s1">&#39;salary&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">])</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set up the session</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Session</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">ApproxDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span><span class="s2">&quot;protected_data&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate synthetic data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">synthetic_data</span> <span class="o">=</span> <span class="n">generate_synthetic_data</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;protected_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">keyset</span><span class="o">=</span><span class="n">keyset</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">measurement_strategies</span><span class="o">=</span><span class="n">measurement_strategies</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">clamping_bounds</span><span class="o">=</span><span class="n">clamping_bounds</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_rows_per_id</span><span class="o">=</span><span class="mi">1</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access the synthetic data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">synthetic_data</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  
+<span class="go">+----------+-------------+------+---+----------+------------------+</span>
+<span class="go">|     state|         city|gender|age|occupation|            salary|</span>
+<span class="go">+----------+-------------+------+---+----------+------------------+</span>
+<span class="go">|California|San Francisco|Female| 40|   Teacher|27883.202202662666|</span>
+<span class="go">|California|San Francisco|  Male| 30|  Engineer|40116.144665117616|</span>
+<span class="go">|California|    Sunnyvale|  Male| 35|Unemployed|20954.157816173778|</span>
+<span class="go">|Washington|      Seattle| Other| 25|    Doctor| 226830.4953160459|</span>
+<span class="go">+----------+-------------+------+---+----------+------------------+</span>
+</pre></div>
+</div>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.generate_synthetic_data">
+<span class="sig-name descname"><span class="pre">generate_synthetic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_strategies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning_strategies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows_per_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.generate_synthetic_data" title="Link to this definition">#</a></dt>
+<dd><p>Generate synthetic data using differential privacy techniques.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>) – An Analytics Session to use for computing the aggregates on
+the private data.</p></li>
+<li><p><strong>keyset</strong> (<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a>) – Full domain for the synthetic data, before removing structural zeroes.</p></li>
+<li><p><strong>measurement_strategies</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics._strategy.MeasurementStrategy"><em>tmlt.analytics.synthetics._strategy.MeasurementStrategy</em></a><em>]</em>) – Strategies for measuring data aggregates.</p></li>
+<li><p><strong>clamping_bounds</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a><em>]</em>) – Clamping bounds for the numeric columns to generate. An
+alternative to using a binning strategy. Note that these columns should not
+have binning strategies or be included in count marginals, but rather should
+be included in sum marginals. This is useful for preserving the accuracy of
+groupby sum queries on the synthetic data, but at the cost of having a less
+accurate distribution of values.</p></li>
+<li><p><strong>binning_strategies</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.synthetics.BinningStrategy" title="tmlt.analytics.synthetics._binning_strategy.BinningStrategy"><em>tmlt.analytics.synthetics._binning_strategy.BinningStrategy</em></a><em>]</em><em>]</em>) – Alternative to clamping bounds, specifies how to bin numeric
+or timestamp/date columns for measurement. Note that these columns should
+not have clamping bounds or be included in sum marginals, but rather should
+be included in count marginals. This is useful for capturing the
+distribution of values of the column, while clamping bounds/sums are useful
+for capturing the accuracy of groupby sum queries on the synthetic data.</p></li>
+<li><p><strong>count_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em>) – Structural zeroes for the count measurements. Each
+DataFrame in the list corresponds to a different combination of values
+for which the count is zero (no records will be generated with these
+values).</p></li>
+<li><p><strong>sum_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em><em>]</em>) – Structural zeroes for the sum measurements. Keys are
+the measure columns, and the values are combinations of values for which
+the sum of the measure column is zero for all generated records.</p></li>
+<li><p><strong>source_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – Source ID of the private table in the session to query.
+Must be provided if there are multiple private sources in the session.</p></li>
+<li><p><strong>privacy_budget</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a><em>]</em>) – Privacy budget to use for synthetic data generation.
+If not provided, the remaining budget in the session will be used.</p></li>
+<li><p><strong>split_columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>) – Columns to split the data into subsets for model fitting.
+Note that all marginals in the measurement strategies must include all
+split columns.</p></li>
+<li><p><strong>max_rows_per_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – Maximum number of rows per ID in the protected data.</p></li>
+<li><p><strong>model_iterations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Number of iterations to use for fitting the model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing the generated synthetic data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.BinningStrategy" title="tmlt.analytics.synthetics.BinningStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinningStrategy</span></code></a></p></td>
+<td><p>Binning strategy for generating synthetic data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a></p></td>
+<td><p>Clamping bounds for a magnitude column is automatically set using DP.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics.ClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a></p></td>
+<td><p>A configuration for clamping bounds of each numeric column to generate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerGroupClampingBounds</span></code></a></p></td>
+<td><p>Clamping bounds for a magnitude column specified separately for each group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics.KeySetsRepository"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySetsRepository</span></code></a></p></td>
+<td><p>A collection of possibly overlapping KeySets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="tmlt.analytics.synthetics.AdaptiveMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdaptiveMarginals</span></code></a></p></td>
+<td><p>An adaptive workload with multiple cases based on the total noisy count.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.FixedMarginals" title="tmlt.analytics.synthetics.FixedMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a></p></td>
+<td><p>A fixed workload of weighted count and sum marginals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics.MeasurementStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a></p></td>
+<td><p>A strategy for measuring differentially private aggregates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a></p></td>
+<td><p>A marginal count.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarginalAnswer</span></code></a></p></td>
+<td><p>Output from computing a weighted marginal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Sum" title="tmlt.analytics.synthetics.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a></p></td>
+<td><p>A marginal sum.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a></p></td>
+<td><p>Interface for specifying a weighted DP groupby aggregate.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BinningStrategy</span></span><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy" title="Link to this definition">#</a></dt>
+<dd><p>Binning strategy for generating synthetic data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy.spec">
+<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><span class="pre">tmlt.analytics.binning_spec.BinningSpec</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy.spec" title="Link to this definition">#</a></dt>
+<dd><p>Binning specification for a numeric column.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy.generate_nulls">
+<span class="sig-name descname"><span class="pre">generate_nulls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy.generate_nulls" title="Link to this definition">#</a></dt>
+<dd><p>Whether to generate nulls for the column.</p>
+<p>Note that out of range values, NaNs, and nulls will become null.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomaticBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'low'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds" title="Link to this definition">#</a></dt>
+<dd><p>Clamping bounds for a magnitude column is automatically set using DP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>low_column_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>high_column_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds.groupby_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groupby_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds.groupby_columns" title="Link to this definition">#</a></dt>
+<dd><p>List of columns that determine the groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds.low_column_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">low_column_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds.low_column_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the column that contains the lower clamping bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds.high_column_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">high_column_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds.high_column_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the column that contains the upper clamping bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds.weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds.weight" title="Link to this definition">#</a></dt>
+<dd><p>How much privacy budget should be used to discover bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'low'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Clamping bounds are automatically discovered for each
+unique combination of values of these columns.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Relative weight that determines how much privacy budget should be
+allocated to discover clamping bounds.</p></li>
+<li><p><strong>low_column_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – (Only applicable if <code class="docutils literal notranslate"><span class="pre">groupby_columns</span></code> is specified) Name
+of the column in the result DataFrame that contains the lower clamping
+bounds. If None, the default name “low” is used.</p></li>
+<li><p><strong>high_column_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – (Only applicable if <code class="docutils literal notranslate"><span class="pre">groupby_columns</span></code> is specified) Name
+of the column in the result DataFrame that contains the upper clamping
+bounds. If None, the default name “high” is used.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ClampingBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds_per_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds" title="Link to this definition">#</a></dt>
+<dd><p>A configuration for clamping bounds of each numeric column to generate.</p>
+<p>ClampingBounds can be explictly provided or set to be automatically discovered
+using DP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounds_per_column</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>]</em><em>, </em><a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds"><em>PerGroupClampingBounds</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds"><em>AutomaticBounds</em></a><em>]</em><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds.weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds.weight" title="Link to this definition">#</a></dt>
+<dd><p>How much privacy budget should be used to discover bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds.bounds_per_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds_per_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds"><span class="pre">AutomaticBounds</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds"><span class="pre">PerGroupClampingBounds</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds.bounds_per_column" title="Link to this definition">#</a></dt>
+<dd><p>Returns the dictionary mapping column names to clamping bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, Union[Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a>], <a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds">AutomaticBounds</a>, <a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds">PerGroupClampingBounds</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds_per_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounds_per_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.PerGroupClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerGroupClampingBounds</span></code></a>, <a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics._clamping_bounds.AutomaticBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a>]]</span>) – A dictionary mapping magnitude column names to clamping
+bounds specified as a tuple of two floats (low and high), a
+PerGroupClampingBounds object that specifies clamping bounds for each
+combination of values for some categorical “grouping” columns, or an
+AutomaticBounds object that specifies that clamping bounds should be
+automatically discovered from the private data using DP.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Relative weight that determines how much privacy budget should be
+used to discover clamping bounds for columns with AutomaticBounds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Returns clamping bounds for a column.</p>
+<p>If the bounds for <code class="docutils literal notranslate"><span class="pre">column</span></code> are specified to be distinct per group, this method
+returns a PerGroupClampingBounds object. Otherwise, it returns a tuple
+(low, high).</p>
+<p>If the bounds for <code class="docutils literal notranslate"><span class="pre">column</span></code> is set to be automatically discovered, this method
+will raise an error unless the bounds have been discovered by calling the
+<code class="docutils literal notranslate"><span class="pre">discover_unknown_bounds</span></code> method first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The name of the column for which to get the clamping bounds.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a>], <a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds">PerGroupClampingBounds</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.ClampingBounds.discover_unknown_bounds">
+<span class="sig-name descname"><span class="pre">discover_unknown_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.ClampingBounds.discover_unknown_bounds" title="Link to this definition">#</a></dt>
+<dd><p>Discover clamping bounds for columns with AutomaticBounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>keysets</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics._keysets_repository.KeySetsRepository"><em>tmlt.analytics.synthetics._keysets_repository.KeySetsRepository</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PerGroupClampingBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'low'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="Link to this definition">#</a></dt>
+<dd><p>Clamping bounds for a magnitude column specified separately for each group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p></li>
+<li><p><strong>low_column_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>high_column_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds.groupby_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groupby_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.groupby_columns" title="Link to this definition">#</a></dt>
+<dd><p>List of columns that determine the groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds.dataframe">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Returns DataFrame with clamping bounds for each group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds.low_column_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">low_column_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.low_column_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the column that contains the lower clamping bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds.high_column_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">high_column_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.high_column_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the column that contains the upper clamping bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.PerGroupClampingBounds.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'low'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Clamping bounds are specified separately for each
+unique combination of values of these columns.</p></li>
+<li><p><strong>dataframe</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="pyspark.sql.DataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a></span>) – DataFrame with clamping bounds for each group.</p></li>
+<li><p><strong>low_column_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of the column in <code class="docutils literal notranslate"><span class="pre">dataframe</span></code> that contains the
+lower clamping bounds.</p></li>
+<li><p><strong>high_column_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of the column in <code class="docutils literal notranslate"><span class="pre">dataframe</span></code> that contains the
+upper clamping bounds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.KeySetsRepository">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeySetsRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.KeySetsRepository" title="Link to this definition">#</a></dt>
+<dd><p>A collection of possibly overlapping KeySets.</p>
+<p>See the module docstring for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>keysets</strong> (<em>List</em><em>[</em><a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a><em>]</em>)</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.KeySetsRepository.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.analytics.synthetics.KeySetsRepository.columns" title="Link to this definition">#</a></dt>
+<dd><p>Set of column names spanned by all KeySets in this repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.KeySetsRepository.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.KeySetsRepository.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>keysets</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>]</span>) – The KeySets to include in the repository.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.KeySetsRepository.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.KeySetsRepository.join" title="Link to this definition">#</a></dt>
+<dd><p>Returns a new KeySetsRepository by joining each keyset with <cite>dataframe</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – DataFrame to join with each keyset.</p></li>
+<li><p><strong>on</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – List of columns to join on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics.KeySetsRepository">KeySetsRepository</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.KeySetsRepository.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.KeySetsRepository.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Returns a maximal KeySet with the given list of columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – List of columns that the KeySet should contain.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet">tmlt.analytics.keyset.KeySet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AdaptiveMarginals">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdaptiveMarginals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_by</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_count_budget_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics.MeasurementStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a></p>
+<p>An adaptive workload with multiple cases based on the total noisy count.</p>
+<p>In particular, this workload specifies different sets of marginals to compute
+for different subsets of the data based on the size of the subset.</p>
+<p>For example, in a dataset of website visits for a month for a set of websites,
+we might want to compute finer granularity marginals for websites that get a large
+number of visits while only computing coarser marginals for websites that get
+relatively fewer visits. We could do this using an <a class="reference internal" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="tmlt.analytics.synthetics.AdaptiveMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdaptiveMarginals</span></code></a> as
+follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adaptive_counts</span> <span class="o">=</span> <span class="n">AdaptiveMarginals</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">total_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;website_id&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">total_count_budget_fraction</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cases</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="n">AdaptiveMarginals</span><span class="o">.</span><span class="n">Case</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">threshold</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">marginals</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>                <span class="n">Count</span><span class="p">([</span><span class="s2">&quot;website_id&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]),</span>
+<span class="gp">... </span>                <span class="n">Count</span><span class="p">([</span><span class="s2">&quot;website_id&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">AdaptiveMarginals</span><span class="o">.</span><span class="n">Case</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">threshold</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">marginals</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>                <span class="n">Count</span><span class="p">([</span><span class="s2">&quot;website_id&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">AdaptiveMarginals</span><span class="o">.</span><span class="n">Case</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">marginals</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>                <span class="n">Count</span><span class="p">([</span><span class="s2">&quot;website_id&quot;</span><span class="p">,</span> <span class="s2">&quot;week&quot;</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The adaptive strategy defined in the example above does the following:</p>
+<ul class="simple">
+<li><p>Computes the total count of visits for each website.</p></li>
+<li><p>Divides the websites into three cases:</p>
+<ul>
+<li><p>Case 1: Websites with more than 1000 visits.</p>
+<ul>
+<li><p>Computes the count of visits per day and per hour.</p></li>
+</ul>
+</li>
+<li><p>Case 2: Websites with between 500 and 1000 visits.</p>
+<ul>
+<li><p>Computes the count of visits per day.</p></li>
+</ul>
+</li>
+<li><p>Default case: Websites with fewer than 500 visits.</p>
+<ul>
+<li><p>Computes the count of visits per week.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_by</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>total_count_budget_fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+<li><p><strong>cases</strong> (<em>List</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="tmlt.analytics.synthetics.AdaptiveMarginals"><em>AdaptiveMarginals</em></a><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>count_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AdaptiveMarginals.Case">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Case</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marginals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AdaptiveMarginals.Case" title="Link to this definition">#</a></dt>
+<dd><p>A case in the adaptive workload.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>marginals</strong> (<em>List</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal"><em>tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal</em></a><em>]</em>)</p></li>
+<li><p><strong>threshold</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>]</em>)</p></li>
+<li><p><strong>default</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AdaptiveMarginals.weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.AdaptiveMarginals.weight" title="Link to this definition">#</a></dt>
+<dd><p>Weight for determining privacy budget allocated for this strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AdaptiveMarginals.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_by</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_count_budget_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AdaptiveMarginals.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>total_count_budget_fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+<li><p><strong>cases</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><em>List</em></a><em>[</em><em>Case</em><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>count_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.AdaptiveMarginals.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AdaptiveMarginals.compute" title="Link to this definition">#</a></dt>
+<dd><p>Compute marginals adaptively based on the total noisy count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>keysets</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics._keysets_repository.KeySetsRepository"><em>tmlt.analytics.synthetics._keysets_repository.KeySetsRepository</em></a>)</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer">tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.FixedMarginals">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedMarginals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marginals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.FixedMarginals" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics.MeasurementStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a></p>
+<p>A fixed workload of weighted count and sum marginals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>marginals</strong> (<em>List</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal"><em>tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal</em></a><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.FixedMarginals.weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.FixedMarginals.weight" title="Link to this definition">#</a></dt>
+<dd><p>Weight for determining privacy budget allocated for this strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.FixedMarginals.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marginals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.FixedMarginals.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>marginals</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a>]</span>) – List of weighted marginals to compute. The fraction of the total
+privacy budget for this strategy to use for a specific marginal is
+determined by its relative weight.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Weight for this strategy. When evaluating mulitple measurement
+strategies, the total privacy budget is divided among the strategies in
+proportion to their weight.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.FixedMarginals.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.FixedMarginals.compute" title="Link to this definition">#</a></dt>
+<dd><p>Returns the results from computing all of the specified marginals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>) – An Analytics <a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to use for
+computing the marginals.</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Source ID of the private table in the <code class="docutils literal notranslate"><span class="pre">session</span></code> to query.</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>) – Total privacy budget to use across all marginals. This budget is
+distributed among the marginals in proportion to their weights.</p></li>
+<li><p><strong>keysets</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics._keysets_repository.KeySetsRepository"><em>tmlt.analytics.synthetics._keysets_repository.KeySetsRepository</em></a>) – Repository of KeySets to use for the marginals.</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>) – Clamping bounds to use for answering Sum queries.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer">tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MeasurementStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasurementStrategy</span></span><a class="headerlink" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>A strategy for measuring differentially private aggregates.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MeasurementStrategy.weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.MeasurementStrategy.weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Abstractmethod<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+<p>Weight for determining privacy budget allocated for this strategy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MeasurementStrategy.compute">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keysets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.MeasurementStrategy.compute" title="Link to this definition">#</a></dt>
+<dd><p>Compute answers using this strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>keysets</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics._keysets_repository.KeySetsRepository"><em>tmlt.analytics.synthetics._keysets_repository.KeySetsRepository</em></a>)</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer">tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Count">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Count" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a></p>
+<p>A marginal count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>count_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Count.output_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.Count.output_column" title="Link to this definition">#</a></dt>
+<dd><p>The name of the count column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Count.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Count.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – List of columns to group by.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Relative weight used to determine the fraction of privacy budget
+to allocate for this marginal when computing multiple marginals with
+some fixed total budget. Defaults to 1.</p></li>
+<li><p><strong>count_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – What the output column containing counts should be named.
+Defaults to “count”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Count.answer">
+<span class="sig-name descname"><span class="pre">answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Count.answer" title="Link to this definition">#</a></dt>
+<dd><p>Returns an answer to the Count marginal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>keyset</strong> (<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a>)</p></li>
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer">MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MarginalAnswer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MarginalAnswer</span></span><a class="headerlink" href="#tmlt.analytics.synthetics.MarginalAnswer" title="Link to this definition">#</a></dt>
+<dd><p>Output from computing a weighted marginal.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MarginalAnswer.marginal">
+<span class="sig-name descname"><span class="pre">marginal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><span class="pre">WeightedMarginal</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.MarginalAnswer.marginal" title="Link to this definition">#</a></dt>
+<dd><p>The marginal that was computed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MarginalAnswer.budget">
+<span class="sig-name descname"><span class="pre">budget</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><span class="pre">tmlt.analytics.privacy_budget.ApproxDPBudget</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.MarginalAnswer.budget" title="Link to this definition">#</a></dt>
+<dd><p>Privacy budget used to compute the marginal.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MarginalAnswer.noise_scale">
+<span class="sig-name descname"><span class="pre">noise_scale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.MarginalAnswer.noise_scale" title="Link to this definition">#</a></dt>
+<dd><p>Scale of the noise added to the marginal.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.MarginalAnswer.answer">
+<span class="sig-name descname"><span class="pre">answer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.MarginalAnswer.answer" title="Link to this definition">#</a></dt>
+<dd><p>The computed marginal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Sum">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Sum" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a></p>
+<p>A marginal sum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>measure_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Sum.output_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.Sum.output_column" title="Link to this definition">#</a></dt>
+<dd><p>The name of the column containing the sum of the measure column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Sum.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Sum.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The lower and upper clamping bounds determine the sensitivity of the
+sum query, and therefore the scale of the noise that needs to be
+added when computing this marginal using some privacy
+budget. Consequently, the choice of these clamping bounds has a
+significant impact on the accuracy of the sum query.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – List of columns to group by.</p></li>
+<li><p><strong>measure_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The column to sum.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Relative weight used to determine the fraction of privacy budget
+to allocate for this marginal when computing multiple marginals with
+some fixed total budget. Defaults to 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.Sum.answer">
+<span class="sig-name descname"><span class="pre">answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.Sum.answer" title="Link to this definition">#</a></dt>
+<dd><p>Returns a query object corresponding to the sum to compute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>keyset</strong> (<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a>)</p></li>
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer">MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.WeightedMarginal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WeightedMarginal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.WeightedMarginal" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Interface for specifying a weighted DP groupby aggregate.</p>
+<p>The weight is used to determine the fraction of the total privacy budget to be used
+for measuring this marginal. The weight is budget relative to other marginals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.WeightedMarginal.output_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.WeightedMarginal.output_column" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Abstractmethod<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+<p>The name of the output column produced by the marginal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.WeightedMarginal.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.WeightedMarginal.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupby_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – List of columns to group by.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – Relative weight used to determine the fraction of privacy budget
+to allocate for this marginal when computing multiple marginals with
+some fixed total budget. For example, when computing two weighted
+marginals, <code class="docutils literal notranslate"><span class="pre">WM1</span></code> with a weight of 1 and <code class="docutils literal notranslate"><span class="pre">WM2</span></code> with a weight of 2,
+using a total privacy budget of epsilon=3, <code class="docutils literal notranslate"><span class="pre">WM1</span></code> is computed
+with an epsilon of 1 and <code class="docutils literal notranslate"><span class="pre">WM2</span></code> is computed with an epsilon of 2.
+Defaults to 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.synthetics.WeightedMarginal.answer">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.WeightedMarginal.answer" title="Link to this definition">#</a></dt>
+<dd><p>Returns the answer to this marginal evaluated using <code class="docutils literal notranslate"><span class="pre">session</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>keyset</strong> (<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a>)</p></li>
+<li><p><strong>session</strong> (<a class="reference internal" href="../session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><em>tmlt.analytics.session.Session</em></a>)</p></li>
+<li><p><strong>budget</strong> (<a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a>)</p></li>
+<li><p><strong>clamping_bounds</strong> (<a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer">MarginalAnswer</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../session/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">session</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../truncation_strategy/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">truncation_strategy</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.generate_synthetic_data"><code class="docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy"><code class="docutils literal notranslate"><span class="pre">BinningStrategy</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy.spec"><code class="docutils literal notranslate"><span class="pre">BinningStrategy.spec</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy.generate_nulls"><code class="docutils literal notranslate"><span class="pre">BinningStrategy.generate_nulls</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.groupby_columns"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.groupby_columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.low_column_name"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.low_column_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.high_column_name"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.high_column_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.weight"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.__init__"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds"><code class="docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds.weight"><code class="docutils literal notranslate"><span class="pre">ClampingBounds.weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds.bounds_per_column"><code class="docutils literal notranslate"><span class="pre">ClampingBounds.bounds_per_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds.__init__"><code class="docutils literal notranslate"><span class="pre">ClampingBounds.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds.__getitem__"><code class="docutils literal notranslate"><span class="pre">ClampingBounds.__getitem__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.ClampingBounds.discover_unknown_bounds"><code class="docutils literal notranslate"><span class="pre">ClampingBounds.discover_unknown_bounds()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.groupby_columns"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds.groupby_columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.dataframe"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds.dataframe</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.low_column_name"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds.low_column_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.high_column_name"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds.high_column_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.PerGroupClampingBounds.__init__"><code class="docutils literal notranslate"><span class="pre">PerGroupClampingBounds.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.KeySetsRepository"><code class="docutils literal notranslate"><span class="pre">KeySetsRepository</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.KeySetsRepository.columns"><code class="docutils literal notranslate"><span class="pre">KeySetsRepository.columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.KeySetsRepository.__init__"><code class="docutils literal notranslate"><span class="pre">KeySetsRepository.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.KeySetsRepository.join"><code class="docutils literal notranslate"><span class="pre">KeySetsRepository.join()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.KeySetsRepository.__getitem__"><code class="docutils literal notranslate"><span class="pre">KeySetsRepository.__getitem__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AdaptiveMarginals"><code class="docutils literal notranslate"><span class="pre">AdaptiveMarginals</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AdaptiveMarginals.Case"><code class="docutils literal notranslate"><span class="pre">AdaptiveMarginals.Case</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AdaptiveMarginals.weight"><code class="docutils literal notranslate"><span class="pre">AdaptiveMarginals.weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AdaptiveMarginals.__init__"><code class="docutils literal notranslate"><span class="pre">AdaptiveMarginals.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AdaptiveMarginals.compute"><code class="docutils literal notranslate"><span class="pre">AdaptiveMarginals.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.FixedMarginals"><code class="docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.FixedMarginals.weight"><code class="docutils literal notranslate"><span class="pre">FixedMarginals.weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.FixedMarginals.__init__"><code class="docutils literal notranslate"><span class="pre">FixedMarginals.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.FixedMarginals.compute"><code class="docutils literal notranslate"><span class="pre">FixedMarginals.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MeasurementStrategy"><code class="docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MeasurementStrategy.weight"><code class="docutils literal notranslate"><span class="pre">MeasurementStrategy.weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MeasurementStrategy.compute"><code class="docutils literal notranslate"><span class="pre">MeasurementStrategy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Count"><code class="docutils literal notranslate"><span class="pre">Count</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Count.output_column"><code class="docutils literal notranslate"><span class="pre">Count.output_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Count.__init__"><code class="docutils literal notranslate"><span class="pre">Count.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Count.answer"><code class="docutils literal notranslate"><span class="pre">Count.answer()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MarginalAnswer"><code class="docutils literal notranslate"><span class="pre">MarginalAnswer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MarginalAnswer.marginal"><code class="docutils literal notranslate"><span class="pre">MarginalAnswer.marginal</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MarginalAnswer.budget"><code class="docutils literal notranslate"><span class="pre">MarginalAnswer.budget</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MarginalAnswer.noise_scale"><code class="docutils literal notranslate"><span class="pre">MarginalAnswer.noise_scale</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.MarginalAnswer.answer"><code class="docutils literal notranslate"><span class="pre">MarginalAnswer.answer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Sum"><code class="docutils literal notranslate"><span class="pre">Sum</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Sum.output_column"><code class="docutils literal notranslate"><span class="pre">Sum.output_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Sum.__init__"><code class="docutils literal notranslate"><span class="pre">Sum.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.Sum.answer"><code class="docutils literal notranslate"><span class="pre">Sum.answer()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.WeightedMarginal"><code class="docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.WeightedMarginal.output_column"><code class="docutils literal notranslate"><span class="pre">WeightedMarginal.output_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.WeightedMarginal.__init__"><code class="docutils literal notranslate"><span class="pre">WeightedMarginal.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.WeightedMarginal.answer"><code class="docutils literal notranslate"><span class="pre">WeightedMarginal.answer()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 4903b1c9 at 2024-11-19 19:00.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
