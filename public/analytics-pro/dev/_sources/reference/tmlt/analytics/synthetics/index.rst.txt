@@ -109,6 +109,12 @@ synthetics
 Functions
 =========
 
+.. list-table::
+
+   * - :func:`.generate_synthetic_data`
+     - Generate synthetic data using differential privacy techniques.
+   * - :func:`.generate_quality_report`
+     - Generates a report containing several 'quality' metrics for the synthetic data.
 
 .. py:function:: generate_synthetic_data(session, keyset, measurement_strategies, clamping_bounds = None, binning_strategies = None, count_structural_zeroes = None, sum_structural_zeroes = None, source_id = None, privacy_budget = None, split_columns = None, max_rows_per_id = None, model_iterations = 3000)
 
@@ -151,6 +157,28 @@ Functions
 
 
 
+.. py:function:: generate_quality_report(real_data, synthetic_data, categorical_columns, numeric_columns)
+
+   Generates a report containing several 'quality' metrics for the synthetic data.
+
+   This report includes the following metrics computed on the synthetic data with
+   respect to the real data:
+
+   1. Columns similarity
+   2. Pairwise correlations
+   3. Summary statistics
+
+   This function uses SDMetrics under-the-hood to compute these metrics.
+
+   :param real_data: Private input dataframe.
+   :param synthetic_data: Synthetic dataframe to evaluate.
+   :param categorical_columns: List of column names corresponding to categorical
+                               attributes in the data.
+   :param numeric_columns: List of column names corresponding to numeric attributes
+                           in the data.
+
+
+
 
 Classes
 =======
@@ -167,6 +195,8 @@ Classes
      - Clamping bounds for a magnitude column specified separately for each group.
    * - :class:`.KeySetsRepository`
      - A collection of possibly overlapping KeySets.
+   * - :class:`.QualityReport`
+     - A report of synthetic data quality metrics.
    * - :class:`.AdaptiveMarginals`
      - An adaptive workload with multiple cases based on the total noisy count.
    * - :class:`.FixedMarginals`
@@ -418,6 +448,56 @@ Classes
       :param columns: List of columns that the KeySet should contain.
 
 
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: QualityReport(column_shapes, pairwise_correlations, figures, count_real, count_synthetic)
+   :canonical: tmlt.analytics.synthetics._report.QualityReport
+
+
+   A report of synthetic data quality metrics.
+
+
+
+
+
+
+   .. py:property:: column_shapes
+
+      Correlation between corresponding columns in the real and synthetic data.
+
+      This is computed using KSComplement for numeric columns, and TVComplement for
+      categorical columns.
+
+   .. py:property:: pairwise_correlations
+
+      Correlation scores between pairs of columns in the data.
+
+      This measures the correlation between pairs of columns in both the synthetic and
+      real data, and computes the similarity between the two. It usese
+
+   .. py:property:: figures
+
+      Visualizations for the error report.
+
+   .. py:property:: count_real
+
+      The number of rows in the real data.
+
+   .. py:property:: count_synthetic
+
+      The number of rows in the synthetic data.
+
+
+   .. automethod:: __init__
 
    
 ..
