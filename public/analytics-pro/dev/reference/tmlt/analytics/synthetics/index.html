@@ -555,7 +555,7 @@ will change over upcoming releases.</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.analytics.synthetics.generate_synthetic_data">
-<span class="sig-name descname"><span class="pre">generate_synthetic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_strategies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning_strategies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows_per_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.generate_synthetic_data" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">generate_synthetic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_strategies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamping_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning_specs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_structural_zeroes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">privacy_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows_per_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.generate_synthetic_data" title="Link to this definition">#</a></dt>
 <dd><p>Generate synthetic data using differential privacy techniques.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -565,31 +565,19 @@ the private data.</p></li>
 <li><p><strong>keyset</strong> (<a class="reference internal" href="../keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><em>tmlt.analytics.keyset.KeySet</em></a>) – Full domain for the synthetic data, before removing structural zeroes.</p></li>
 <li><p><strong>measurement_strategies</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics._strategy.MeasurementStrategy"><em>tmlt.analytics.synthetics._strategy.MeasurementStrategy</em></a><em>]</em>) – Strategies for measuring data aggregates.</p></li>
 <li><p><strong>clamping_bounds</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics._clamping_bounds.ClampingBounds"><em>tmlt.analytics.synthetics._clamping_bounds.ClampingBounds</em></a><em>]</em>) – Clamping bounds for the numeric columns to generate. An
-alternative to using a binning strategy. Note that these columns should not
-have binning strategies or be included in count marginals, but rather should
-be included in sum marginals. This is useful for preserving the accuracy of
-groupby sum queries on the synthetic data, but at the cost of having a less
-accurate distribution of values.</p></li>
-<li><p><strong>binning_strategies</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference internal" href="#tmlt.analytics.synthetics.BinningStrategy" title="tmlt.analytics.synthetics._binning_strategy.BinningStrategy"><em>tmlt.analytics.synthetics._binning_strategy.BinningStrategy</em></a><em>]</em><em>]</em>) – Alternative to clamping bounds, specifies how to bin numeric
-or timestamp/date columns for measurement. Note that these columns should
-not have clamping bounds or be included in sum marginals, but rather should
-be included in count marginals. This is useful for capturing the
-distribution of values of the column, while clamping bounds/sums are useful
-for capturing the accuracy of groupby sum queries on the synthetic data.</p></li>
-<li><p><strong>count_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em>) – Structural zeroes for the count measurements. Each
-DataFrame in the list corresponds to a different combination of values
-for which the count is zero (no records will be generated with these
-values).</p></li>
-<li><p><strong>sum_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em><em>]</em>) – Structural zeroes for the sum measurements. Keys are
-the measure columns, and the values are combinations of values for which
-the sum of the measure column is zero for all generated records.</p></li>
-<li><p><strong>source_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – Source ID of the private table in the session to query.
-Must be provided if there are multiple private sources in the session.</p></li>
-<li><p><strong>privacy_budget</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a><em>]</em>) – Privacy budget to use for synthetic data generation.
-If not provided, the remaining budget in the session will be used.</p></li>
-<li><p><strong>split_columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>) – Columns to split the data into subsets for model fitting.
-Note that all marginals in the measurement strategies must include all
-split columns.</p></li>
+alternative to using binning. Note that these columns should not
+have binning specs or be included in count marginals, but rather should
+be included in sum marginals.</p></li>
+<li><p><strong>binning_specs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference internal" href="../binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><em>tmlt.analytics.binning_spec.BinningSpec</em></a><em>]</em><em>]</em>) – Specifications for how to bin numeric or timestamp/date columns
+for measurement. Note that these columns should not have clamping bounds
+or be included in sum marginals, but rather should be included in count
+marginals. Null values will always be included in the domain for
+binned columns.</p></li>
+<li><p><strong>count_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em>) – Structural zeroes for the count measurements.</p></li>
+<li><p><strong>sum_structural_zeroes</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>List</em><em>[</em><a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a><em>]</em><em>]</em><em>]</em>) – Structural zeroes for the sum measurements.</p></li>
+<li><p><strong>source_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – Source ID of the private table in the session to query.</p></li>
+<li><p><strong>privacy_budget</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../privacy_budget/index.html#tmlt.analytics.privacy_budget.ApproxDPBudget" title="tmlt.analytics.privacy_budget.ApproxDPBudget"><em>tmlt.analytics.privacy_budget.ApproxDPBudget</em></a><em>]</em>) – Privacy budget to use for synthetic data generation.</p></li>
+<li><p><strong>split_columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>) – Columns to split the data into subsets for model fitting.</p></li>
 <li><p><strong>max_rows_per_id</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – Maximum number of rows per ID in the protected data.</p></li>
 <li><p><strong>model_iterations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Number of iterations to use for fitting the model.</p></li>
 </ul>
@@ -608,63 +596,41 @@ split columns.</p></li>
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <table class="table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.BinningStrategy" title="tmlt.analytics.synthetics.BinningStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinningStrategy</span></code></a></p></td>
-<td><p>Binning strategy for generating synthetic data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AutomaticBounds" title="tmlt.analytics.synthetics.AutomaticBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a></p></td>
 <td><p>Clamping bounds for a magnitude column is automatically set using DP.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics.ClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics.ClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a></p></td>
 <td><p>A configuration for clamping bounds of each numeric column to generate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerGroupClampingBounds</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.PerGroupClampingBounds" title="tmlt.analytics.synthetics.PerGroupClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerGroupClampingBounds</span></code></a></p></td>
 <td><p>Clamping bounds for a magnitude column specified separately for each group.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics.KeySetsRepository"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySetsRepository</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.KeySetsRepository" title="tmlt.analytics.synthetics.KeySetsRepository"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySetsRepository</span></code></a></p></td>
 <td><p>A collection of possibly overlapping KeySets.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="tmlt.analytics.synthetics.AdaptiveMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdaptiveMarginals</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.AdaptiveMarginals" title="tmlt.analytics.synthetics.AdaptiveMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdaptiveMarginals</span></code></a></p></td>
 <td><p>An adaptive workload with multiple cases based on the total noisy count.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.FixedMarginals" title="tmlt.analytics.synthetics.FixedMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.FixedMarginals" title="tmlt.analytics.synthetics.FixedMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a></p></td>
 <td><p>A fixed workload of weighted count and sum marginals.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics.MeasurementStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MeasurementStrategy" title="tmlt.analytics.synthetics.MeasurementStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementStrategy</span></code></a></p></td>
 <td><p>A strategy for measuring differentially private aggregates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a></p></td>
 <td><p>A marginal count.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarginalAnswer</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.MarginalAnswer" title="tmlt.analytics.synthetics.MarginalAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarginalAnswer</span></code></a></p></td>
 <td><p>Output from computing a weighted marginal.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Sum" title="tmlt.analytics.synthetics.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.Sum" title="tmlt.analytics.synthetics.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a></p></td>
 <td><p>A marginal sum.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.analytics.synthetics.WeightedMarginal" title="tmlt.analytics.synthetics.WeightedMarginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightedMarginal</span></code></a></p></td>
 <td><p>Interface for specifying a weighted DP groupby aggregate.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BinningStrategy</span></span><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Binning strategy for generating synthetic data.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy.spec">
-<span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../binning_spec/index.html#tmlt.analytics.binning_spec.BinningSpec" title="tmlt.analytics.binning_spec.BinningSpec"><span class="pre">tmlt.analytics.binning_spec.BinningSpec</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy.spec" title="Link to this definition">#</a></dt>
-<dd><p>Binning specification for a numeric column.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tmlt.analytics.synthetics.BinningStrategy.generate_nulls">
-<span class="sig-name descname"><span class="pre">generate_nulls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.analytics.synthetics.BinningStrategy.generate_nulls" title="Link to this definition">#</a></dt>
-<dd><p>Whether to generate nulls for the column.</p>
-<p>Note that out of range values, NaNs, and nulls will become null.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.analytics.synthetics.AutomaticBounds">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomaticBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'low'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.synthetics.AutomaticBounds" title="Link to this definition">#</a></dt>
@@ -1517,11 +1483,6 @@ Defaults to 1.</p></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy"><code class="docutils literal notranslate"><span class="pre">BinningStrategy</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy.spec"><code class="docutils literal notranslate"><span class="pre">BinningStrategy.spec</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.BinningStrategy.generate_nulls"><code class="docutils literal notranslate"><span class="pre">BinningStrategy.generate_nulls</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.groupby_columns"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.groupby_columns</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.synthetics.AutomaticBounds.low_column_name"><code class="docutils literal notranslate"><span class="pre">AutomaticBounds.low_column_name</span></code></a></li>
@@ -1634,7 +1595,7 @@ Defaults to 1.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from cfdacd46 at 2024-11-20 15:04.</div>
+Built from 7d62b906 at 2024-11-20 21:12.</div>
       
     </div>
   
