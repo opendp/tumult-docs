@@ -1,0 +1,734 @@
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+
+*****************
+synthetics
+*****************
+
+.. py:module:: tmlt.analytics.synthetics
+
+.. autoapi-nested-parse::
+
+   Tumult Synthetics is a differentially private synthetic data generator built on Tumult Analytics.
+
+   .. caution::
+
+      The public API of Tumult Synthetics is still under active development, and
+      will change over upcoming releases.
+
+   .. rubric:: Example
+
+   >>> from pyspark.sql import SparkSession, Row
+   >>> from tmlt.synthetics import (
+   ...     generate_synthetic_data,
+   ...     Count,
+   ...     Sum,
+   ...     FixedMarginals,
+   ...     ClampingBounds,
+   ... )
+   >>> from tmlt.analytics import ApproxDPBudget, AddRowsWithID, KeySet, Session
+   >>> import pandas as pd
+   >>>
+   >>> spark = SparkSession.builder.getOrCreate()
+   >>>
+   >>> # Create toy data
+   >>> data = [
+   ...     Row(id=1, state='California', city='San Francisco', gender='Male', age=25, occupation='Engineer', salary=100000),
+   ...     Row(id=2, state='California', city='Sunnyvale', gender='Female', age=30, occupation='Teacher', salary=70000),
+   ...     Row(id=3, state='Washington', city='Seattle', gender='Other', age=40, occupation='Doctor', salary=150000),
+   ...     Row(id=4, state='California', city='San Francisco', gender='Male', age=35, occupation='Unemployed', salary=0),
+   ... ]
+   >>> df = spark.createDataFrame(data)
+   >>>
+   >>> # Define keysets and domain
+   >>> state_city_df = pd.DataFrame(
+   ...     [("California", "San Francisco"), ("California", "Sunnyvale"), ("Washington", "Seattle")],
+   ...     columns=["state", "city"]
+   ... )
+   >>> keyset = (
+   ...     KeySet.from_dataframe(spark.createDataFrame(state_city_df))
+   ...     * KeySet.from_dict({"gender": ["Male", "Female", "Other"]})
+   ...     * KeySet.from_dict({"age": list(range(18, 101))})
+   ...     * KeySet.from_dict({"occupation": ["Engineer", "Teacher", "Doctor", "Unemployed"]})
+   ... )
+   >>> clamping_bounds = ClampingBounds({"salary": (0, 200000)})
+   >>>
+   >>> # Define measurement strategies
+   >>> measurement_strategies = [
+   ...     FixedMarginals(marginals=[
+   ...         Count(groupby_columns=['state', 'city']),
+   ...         Count(groupby_columns=['age']),
+   ...         Count(groupby_columns=['gender', 'occupation']),
+   ...         Sum(groupby_columns=['state', 'occupation'], measure_column='salary')
+   ...     ])
+   ... ]
+   >>>
+   >>> # Set up the session
+   >>> session = (
+   ...     Session.Builder()
+   ...     .with_privacy_budget(ApproxDPBudget(epsilon=100, delta=0))
+   ...     .with_private_dataframe("protected_data", df, AddRowsWithID(id_column="id"))
+   ...     .build()
+   ... )
+   >>>
+   >>> # Generate synthetic data
+   >>> synthetic_data = generate_synthetic_data(
+   ...     session=session,
+   ...     source_id="protected_data",
+   ...     keyset=keyset,
+   ...     measurement_strategies=measurement_strategies,
+   ...     clamping_bounds=clamping_bounds,
+   ...     max_rows_per_id=1
+   ... )
+   >>>
+   >>> # Access the synthetic data
+   >>> synthetic_data.show(5)  # doctest: +SKIP
+   +----------+-------------+------+---+----------+------------------+
+   |     state|         city|gender|age|occupation|            salary|
+   +----------+-------------+------+---+----------+------------------+
+   |California|San Francisco|Female| 40|   Teacher|27883.202202662666|
+   |California|San Francisco|  Male| 30|  Engineer|40116.144665117616|
+   |California|    Sunnyvale|  Male| 35|Unemployed|20954.157816173778|
+   |Washington|      Seattle| Other| 25|    Doctor| 226830.4953160459|
+   +----------+-------------+------+---+----------+------------------+
+   <BLANKLINE>
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+
+.. py:function:: generate_synthetic_data(session, keyset, measurement_strategies, clamping_bounds = None, binning_specs = None, count_structural_zeroes = None, sum_structural_zeroes = None, source_id = None, privacy_budget = None, split_columns = None, max_rows_per_id = None, model_iterations = 3000)
+
+   Generate synthetic data using differential privacy techniques.
+
+   :param session: An Analytics Session to use for computing the aggregates on
+                   the private data.
+   :param keyset: Full domain for the synthetic data, before removing structural zeroes.
+   :param measurement_strategies: Strategies for measuring data aggregates.
+   :param clamping_bounds: Clamping bounds for the numeric columns to generate. An
+                           alternative to using binning. Note that these columns should not
+                           have binning specs or be included in count marginals, but rather should
+                           be included in sum marginals.
+   :param binning_specs: Specifications for how to bin numeric or timestamp/date columns
+                         for measurement. Note that these columns should not have clamping bounds
+                         or be included in sum marginals, but rather should be included in count
+                         marginals. Null values will always be included in the domain for
+                         binned columns.
+   :param count_structural_zeroes: Structural zeroes for the count measurements.
+   :param sum_structural_zeroes: Structural zeroes for the sum measurements.
+   :param source_id: Source ID of the private table in the session to query.
+   :param privacy_budget: Privacy budget to use for synthetic data generation.
+   :param split_columns: Columns to split the data into subsets for model fitting.
+   :param max_rows_per_id: Maximum number of rows per ID in the protected data.
+   :param model_iterations: Number of iterations to use for fitting the model.
+
+   :returns: A DataFrame containing the generated synthetic data.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.AutomaticBounds`
+     - Clamping bounds for a magnitude column is automatically set using DP.
+   * - :class:`.ClampingBounds`
+     - A configuration for clamping bounds of each numeric column to generate.
+   * - :class:`.PerGroupClampingBounds`
+     - Clamping bounds for a magnitude column specified separately for each group.
+   * - :class:`.KeySetsRepository`
+     - A collection of possibly overlapping KeySets.
+   * - :class:`.AdaptiveMarginals`
+     - An adaptive workload with multiple cases based on the total noisy count.
+   * - :class:`.FixedMarginals`
+     - A fixed workload of weighted count and sum marginals.
+   * - :class:`.MeasurementStrategy`
+     - A strategy for measuring differentially private aggregates.
+   * - :class:`.Count`
+     - A marginal count.
+   * - :class:`.MarginalAnswer`
+     - Output from computing a weighted marginal.
+   * - :class:`.Sum`
+     - A marginal sum.
+   * - :class:`.WeightedMarginal`
+     - Interface for specifying a weighted DP groupby aggregate.
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: AutomaticBounds(groupby_columns = None, weight = 1, low_column_name = 'low', high_column_name = 'high')
+   :canonical: tmlt.analytics.synthetics._clamping_bounds.AutomaticBounds
+
+
+   Clamping bounds for a magnitude column is automatically set using DP.
+
+
+
+
+
+
+   .. py:property:: groupby_columns
+      :type: List[str]
+
+
+      List of columns that determine the groups.
+
+   .. py:property:: low_column_name
+      :type: str
+
+
+      Name of the column that contains the lower clamping bounds.
+
+   .. py:property:: high_column_name
+      :type: str
+
+
+      Name of the column that contains the upper clamping bounds.
+
+   .. py:property:: weight
+      :type: int
+
+
+      How much privacy budget should be used to discover bounds.
+
+
+   .. automethod:: __init__
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: ClampingBounds(bounds_per_column, weight = 0)
+   :canonical: tmlt.analytics.synthetics._clamping_bounds.ClampingBounds
+
+
+   A configuration for clamping bounds of each numeric column to generate.
+
+   ClampingBounds can be explictly provided or set to be automatically discovered
+   using DP.
+
+
+
+
+
+
+   .. py:property:: weight
+      :type: int
+
+
+      How much privacy budget should be used to discover bounds.
+
+   .. py:property:: bounds_per_column
+      :type: Dict[str, Union[Tuple[float, float], AutomaticBounds, PerGroupClampingBounds]]
+
+
+      Returns the dictionary mapping column names to clamping bounds.
+
+
+   .. automethod:: __init__
+   .. py:method:: __getitem__(column)
+
+      Returns clamping bounds for a column.
+
+      If the bounds for ``column`` are specified to be distinct per group, this method
+      returns a PerGroupClampingBounds object. Otherwise, it returns a tuple
+      (low, high).
+
+      If the bounds for ``column`` is set to be automatically discovered, this method
+      will raise an error unless the bounds have been discovered by calling the
+      ``discover_unknown_bounds`` method first.
+
+      :param column: The name of the column for which to get the clamping bounds.
+
+
+   .. py:method:: discover_unknown_bounds(session, source_id, budget, keysets)
+
+      Discover clamping bounds for columns with AutomaticBounds.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: PerGroupClampingBounds(groupby_columns, dataframe, low_column_name = 'low', high_column_name = 'high')
+   :canonical: tmlt.analytics.synthetics._clamping_bounds.PerGroupClampingBounds
+
+
+   Clamping bounds for a magnitude column specified separately for each group.
+
+
+
+
+
+
+   .. py:property:: groupby_columns
+      :type: List[str]
+
+
+      List of columns that determine the groups.
+
+   .. py:property:: dataframe
+      :type: pyspark.sql.DataFrame
+
+
+      Returns DataFrame with clamping bounds for each group.
+
+   .. py:property:: low_column_name
+      :type: str
+
+
+      Name of the column that contains the lower clamping bounds.
+
+   .. py:property:: high_column_name
+      :type: str
+
+
+      Name of the column that contains the upper clamping bounds.
+
+
+   .. automethod:: __init__
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: KeySetsRepository(keysets)
+   :canonical: tmlt.analytics.synthetics._keysets_repository.KeySetsRepository
+
+
+   A collection of possibly overlapping KeySets.
+
+   See the module docstring for more information.
+
+
+
+
+
+
+   .. py:property:: columns
+      :type: Set[str]
+
+
+      Set of column names spanned by all KeySets in this repository.
+
+
+   .. automethod:: __init__
+   .. py:method:: join(dataframe, on)
+
+      Returns a new KeySetsRepository by joining each keyset with `dataframe`.
+
+      :param dataframe: DataFrame to join with each keyset.
+      :param on: List of columns to join on.
+
+
+   .. py:method:: __getitem__(columns)
+
+      Returns a maximal KeySet with the given list of columns.
+
+      :param columns: List of columns that the KeySet should contain.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: AdaptiveMarginals(total_by, total_count_budget_fraction, cases, weight = 1, count_column = 'count')
+   :canonical: tmlt.analytics.synthetics._strategy.AdaptiveMarginals
+
+
+   Bases: :py:obj:`MeasurementStrategy`
+
+   An adaptive workload with multiple cases based on the total noisy count.
+
+   In particular, this workload specifies different sets of marginals to compute
+   for different subsets of the data based on the size of the subset.
+
+   For example, in a dataset of website visits for a month for a set of websites,
+   we might want to compute finer granularity marginals for websites that get a large
+   number of visits while only computing coarser marginals for websites that get
+   relatively fewer visits. We could do this using an :class:`AdaptiveMarginals` as
+   follows:
+
+       >>> adaptive_counts = AdaptiveMarginals(
+       ...     total_by=["website_id"],
+       ...     total_count_budget_fraction=0.15,
+       ...     cases=[
+       ...         AdaptiveMarginals.Case(
+       ...             threshold=1000,
+       ...             marginals=[
+       ...                 Count(["website_id", "day"]),
+       ...                 Count(["website_id", "day", "hour"]),
+       ...             ],
+       ...         ),
+       ...         AdaptiveMarginals.Case(
+       ...             threshold=500,
+       ...             marginals=[
+       ...                 Count(["website_id", "day"]),
+       ...             ],
+       ...         ),
+       ...         AdaptiveMarginals.Case(
+       ...             default=True,
+       ...             marginals=[
+       ...                 Count(["website_id", "week"]),
+       ...             ],
+       ...         ),
+       ...     ],
+       ... )
+
+   The adaptive strategy defined in the example above does the following:
+
+   * Computes the total count of visits for each website.
+   * Divides the websites into three cases:
+
+     * Case 1: Websites with more than 1000 visits.
+
+       * Computes the count of visits per day and per hour.
+
+     * Case 2: Websites with between 500 and 1000 visits.
+
+       * Computes the count of visits per day.
+
+     * Default case: Websites with fewer than 500 visits.
+
+       * Computes the count of visits per week.
+
+
+
+
+   
+   ..
+       SPDX-License-Identifier: CC-BY-SA-4.0
+       Copyright Tumult Labs 2024
+
+   .. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+          that appear in the deprecated query_expr module; once that module is removed,
+          this logic can go away.
+
+
+   .. py:class:: Case(marginals, threshold = None, default = False)
+
+
+      A case in the adaptive workload.
+
+
+
+
+
+
+
+      .. automethod:: __init__
+
+
+
+   .. py:property:: weight
+      :type: int
+
+
+      Weight for determining privacy budget allocated for this strategy.
+
+
+   .. automethod:: __init__
+   .. py:method:: compute(session, source_id, budget, keysets, clamping_bounds)
+
+      Compute marginals adaptively based on the total noisy count.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: FixedMarginals(marginals, weight = 1)
+   :canonical: tmlt.analytics.synthetics._strategy.FixedMarginals
+
+
+   Bases: :py:obj:`MeasurementStrategy`
+
+   A fixed workload of weighted count and sum marginals.
+
+
+
+
+
+
+   .. py:property:: weight
+      :type: int
+
+
+      Weight for determining privacy budget allocated for this strategy.
+
+
+   .. automethod:: __init__
+   .. py:method:: compute(session, source_id, budget, keysets, clamping_bounds)
+
+      Returns the results from computing all of the specified marginals.
+
+      :param session: An Analytics :class:`~tmlt.analytics.session.Session` to use for
+                      computing the marginals.
+      :param source_id: Source ID of the private table in the ``session`` to query.
+      :param budget: Total privacy budget to use across all marginals. This budget is
+                     distributed among the marginals in proportion to their weights.
+      :param keysets: Repository of KeySets to use for the marginals.
+      :param clamping_bounds: Clamping bounds to use for answering Sum queries.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: MeasurementStrategy
+   :canonical: tmlt.analytics.synthetics._strategy.MeasurementStrategy
+
+
+   Bases: :py:obj:`abc.ABC`
+
+   A strategy for measuring differentially private aggregates.
+
+
+
+
+
+
+   .. py:property:: weight
+      :type: int
+
+      :abstractmethod:
+
+
+      Weight for determining privacy budget allocated for this strategy.
+
+
+   .. py:method:: compute(session, source_id, budget, keysets, clamping_bounds)
+      :abstractmethod:
+
+
+      Compute answers using this strategy.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: Count(groupby_columns, weight = 1, count_column = 'count')
+   :canonical: tmlt.analytics.synthetics._weighted_marginal.Count
+
+
+   Bases: :py:obj:`WeightedMarginal`
+
+   A marginal count.
+
+
+
+
+
+
+   .. py:property:: output_column
+      :type: str
+
+
+      The name of the count column.
+
+
+   .. automethod:: __init__
+   .. py:method:: answer(source_id, keyset, session, budget, clamping_bounds)
+
+      Returns an answer to the Count marginal.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: MarginalAnswer
+   :canonical: tmlt.analytics.synthetics._weighted_marginal.MarginalAnswer
+
+
+   Output from computing a weighted marginal.
+
+
+
+
+
+   .. py:attribute:: marginal
+      :type:  WeightedMarginal
+
+      The marginal that was computed.
+
+   .. py:attribute:: budget
+      :type:  tmlt.analytics.privacy_budget.ApproxDPBudget
+
+      Privacy budget used to compute the marginal.
+
+   .. py:attribute:: noise_scale
+      :type:  float
+
+      Scale of the noise added to the marginal.
+
+   .. py:attribute:: answer
+      :type:  pyspark.sql.DataFrame
+
+      The computed marginal.
+
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: Sum(groupby_columns, measure_column, weight = 1)
+   :canonical: tmlt.analytics.synthetics._weighted_marginal.Sum
+
+
+   Bases: :py:obj:`WeightedMarginal`
+
+   A marginal sum.
+
+
+
+
+
+
+   .. py:property:: output_column
+      :type: str
+
+
+      The name of the column containing the sum of the measure column.
+
+
+   .. automethod:: __init__
+   .. py:method:: answer(source_id, keyset, session, budget, clamping_bounds)
+
+      Returns a query object corresponding to the sum to compute.
+
+
+
+   
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2024
+
+.. TODO(#3272): This prevents setting :canonical: on the copy of various docs
+       that appear in the deprecated query_expr module; once that module is removed,
+       this logic can go away.
+
+
+.. py:class:: WeightedMarginal(groupby_columns, weight = 1.0)
+   :canonical: tmlt.analytics.synthetics._weighted_marginal.WeightedMarginal
+
+
+   Bases: :py:obj:`abc.ABC`
+
+   Interface for specifying a weighted DP groupby aggregate.
+
+   The weight is used to determine the fraction of the total privacy budget to be used
+   for measuring this marginal. The weight is budget relative to other marginals.
+
+
+
+
+
+
+   .. py:property:: output_column
+      :type: str
+
+      :abstractmethod:
+
+
+      The name of the output column produced by the marginal.
+
+
+   .. automethod:: __init__
+   .. py:method:: answer(source_id, keyset, session, budget, clamping_bounds)
+      :abstractmethod:
+
+
+      Returns the answer to this marginal evaluated using ``session``.
+
+
+
+
+
+
+
