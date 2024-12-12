@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Working with privacy IDs &#8212; Tumult Analytics dev documentation</title>
+    <title>Working with privacy IDs &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -334,7 +333,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -390,7 +389,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -541,10 +540,10 @@ the library, and one that contains a list of the books that the library has. The
 </section>
 <section id="creating-a-session-with-privacy-ids">
 <h2>Creating a Session with privacy IDs<a class="headerlink" href="#creating-a-session-with-privacy-ids" title="Link to this heading">#</a></h2>
-<p>Let’s initialize our <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> with a
+<p>Let’s initialize our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> with a
 private dataframe containing books checked out from the library.</p>
 <p>Since each library member could have checked out any number of books,
-we will use the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+we will use the <a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
 protected change. This protected change will protect adding and removing
 <em>arbitrarily many</em> rows all sharing the same ID.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
@@ -610,10 +609,10 @@ can be arbitrarily large!</p>
 <p>To solve this problem, before performing aggregations, we need to limit the
 maximum impact that a single library patron can have on the statistic we want
 to compute. This is done by <em>enforcing a constraint</em> on the data. The simplest
-constraint, <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
+constraint, <a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerID.html#tmlt.analytics.MaxRowsPerID" title="tmlt.analytics.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
 limits the <em>total number of rows</em> contributed by each privacy ID. To enforce
 it, we simply pass it as parameter to the
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.enforce" title="tmlt.analytics.query_builder.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enforce()</span></code></a> operation.
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.enforce.html#tmlt.analytics.QueryBuilder.enforce" title="tmlt.analytics.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enforce()</span></code></a> operation.
 For this query, we will limit the maximum number of contributed rows to 20
 per library member.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
@@ -654,9 +653,9 @@ number of <em>groups</em> that each ID can appear in, and limit the number of
 by computing how many patrons have checked out each of our top five books.</p>
 <p>For this query, we will combine two constraints to truncate our data:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a>: limiting the number of
+<li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a>: limiting the number of
 groups (here, distinct books) that any library patron can contribute to; and</p></li>
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>: limiting the number
+<li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>: limiting the number
 of rows that any library patron can provide for each group.</p></li>
 </ul>
 <p>We will limit each patron to 5 groups (we only consider the 5 most popular
@@ -689,7 +688,7 @@ same patron twice for the same book).</p>
 </pre></div>
 </div>
 <p>We could also express this query using
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="tmlt.analytics.query_builder.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a>: limiting each
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.count_distinct.html#tmlt.analytics.QueryBuilder.count_distinct" title="tmlt.analytics.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a>: limiting each
 ID to a single row per library member (per ISBN) is the same as counting
 distinct IDs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">top_five_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">top_five</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;isbn&quot;</span><span class="p">))</span>
@@ -708,7 +707,7 @@ distinct IDs.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>When using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.count_distinct" title="tmlt.analytics.query_builder.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a> on the ID column, we no longer need to specify the <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> constraint:
+<p>When using <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.count_distinct.html#tmlt.analytics.QueryBuilder.count_distinct" title="tmlt.analytics.QueryBuilder.count_distinct"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_distinct()</span></code></a> on the ID column, we no longer need to specify the <a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> constraint:
 Tumult Analytics understands that each ID can contribute at most once per group.</p>
 <p>We can then display the results as a graph:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -743,17 +742,17 @@ Tumult Analytics understands that each ID can contribute at most once per group.
 <span id="flow-chart-truncation"></span><h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We’ve seen that when using privacy IDs, we need to truncate the data to limit
 how much each privacy ID can contribute to the final statistic. There are two
-ways of doing so: using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
-or using <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
-<a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>.</p>
+ways of doing so: using <a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerID.html#tmlt.analytics.MaxRowsPerID" title="tmlt.analytics.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>,
+or using <a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
+<a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>.</p>
 <img alt="A flow chart showing three paths from &quot;data with privacy IDs&quot; to &quot;compute statistic&quot;. The first path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerID&quot; to &quot;compute statistic&quot;. The second and third paths are paired together. The second path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;compute statistic&quot;. The third path is &quot;data with privacy IDs&quot; to &quot;truncate using MaxRowsPerGroupPerID&quot; to &quot;truncate using MaxGroupsPerID&quot; to &quot;compute statistic&quot;." class="align-center" src="../_images/flow_chart_truncation.svg" />
 <p>As a reminder:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a> limits the number of rows
+<li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerID.html#tmlt.analytics.MaxRowsPerID" title="tmlt.analytics.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a> limits the number of rows
 associated with each privacy ID in a table.</p></li>
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> limits the number of distinct
+<li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> limits the number of distinct
 values of the grouping column that may appear for each privacy ID in a table.</p></li>
-<li><p><a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> limits the number of rows
+<li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> limits the number of rows
 associated with each (privacy ID, grouping column value) pair in a table.</p></li>
 </ul>
 <p>To understand the impact of the various constraints in more detail,
@@ -848,7 +847,7 @@ privacy IDs, you can proceed to the <a class="reference internal" href="more-wit
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 45167203 at 2024-12-11 18:25.</div>
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
       
     </div>
   

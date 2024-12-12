@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Group-by queries &#8212; Tumult Analytics dev documentation</title>
+    <title>Group-by queries &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -334,7 +333,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -390,7 +389,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -558,12 +557,12 @@ infinite privacy budget—not to be used in production!</p>
 <section id="introduction-to-keysets">
 <h2>Introduction to KeySets<a class="headerlink" href="#introduction-to-keysets" title="Link to this heading">#</a></h2>
 <p>To specify the list of group-by keys in Tumult Analytics, we use the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> class. A KeySet specifies both the
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> class. A KeySet specifies both the
 columns by which we are going to group by, and the possible values for those
 columns.</p>
 <p>The simple way to initialize a KeySet, especially when there are only a few
 possible values for a given column, is to use
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dict" title="tmlt.analytics.keyset.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>. For example, the following
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.from_dict" title="tmlt.analytics.KeySet.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a>. For example, the following
 KeySet enumerates all possible values for the categorical column
 <cite>education_level</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_levels</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
@@ -578,7 +577,7 @@ KeySet enumerates all possible values for the categorical column
 </pre></div>
 </div>
 <p>Once we have this KeySet, we can use it in group-by queries, using the
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.groupby" title="tmlt.analytics.query_builder.QueryBuilder.groupby"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby()</span></code></a> operation. For
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.groupby.html#tmlt.analytics.QueryBuilder.groupby" title="tmlt.analytics.QueryBuilder.groupby"><code class="xref py py-meth docutils literal notranslate"><span class="pre">groupby()</span></code></a> operation. For
 example, let us compute the average age of library members, grouped by education
 level.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_average_age_query</span> <span class="o">=</span> <span class="p">(</span>
@@ -681,7 +680,7 @@ age (of teenagers and young adults) and education level.</p>
 </div>
 <p>This gives us a KeySet with each combination of values across the two columns
 <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">education_level</span></code>. To manually check what’s inside of a KeySet,
-we can call its <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.dataframe" title="tmlt.analytics.keyset.KeySet.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tmlt.analytics.keyset.KeySet.dataframe()</span></code></a> method, which
+we can call its <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.dataframe" title="tmlt.analytics.KeySet.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tmlt.analytics.KeySet.dataframe()</span></code></a> method, which
 will return the group-by keys it encapsulates, as a Spark DataFrame.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_df</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span>
 <span class="n">teen_edu_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -746,7 +745,7 @@ columns is pure noise, added to zero values.
 We can fix that problem by creating a KeySet that only contains reasonable
 combinations of values. One way to do this is by creating a Spark DataFrame with
 the desired combinations, and initializing a KeySet with it using the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method. Here, let’s create
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.from_dataframe" title="tmlt.analytics.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method. Here, let’s create
 such a KeySet for our age range, making some assumptions about the minimum age at
 which certain education levels can be achieved.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
@@ -817,7 +816,7 @@ for common KeySet manipulation operations. Let us review these operations.</p>
 <h3>Cross-product<a class="headerlink" href="#cross-product" title="Link to this heading">#</a></h3>
 <p>When two KeySets are specifying group-by keys for different sets of columns, you
 can use the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.__mul__" title="tmlt.analytics.keyset.KeySet.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multiplication</span> <span class="pre">operator</span></code></a> to
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.__mul__" title="tmlt.analytics.KeySet.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multiplication</span> <span class="pre">operator</span></code></a> to
 generate the combination of values present in both KeySets. Consider, for
 example, the combination of teen ages and education levels that we started with
 in the previous section.</p>
@@ -861,7 +860,7 @@ operator.</p>
 <p>What if you have a large KeySet containing possible combination of values
 between multiple columns, and want to select only a subset of these columns? For
 this use case, you can use the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.__getitem__" title="tmlt.analytics.keyset.KeySet.__getitem__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">projection</span> <span class="pre">operator</span></code></a>. For
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.__getitem__" title="tmlt.analytics.KeySet.__getitem__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">projection</span> <span class="pre">operator</span></code></a>. For
 example, taking the two-column KeySet above and projecting it on a single column
 will retrieve the original one-column KeySet.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
@@ -871,7 +870,7 @@ will retrieve the original one-column KeySet.</p>
 </pre></div>
 </div>
 <p>Note that this operation, just like the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method, removes duplicates
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.from_dataframe" title="tmlt.analytics.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method, removes duplicates
 in the data: <code class="docutils literal notranslate"><span class="pre">teen_edu_keys[&quot;education&quot;]</span></code> only has one row for e.g.
 <code class="docutils literal notranslate"><span class="pre">&quot;up-to-high-school&quot;</span></code>, even though this value appears in multiple rows in the
 original KeySet.</p>
@@ -891,7 +890,7 @@ original KeySet.</p>
 </section>
 <section id="filters">
 <h3>Filters<a class="headerlink" href="#filters" title="Link to this heading">#</a></h3>
-<p>Finally, KeySets support the same <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.filter" title="tmlt.analytics.keyset.KeySet.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
+<p>Finally, KeySets support the same <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.filter" title="tmlt.analytics.KeySet.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
 operation as Spark DataFrames. For example, consider the KeySet with specific
 combinations of age and education level from before.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
@@ -943,7 +942,7 @@ suppose that we want to find out what first names are the most common among libr
 members. We don’t know all possible first names a priori, so building the KeySet with prior knowledge is not possible.</p>
 <p>We can solve this problem by using <em>approximate differential
 privacy</em> (Approx DP) in our Session, and using
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to collect a list of
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.get_groups.html#tmlt.analytics.QueryBuilder.get_groups" title="tmlt.analytics.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to collect a list of
 names from the private data using Approx DP. Once we collect the names, we can use them as the KeySet for subsequent queries.</p>
 <p>For more information on Approx DP, you can consult our topic guide on <a class="reference internal" href="../topic-guides/privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">Privacy budget fundamentals</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="n">ApproxDPBudget</span>
@@ -981,7 +980,7 @@ names from the private data using Approx DP. Once we collect the names, we can u
 </div>
 <p>The query result is a dataframe with first names that appear in the private
 data. This can be converted into a KeySet using the
-<a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet.from_dataframe" title="tmlt.analytics.keyset.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method mentioned
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.from_dataframe" title="tmlt.analytics.KeySet.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> method mentioned
 earlier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">names_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">names_df</span><span class="p">)</span>
 </pre></div>
@@ -998,7 +997,7 @@ earlier.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a>
+<p>Note that <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.get_groups.html#tmlt.analytics.QueryBuilder.get_groups" title="tmlt.analytics.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a>
 did <em>not</em> return every name in the dataset, but only those associated to
 sufficiently many people (with some randomization). To see this, we can
 look at the lowest counts returned by our count query.</p>
@@ -1018,7 +1017,7 @@ look at the lowest counts returned by our count query.</p>
 </pre></div>
 </div>
 <p>Lastly, we can estimate how many names were suppressed during this
-operation by comparing the number of names we published using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_groups" title="tmlt.analytics.query_builder.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to a noisy
+operation by comparing the number of names we published using <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.get_groups.html#tmlt.analytics.QueryBuilder.get_groups" title="tmlt.analytics.QueryBuilder.get_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_groups()</span></code></a> to a noisy
 count of distinct names in the dataset.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_names_published</span> <span class="o">=</span> <span class="n">name_counts_df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
@@ -1087,7 +1086,7 @@ count of distinct names in the dataset.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-keysets">Introduction to KeySets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-columns">Multiple columns</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manipulating-keysets">Manipulating KeySets</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manipulating-keysets">Manipulating KeySets</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product">Cross-product</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection">Projection</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filters">Filters</a></li>
@@ -1130,7 +1129,7 @@ count of distinct names in the dataset.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 45167203 at 2024-12-11 18:25.</div>
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
       
     </div>
   

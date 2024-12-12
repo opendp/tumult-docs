@@ -1,0 +1,787 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BinningSpec &#8212; Tumult Platform dev documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=b0446eb5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/api/tmlt.analytics.BinningSpec';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.14.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/analytics/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <script src="../../_static/js/version-banner.js?v=eca98ab5"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QueryBuilder.enforce" href="tmlt.analytics.QueryBuilder.enforce.html" />
+    <link rel="prev" title="QueryBuilder.bin_column" href="tmlt.analytics.QueryBuilder.bin_column.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../howto-guides/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../howto-guides/index.html">
+                        How-to guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../topic-guides/index.html">
+                        Topic guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../changelog.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-slack fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+<h3>Tumult Platform</h3></div>
+        <div class="sidebar-primary-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+
+<nav class="bd-docs-nav bd-links">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../privacy-guarantees.html">Specifying privacy guarantees</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../queries.html">Building queries</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.html">QueryBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.select.html">QueryBuilder.select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.rename.html">QueryBuilder.rename</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.replace_null_and_nan.html">QueryBuilder.replace_null_and_nan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.drop_null_and_nan.html">QueryBuilder.drop_null_and_nan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.replace_infinity.html">QueryBuilder.replace_infinity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.drop_infinity.html">QueryBuilder.drop_infinity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.filter.html">QueryBuilder.filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.map.html">QueryBuilder.map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.flat_map.html">QueryBuilder.flat_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.flat_map_by_id.html">QueryBuilder.flat_map_by_id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.bin_column.html">QueryBuilder.bin_column</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">BinningSpec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.enforce.html">QueryBuilder.enforce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Constraint.html">Constraint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.MaxRowsPerID.html">MaxRowsPerID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.MaxGroupsPerID.html">MaxGroupsPerID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.MaxRowsPerGroupPerID.html">MaxRowsPerGroupPerID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.join_public.html">QueryBuilder.join_public</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.join_private.html">QueryBuilder.join_private</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.groupby.html">QueryBuilder.groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.KeySet.html">KeySet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.GroupedQueryBuilder.html">GroupedQueryBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.count.html">QueryBuilder.count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.count_distinct.html">QueryBuilder.count_distinct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.sum.html">QueryBuilder.sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.average.html">QueryBuilder.average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.variance.html">QueryBuilder.variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.stdev.html">QueryBuilder.stdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.quantile.html">QueryBuilder.quantile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.median.html">QueryBuilder.median</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.min.html">QueryBuilder.min</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.max.html">QueryBuilder.max</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.histogram.html">QueryBuilder.histogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.get_groups.html">QueryBuilder.get_groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.QueryBuilder.get_bounds.html">QueryBuilder.get_bounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Query.html">Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.GroupbyCountQuery.html">GroupbyCountQuery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.GroupbyCountQuery.suppress.html">GroupbyCountQuery.suppress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.evaluate.html">Session.evaluate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.create_view.html">Session.create_view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.delete_view.html">Session.delete_view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.add_public_dataframe.html">Session.add_public_dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.partition_and_create.html">Session.partition_and_create</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.Session.stop.html">Session.stop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.ColumnType.html">ColumnType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.ColumnDescriptor.html">ColumnDescriptor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tmlt.analytics.AnalyticsDefault.html">AnalyticsDefault</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utility functions and exceptions</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../queries.html" class="nav-link">Building queries</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">BinningSpec</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="binningspec">
+<h1>BinningSpec<a class="headerlink" href="#binningspec" title="Link to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="n">BinningSpec</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tmlt.analytics.</span></span><span class="sig-name descname"><span class="pre">BinningSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bin_edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_both_endpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_bin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">BinT</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">BinNameT</span></code>]</p>
+<p>A spec object defining an operation where values are assigned to bins.</p>
+<p>A BinningSpec divides values into bins based on a list of bin edges, for use with
+the <a class="reference internal" href="tmlt.analytics.QueryBuilder.bin_column.html#tmlt.analytics.QueryBuilder.bin_column" title="tmlt.analytics.QueryBuilder.bin_column"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bin_column()</span></code></a> method.
+All <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType" title="tmlt.analytics.ColumnType"><code class="xref py py-class docutils literal notranslate"><span class="pre">supported</span> <span class="pre">data</span> <span class="pre">types</span></code></a> can be binned using a
+BinningSpec.</p>
+<p>Values outside the range of the provided bins and <code class="docutils literal notranslate"><span class="pre">None</span></code> types are all
+mapped to <code class="docutils literal notranslate"><span class="pre">None</span></code> (<code class="docutils literal notranslate"><span class="pre">null</span></code> in Spark), as are NaN values by default. Bin
+names are generated based on the bin edges, but custom names can be provided.</p>
+<p>By default, the right edge of each bin is included in that bin: using edges
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">5,</span> <span class="pre">10]</span></code> will lead to bins <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">5]</span></code> and <code class="docutils literal notranslate"><span class="pre">(5,</span> <span class="pre">10]</span></code>. To include the
+left edge instead, set the <code class="docutils literal notranslate"><span class="pre">right</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">BinningSpec</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="o">.</span><span class="n">bins</span><span class="p">()</span>
+<span class="go">[&#39;[0, 5]&#39;, &#39;(5, 10]&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;[0, 5]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">&#39;[0, 5]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">&#39;(5, 10]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&#39;(5, 10]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bin_edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_both_endpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_bin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize a BinningSpec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bin_edges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">BinT</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.DATE" title="datetime.date"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.TIMESTAMP" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>)], <a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]</span>) – A list of the bin edges, sorted in ascending order.</p></li>
+<li><p><strong>names</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">BinNameT</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.DATE" title="datetime.date"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.TIMESTAMP" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>)]], <a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – If given, used as the names of bins. Must be one element
+shorter than <code class="docutils literal notranslate"><span class="pre">bin_edges</span></code>. Duplicate values are allowed, which
+will place non-contiguous ranges of values into the same
+bin. Note that while using floats and timestamps as bin names is
+allowed here, grouping on the resulting column is not allowed.</p></li>
+<li><p><strong>right</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – When True, the right edge of each bin is included in that bin;
+otherwise, the left edge is. Defaults to True.</p></li>
+<li><p><strong>include_both_endpoints</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – When True, the outer edges of both the first
+and last bins will be included in their respective bins; when
+False, these edges are treated the same as the other bins,
+i.e. only one will be included based on how <code class="docutils literal notranslate"><span class="pre">right</span></code> is
+set. Defaults to True.</p></li>
+<li><p><strong>nan_bin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">BinNameT</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.DATE" title="datetime.date"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.TIMESTAMP" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>)]</span>) – If binning over a float-valued column, all NaNs will be
+placed in a bin with this name. The default value, <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+causes these values to be placed in the same bin with
+out-of-range and null values.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.__eq__" title="Link to this definition">#</a></dt>
+<dd><p>Adds equality comparison to the BinningSpec class.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.__hash__" title="Link to this definition">#</a></dt>
+<dd><p>Hashes the bin spec on a tuple of its attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.__repr__" title="Link to this definition">#</a></dt>
+<dd><p>Returns a string representation of the BinningSpec.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.input_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType" title="tmlt.analytics._schema.ColumnType"><span class="pre">ColumnType</span></a></em><a class="headerlink" href="#tmlt.analytics.BinningSpec.input_type" title="Link to this definition">#</a></dt>
+<dd><p>Return the ColumnType of the column this binning can be applied to.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.column_descriptor">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column_descriptor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="tmlt.analytics.ColumnDescriptor.html#tmlt.analytics.ColumnDescriptor" title="tmlt.analytics._schema.ColumnDescriptor"><span class="pre">ColumnDescriptor</span></a></em><a class="headerlink" href="#tmlt.analytics.BinningSpec.column_descriptor" title="Link to this definition">#</a></dt>
+<dd><p>Return the ColumnDescriptor that results from applying this binning.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.bins">
+<span class="sig-name descname"><span class="pre">bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_null</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.bins" title="Link to this definition">#</a></dt>
+<dd><p>Return a list of all the bin names that could result from the binning.</p>
+<p>The returned list is guaranteed to contain unique elements, even if
+multiple bins were mapped to the same name. The NaN bin, if one was
+specified, is included. If <code class="docutils literal notranslate"><span class="pre">include_null</span></code> is true, the null bin is
+included as well; by default, it is not included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">BinNameT</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.DATE" title="datetime.date"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.TIMESTAMP" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>)]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.BinningSpec.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.BinningSpec.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Given a value to bin, return its bin name.</p>
+<p>In most cases this method only needs to be used internally, but it can
+be called on its own to test the binning that will be performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">BinT</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.DATE" title="datetime.date"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>, <a class="reference internal" href="tmlt.analytics.ColumnType.html#tmlt.analytics.ColumnType.TIMESTAMP" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>)]</span>) – The value to be assigned to a bin.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tmlt.analytics.QueryBuilder.bin_column.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">QueryBuilder.bin_column</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tmlt.analytics.QueryBuilder.enforce.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">QueryBuilder.enforce</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec"><code class="docutils literal notranslate"><span class="pre">BinningSpec</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.__init__"><code class="docutils literal notranslate"><span class="pre">BinningSpec.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.__eq__"><code class="docutils literal notranslate"><span class="pre">BinningSpec.__eq__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.__hash__"><code class="docutils literal notranslate"><span class="pre">BinningSpec.__hash__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.__repr__"><code class="docutils literal notranslate"><span class="pre">BinningSpec.__repr__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.input_type"><code class="docutils literal notranslate"><span class="pre">BinningSpec.input_type</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.column_descriptor"><code class="docutils literal notranslate"><span class="pre">BinningSpec.column_descriptor</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.bins"><code class="docutils literal notranslate"><span class="pre">BinningSpec.bins()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.BinningSpec.__call__"><code class="docutils literal notranslate"><span class="pre">BinningSpec.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2024 -->
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

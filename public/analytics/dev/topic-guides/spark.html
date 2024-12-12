@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spark &#8212; Tumult Analytics dev documentation</title>
+    <title>Spark &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -334,7 +333,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -390,7 +389,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -545,10 +544,10 @@ changed back to the original database at the end of the materialization step.)</
 If a Spark session is still active when the program exits normally, this cleanup
 function will automatically delete the materialization database.</p>
 <p>If you wish to call <code class="docutils literal notranslate"><span class="pre">spark.stop()</span></code> before program exit, you should call
-<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
+<a class="reference internal" href="../reference/api/tmlt.analytics.utils.cleanup.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
 database. This function requires an active Spark session, but is otherwise safe
 to call at any time in a single-threaded program. (If
-<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
+<a class="reference internal" href="../reference/api/tmlt.analytics.utils.cleanup.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
 Core will create a new materialization database.)</p>
 </section>
 <section id="finding-and-removing-leftover-temporary-data">
@@ -559,7 +558,7 @@ because it was terminated with Ctrl-C),
 or if the cleanup function is called without an active Spark session,
 this temporary database (and its associated folder) may not be deleted.</p>
 <p>Tumult Analytics has a function to delete any of these folders in the current
-Spark warehouse: <a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
+Spark warehouse: <a class="reference internal" href="../reference/api/tmlt.analytics.utils.remove_all_temp_tables.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
 As long as your program is single-threaded, it is safe to call this function
 at any time.</p>
 <p>You can also manually delete this database by deleting its
@@ -660,16 +659,16 @@ dataframe.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-spark-sessions">Configuring Spark sessions</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-spark-sessions">Configuring Spark sessions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-hive">Connecting to Hive</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materialization-and-data-cleanup">Materialization and data cleanup</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materialization-and-data-cleanup">Materialization and data cleanup</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-cleaning-up-temporary-data">Automatically cleaning up temporary data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-and-removing-leftover-temporary-data">Finding and removing leftover temporary data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-and-profiling">Performance and profiling</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-and-profiling">Performance and profiling</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ram-usage">RAM usage</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-results-to-csv-or-other-formats">Saving results (to CSV or other formats)</a></li>
 </ul>
@@ -710,7 +709,7 @@ dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 45167203 at 2024-12-11 18:25.</div>
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
       
     </div>
   

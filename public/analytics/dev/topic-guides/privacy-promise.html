@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tumult Analytics’ privacy promise &#8212; Tumult Analytics dev documentation</title>
+    <title>Tumult Analytics’ privacy promise &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -142,8 +141,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -193,7 +192,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -335,7 +334,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -391,7 +390,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -487,21 +486,21 @@ document.write(`
 <span id="privacy-promise"></span><h1>Tumult Analytics’ privacy promise<a class="headerlink" href="#tumult-analytics-privacy-promise" title="Link to this heading">#</a></h1>
 <p>This topic guide outlines the “privacy promise” provided by Tumult Analytics,
 along with its caveats. This guarantee is based on one of the core abstractions
-of Tumult Analytics: <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sessions</span></code></a>.</p>
+of Tumult Analytics: <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sessions</span></code></a>.</p>
 <p>At a high level, a Session allows you to evaluate queries on private data in a
 way that satisfies differential privacy. When creating a Session, private data
 must first be loaded into it, along with
-a <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a> for each
+a <a class="reference internal" href="../reference/api/tmlt.analytics.ProtectedChange.html#tmlt.analytics.ProtectedChange" title="tmlt.analytics.ProtectedChange"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a> for each
 table, and a Session-wide <a class="reference internal" href="privacy-budgets.html#privacy-budget-fundamentals"><span class="std std-ref">privacy budget</span></a>. You
 can then evaluate
 queries on your private data, consuming at most the privacy budget provided at
 initialization time.</p>
 <section id="the-privacy-promise-in-more-detail">
 <h2>The privacy promise in more detail<a class="headerlink" href="#the-privacy-promise-in-more-detail" title="Link to this heading">#</a></h2>
-<p>A <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> is initialized with:</p>
+<p>A <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> is initialized with:</p>
 <ul class="simple">
 <li><p>one or more private tables (containing data you wish to query in a differentially
-private way), each associated to a <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a>;</p></li>
+private way), each associated to a <a class="reference internal" href="../reference/api/tmlt.analytics.ProtectedChange.html#tmlt.analytics.ProtectedChange" title="tmlt.analytics.ProtectedChange"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected</span> <span class="pre">change</span></code></a>;</p></li>
 <li><p>zero or more public tables (containing data that does not require privacy
 protection, but may be used as auxiliary input to your computation);</p></li>
 <li><p>a privacy definition along with its associated privacy parameters (e.g.
@@ -509,7 +508,7 @@ tutorials use <cite>PureDPBudget</cite>, corresponding to pure differential priv
 Tumult Analytics also supports zero-concentrated differential privacy).</p></li>
 </ul>
 <p>After initialization, the Session guarantees that the answers returned by
-calling <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a> to evaluate queries
+calling <a class="reference internal" href="../reference/api/tmlt.analytics.Session.evaluate.html#tmlt.analytics.Session.evaluate" title="tmlt.analytics.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a> to evaluate queries
 satisfy the corresponding privacy definition with respect to the private data,
 using the specified parameters. For example, a Session initialized with
 <code class="code docutils literal notranslate"><span class="pre">PureDPBudget(1)</span></code> provides <span class="math notranslate nohighlight">\({\varepsilon}\)</span>-differential privacy with
@@ -522,9 +521,9 @@ in some specified way. When you add a private table to a session, you must
 specify what kind of protected change to use for this table.</p>
 <ul class="simple">
 <li><p>In the simplest case, the privacy guarantee from a
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> prevents an attacker from learning
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> prevents an attacker from learning
 whether <em>one individual row</em> was added or removed in each private table – the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change.
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddOneRow.html#tmlt.analytics.AddOneRow" title="tmlt.analytics.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change.
 If the data of a single individual can span multiple rows in the same private
 table, then this individual is not covered by the privacy promise, only
 individual rows are.</p></li>
@@ -535,14 +534,14 @@ For example, using <code class="docutils literal notranslate"><span class="pre">
 addition or removal of up to <em>k</em> rows at once from the corresponding private table.</p></li>
 <li><p>If you want to protect the addition or removal of <em>arbitrarily many</em> rows that
 all share the same <em>identifier</em> (in some column), you can use the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change.
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change.
 If you add multiple tables that all use <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code>, the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID.id_space" title="tmlt.analytics.protected_change.AddRowsWithID.id_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id_space</span></code></a> property
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID.id_space" title="tmlt.analytics.AddRowsWithID.id_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id_space</span></code></a> property
 determines which ID space each table belongs to.</p></li>
 </ul>
 <p>Other possible protected changes are also available, though they are typically
 only needed for advanced use cases.
-See our <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#module-tmlt.analytics.protected_change" title="tmlt.analytics.protected_change"><code class="xref py py-mod docutils literal notranslate"><span class="pre">protected_change</span></code></a> documentation for more information.</p>
+See our <a class="reference internal" href="../reference/privacy-guarantees.html#privacy-guarantees"><span class="std std-ref">API documentation</span></a> for more information.</p>
 <p>Because the privacy of individuals depends on how often they appear in a table,
 you should be careful of what kind of pre-processing is done to the private data
 before loading it into a Session.
@@ -558,7 +557,7 @@ only covers data returned by <code class="docutils literal notranslate"><span cl
 other way is not protected by the Session.</p>
 <p>This means that <strong>you should not directly use private data</strong>; instead, you
 should only access it indirectly by executing
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a> on well-specified queries. In
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.evaluate.html#tmlt.analytics.Session.evaluate" title="tmlt.analytics.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a> on well-specified queries. In
 particular, public sources and parameters like <code class="docutils literal notranslate"><span class="pre">groupby</span></code> information or
 clamping bounds are not protected. They can reveal private information if the
 private data is used directly to determine them.</p>
@@ -574,7 +573,7 @@ defend against actively malicious users. In particular:</p>
 privacy guarantees of a Session only apply to the public API. Inspecting a
 Session’s private state and using this information to tailor your analysis
 workflow will break the privacy guarantee.</p></li>
-<li><p><strong>Do not use</strong> <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.map" title="tmlt.analytics.query_builder.QueryBuilder.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> <strong>or</strong> <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a> <strong>operations with side-effects.</strong>
+<li><p><strong>Do not use</strong> <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.map.html#tmlt.analytics.QueryBuilder.map" title="tmlt.analytics.QueryBuilder.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> <strong>or</strong> <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a> <strong>operations with side-effects.</strong>
 These operations allow you to transform data using arbitrary user-defined
 functions (UDFs). When using map or flatmap, a Session’s privacy guarantee
 only holds if the UDFs do not have side-effects with externally-observable
@@ -583,7 +582,7 @@ specific row is found in the data. This would reveal information about the
 private data and break the privacy promise.</p></li>
 <li><p><strong>Do not release side-channel information.</strong> The privacy guarantee only
 applies to the output of calls to
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.evaluate" title="tmlt.analytics.session.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a>. Information such as how
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.evaluate.html#tmlt.analytics.Session.evaluate" title="tmlt.analytics.Session.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a>. Information such as how
 long a query ran or how much memory it required might reveal private
 information. Do not use this library in an untrusted context where protection
 against such side-channels is important.</p></li>
@@ -635,7 +634,7 @@ against such side-channels is important.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-privacy-promise-in-more-detail">The privacy promise in more detail</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-privacy-promise-in-more-detail">The privacy promise in more detail</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-protected-change">Understanding the protected change</a></li>
 </ul>
 </li>
@@ -677,7 +676,7 @@ against such side-channels is important.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 45167203 at 2024-12-11 18:25.</div>
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
       
     </div>
   

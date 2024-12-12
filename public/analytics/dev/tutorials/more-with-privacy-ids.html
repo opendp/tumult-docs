@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Doing more with privacy IDs &#8212; Tumult Analytics dev documentation</title>
+    <title>Doing more with privacy IDs &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -334,7 +333,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -390,7 +389,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -488,10 +487,10 @@ document.write(`
   <section id="doing-more-with-privacy-ids">
 <span id="advanced-ids-features"></span><h1>Doing more with privacy IDs<a class="headerlink" href="#doing-more-with-privacy-ids" title="Link to this heading">#</a></h1>
 <p>In the previous tutorial, we covered the basics of privacy IDs: how to
-initialize a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> where each person appears in multiple rows, and run simple queries.
+initialize a <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> where each person appears in multiple rows, and run simple queries.
 But privacy IDs also make it easier to run more complex queries, especially those involving multiple
 tables. In this tutorial, we will build a
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that protects library patrons across multiple
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that protects library patrons across multiple
 tables, and highlight the differences that arise when performing queries on tables with
 or without privacy IDs.</p>
 <section id="setup">
@@ -533,10 +532,10 @@ as well as the library members dataset used in all other tutorials:</p>
 <h2>Initializing a Session with multiple IDs tables<a class="headerlink" href="#initializing-a-session-with-multiple-ids-tables" title="Link to this heading">#</a></h2>
 <p>Notice that both of the dataframes we’ve loaded share a common
 identifier: the ID associated with each library member. Our goal is to
-construct a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that
+construct a <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> that
 protects the addition or removal of arbitrarily many rows that share the
 same ID, <em>in both tables</em>. To do so, we have to use the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
 again, but we also have to indicate that both tables share the same <em>ID space</em>.
 This is done as follows.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span> <span class="c1"># infinite budget for the session</span>
@@ -565,8 +564,8 @@ This is done as follows.</p>
 </pre></div>
 </div>
 <p>The
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.Builder.with_id_space" title="tmlt.analytics.session.Session.Builder.with_id_space"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Session.Builder.with_id_space</span></code></a>
-method and the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.Builder.html#tmlt.analytics.Session.Builder.with_id_space" title="tmlt.analytics.Session.Builder.with_id_space"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Session.Builder.with_id_space</span></code></a>
+method and the <a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
 protected change work together to accomplish our desired notion of privacy.</p>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">with_id_space</span></code> function defines our ID space, <code class="docutils literal notranslate"><span class="pre">member_id_space</span></code>. This is
@@ -600,7 +599,7 @@ counts by genres.</p></li>
 <p>First, let’s expand the checkout dataframe to
 associate each book to its genres, with each genre on its own separate row. To do this,
 we apply a
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.flat_map</span></code></a>
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.flat_map</span></code></a>
 and save it as a view in our existing session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
@@ -644,7 +643,7 @@ ValueError: Private joins between tables with the AddRowsWithID protected change
 only possible when the ID columns of the two tables have the same name
 </pre></div>
 </div>
-<p>To fix this, we can use the <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.rename" title="tmlt.analytics.query_builder.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.rename</span></code></a>
+<p>To fix this, we can use the <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.rename.html#tmlt.analytics.QueryBuilder.rename" title="tmlt.analytics.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.rename</span></code></a>
 method to rename the ID column in the members table to match the ID column in the checkouts table:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span>
@@ -683,13 +682,13 @@ favorite_genres   VARCHAR        False                      True
 date_joined       DATE           False                      True
 </pre></div>
 </div>
-<p>Using <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a> on two private tables in the same ID space works seamlessly as long as the ID
+<p>Using <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.QueryBuilder.join_private" title="tmlt.analytics.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">join_private()</span></code></a> on two private tables in the same ID space works seamlessly as long as the ID
 columns are part of the join and have the same name in both tables. Like with
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>, no truncation is necessary.</p>
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map()</span></code></a>, no truncation is necessary.</p>
 </section>
 <section id="computing-the-statistic">
 <h3>Computing the statistic<a class="headerlink" href="#computing-the-statistic" title="Link to this heading">#</a></h3>
-<p>Next, we define a <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> with age
+<p>Next, we define a <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> with age
 groups and the subset of genres we’re interested in for the analysis…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define age groups</span>
 <span class="c1"># bin edges are [0, 20, 40, ... , 100]</span>
@@ -757,13 +756,13 @@ have expected as much, but what else can we learn from this chart?</p>
 <section id="a-note-on-session-initialization">
 <h3>A note on Session initialization<a class="headerlink" href="#a-note-on-session-initialization" title="Link to this heading">#</a></h3>
 <p>You might have noticed that in the Session initialization step, we loaded the members
-table using the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
+table using the <a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>
 protected change; even though in tutorials 1 through 5, we used it with
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a>. For this table, both
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddOneRow.html#tmlt.analytics.AddOneRow" title="tmlt.analytics.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a>. For this table, both
 options are possible: there is exactly one row per person, and a unique identifier for
 each person. In such cases, which protected change should you choose?</p>
 <p>Typically, the right choice is to use
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>, for a couple of
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>, for a couple of
 reasons.</p>
 <ul class="simple">
 <li><p>Data preparation is generally more convenient when using privacy IDs, because you
@@ -823,7 +822,7 @@ truncation parameters for each.</p></li>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initializing-a-session-with-multiple-ids-tables">Initializing a Session with multiple IDs tables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-more-complex-query">A more complex query</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-more-complex-query">A more complex query</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flat-maps">Flat maps</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-joins">Private joins</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-statistic">Computing the statistic</a></li>
@@ -866,7 +865,7 @@ truncation parameters for each.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 45167203 at 2024-12-11 18:25.</div>
+Built from 0c0b90b3 at 2024-12-12 12:11.</div>
       
     </div>
   
