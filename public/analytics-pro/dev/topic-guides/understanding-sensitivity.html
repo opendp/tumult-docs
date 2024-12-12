@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Understanding sensitivity &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Understanding sensitivity &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -142,8 +141,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -193,7 +192,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -323,7 +322,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -367,7 +366,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -471,9 +470,9 @@ results. It directly impacts how much noise must be added to achieve differentia
 privacy: the bigger the sensitivity, the more noise needs to be added to the result.</p>
 <p>With Tumult Analytics, the type of protected change depends on whether the goal is
 to hide a fixed number of rows, using
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>, or arbitrarily many
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddMaxRows.html#tmlt.analytics.AddMaxRows" title="tmlt.analytics.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a>, or arbitrarily many
 rows sharing the same privacy identifier, using
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>.</p>
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a>.</p>
 <p>A simple example of sensitivity is the explanation of clamping bounds in <a class="reference internal" href="../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">tutorial
 three</span></a>: larger clamping bounds mean that a single row can have more influence, and more noise needs to be added. However, the sensitivity is not always so
 straightforward to estimate. In this topic guide, we will examine how different types of inputs and transformations to a
@@ -481,28 +480,28 @@ query can affect its sensitivity. Understand this relationship will help you
 choose what transformations to use to ensure accurate results while maintaining strong privacy guarantees.</p>
 <section id="queries-on-tables-using-addmaxrows">
 <h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code><a class="headerlink" href="#queries-on-tables-using-addmaxrows" title="Link to this heading">#</a></h2>
-<p>Queries on tables using the <a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> or
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change
+<p>Queries on tables using the <a class="reference internal" href="../reference/api/tmlt.analytics.AddMaxRows.html#tmlt.analytics.AddMaxRows" title="tmlt.analytics.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> or
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddOneRow.html#tmlt.analytics.AddOneRow" title="tmlt.analytics.AddOneRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change
 protect the addition or removal of rows in the table. This means that any
 operation which changes the number of rows requires a corresponding increase to the
 protected change. A larger protected change corresponds to a higher sensitivity for a query,
 which means more noise needs to be added to the query result. Specifically, sensitivity
 scales <em>linearly</em> with the protected change.</p>
 <p>A few operations can increase the sensitivity of a query in this way:
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat</span> <span class="pre">maps</span></code></a>,
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_public" title="tmlt.analytics.query_builder.QueryBuilder.join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">public</span> <span class="pre">joins</span></code></a>, and
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.join_private" title="tmlt.analytics.query_builder.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">private</span> <span class="pre">joins</span></code></a>.</p>
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat</span> <span class="pre">maps</span></code></a>,
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_public.html#tmlt.analytics.QueryBuilder.join_public" title="tmlt.analytics.QueryBuilder.join_public"><code class="xref py py-meth docutils literal notranslate"><span class="pre">public</span> <span class="pre">joins</span></code></a>, and
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.QueryBuilder.join_private" title="tmlt.analytics.QueryBuilder.join_private"><code class="xref py py-meth docutils literal notranslate"><span class="pre">private</span> <span class="pre">joins</span></code></a>.</p>
 <section id="flat-maps">
 <h3>Flat maps<a class="headerlink" href="#flat-maps" title="Link to this heading">#</a></h3>
-<p>A <a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.flat_map" title="tmlt.analytics.query_builder.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map</span></code></a> maps each
+<p>A <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flat_map</span></code></a> maps each
 input row to zero or more new rows. Consider the example from
 <a class="reference internal" href="../tutorials/simple-transformations.html#flat-maps"><span class="std std-ref">Simple transformations</span></a> tutorial, where each input row is mapped to up
 to three new rows, using to the <code class="docutils literal notranslate"><span class="pre">max_rows=3</span></code> parameter. On a per-row basis, this operation might look like this:</p>
 <img alt="On the left, one row containing a list of genres. On the right, three rows, each containing one genre from the list." class="align-center" src="../_images/flat_map_row_example.svg" />
 <p>In this example, the input table was initialized with the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddOneRow" title="tmlt.analytics.protected_change.AddOneRow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change,
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddOneRow.html#tmlt.analytics.AddOneRow" title="tmlt.analytics.AddOneRow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddOneRow</span></code></a> protected change,
 which is equivalent to
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddMaxRows" title="tmlt.analytics.protected_change.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> with
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddMaxRows.html#tmlt.analytics.AddMaxRows" title="tmlt.analytics.AddMaxRows"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a> with
 <code class="docutils literal notranslate"><span class="pre">max_rows=1</span></code>. However, because the flat map can produce up to three rows for each
 input row, the protected change needs to be increased threefold to <code class="docutils literal notranslate"><span class="pre">max_rows=3</span></code>,
 which results in a corresponding threefold increase in sensitivity for the query.</p>
@@ -546,14 +545,14 @@ common column, <code class="docutils literal notranslate"><span class="pre">user
 <img alt="On the left, a private table with names, user ids and payment information. On the right, a private table with user_ids and purchase information." class="align-center" src="../_images/private_join_tables.svg" />
 <p>Since both tables contain sensitive information, we cannot look at
 the data directly to calculate the sensitivity. Therefore, we need to truncate both tables by specifying a
-<a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy" title="tmlt.analytics.truncation_strategy.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a> for
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.TruncationStrategy" title="tmlt.analytics.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a> for
 each. The sensitivity computation is more complicated than before:</p>
 <p><span class="math notranslate nohighlight">\(\text{sensitivity} = (T_{left}  *  S_{right}  *  M_{right}) + (T_{right}  *  S_{left}  *  M_{left})\)</span></p>
 <p>where:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds, i.e. <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>, for the left and right tables, respectively. When using <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>, these values are always 1.</p></li>
-<li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are factors called the <em>stability</em> of each <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code>. These values are always 2 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropExcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropExcess</span></code></a> and 1 for <a class="reference internal" href="../reference/tmlt/analytics/truncation_strategy/index.html#tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique" title="tmlt.analytics.truncation_strategy.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{left}\)</span> and <span class="math notranslate nohighlight">\(T_{right}\)</span> are the truncation thresholds, i.e. <code class="docutils literal notranslate"><span class="pre">max_rows</span></code>, for the left and right tables, respectively. When using <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.TruncationStrategy.DropNonUnique" title="tmlt.analytics.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>, these values are always 1.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{left}\)</span> and <span class="math notranslate nohighlight">\(S_{right}\)</span> are factors called the <em>stability</em> of each <code class="docutils literal notranslate"><span class="pre">TruncationStrategy</span></code>. These values are always 2 for <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.TruncationStrategy.DropExcess" title="tmlt.analytics.TruncationStrategy.DropExcess"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropExcess</span></code></a> and 1 for <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.join_private.html#tmlt.analytics.TruncationStrategy.DropNonUnique" title="tmlt.analytics.TruncationStrategy.DropNonUnique"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNonUnique</span></code></a>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(M_{left}\)</span> and <span class="math notranslate nohighlight">\(M_{right}\)</span> are the <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> parameters of the protected change on the left and right tables, respectively.</p></li>
 </ul>
 </div></blockquote>
@@ -588,17 +587,17 @@ Using <code class="docutils literal notranslate"><span class="pre">DropExcess(ma
 <section id="queries-on-tables-using-addrowswithid">
 <h2>Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code><a class="headerlink" href="#queries-on-tables-using-addrowswithid" title="Link to this heading">#</a></h2>
 <p>Queries on tables using the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
 protect the presence of arbitrarily many rows associated with the same privacy ID. In this case,
 transformations don’t change the protected change: you can perform flat maps, public
 joins, or private joins, and the protected change is still <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code>.</p>
 <p>However, before running aggregations, we must use the
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.enforce" title="tmlt.analytics.query_builder.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enforce</span></code></a> to specify truncation
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.enforce.html#tmlt.analytics.QueryBuilder.enforce" title="tmlt.analytics.QueryBuilder.enforce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enforce</span></code></a> to specify truncation
 bounds via constraints. Constraints can be enforced at any point, but it’s generally
 better to specify them immediately before performing aggregations. There are two main
-ways to specify constraints: via a <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerID" title="tmlt.analytics.constraints.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>
-constraint, or a combination of <a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxGroupsPerID" title="tmlt.analytics.constraints.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
-<a class="reference internal" href="../reference/tmlt/analytics/constraints/index.html#tmlt.analytics.constraints.MaxRowsPerGroupPerID" title="tmlt.analytics.constraints.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>. See the
+ways to specify constraints: via a <a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerID.html#tmlt.analytics.MaxRowsPerID" title="tmlt.analytics.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a>
+constraint, or a combination of <a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
+<a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a>. See the
 <a class="reference internal" href="../tutorials/privacy-id-basics.html#flow-chart-truncation"><span class="std std-ref">Summary</span></a> section of tutorial 6 for a visualization of these
 truncation paths</p>
 <p>The sensitivity of a query using the <code class="docutils literal notranslate"><span class="pre">AddRowsWithID</span></code> protected change is impacted by
@@ -681,7 +680,7 @@ to reach out to us on <a class="reference external" href="https://www.tmlt.dev/s
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#queries-on-tables-using-addmaxrows">Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#queries-on-tables-using-addmaxrows">Queries on tables using <code class="docutils literal notranslate"><span class="pre">AddMaxRows</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flat-maps">Flat maps</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#public-joins">Public joins</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-joins">Private joins</a></li>
@@ -724,7 +723,7 @@ to reach out to us on <a class="reference external" href="https://www.tmlt.dev/s
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

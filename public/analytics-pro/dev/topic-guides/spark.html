@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spark &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Spark &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -483,7 +482,7 @@ then before running Tumult Analytics code, you should create that Spark session:
 <span id="progress-bar"></span><h2>Disabling Spark’s progress bar<a class="headerlink" href="#disabling-spark-s-progress-bar" title="Link to this heading">#</a></h2>
 <p>By default, Spark displays a progress bar when running computations.
 Tumult Analytics will often perform many Spark computations, so this per-computation progress bar is not very useful.
-For long-running operations like <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SessionProgramTuner.multi_error_report</span></code></a>, Tumult Analytics provides a more useful progress bar instead.
+For long-running operations like <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.multi_error_report.html#tmlt.tune.SessionProgramTuner.multi_error_report" title="tmlt.tune.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SessionProgramTuner.multi_error_report</span></code></a>, Tumult Analytics provides a more useful progress bar instead.
 Enabling it requires disabling Spark’s native progress bar by setting <code class="docutils literal notranslate"><span class="pre">spark.ui.showConsoleProgress</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your Spark configuration.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.ui.showConsoleProgress&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
@@ -536,10 +535,10 @@ changed back to the original database at the end of the materialization step.)</
 If a Spark session is still active when the program exits normally, this cleanup
 function will automatically delete the materialization database.</p>
 <p>If you wish to call <code class="docutils literal notranslate"><span class="pre">spark.stop()</span></code> before program exit, you should call
-<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
+<a class="reference internal" href="../reference/api/tmlt.analytics.utils.cleanup.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> first. This will delete the materialization
 database. This function requires an active Spark session, but is otherwise safe
 to call at any time in a single-threaded program. (If
-<a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
+<a class="reference internal" href="../reference/api/tmlt.analytics.utils.cleanup.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> is called before a materialization step,
 Core will create a new materialization database.)</p>
 </section>
 <section id="finding-and-removing-leftover-temporary-data">
@@ -550,7 +549,7 @@ because it was terminated with Ctrl-C),
 or if the cleanup function is called without an active Spark session,
 this temporary database (and its associated folder) may not be deleted.</p>
 <p>Tumult Analytics has a function to delete any of these folders in the current
-Spark warehouse: <a class="reference internal" href="../reference/tmlt/analytics/utils/index.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
+Spark warehouse: <a class="reference internal" href="../reference/api/tmlt.analytics.utils.remove_all_temp_tables.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a>.
 As long as your program is single-threaded, it is safe to call this function
 at any time.</p>
 <p>You can also manually delete this database by deleting its
@@ -652,16 +651,16 @@ dataframe.</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-spark-sessions">Configuring Spark sessions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-spark-s-progress-bar">Disabling Spark’s progress bar</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-spark-s-progress-bar">Disabling Spark’s progress bar</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-hive">Connecting to Hive</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materialization-and-data-cleanup">Materialization and data cleanup</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materialization-and-data-cleanup">Materialization and data cleanup</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-cleaning-up-temporary-data">Automatically cleaning up temporary data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-and-removing-leftover-temporary-data">Finding and removing leftover temporary data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-and-profiling">Performance and profiling</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-and-profiling">Performance and profiling</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ram-usage">RAM usage</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-results-to-csv-or-other-formats">Saving results (to CSV or other formats)</a></li>
 </ul>
@@ -702,7 +701,7 @@ dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

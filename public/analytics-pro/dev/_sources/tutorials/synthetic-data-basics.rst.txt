@@ -11,6 +11,10 @@ Basics of synthetic data generation
     agreement entered into between you and Tumult Labs.
     No other rights are granted to use this file in any way.
 
+.. note:: 
+
+    |PRO_NOTE|
+
 In this tutorial, we will demonstrate how to generate synthetic data using
 Tumult Synthetics.
 
@@ -220,7 +224,7 @@ Numeric columns
 ^^^^^^^^^^^^^^^
 
 For numeric columns, we need to specify the range of possible values that each
-row can have, using :class:`~tmlt.analytics.synthetics.ClampingBounds`.
+row can have, using :class:`~tmlt.synthetics.ClampingBounds`.
 
 .. testcode::
 
@@ -236,16 +240,16 @@ Defining the strategy
 The goal of synthetic data generation is to preserve useful statistical
 properties about the data. We can control which statistical properties are most
 important to try and preserve using a measurement strategy. The simplest kind of
-strategy is :class:`~tmlt.analytics.synthetics.FixedMarginals`: we specify a
+strategy is :class:`~tmlt.synthetics.FixedMarginals`: we specify a
 list of marginal queries whose answer we want to preserve as accurately as
 possible.
 
 There are two kinds of marginal queries:
 
-* :class:`~tmlt.analytics.synthetics.Count` is a query counting the number of
+* :class:`~tmlt.synthetics.Count` is a query counting the number of
   records per group. We can use it to preserve the distribution of a categorical
   column, or a correlation between multiple categorical columns.
-* :class:`~tmlt.analytics.synthetics.Sum` is a query summing numeric values for
+* :class:`~tmlt.synthetics.Sum` is a query summing numeric values for
   each combination of group-by keys. We can use it to preserve total sums,
   sliced by categorical columns.
 
@@ -275,7 +279,7 @@ Generating the data
 
 Once we have determined the necessary metadata on our input data and our
 measurement strategy, we can generate the synthetic data by passing our Session
-to the :meth:`~tmlt.analytics.synthetics.generate_synthetic_data` method.
+to the :meth:`~tmlt.synthetics.generate_synthetic_data` method.
 
 This will evaluate our measurement strategy in a differentially private way,
 then generate synthetic data whose statistical properties match the

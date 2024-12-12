@@ -11,7 +11,9 @@ Basics of error measurement
     agreement entered into between you and Tumult Labs.
     No other rights are granted to use this file in any way.
 
-.. note:: This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at info@tmlt.io.
+.. note:: 
+
+    |PRO_NOTE|
 
 In previous tutorials, we saw how to write differentially private queries using the Tumult Analytics API. Differential privacy adds noise to data, and also involves truncation, so before going ahead with publishing or sharing DP statistics, we typically want to evaluate how accurate these statistics are, and carefully select the parameters used in our Tumult Analytics program.
 
@@ -116,7 +118,7 @@ However, it's hard to know how trustworthy these results are. Let's figure it ou
 From Session to SessionProgram
 ------------------------------
 
-To get an error report, we must first convert our :class:`Session<tmlt.analytics.session.Session>` into a :class:`~.SessionProgram`. In particular, we will create a subclass of :class:`~.SessionProgram`, which defines both the structure of our :class:`Session<tmlt.analytics.session.Session>` and the logic for evaluating queries within the Session.
+To get an error report, we must first convert our :class:`Session<tmlt.analytics.Session>` into a :class:`~tmlt.analytics.SessionProgram`. In particular, we will create a subclass of :class:`~tmlt.analytics.SessionProgram`, which defines both the structure of our :class:`Session<tmlt.analytics.Session>` and the logic for evaluating queries within the Session.
 
 .. testcode::
 
@@ -139,20 +141,20 @@ To get an error report, we must first convert our :class:`Session<tmlt.analytics
             budget = session.remaining_privacy_budget
             return {"books_by_zip_code": session.evaluate(query, budget)}
 
-A subclass of :class:`~.SessionProgram` has two main parts: an input/output specification, and a :meth:`~.session_interaction` method. Let's look at each component separately.
+A subclass of :class:`~tmlt.analytics.SessionProgram` has two main parts: an input/output specification, and a :meth:`~tmlt.analytics.SessionProgram.session_interaction` method. Let's look at each component separately.
 
 1. First, we list our program's inputs (distinguishing the protected ones from the non-protected ones) and outputs.
-    - The :class:`~.SessionProgram.ProtectedInputs` nested class contains one class variable for each input DataFrame that contain sensitive data (and therefore should be protected by differential privacy). All protected inputs must be DataFrames. In this case, the only protected input is the ``members`` DataFrame.
-    - The :class:`~.SessionProgram.UnprotectedInputs` nested class contains one class variable for each input DataFrame that contains public data (and does not require differential privacy). All unprotected inputs must be DataFrames. These DataFrame can be accessed directly by the program. In this case, the only unprotected input is the publicly available ``nc_zip_codes`` DataFrame.
-    - The :class:`~.SessionProgram.Outputs` nested class contains one class variable for each output DataFrame. All outputs must be DataFrames. In this case, we have only one output, ``books_by_zip_code``, which will hold the results obtained by the program.
-2. Second, we write our program logic inside a :meth:`~.session_interaction` method, which is used to define the interaction between this :class:`~.SessionProgram` and a :class:`Session<tmlt.analytics.session.Session>`. This method:
-    - Uses a :class:`Session<tmlt.analytics.session.Session>` to evaluate queries as we would in any other Tumult Analytics program. Unlike other Tumult Analytics programs, we don't construct the `Session` directly - instead, the `Session` is provided to `session_interaction` as a method parameter.
-    - Returns a dictionary of output DataFrames keyed by their names (which must correspond to the names in the :class:`~.SessionProgram.Outputs`).
+    - The :class:`~tmlt.analytics.SessionProgram.ProtectedInputs` nested class contains one class variable for each input DataFrame that contain sensitive data (and therefore should be protected by differential privacy). All protected inputs must be DataFrames. In this case, the only protected input is the ``members`` DataFrame.
+    - The :class:`~tmlt.analytics.SessionProgram.UnprotectedInputs` nested class contains one class variable for each input DataFrame that contains public data (and does not require differential privacy). All unprotected inputs must be DataFrames. These DataFrame can be accessed directly by the program. In this case, the only unprotected input is the publicly available ``nc_zip_codes`` DataFrame.
+    - The :class:`~tmlt.analytics.SessionProgram.Outputs` nested class contains one class variable for each output DataFrame. All outputs must be DataFrames. In this case, we have only one output, ``books_by_zip_code``, which will hold the results obtained by the program.
+2. Second, we write our program logic inside a :meth:`~tmlt.analytics.SessionProgram.session_interaction` method, which is used to define the interaction between this :class:`~tmlt.analytics.SessionProgram` and a :class:`Session<tmlt.analytics.Session>`. This method:
+    - Uses a :class:`Session<tmlt.analytics.Session>` to evaluate queries as we would in any other Tumult Analytics program. Unlike other Tumult Analytics programs, we don't construct the Session directly - instead, the Session is provided to ``session_interaction`` as a method parameter.
+    - Returns a dictionary of output DataFrames keyed by their names (which must correspond to the names in the :class:`~tmlt.analytics.SessionProgram.Outputs`).
 
 Initializing and running a SessionProgram
 -----------------------------------------
 
-Let's initialize our ``BooksByZipCodeProgram`` using its *Builder* (which is inherited from :class:`~.SessionProgram`). The Builder interface is very similar to :class:`Session.Builder<tmlt.analytics.session.Session.Builder>`. We use builder methods to pass in the protected and unprotected dataframes, and the privacy budget we want to enforce.
+Let's initialize our ``BooksByZipCodeProgram`` using its *Builder* (which is inherited from :class:`~tmlt.analytics.SessionProgram`). The Builder interface is very similar to :class:`Session.Builder<tmlt.analytics.Session.Builder>`. We use builder methods to pass in the protected and unprotected dataframes, and the privacy budget we want to enforce.
 
 .. testcode::
 
@@ -171,11 +173,11 @@ Let's initialize our ``BooksByZipCodeProgram`` using its *Builder* (which is inh
         .build()
     )
 
-Once initialized, instead of calling queries on it like the Session, we run the whole program at once using the :meth:`~tmlt.analytics.program.SessionProgram.run` method.
+Once initialized, instead of calling queries on it like the Session, we run the whole program at once using the :meth:`~tmlt.analytics.SessionProgram.run` method.
 
 .. note::
 
-    The only way that a SessionProgram can access its input data is through the :class:`Session<tmlt.analytics.session.Session>` provided as a parameter in the :meth:`~.session_interaction` method. Its privacy guarantee is exactly the same as a :class:`Session<tmlt.analytics.session.Session>`'s - the data is protected with the privacy loss budget we specify when instantiating the program (using the same syntax as the :class:`Session<tmlt.analytics.session.Session>`).
+    The only way that a SessionProgram can access its input data is through the :class:`Session<tmlt.analytics.Session>` provided as a parameter in the :meth:`~tmlt.analytics.SessionProgram.session_interaction` method. Its privacy guarantee is exactly the same as a :class:`~tmlt.analytics.Session`'s - the data is protected with the privacy loss budget we specify when instantiating the program (using the same syntax as the :class:`Session<tmlt.analytics.Session>`).
 
 .. testcode::
 
@@ -223,7 +225,7 @@ Once initialized, instead of calling queries on it like the Session, we run the 
     +--------+------------------+
     only showing top 10 rows
 
-One characteristic of a :class:`~.SessionProgram` is that it can only be run *once*: running it again is forbidden.
+One characteristic of a :class:`~tmlt.analytics.SessionProgram` is that it can only be run *once*: running it again is forbidden.
 
 .. doctest::
 
@@ -235,10 +237,10 @@ One characteristic of a :class:`~.SessionProgram` is that it can only be run *on
 First look at error
 -------------------
 
-Now that we have clearly defined our program, and specified its inputs, outputs, and query logic, we can use a :class:`~tmlt.analytics.tuner.SessionProgramTuner` to measure its error.
-In particular, we will write a subclass of :class:`~tmlt.analytics.tuner.SessionProgramTuner`, and pass our ``BooksByZipCodeProgram`` as a class argument.
+Now that we have clearly defined our program, and specified its inputs, outputs, and query logic, we can use a :class:`~tmlt.tune.SessionProgramTuner` to measure its error.
+In particular, we will write a subclass of :class:`~tmlt.tune.SessionProgramTuner`, and pass our ``BooksByZipCodeProgram`` as a class argument.
 We will also specify a set of error metrics in the ``metrics`` class variable to measure how accurate our output is.
-For example, we will use the built-in metric :class:`~tmlt.analytics.metrics.MedianRelativeError` to measure the program's median relative error.
+For example, we will use the built-in metric :class:`~tmlt.tune.MedianRelativeError` to measure the program's median relative error.
 
 .. testcode::
 
@@ -253,7 +255,7 @@ For example, we will use the built-in metric :class:`~tmlt.analytics.metrics.Med
             ),
         ]
 
-The :class:`~tmlt.analytics.metrics.MedianRelativeError` metric requires three parameters:
+The :class:`~tmlt.tune.MedianRelativeError` metric requires three parameters:
     - ``output``: the name of the output DataFrame whose error we want to measure. In this case, it is our only output table: ``books_by_zip_code``.
     - ``measure_column``: the column in the output DataFrame whose error we want to measure. In this case, it is the sum column from our query, ``books_borrowed_sum``.
     - ``join_columns``: the columns that can be used to uniquely identify an output row. In this case, it is the ``zip_code`` column because we have one output row per zip code.
@@ -282,7 +284,7 @@ Our ``BooksTuner`` can be initialized just like a Session, but **it does not pro
         .build()
     )
 
-Now that our ``BooksTuner`` is initialized, we can get our very first error report by calling the :meth:`~tmlt.analytics.tuner.SessionProgramTuner.error_report` method.
+Now that our ``BooksTuner`` is initialized, we can get our very first error report by calling the :meth:`~tmlt.tune.SessionProgramTuner.error_report` method.
 
 .. testcode::
 

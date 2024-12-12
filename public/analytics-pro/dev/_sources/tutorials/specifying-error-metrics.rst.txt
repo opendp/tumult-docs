@@ -11,9 +11,11 @@ Specifying error metrics
     agreement entered into between you and Tumult Labs.
     No other rights are granted to use this file in any way.
 
-.. note:: This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at info@tmlt.io.
+.. note:: 
 
-In the previous tutorial, we wrote a :class:`~.program.SessionProgram` that calculated the total number of books borrowed by library members, sliced by ZIP code. We then wrapped this in a :class:`~.tuner.SessionProgramTuner` and showed how to evaluate its error report using a single built-in error metric, :class:`~.metrics.MedianRelativeError`. In this tutorial we are going to build on this example, so let's re-create it below:
+    |PRO_NOTE|
+
+In the previous tutorial, we wrote a :class:`~.SessionProgram` that calculated the total number of books borrowed by library members, sliced by ZIP code. We then wrapped this in a :class:`~.SessionProgramTuner` and showed how to evaluate its error report using a single built-in error metric, :class:`~.MedianRelativeError`. In this tutorial we are going to build on this example, so let's re-create it below:
 
 As usual, we first import our packages...
 
@@ -58,7 +60,7 @@ As usual, we first import our packages...
     nc_zip_codes_df = nc_zip_codes_df.fillna(0)
     nc_zip_codes_df = nc_zip_codes_df.select("zip_code")
 
-Then we write our program as a :class:`~.program.SessionProgram`.
+Then we write our program as a :class:`~.SessionProgram`.
 
 .. note:: The following code is identical to the previous tutorial. If you already have it in your environment, feel free to skip to the next section.
 
@@ -83,7 +85,7 @@ Then we write our program as a :class:`~.program.SessionProgram`.
             budget = session.remaining_privacy_budget
             return {"books_by_zip_code": session.evaluate(query, budget)}
 
-Next, we create our tuner by subclassing :class:`~.tuner.SessionProgramTuner` and defining the error metric we want to compute.
+Next, we create our tuner by subclassing :class:`~.SessionProgramTuner` and defining the error metric we want to compute.
 
 .. testcode::
 
@@ -152,7 +154,7 @@ Exploring built-in metrics
 
 Tumult Analytics provides other built-in metrics that we can use to measure the error of our program. You can find a full list in the API reference.
 
-Let's add three more metrics :class:`~.metrics.QuantileRelativeError`, :class:`~.metrics.SpuriousRate` and :class:`~.metrics.SuppressionRate` to our ``metrics`` list from earlier.
+Let's add three more metrics :class:`~.QuantileRelativeError`, :class:`~.SpuriousRate` and :class:`~.SuppressionRate` to our ``metrics`` list from earlier.
 
 .. testcode::
 
@@ -185,10 +187,10 @@ All four metrics compare the differentially private outputs to a *baseline*, gen
 
 - The *median relative error* measures the "typical" error of differentially private aggregations, expressed as a proportion of the baseline value. We measure the relative error of each row (`|noisy - baseline| / baseline`), and then take the median.
 - The *quantile relative error* is a generalization of the median relative error which we will use to measure the error at the 90th percentile of the noisy aggregates.
-- The *spurious rate* is the fraction of the group-by keys (here, the ZIP codes) in the output that do not appear in the baseline. This can happen if the :class:`tmlt.analytics.keyset.KeySet` contains groups that do not appear in the actual data.
-- Conversely, the *suppression rate* is the fraction of group-by keys that appear in the baseline, but do not appear in the differentially private output(s). This can happen if the true data contains groups that do do not appear in the :class:`tmlt.analytics.keyset.KeySet`.
+- The *spurious rate* is the fraction of the group-by keys (here, the ZIP codes) in the output that do not appear in the baseline. This can happen if the :class:`tmlt.analytics.KeySet` contains groups that do not appear in the actual data.
+- Conversely, the *suppression rate* is the fraction of group-by keys that appear in the baseline, but do not appear in the differentially private output(s). This can happen if the true data contains groups that do do not appear in the :class:`tmlt.analytics.KeySet`.
 
-:mod:`tmlt.analytics.metrics` gives more detail about how those metrics are computed.
+The :ref:`API reference for metrics<metrics>` gives more detail about how those metrics are computed.
 
 Let's run this tuner again, with the same initialization as earlier.
 
@@ -385,7 +387,7 @@ is concentrated around the location of the library.
 Using custom metrics
 --------------------
 
-What if we need to measure our program's error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the :func:`@joined_output_metric decorator<tmlt.analytics.tuner.joined_output_metric>` and defining a method that computes our metric.
+What if we need to measure our program's error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the :func:`@joined_output_metric decorator<tmlt.tune.joined_output_metric>` and defining a method that computes our metric.
 
 The custom metric method takes a :class:`~pyspark.sql.DataFrame` which contains the DP data joined to the baseline data, and should return either a single value (if there are no grouping columns), or (if grouped) a DataFrame that has a column named with the ``result_column_name`` variable that contains the metric's result values.
 
@@ -495,12 +497,12 @@ When we now run our error report on this tuner, we can see our new metric:
     | -0.0571484 | relative_change_total_books_borrowed | default    | Relative change in the total number of books borrowed                                |
     +------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+
 
-If your metric doesn't need to join the DP and baseline outputs, you can use the :func:`@single_output_metric decorator<tmlt.analytics.tuner.single_output_metric>` or :func:`@metric decorator<tmlt.analytics.tuner.metric>` decorators instead. These decorators do less work for you, and offer a less-processed view into the program's outputs.
+If your metric doesn't need to join the DP and baseline outputs, you can use the :func:`@single_output_metric decorator<tmlt.tune.single_output_metric>` or :func:`@metric decorator<tmlt.tune.metric>` decorators instead. These decorators do less work for you, and offer a less-processed view into the program's outputs.
 
 A note about baselines
 ----------------------
 
-Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the :class:`~.program.SessionProgram` to a *baseline*. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.
+Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the :class:`~.SessionProgram` to a *baseline*. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.
 
-1. By default, Tumult Analytics computes a baseline by running the same queries as in the :class:`~.program.SessionProgram`, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.
-2. It is also possible to configure how the baseline is computed by passing *baseline options* to the :class:`~.tuner.SessionProgramTuner`, and/or by defining a fully custom baseline using the :func:`@baseline<tmlt.analytics.tuner.baseline>` decorator as demonstrated in the :mod:`~.tuner` example. To use the "default" baseline in addition to these custom baselines, you need to specify ``"default": NoPrivacySession.Options()`` in the :attr:`~tmlt.analytics.tuner.SessionProgramTuner.baseline_options` dictionary.
+1. By default, Tumult Analytics computes a baseline by running the same queries as in the :class:`~.SessionProgram`, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.
+2. It is also possible to configure how the baseline is computed by passing *baseline options* to the :class:`~.SessionProgramTuner`, and/or by defining a fully custom baseline using the :func:`@baseline<tmlt.tune.baseline>` decorator. To use the "default" baseline in addition to these custom baselines, you need to specify ``"default": NoPrivacySession.Options()`` in the :attr:`~tmlt.tune.SessionProgramTuner.baseline_options` dictionary.

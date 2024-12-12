@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Specifying error metrics &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Specifying error metrics &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -473,9 +472,9 @@ document.write(`
 <span id="id1"></span><h1>Specifying error metrics<a class="headerlink" href="#specifying-error-metrics" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+<p><img alt="PRO" src="https://img.shields.io/badge/PRO-c53a58" /> The features described in this page are only available on a paid version of the Tumult Platform. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
-<p>In the previous tutorial, we wrote a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, sliced by ZIP code. We then wrapped this in a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and showed how to evaluate its error report using a single built-in error metric, <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.MedianRelativeError" title="tmlt.analytics.metrics.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a>. In this tutorial we are going to build on this example, so let’s re-create it below:</p>
+<p>In the previous tutorial, we wrote a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, sliced by ZIP code. We then wrapped this in a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and showed how to evaluate its error report using a single built-in error metric, <a class="reference internal" href="../reference/api/tmlt.tune.MedianRelativeError.html#tmlt.tune.MedianRelativeError" title="tmlt.tune.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a>. In this tutorial we are going to build on this example, so let’s re-create it below:</p>
 <p>As usual, we first import our packages…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
@@ -514,7 +513,7 @@ document.write(`
 <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then we write our program as a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p>
+<p>Then we write our program as a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The following code is identical to the previous tutorial. If you already have it in your environment, feel free to skip to the next section.</p>
@@ -539,7 +538,7 @@ document.write(`
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">budget</span><span class="p">)}</span>
 </pre></div>
 </div>
-<p>Next, we create our tuner by subclassing <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and defining the error metric we want to compute.</p>
+<p>Next, we create our tuner by subclassing <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and defining the error metric we want to compute.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
 
 <span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
@@ -586,7 +585,7 @@ and show how to generate error reports using custom metrics that you write yours
 <section id="exploring-built-in-metrics">
 <h2>Exploring built-in metrics<a class="headerlink" href="#exploring-built-in-metrics" title="Link to this heading">#</a></h2>
 <p>Tumult Analytics provides other built-in metrics that we can use to measure the error of our program. You can find a full list in the API reference.</p>
-<p>Let’s add three more metrics <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.QuantileRelativeError" title="tmlt.analytics.metrics.QuantileRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileRelativeError</span></code></a>, <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SpuriousRate" title="tmlt.analytics.metrics.SpuriousRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpuriousRate</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.SuppressionRate" title="tmlt.analytics.metrics.SuppressionRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressionRate</span></code></a> to our <code class="docutils literal notranslate"><span class="pre">metrics</span></code> list from earlier.</p>
+<p>Let’s add three more metrics <a class="reference internal" href="../reference/api/tmlt.tune.QuantileRelativeError.html#tmlt.tune.QuantileRelativeError" title="tmlt.tune.QuantileRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileRelativeError</span></code></a>, <a class="reference internal" href="../reference/api/tmlt.tune.SpuriousRate.html#tmlt.tune.SpuriousRate" title="tmlt.tune.SpuriousRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpuriousRate</span></code></a> and <a class="reference internal" href="../reference/api/tmlt.tune.SuppressionRate.html#tmlt.tune.SuppressionRate" title="tmlt.tune.SuppressionRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressionRate</span></code></a> to our <code class="docutils literal notranslate"><span class="pre">metrics</span></code> list from earlier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
 
 <span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
@@ -617,10 +616,10 @@ and show how to generate error reports using custom metrics that you write yours
 <ul class="simple">
 <li><p>The <em>median relative error</em> measures the “typical” error of differentially private aggregations, expressed as a proportion of the baseline value. We measure the relative error of each row (<cite>|noisy - baseline| / baseline</cite>), and then take the median.</p></li>
 <li><p>The <em>quantile relative error</em> is a generalization of the median relative error which we will use to measure the error at the 90th percentile of the noisy aggregates.</p></li>
-<li><p>The <em>spurious rate</em> is the fraction of the group-by keys (here, the ZIP codes) in the output that do not appear in the baseline. This can happen if the <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.keyset.KeySet</span></code></a> contains groups that do not appear in the actual data.</p></li>
-<li><p>Conversely, the <em>suppression rate</em> is the fraction of group-by keys that appear in the baseline, but do not appear in the differentially private output(s). This can happen if the true data contains groups that do do not appear in the <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.keyset.KeySet</span></code></a>.</p></li>
+<li><p>The <em>spurious rate</em> is the fraction of the group-by keys (here, the ZIP codes) in the output that do not appear in the baseline. This can happen if the <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.KeySet</span></code></a> contains groups that do not appear in the actual data.</p></li>
+<li><p>Conversely, the <em>suppression rate</em> is the fraction of group-by keys that appear in the baseline, but do not appear in the differentially private output(s). This can happen if the true data contains groups that do do not appear in the <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.analytics.KeySet</span></code></a>.</p></li>
 </ul>
-<p><a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#module-tmlt.analytics.metrics" title="tmlt.analytics.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tmlt.analytics.metrics</span></code></a> gives more detail about how those metrics are computed.</p>
+<p>The <a class="reference internal" href="../reference/metrics.html#metrics"><span class="std std-ref">API reference for metrics</span></a> gives more detail about how those metrics are computed.</p>
 <p>Let’s run this tuner again, with the same initialization as earlier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simple_tuner</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
@@ -663,7 +662,7 @@ published counts are “spurious”. To mitigate this effect, we could either su
 codes with small noisy counts from the output as post-processing, or use a KeySet that
 includes fewer ZIP codes (for example, only those that are close enough to our fictional
 library). In this tutorial, we will assume we want to publish data for all ZIP codes in
-North Carolina, so we will leave the KeySet as-is. However, we can modify <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method
+North Carolina, so we will leave the KeySet as-is. However, we can modify <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method
 to the suppress the ZIP codes with relatively small counts.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
 
@@ -704,7 +703,7 @@ is concentrated around the location of the library.</p>
 </section>
 <section id="using-custom-metrics">
 <h2>Using custom metrics<a class="headerlink" href="#using-custom-metrics" title="Link to this heading">#</a></h2>
-<p>What if we need to measure our program’s error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.joined_output_metric" title="tmlt.analytics.tuner.joined_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;joined_output_metric</span> <span class="pre">decorator</span></code></a> and defining a method that computes our metric.</p>
+<p>What if we need to measure our program’s error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the <a class="reference internal" href="../reference/api/tmlt.tune.joined_output_metric.html#tmlt.tune.joined_output_metric" title="tmlt.tune.joined_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;joined_output_metric</span> <span class="pre">decorator</span></code></a> and defining a method that computes our metric.</p>
 <p>The custom metric method takes a <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> which contains the DP data joined to the baseline data, and should return either a single value (if there are no grouping columns), or (if grouped) a DataFrame that has a column named with the <code class="docutils literal notranslate"><span class="pre">result_column_name</span></code> variable that contains the metric’s result values.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">joined_output_metric</span>
 
@@ -785,14 +784,14 @@ is concentrated around the location of the library.</p>
 <span class="o">+------------+--------------------------------------+------------+--------------------------------------------------------------------------------------+</span>
 </pre></div>
 </div>
-<p>If your metric doesn’t need to join the DP and baseline outputs, you can use the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.single_output_metric" title="tmlt.analytics.tuner.single_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;single_output_metric</span> <span class="pre">decorator</span></code></a> or <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.metric" title="tmlt.analytics.tuner.metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;metric</span> <span class="pre">decorator</span></code></a> decorators instead. These decorators do less work for you, and offer a less-processed view into the program’s outputs.</p>
+<p>If your metric doesn’t need to join the DP and baseline outputs, you can use the <a class="reference internal" href="../reference/api/tmlt.tune.single_output_metric.html#tmlt.tune.single_output_metric" title="tmlt.tune.single_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;single_output_metric</span> <span class="pre">decorator</span></code></a> or <a class="reference internal" href="../reference/api/tmlt.tune.metric.html#tmlt.tune.metric" title="tmlt.tune.metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;metric</span> <span class="pre">decorator</span></code></a> decorators instead. These decorators do less work for you, and offer a less-processed view into the program’s outputs.</p>
 </section>
 <section id="a-note-about-baselines">
 <h2>A note about baselines<a class="headerlink" href="#a-note-about-baselines" title="Link to this heading">#</a></h2>
-<p>Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> to a <em>baseline</em>. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.</p>
+<p>Throughout this tutorial, we mentioned that error metrics are often computed by comparing the data generated by the <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> to a <em>baseline</em>. But we never explicitly specified what the ground truth was for our data release. What is this automatic baseline and how is it computed? There are two possibilities.</p>
 <ol class="arabic simple">
-<li><p>By default, Tumult Analytics computes a baseline by running the same queries as in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.</p></li>
-<li><p>It is also possible to configure how the baseline is computed by passing <em>baseline options</em> to the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and/or by defining a fully custom baseline using the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.baseline" title="tmlt.analytics.tuner.baseline"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;baseline</span></code></a> decorator as demonstrated in the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#module-tmlt.analytics.tuner" title="tmlt.analytics.tuner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tuner</span></code></a> example. To use the “default” baseline in addition to these custom baselines, you need to specify <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;:</span> <span class="pre">NoPrivacySession.Options()</span></code> in the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.baseline_options" title="tmlt.analytics.tuner.SessionProgramTuner.baseline_options"><code class="xref py py-attr docutils literal notranslate"><span class="pre">baseline_options</span></code></a> dictionary.</p></li>
+<li><p>By default, Tumult Analytics computes a baseline by running the same queries as in the <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, without any of the mechanisms that are necessary to obtain differential privacy. For example, no clamping nor truncation is performed, group-by queries ignore their KeySet argument, and no noise is added to the results.</p></li>
+<li><p>It is also possible to configure how the baseline is computed by passing <em>baseline options</em> to the <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and/or by defining a fully custom baseline using the <a class="reference internal" href="../reference/api/tmlt.tune.baseline.html#tmlt.tune.baseline" title="tmlt.tune.baseline"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;baseline</span></code></a> decorator. To use the “default” baseline in addition to these custom baselines, you need to specify <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;:</span> <span class="pre">NoPrivacySession.Options()</span></code> in the <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.baseline_options.html#tmlt.tune.SessionProgramTuner.baseline_options" title="tmlt.tune.SessionProgramTuner.baseline_options"><code class="xref py py-attr docutils literal notranslate"><span class="pre">baseline_options</span></code></a> dictionary.</p></li>
 </ol>
 </section>
 </section>
@@ -880,7 +879,7 @@ is concentrated around the location of the library.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

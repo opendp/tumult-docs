@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basics of error measurement &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Basics of error measurement &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -473,7 +472,7 @@ document.write(`
 <span id="id1"></span><h1>Basics of error measurement<a class="headerlink" href="#basics-of-error-measurement" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+<p><img alt="PRO" src="https://img.shields.io/badge/PRO-c53a58" /> The features described in this page are only available on a paid version of the Tumult Platform. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
 <p>In previous tutorials, we saw how to write differentially private queries using the Tumult Analytics API. Differential privacy adds noise to data, and also involves truncation, so before going ahead with publishing or sharing DP statistics, we typically want to evaluate how accurate these statistics are, and carefully select the parameters used in our Tumult Analytics program.</p>
 <p>That’s exactly what this tutorial series covers: measuring error and tuning parameters.</p>
@@ -562,7 +561,7 @@ document.write(`
 </section>
 <section id="from-session-to-sessionprogram">
 <h2>From Session to SessionProgram<a class="headerlink" href="#from-session-to-sessionprogram" title="Link to this heading">#</a></h2>
-<p>To get an error report, we must first convert our <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> into a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>. In particular, we will create a subclass of <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, which defines both the structure of our <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> and the logic for evaluating queries within the Session.</p>
+<p>To get an error report, we must first convert our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> into a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>. In particular, we will create a subclass of <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, which defines both the structure of our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> and the logic for evaluating queries within the Session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
     <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
         <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
@@ -583,21 +582,21 @@ document.write(`
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">budget</span><span class="p">)}</span>
 </pre></div>
 </div>
-<p>A subclass of <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> has two main parts: an input/output specification, and a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Let’s look at each component separately.</p>
+<p>A subclass of <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> has two main parts: an input/output specification, and a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Let’s look at each component separately.</p>
 <ol class="arabic simple">
 <li><dl class="simple">
 <dt>First, we list our program’s inputs (distinguishing the protected ones from the non-protected ones) and outputs.</dt><dd><ul class="simple">
-<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.ProtectedInputs" title="tmlt.analytics.program.SessionProgram.ProtectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contain sensitive data (and therefore should be protected by differential privacy). All protected inputs must be DataFrames. In this case, the only protected input is the <code class="docutils literal notranslate"><span class="pre">members</span></code> DataFrame.</p></li>
-<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.UnprotectedInputs" title="tmlt.analytics.program.SessionProgram.UnprotectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnprotectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contains public data (and does not require differential privacy). All unprotected inputs must be DataFrames. These DataFrame can be accessed directly by the program. In this case, the only unprotected input is the publicly available <code class="docutils literal notranslate"><span class="pre">nc_zip_codes</span></code> DataFrame.</p></li>
-<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.Outputs" title="tmlt.analytics.program.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a> nested class contains one class variable for each output DataFrame. All outputs must be DataFrames. In this case, we have only one output, <code class="docutils literal notranslate"><span class="pre">books_by_zip_code</span></code>, which will hold the results obtained by the program.</p></li>
+<li><p>The <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.ProtectedInputs" title="tmlt.analytics.SessionProgram.ProtectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contain sensitive data (and therefore should be protected by differential privacy). All protected inputs must be DataFrames. In this case, the only protected input is the <code class="docutils literal notranslate"><span class="pre">members</span></code> DataFrame.</p></li>
+<li><p>The <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.UnprotectedInputs" title="tmlt.analytics.SessionProgram.UnprotectedInputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnprotectedInputs</span></code></a> nested class contains one class variable for each input DataFrame that contains public data (and does not require differential privacy). All unprotected inputs must be DataFrames. These DataFrame can be accessed directly by the program. In this case, the only unprotected input is the publicly available <code class="docutils literal notranslate"><span class="pre">nc_zip_codes</span></code> DataFrame.</p></li>
+<li><p>The <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.Outputs" title="tmlt.analytics.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a> nested class contains one class variable for each output DataFrame. All outputs must be DataFrames. In this case, we have only one output, <code class="docutils literal notranslate"><span class="pre">books_by_zip_code</span></code>, which will hold the results obtained by the program.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Second, we write our program logic inside a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method, which is used to define the interaction between this <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> and a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>. This method:</dt><dd><ul class="simple">
-<li><p>Uses a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to evaluate queries as we would in any other Tumult Analytics program. Unlike other Tumult Analytics programs, we don’t construct the <cite>Session</cite> directly - instead, the <cite>Session</cite> is provided to <cite>session_interaction</cite> as a method parameter.</p></li>
-<li><p>Returns a dictionary of output DataFrames keyed by their names (which must correspond to the names in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.Outputs" title="tmlt.analytics.program.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a>).</p></li>
+<dt>Second, we write our program logic inside a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method, which is used to define the interaction between this <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> and a <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>. This method:</dt><dd><ul class="simple">
+<li><p>Uses a <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to evaluate queries as we would in any other Tumult Analytics program. Unlike other Tumult Analytics programs, we don’t construct the Session directly - instead, the Session is provided to <code class="docutils literal notranslate"><span class="pre">session_interaction</span></code> as a method parameter.</p></li>
+<li><p>Returns a dictionary of output DataFrames keyed by their names (which must correspond to the names in the <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.Outputs" title="tmlt.analytics.SessionProgram.Outputs"><code class="xref py py-class docutils literal notranslate"><span class="pre">Outputs</span></code></a>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -606,7 +605,7 @@ document.write(`
 </section>
 <section id="initializing-and-running-a-sessionprogram">
 <h2>Initializing and running a SessionProgram<a class="headerlink" href="#initializing-and-running-a-sessionprogram" title="Link to this heading">#</a></h2>
-<p>Let’s initialize our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> using its <em>Builder</em> (which is inherited from <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>). The Builder interface is very similar to <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.Builder" title="tmlt.analytics.session.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a>. We use builder methods to pass in the protected and unprotected dataframes, and the privacy budget we want to enforce.</p>
+<p>Let’s initialize our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> using its <em>Builder</em> (which is inherited from <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>). The Builder interface is very similar to <a class="reference internal" href="../reference/api/tmlt.analytics.Session.Builder.html#tmlt.analytics.Session.Builder" title="tmlt.analytics.Session.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session.Builder</span></code></a>. We use builder methods to pass in the protected and unprotected dataframes, and the privacy budget we want to enforce.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">zip_code_program</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">BooksByZipCodeProgram</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
@@ -623,10 +622,10 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Once initialized, instead of calling queries on it like the Session, we run the whole program at once using the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.run" title="tmlt.analytics.program.SessionProgram.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method.</p>
+<p>Once initialized, instead of calling queries on it like the Session, we run the whole program at once using the <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.run.html#tmlt.analytics.SessionProgram.run" title="tmlt.analytics.SessionProgram.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The only way that a SessionProgram can access its input data is through the <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> provided as a parameter in the <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram.session_interaction" title="tmlt.analytics.program.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Its privacy guarantee is exactly the same as a <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>’s - the data is protected with the privacy loss budget we specify when instantiating the program (using the same syntax as the <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>).</p>
+<p>The only way that a SessionProgram can access its input data is through the <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> provided as a parameter in the <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method. Its privacy guarantee is exactly the same as a <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>’s - the data is protected with the privacy loss budget we specify when instantiating the program (using the same syntax as the <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>).</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outputs</span> <span class="o">=</span> <span class="n">zip_code_program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -649,7 +648,7 @@ document.write(`
 <span class="n">only</span> <span class="n">showing</span> <span class="n">top</span> <span class="mi">10</span> <span class="n">rows</span>
 </pre></div>
 </div>
-<p>One characteristic of a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> is that it can only be run <em>once</em>: running it again is forbidden.</p>
+<p>One characteristic of a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> is that it can only be run <em>once</em>: running it again is forbidden.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">zip_code_program</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
@@ -659,10 +658,10 @@ document.write(`
 </section>
 <section id="first-look-at-error">
 <h2>First look at error<a class="headerlink" href="#first-look-at-error" title="Link to this heading">#</a></h2>
-<p>Now that we have clearly defined our program, and specified its inputs, outputs, and query logic, we can use a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> to measure its error.
-In particular, we will write a subclass of <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and pass our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> as a class argument.
+<p>Now that we have clearly defined our program, and specified its inputs, outputs, and query logic, we can use a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> to measure its error.
+In particular, we will write a subclass of <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and pass our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> as a class argument.
 We will also specify a set of error metrics in the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable to measure how accurate our output is.
-For example, we will use the built-in metric <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.MedianRelativeError" title="tmlt.analytics.metrics.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> to measure the program’s median relative error.</p>
+For example, we will use the built-in metric <a class="reference internal" href="../reference/api/tmlt.tune.MedianRelativeError.html#tmlt.tune.MedianRelativeError" title="tmlt.tune.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> to measure the program’s median relative error.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
 
 <span class="k">class</span> <span class="nc">BooksTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
@@ -676,7 +675,7 @@ For example, we will use the built-in metric <a class="reference internal" href=
 </pre></div>
 </div>
 <dl class="simple">
-<dt>The <a class="reference internal" href="../reference/tmlt/analytics/metrics/index.html#tmlt.analytics.metrics.MedianRelativeError" title="tmlt.analytics.metrics.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> metric requires three parameters:</dt><dd><ul class="simple">
+<dt>The <a class="reference internal" href="../reference/api/tmlt.tune.MedianRelativeError.html#tmlt.tune.MedianRelativeError" title="tmlt.tune.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> metric requires three parameters:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">output</span></code>: the name of the output DataFrame whose error we want to measure. In this case, it is our only output table: <code class="docutils literal notranslate"><span class="pre">books_by_zip_code</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">measure_column</span></code>: the column in the output DataFrame whose error we want to measure. In this case, it is the sum column from our query, <code class="docutils literal notranslate"><span class="pre">books_borrowed_sum</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">join_columns</span></code>: the columns that can be used to uniquely identify an output row. In this case, it is the <code class="docutils literal notranslate"><span class="pre">zip_code</span></code> column because we have one output row per zip code.</p></li>
@@ -706,7 +705,7 @@ For example, we will use the built-in metric <a class="reference internal" href=
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Now that our <code class="docutils literal notranslate"><span class="pre">BooksTuner</span></code> is initialized, we can get our very first error report by calling the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="tmlt.analytics.tuner.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> method.</p>
+<p>Now that our <code class="docutils literal notranslate"><span class="pre">BooksTuner</span></code> is initialized, we can get our very first error report by calling the <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.error_report.html#tmlt.tune.SessionProgramTuner.error_report" title="tmlt.tune.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">error_report</span> <span class="o">=</span> <span class="n">simple_tuner</span><span class="o">.</span><span class="n">error_report</span><span class="p">()</span>
 <span class="n">error_report</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -811,7 +810,7 @@ For example, we will use the built-in metric <a class="reference internal" href=
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

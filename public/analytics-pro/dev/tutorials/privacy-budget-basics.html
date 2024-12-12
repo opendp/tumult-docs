@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Working with privacy budgets &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Working with privacy budgets &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -521,7 +520,7 @@ started!</p>
 </section>
 <section id="creating-a-session-with-a-fixed-budget">
 <h2>Creating a Session with a fixed budget<a class="headerlink" href="#creating-a-session-with-a-fixed-budget" title="Link to this heading">#</a></h2>
-<p>Let’s initialize our <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>. We will
+<p>Let’s initialize our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>. We will
 allocate a fixed privacy budget of <code class="docutils literal notranslate"><span class="pre">epsilon=2.5</span></code> to it, using the classical
 (“pure”) differential privacy definition.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span> <span class="c1"># maximum budget consumed in the Session</span>
@@ -534,7 +533,7 @@ allocate a fixed privacy budget of <code class="docutils literal notranslate"><s
 </pre></div>
 </div>
 <p>Let’s check that we initialized the Session as intended using the
-<a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session.describe" title="tmlt.analytics.session.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe</span></code></a> method:</p>
+<a class="reference internal" href="../reference/api/tmlt.analytics.Session.describe.html#tmlt.analytics.Session.describe" title="tmlt.analytics.Session.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe</span></code></a> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -570,7 +569,7 @@ and its caveats, you can consult the <a class="reference internal" href="../topi
 overall budget, and we will need to specify <em>how much</em> of this budget we want to
 consume. Let’s start with a simple example: how many minors are members of the
 library? We will answer that question using a simple
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.filter" title="tmlt.analytics.query_builder.QueryBuilder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> query,
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.filter.html#tmlt.analytics.QueryBuilder.filter" title="tmlt.analytics.QueryBuilder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> query,
 consuming <code class="docutils literal notranslate"><span class="pre">epsilon=1</span></code> out of our total budget.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minor_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;age &lt; 18&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="n">minor_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
@@ -758,7 +757,7 @@ queries? To learn more about this question, you can consult our longer
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

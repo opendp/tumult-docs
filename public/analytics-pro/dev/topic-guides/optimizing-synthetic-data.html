@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimizing synthetic data generation &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Optimizing synthetic data generation &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -61,7 +60,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../reference/tmlt/analytics/index.html" />
+    <link rel="next" title="API reference" href="../reference/index.html" />
     <link rel="prev" title="Nulls, NaNs, and infinite values" href="nulls-nans-infinities.html" />
     <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
     
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -463,13 +462,17 @@ document.write(`
                   
   <section id="optimizing-synthetic-data-generation">
 <span id="id1"></span><h1>Optimizing synthetic data generation<a class="headerlink" href="#optimizing-synthetic-data-generation" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><img alt="PRO" src="https://img.shields.io/badge/PRO-c53a58" /> The features described in this page are only available on a paid version of the Tumult Platform. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+</div>
 <p>In this topic guide, we will outline a few common strategies to optimize the
 privacy-utility trade-off when using Tumult Synthetics to generate
 differentially private synthetic data.</p>
 <section id="choosing-the-measurement-strategy">
 <h2>Choosing the measurement strategy<a class="headerlink" href="#choosing-the-measurement-strategy" title="Link to this heading">#</a></h2>
 <p>The measurement strategy passed in the <code class="docutils literal notranslate"><span class="pre">measurement_strategy</span></code> argument of
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> is one of the key
+<a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> is one of the key
 choices that impacts the utility of the generated synthetic data. Put simply,
 the measurement strategy determines what distributional properties of the
 original dataset will be best captured.</p>
@@ -477,13 +480,13 @@ original dataset will be best captured.</p>
 <h3>Single-column vs. multi-columns marginals<a class="headerlink" href="#single-column-vs-multi-columns-marginals" title="Link to this heading">#</a></h3>
 <p>The simplest option, useful when building a first prototype, is to measure
 the column-wise distribution of all categorical columns. This is done using
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.FixedMarginals" title="tmlt.analytics.synthetics.FixedMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a> with one
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal for each column. This will
+<a class="reference internal" href="../reference/api/tmlt.synthetics.FixedMarginals.html#tmlt.synthetics.FixedMarginals" title="tmlt.synthetics.FixedMarginals"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedMarginals</span></code></a> with one
+<a class="reference internal" href="../reference/api/tmlt.synthetics.Count.html#tmlt.synthetics.Count" title="tmlt.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal for each column. This will
 preserve the distribution of values within individual columns, but not between
 groups of columns.</p>
 <p>Depending on the use case for synthetic data, it is often desirable to preserve
 correlations between pairs of columns. Using a
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal initialized with categorical
+<a class="reference internal" href="../reference/api/tmlt.synthetics.Count.html#tmlt.synthetics.Count" title="tmlt.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal initialized with categorical
 columns <code class="docutils literal notranslate"><span class="pre">col_a</span></code> and <code class="docutils literal notranslate"><span class="pre">col_b</span></code> will preserve the correlations between these
 columns. Similarly, computing the marginal distribution across more columns will
 attempt to preserve the correlations between all these columns at once.</p>
@@ -508,7 +511,7 @@ iteratively add more complex marginals as needed.</p>
 </section>
 <section id="the-impact-of-sparsity">
 <span id="synthetic-sparsity"></span><h3>The impact of sparsity<a class="headerlink" href="#the-impact-of-sparsity" title="Link to this heading">#</a></h3>
-<p>When computing a <a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.Count" title="tmlt.analytics.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal, for a fixed
+<p>When computing a <a class="reference internal" href="../reference/api/tmlt.synthetics.Count.html#tmlt.synthetics.Count" title="tmlt.synthetics.Count"><code class="xref py py-class docutils literal notranslate"><span class="pre">Count</span></code></a> marginal, for a fixed
 privacy budget, the noise added to the count of each combination of column
 values will have a fixed variance. Therefore, it will have a small impact if the
 real counts are large, but can lead to significant inaccuracy if the real counts
@@ -518,7 +521,7 @@ only a few times in the dataset, the additional marginal will likely not bring a
 significant gain in utility.</p>
 <p>A common way to deal with sparsity issues is to use binning: if a categorical
 column is a date, a timestamp, or a numeric value, the <code class="docutils literal notranslate"><span class="pre">binning_specs</span></code>
-argument from <a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> can be
+argument from <a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> can be
 used to specify how the data is binned. Increasing the binning size can be
 helpful to group more values together, reducing sparsity at the cost of more
 granular measurements. Trying out different binning strategies can be a good way
@@ -541,28 +544,28 @@ with only a few records.</p>
 <section id="choosing-clamping-and-truncation-bounds">
 <h2>Choosing clamping and truncation bounds<a class="headerlink" href="#choosing-clamping-and-truncation-bounds" title="Link to this heading">#</a></h2>
 <p>To generate synthetic data with numeric columns, it is necessary to specify
-clamping bounds using the <a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.ClampingBounds" title="tmlt.analytics.synthetics.ClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a>
+clamping bounds using the <a class="reference internal" href="../reference/api/tmlt.synthetics.ClampingBounds.html#tmlt.synthetics.ClampingBounds" title="tmlt.synthetics.ClampingBounds"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClampingBounds</span></code></a>
 class. All input records whose value for the numeric column is outside of these
 bounds will be modified to fit within these bounds, as explained in the
 <a class="reference internal" href="../tutorials/clamping-bounds.html#clamping-bounds"><span class="std std-ref">tutorial about clamping bounds</span></a>. And the trade-off
 described in this tutorial also applies for synthetic data generation: larger
 clamping bounds will lead to more noise added to the corresponding
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.Sum" title="tmlt.analytics.synthetics.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> marginal, but tighter bounds can also
+<a class="reference internal" href="../reference/api/tmlt.synthetics.Sum.html#tmlt.synthetics.Sum" title="tmlt.synthetics.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> marginal, but tighter bounds can also
 bring bias if too many values are clamped.</p>
 <p>As a rule of thumb, clamping bounds should generally cover about 95% of the
 input values, or more if there are no large outliers. When it is impossible to
 determine clamping bounds a priori, the
-<a class="reference internal" href="../reference/tmlt/analytics/query_builder/index.html#tmlt.analytics.query_builder.QueryBuilder.get_bounds" title="tmlt.analytics.query_builder.QueryBuilder.get_bounds"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bounds()</span></code></a> aggregation can be
-used on the <a class="reference internal" href="../reference/tmlt/analytics/session/index.html#tmlt.analytics.session.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> aggregation before calling
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> to automatically
+<a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.get_bounds.html#tmlt.analytics.QueryBuilder.get_bounds" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bounds()</span></code></a> aggregation can be
+used on the <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> aggregation before calling
+<a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> to automatically
 determine reasonable values of clamping bounds, at a small cost in privacy
 budget. Afterwards, it can be worthwhile to try different values of clamping
 bounds to see which one provides the best trade-off between accuracy and bias.</p>
 <p>When generating synthetic data on a table initialized with
 <a class="reference internal" href="../tutorials/privacy-id-basics.html#working-with-privacy-ids"><span class="std std-ref">privacy IDs</span></a>, using the
-<a class="reference internal" href="../reference/tmlt/analytics/protected_change/index.html#tmlt.analytics.protected_change.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change, the
+<a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.protected_change.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change, the
 <code class="docutils literal notranslate"><span class="pre">max_rows_per_id</span></code> argument must be used when calling
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a>. This argument
+<a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a>. This argument
 determines how many rows per privacy ID are kept in the original data prior to
 measurement, and involves a similar trade-off as clamping bounds: larger values
 will lead to more noise but keep more data, while smaller values will reduce the
@@ -599,7 +602,7 @@ values instead, or remove the corresponding records entirely.</p>
 <section id="post-processing-numeric-columns">
 <h3>Post-processing numeric columns<a class="headerlink" href="#post-processing-numeric-columns" title="Link to this heading">#</a></h3>
 <p>Clamping bounds specified in the <code class="docutils literal notranslate"><span class="pre">clamping_bounds</span></code> argument of
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> are used to clamp the
+<a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> are used to clamp the
 values of the input data before performing differentially private measurements,
 but they are not used during the generation stage. Therefore, it is possible
 that values outside the clamping bounds appear in the output data, and these
@@ -616,19 +619,19 @@ measuring utility afterwards.</p>
 combinations of categorical column values that cannot appear in the original
 data. There are two main ways to prevent this:</p>
 <ul class="simple">
-<li><p>The <a class="reference internal" href="../reference/tmlt/analytics/keyset/index.html#tmlt.analytics.keyset.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> used to specify possible column
+<li><p>The <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> used to specify possible column
 values can be initialized with only some combinations of values. Only these
 combinations will then be present in the output. More information can be found
 in the tutorial about
 <a class="reference internal" href="../tutorials/groupby-queries.html#keysets-multiple-columns"><span class="std std-ref">group-by queries with multiple columns</span></a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">count_structural_zeroes</span></code> argument of
-<a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> can be used to
+<a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> can be used to
 specify combination of categorical columns that <em>cannot</em> appear in the data.
 Using this argument has the same effect as removing the corresponding
 combinations from the input KeySet, but it can be simpler and more efficient
 when there are a small number of impossible combinations.</p></li>
 </ul>
-<p>Similarly, <a class="reference internal" href="../reference/tmlt/analytics/synthetics/index.html#tmlt.analytics.synthetics.generate_synthetic_data" title="tmlt.analytics.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> also
+<p>Similarly, <a class="reference internal" href="../reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> also
 accepts a <code class="docutils literal notranslate"><span class="pre">sum_structural_zeroes</span></code> argument, which ensures that certain
 combinations of categorical values are always associated to a 0 value in the
 specified numeric column.</p>
@@ -656,11 +659,11 @@ specified numeric column.</p>
       </div>
     </a>
     <a class="right-next"
-       href="../reference/tmlt/analytics/index.html"
+       href="../reference/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Reference</p>
+        <p class="prev-next-title">API reference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -680,7 +683,7 @@ specified numeric column.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-measurement-strategy">Choosing the measurement strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-measurement-strategy">Choosing the measurement strategy</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-column-vs-multi-columns-marginals">Single-column vs. multi-columns marginals</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-impact-of-sparsity">The impact of sparsity</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-the-privacy-budget">Splitting the privacy budget</a></li>
@@ -688,7 +691,7 @@ specified numeric column.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-clamping-and-truncation-bounds">Choosing clamping and truncation bounds</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-public-data">Using public data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolving-inconsistencies">Resolving inconsistencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolving-inconsistencies">Resolving inconsistencies</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-null-values">Removing null values</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-numeric-columns">Post-processing numeric columns</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preventing-impossible-combination-of-values">Preventing impossible combination of values</a></li>
@@ -730,7 +733,7 @@ specified numeric column.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

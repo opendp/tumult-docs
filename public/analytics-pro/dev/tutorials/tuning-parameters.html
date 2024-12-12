@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tuning parameters &#8212; Tumult Analytics Pro dev documentation</title>
+    <title>Tuning parameters &#8212; Tumult Platform dev documentation</title>
   
   
   
@@ -31,7 +31,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -141,8 +140,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics Pro dev documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Analytics Pro dev documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform dev documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Tumult Platform dev documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -192,7 +191,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -322,7 +321,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/tmlt/analytics/index.html">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
                         API reference
                       </a>
                     </li>
@@ -366,7 +365,7 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-<h3>Tumult Analytics Pro</h3></div>
+<h3>Tumult Platform</h3></div>
         <div class="sidebar-primary-item">
 <script>
 document.write(`
@@ -473,9 +472,9 @@ document.write(`
 <span id="id1"></span><h1>Tuning parameters<a class="headerlink" href="#tuning-parameters" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
+<p><img alt="PRO" src="https://img.shields.io/badge/PRO-c53a58" /> The features described in this page are only available on a paid version of the Tumult Platform. If you would like to hear more, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;tmlt&#46;io">info<span>&#64;</span>tmlt<span>&#46;</span>io</a>.</p>
 </div>
-<p>In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for <em>optimizing</em> the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> class is designed to help us do just that. Let’s see how it works!</p>
+<p>In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for <em>optimizing</em> the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> class is designed to help us do just that. Let’s see how it works!</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>As in earlier tutorials, we import the necessary packages and download the data.</p>
@@ -526,7 +525,7 @@ document.write(`
 </section>
 <section id="parametrizing-the-sessionprogram">
 <h2>Parametrizing the SessionProgram<a class="headerlink" href="#parametrizing-the-sessionprogram" title="Link to this heading">#</a></h2>
-<p>We previously used a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:</p>
+<p>We previously used a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
 <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
@@ -535,7 +534,7 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first <em>parametrize</em> it. To do this, we must declare this parameter as part of our <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, and then use it in our query.</p>
+<p>The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first <em>parametrize</em> it. To do this, we must declare this parameter as part of our <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, and then use it in our query.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
     <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
         <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
@@ -580,7 +579,7 @@ document.write(`
 </section>
 <section id="running-multiple-error-reports-at-once">
 <h2>Running multiple error reports at once<a class="headerlink" href="#running-multiple-error-reports-at-once" title="Link to this heading">#</a></h2>
-<p>Let’s define a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> with our program class to compute two metrics: the median and 75th percentile relative error. We’ve already seen similar metrics, but this time we are giving them a short name.</p>
+<p>Let’s define a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> with our program class to compute two metrics: the median and 75th percentile relative error. We’ve already seen similar metrics, but this time we are giving them a short name.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MedianRelativeError</span><span class="p">(</span>
@@ -599,7 +598,7 @@ document.write(`
     <span class="p">]</span>
 </pre></div>
 </div>
-<p>Now that we have defined our class, let’s build it. Unlike a <a class="reference internal" href="../reference/tmlt/analytics/program/index.html#tmlt.analytics.program.SessionProgram" title="tmlt.analytics.program.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>.</p>
+<p>Now that we have defined our class, let’s build it. Unlike a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span><span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span> <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">())</span>
@@ -610,8 +609,8 @@ document.write(`
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>In this case, we have designated the upper clamping bound as a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameter. However, as we will see later, <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.</p>
-<p>Now that it’s built, we can run an error report on our <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> object by specifying concrete values for all <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters.</p>
+<p>In this case, we have designated the upper clamping bound as a <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameter. However, as we will see later, <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.</p>
+<p>Now that it’s built, we can run an error report on our <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> object by specifying concrete values for all <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span><span class="o">.</span><span class="n">error_report</span><span class="p">({</span><span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span>  <span class="mi">500</span><span class="p">})</span>
 </pre></div>
 </div>
@@ -625,7 +624,7 @@ document.write(`
 Done!
 </pre></div>
 </div>
-<p><a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a> returns a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.MultiErrorReport" title="tmlt.analytics.tuner.MultiErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiErrorReport</span></code></a>, which can be iterated over to get individual <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.ErrorReport" title="tmlt.analytics.tuner.ErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorReport</span></code></a> objects and provides a method to get all of the metrics in a single Pandas DataFrame.</p>
+<p><a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.multi_error_report.html#tmlt.tune.SessionProgramTuner.multi_error_report" title="tmlt.tune.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a> returns a <a class="reference internal" href="../reference/api/tmlt.tune.MultiErrorReport.html#tmlt.tune.MultiErrorReport" title="tmlt.tune.MultiErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiErrorReport</span></code></a>, which can be iterated over to get individual <a class="reference internal" href="../reference/api/tmlt.tune.ErrorReport.html#tmlt.tune.ErrorReport" title="tmlt.tune.ErrorReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorReport</span></code></a> objects and provides a method to get all of the metrics in a single Pandas DataFrame.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">multi_error_report</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
@@ -663,7 +662,7 @@ Done!
 </section>
 <section id="tuning-not-just-for-parameters">
 <h2>Tuning: not just for parameters!<a class="headerlink" href="#tuning-not-just-for-parameters" title="Link to this heading">#</a></h2>
-<p>We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> to find out.</p>
+<p>We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> to find out.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
@@ -681,7 +680,7 @@ Done!
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>We then specify the values of our <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters for methods like <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.error_report" title="tmlt.analytics.tuner.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner.multi_error_report" title="tmlt.analytics.tuner.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a>.</p>
+<p>We then specify the values of our <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> parameters for methods like <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.error_report.html#tmlt.tune.SessionProgramTuner.error_report" title="tmlt.tune.SessionProgramTuner.error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">error_report()</span></code></a> and <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.multi_error_report.html#tmlt.tune.SessionProgramTuner.multi_error_report" title="tmlt.tune.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">multi_error_report()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
     <span class="p">{</span><span class="s2">&quot;budget&quot;</span><span class="p">:</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="p">),</span> <span class="s2">&quot;upper_clamping_bound&quot;</span><span class="p">:</span> <span class="n">bound</span><span class="p">}</span>
     <span class="k">for</span> <span class="n">epsilon</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
@@ -708,8 +707,8 @@ Done!
 </pre></div>
 </div>
 <img alt="Two line charts plotting relative error against upper clamping bounds in the range 150 to 200. The top chart shows median relative error, and the bottom chart shows 75th percentile relative error. Each chart has a line for each privacy budget, with the x-axis representing the upper clamping bound and the y-axis representing the relative error." class="align-center" src="../_images/tuning-parameters-error-vs-clamping-varied-budgets.png" />
-<p>A <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> can also replace a DataFrame argument (to run program on different datasets in the same Tuner), or a protected change (to evaluate the impact of changing how the data is protected).</p>
-<p>For example, if we wanted to fix the clamping bound parameter, but tune both the DataFrame and protected change used by the program, we would supply a <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> for each of these arguments, like so:</p>
+<p>A <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> can also replace a DataFrame argument (to run program on different datasets in the same Tuner), or a protected change (to evaluate the impact of changing how the data is protected).</p>
+<p>For example, if we wanted to fix the clamping bound parameter, but tune both the DataFrame and protected change used by the program, we would supply a <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> for each of these arguments, like so:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuner</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">SimpleTuner</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
@@ -727,7 +726,7 @@ Done!
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>We can then run the error report with different <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> values:</p>
+<p>We can then run the error report with different <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> values:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">multi_error_report</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">multi_error_report</span><span class="p">([</span>
     <span class="p">{</span><span class="s2">&quot;members_df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;protected_change&quot;</span><span class="p">:</span> <span class="n">protected_change</span><span class="p">}</span>
     <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">[</span><span class="n">members_df</span><span class="p">,</span> <span class="n">members_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)]</span>
@@ -739,7 +738,7 @@ Done!
 Done!
 </pre></div>
 </div>
-<p>For more information, consult the API reference for <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.Tunable" title="tmlt.analytics.tuner.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> and <a class="reference internal" href="../reference/tmlt/analytics/tuner/index.html#tmlt.analytics.tuner.SessionProgramTuner" title="tmlt.analytics.tuner.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p>
+<p>For more information, consult the API reference for <a class="reference internal" href="../reference/api/tmlt.tune.Tunable.html#tmlt.tune.Tunable" title="tmlt.tune.Tunable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tunable</span></code></a> and <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>.</p>
 </section>
 </section>
 
@@ -827,7 +826,7 @@ Done!
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 0eef92fc at 2024-12-11 18:32.</div>
+Built from 92ee3970 at 2024-12-12 12:09.</div>
       
     </div>
   

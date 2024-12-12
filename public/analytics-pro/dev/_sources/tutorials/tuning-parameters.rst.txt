@@ -11,9 +11,11 @@ Tuning parameters
     agreement entered into between you and Tumult Labs.
     No other rights are granted to use this file in any way.
 
-.. note:: This tutorial uses features that are only available on a paid version of Tumult Analytics. If you would like to hear more, please contact us at info@tmlt.io.
+.. note:: 
 
-In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for *optimizing* the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the :class:`~.tuner.SessionProgramTuner` class is designed to help us do just that. Let's see how it works!
+    |PRO_NOTE|
+
+In the previous two tutorials in this series, we explored how to measure the error of Tumult Analytics programs using both built-in and custom metrics. Measuring error is especially useful for *optimizing* the privacy/utility trade-offs of our differentially private mechanisms. As its name suggests, the :class:`~.SessionProgramTuner` class is designed to help us do just that. Let's see how it works!
 
 Setup
 -----
@@ -68,7 +70,7 @@ As in earlier tutorials, we import the necessary packages and download the data.
 Parametrizing the SessionProgram
 --------------------------------
 
-We previously used a :class:`~.program.SessionProgram` that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:
+We previously used a :class:`~.SessionProgram` that calculated the total number of books borrowed by library members, grouped by ZIP code. The query included clamping bounds:
 
 .. testcode::
 
@@ -79,7 +81,7 @@ We previously used a :class:`~.program.SessionProgram` that calculated the total
         .sum("books_borrowed", low=0, high=500)
     )
 
-The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first *parametrize* it. To do this, we must declare this parameter as part of our :class:`~.program.SessionProgram`, and then use it in our query.
+The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first *parametrize* it. To do this, we must declare this parameter as part of our :class:`~.SessionProgram`, and then use it in our query.
 
 .. testcode::
 
@@ -129,7 +131,7 @@ But we don’t want to specify it just yet — we first want to try different va
 Running multiple error reports at once
 --------------------------------------
 
-Let's define a :class:`~.tuner.SessionProgramTuner` with our program class to compute two metrics: the median and 75th percentile relative error. We've already seen similar metrics, but this time we are giving them a short name.
+Let's define a :class:`~.SessionProgramTuner` with our program class to compute two metrics: the median and 75th percentile relative error. We've already seen similar metrics, but this time we are giving them a short name.
 
 .. testcode::
 
@@ -151,7 +153,7 @@ Let's define a :class:`~.tuner.SessionProgramTuner` with our program class to co
         ]
 
 
-Now that we have defined our class, let's build it. Unlike a :class:`~.SessionProgram`, a :class:`~.tuner.SessionProgramTuner` does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as :class:`~.tuner.Tunable`.
+Now that we have defined our class, let's build it. Unlike a :class:`~.SessionProgram`, a :class:`~.SessionProgramTuner` does not require specifying all parameters. Instead, when initializing it, we can specify one or more parameters as :class:`~.Tunable`.
 
 
 .. testcode::
@@ -165,9 +167,9 @@ Now that we have defined our class, let's build it. Unlike a :class:`~.SessionPr
         .build()
     )
 
-In this case, we have designated the upper clamping bound as a :class:`~.tuner.Tunable` parameter. However, as we will see later, :class:`~.tuner.Tunable` objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.
+In this case, we have designated the upper clamping bound as a :class:`~.Tunable` parameter. However, as we will see later, :class:`~.Tunable` objects can also be used to parametrize other inputs to the program, such as the privacy budget or the input data.
 
-Now that it's built, we can run an error report on our :class:`~.tuner.SessionProgramTuner` object by specifying concrete values for all :class:`~.tuner.Tunable` parameters.
+Now that it's built, we can run an error report on our :class:`~.SessionProgramTuner` object by specifying concrete values for all :class:`~.Tunable` parameters.
 
 .. testcode::
 
@@ -186,7 +188,7 @@ More usefully, we can generate many error reports at once:
     Running a total of 5 error reports.
     Done!
 
-:meth:`~.tuner.SessionProgramTuner.multi_error_report` returns a :class:`~.tuner.MultiErrorReport`, which can be iterated over to get individual :class:`~.tuner.ErrorReport` objects and provides a method to get all of the metrics in a single Pandas DataFrame.
+:meth:`~.SessionProgramTuner.multi_error_report` returns a :class:`~.MultiErrorReport`, which can be iterated over to get individual :class:`~.ErrorReport` objects and provides a method to get all of the metrics in a single Pandas DataFrame.
 
 .. code-block::
 
@@ -251,7 +253,7 @@ Setting the clamping bound to about 175 seems to be getting us the best result.
 Tuning: not just for parameters!
 --------------------------------
 
-We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a :class:`~.tuner.Tunable` to find out.
+We now have a better sense of how our upper clamping bound affects the error of our program. But what about its privacy budget? How will the error change if we use a different privacy budget? We can use a :class:`~.Tunable` to find out.
 
 .. testcode::
 
@@ -271,7 +273,7 @@ We now have a better sense of how our upper clamping bound affects the error of 
         .build()
     )
 
-We then specify the values of our :class:`~.tuner.Tunable` parameters for methods like :meth:`~.tuner.SessionProgramTuner.error_report` and :meth:`~.tuner.SessionProgramTuner.multi_error_report`.
+We then specify the values of our :class:`~.Tunable` parameters for methods like :meth:`~.SessionProgramTuner.error_report` and :meth:`~.SessionProgramTuner.multi_error_report`.
 
 .. testcode::
 
@@ -307,9 +309,9 @@ And plot the privacy-utility trade-off using the optimal upper clamping bound va
     :alt: Two line charts plotting relative error against upper clamping bounds in the range 150 to 200. The top chart shows median relative error, and the bottom chart shows 75th percentile relative error. Each chart has a line for each privacy budget, with the x-axis representing the upper clamping bound and the y-axis representing the relative error.
     :align: center
 
-A :class:`~.tuner.Tunable` can also replace a DataFrame argument (to run program on different datasets in the same Tuner), or a protected change (to evaluate the impact of changing how the data is protected).
+A :class:`~.Tunable` can also replace a DataFrame argument (to run program on different datasets in the same Tuner), or a protected change (to evaluate the impact of changing how the data is protected).
 
-For example, if we wanted to fix the clamping bound parameter, but tune both the DataFrame and protected change used by the program, we would supply a :class:`~.tuner.Tunable` for each of these arguments, like so:
+For example, if we wanted to fix the clamping bound parameter, but tune both the DataFrame and protected change used by the program, we would supply a :class:`~.Tunable` for each of these arguments, like so:
 
 .. testcode::
 
@@ -329,7 +331,7 @@ For example, if we wanted to fix the clamping bound parameter, but tune both the
         .build()
     )
 
-We can then run the error report with different :class:`~.tuner.Tunable` values:
+We can then run the error report with different :class:`~.Tunable` values:
 
 .. testcode::
 
@@ -344,4 +346,4 @@ We can then run the error report with different :class:`~.tuner.Tunable` values:
     Running a total of 4 error reports.
     Done!
 
-For more information, consult the API reference for :class:`~.tuner.Tunable` and :class:`~.tuner.SessionProgramTuner`.
+For more information, consult the API reference for :class:`~.Tunable` and :class:`~.SessionProgramTuner`.
