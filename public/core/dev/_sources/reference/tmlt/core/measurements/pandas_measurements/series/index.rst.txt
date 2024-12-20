@@ -28,8 +28,6 @@ Classes
 
    * - :class:`.Aggregate`
      - Aggregate a Pandas Series and produce a float or int.
-   * - :class:`.NoisyBounds`
-     - Estimates the bounds of a Pandas series.
    * - :class:`.NoisyQuantile`
      - Estimates the quantile of a Pandas Series.
    * - :class:`.AddNoiseToSeries`
@@ -95,101 +93,6 @@ Classes
       :param d_in: Distance between inputs under input_metric.
 
       :raises NotImplementedError: If not overridden.
-
-
-   .. py:method:: privacy_relation(d_in, d_out)
-
-      Return True if close inputs produce close outputs.
-
-      See the privacy and stability tutorial (add link?) for more information.
-
-      :param d_in: Distance between inputs under ``input_metric``.
-      :param d_out: Distance between outputs under ``output_measure``.
-
-
-
-   
-.. py:class:: NoisyBounds(input_domain, alpha, threshold_fraction = 0.95)
-
-   Bases: :class:`Aggregate`
-
-   Estimates the bounds of a Pandas series.
-
-
-
-
-
-
-   .. py:property:: alpha
-      :type: tmlt.core.utils.exact_number.ExactNumber
-
-
-      Returns the alpha.
-
-   .. py:property:: threshold_fraction
-      :type: float
-
-
-      Returns the threshold.
-
-   .. py:property:: splits
-      :type: Union[List[float], List[int]]
-
-
-      Returns the splits.
-
-   .. py:property:: element_type
-      :type: tmlt.core.domains.numpy_domains.NumpyDomain
-
-
-      Returns the element type of the series.
-
-   .. py:property:: output_spark_type
-      :type: pyspark.sql.types.DataType
-
-
-      Returns the output Spark type after being used as a UDF.
-
-   .. py:property:: input_domain
-      :type: tmlt.core.domains.base.Domain
-
-
-      Return input domain for the measurement.
-
-   .. py:property:: input_metric
-      :type: tmlt.core.metrics.Metric
-
-
-      Distance metric on input domain.
-
-   .. py:property:: output_measure
-      :type: tmlt.core.measures.Measure
-
-
-      Distance measure on output.
-
-   .. py:property:: is_interactive
-      :type: bool
-
-
-      Returns true iff the measurement is interactive.
-
-
-   .. automethod:: __init__
-   .. py:method:: privacy_function(d_in)
-
-      Returns the smallest d_out satisfied by the measurement.
-
-      See `the architecture guide
-      <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_ for more
-      information.
-
-      :param d_in: Distance between inputs under input_metric.
-
-
-   .. py:method:: __call__(data)
-
-      Returns the bounds for the given column.
 
 
    .. py:method:: privacy_relation(d_in, d_out)

@@ -483,6 +483,9 @@ for more information.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.GeometricPartitionSelection" title="tmlt.core.measurements.spark_measurements.GeometricPartitionSelection"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricPartitionSelection</span></code></a></p></td>
 <td><p>Discovers the distinct rows in a DataFrame, suppressing infrequent rows.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums" title="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparseVectorPrefixSums</span></code></a></p></td>
+<td><p>Find the rank of the row causing the prefix sum to exceed the threshold.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
@@ -665,7 +668,7 @@ mitigations we apply here.</p>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply measurement to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_spark_dataframe</span> <span class="o">=</span> <span class="n">add_laplace_noise_to_column</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">noisy_spark_dataframe</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">noisy_spark_dataframe</span><span class="p">)</span>  
 <span class="go">    A   B   count</span>
 <span class="go">0  a1  b1 ...</span>
 <span class="go">1  a1  b2 ...</span>
@@ -1061,7 +1064,7 @@ mitigations we apply here.</p>
 <span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_spark_dataframe</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_spark_dataframe</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">noisy_spark_dataframe</span><span class="p">)</span>  
 <span class="go">    A   B  count</span>
 <span class="go">0  a2  b2    106</span>
@@ -1287,6 +1290,286 @@ mitigations we apply here.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SparseVectorPrefixSums</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparkMeasurement" title="tmlt.core.measurements.spark_measurements.SparkMeasurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkMeasurement</span></code></a></p>
+<p>Find the rank of the row causing the prefix sum to exceed the threshold.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">   grouping  rank  count</span>
+<span class="go">0         A     0      1</span>
+<span class="go">1         A     1      1</span>
+<span class="go">2         A     2      1</span>
+<span class="go">3         A     3      1</span>
+<span class="go">4         A     4      1</span>
+<span class="go">5         A     5      1</span>
+<span class="go">6         A     6      1</span>
+<span class="go">7         A     7      1</span>
+<span class="go">8         A     8      1</span>
+<span class="go">9         A     9      1</span>
+<span class="go">10        B    -5      2</span>
+<span class="go">11        B    -4      2</span>
+<span class="go">12        B    -3      2</span>
+<span class="go">13        B    -2      2</span>
+<span class="go">14        B    -1   1000</span>
+<span class="go">15        B     0      2</span>
+<span class="go">16        B     1      2</span>
+<span class="go">17        B     2      2</span>
+<span class="go">18        B     3      2</span>
+<span class="go">19        B     4      2</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span> <span class="o">=</span> <span class="n">SparseVectorPrefixSums</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">schema</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;rank&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">count_column</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">rank_column</span><span class="o">=</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grouping_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;grouping&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">threshold_fraction</span><span class="o">=</span><span class="mf">0.90</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noisy_spark_dataframe</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">noisy_spark_dataframe</span><span class="p">)</span>  
+<span class="go">  grouping  rank</span>
+<span class="go">0        A     8</span>
+<span class="go">1        B    -1</span>
+</pre></div>
+</div>
+<dl>
+<dt>Measurement Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output type - Spark DataFrame</p></li>
+<li><dl class="simple">
+<dt>Input metric - <a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.OnColumn" title="tmlt.core.metrics.OnColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnColumn</span></code></a> (with inner metric</dt><dd><p><code class="docutils literal notranslate"><span class="pre">SumOf(AbsoluteDifference())</span></code>) on the <code class="docutils literal notranslate"><span class="pre">count_column</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><p>Output measure - <a class="reference internal" href="../../measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;grouping&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;rank&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64), &#39;count&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">OnColumn(column=&#39;count&#39;, metric=SumOf(inner_metric=AbsoluteDifference()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">output_measure</span>
+<span class="go">PureDP()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Privacy Guarantee:</dt><dd><p>For <span class="math notranslate nohighlight">\(d_{in} = 0\)</span>, returns <span class="math notranslate nohighlight">\(0\)</span></p>
+<p>For <span class="math notranslate nohighlight">\(d_{in} \ge 1\)</span>, returns
+<span class="math notranslate nohighlight">\((4 / \alpha) \cdot d_{in}\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is <a class="reference internal" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.alpha" title="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.alpha"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alpha</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>count_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>rank_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>alpha</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>)</p></li>
+<li><p><strong>grouping_columns</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>)</p></li>
+<li><p><strong>threshold_fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><span class="pre">tmlt.core.utils.exact_number.ExactNumber</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.alpha" title="Link to this definition">#</a></dt>
+<dd><p>Returns the alpha.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.threshold_fraction">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_fraction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.threshold_fraction" title="Link to this definition">#</a></dt>
+<dd><p>Returns the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.count_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.count_column" title="Link to this definition">#</a></dt>
+<dd><p>Returns the count column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.rank_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rank_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.rank_column" title="Link to this definition">#</a></dt>
+<dd><p>Returns the rank column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.output_measure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure"><span class="pre">tmlt.core.measures.Measure</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.output_measure" title="Link to this definition">#</a></dt>
+<dd><p>Distance measure on output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../measures/index.html#tmlt.core.measures.Measure" title="tmlt.core.measures.Measure">tmlt.core.measures.Measure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.is_interactive">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_interactive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.is_interactive" title="Link to this definition">#</a></dt>
+<dd><p>Returns true iff the measurement is interactive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Dataframe containing bin counts.</p></li>
+<li><p><strong>count_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Column name for the column containing the counts.</p></li>
+<li><p><strong>rank_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Column name for the column defining the ranking on rows to
+compute prefix sums.</p></li>
+<li><p><strong>alpha</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumber</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code></a>, <a class="reference external" href="https://docs.sympy.org/latest/modules/core.html#sympy.core.expr.Expr" title="(in SymPy v1.13.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>]</span>) – The noise scale parameter for Geometric noise that will be added to
+each prefix sum.  Noise with scale of <span class="math notranslate nohighlight">\(\alpha / 2\)</span> will be added
+when computing the threshold.
+See <a class="reference internal" href="../noise_mechanisms/index.html#tmlt.core.measurements.noise_mechanisms.AddGeometricNoise" title="tmlt.core.measurements.noise_mechanisms.AddGeometricNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddGeometricNoise</span></code></a> for more information.</p></li>
+<li><p><strong>grouping_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Optional list of column names defining the groups. The
+output dataframe will contain one row per group. If None, the entire
+input dataframe is treated as a single group.</p></li>
+<li><p><strong>threshold_fraction</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The fraction of the total count to use as the threshold.
+This value should be between (0, 1]. By default it is set to 0.95.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_function">
+<span class="sig-name descname"><span class="pre">privacy_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the measurement.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture guide</a> for more
+information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.call" title="Link to this definition">#</a></dt>
+<dd><p>Return row causing prefix sum to exceed the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Performs measurement and returns a DataFrame with additional protections.</p>
+<p>See <a class="reference internal" href="../../../../../topic-guides/privacy-guarantee.html#pseudo-side-channel-mitigations"><span class="std std-ref">Specific protections against pseudo-side channel leakage</span></a> for more details on the specific
+mitigations we apply here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>Any</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_relation">
+<span class="sig-name descname"><span class="pre">privacy_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_relation" title="Link to this definition">#</a></dt>
+<dd><p>Return True if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under <code class="docutils literal notranslate"><span class="pre">input_metric</span></code>.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under <code class="docutils literal notranslate"><span class="pre">output_measure</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -1389,6 +1672,22 @@ mitigations we apply here.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.GeometricPartitionSelection.privacy_relation"><code class="docutils literal notranslate"><span class="pre">GeometricPartitionSelection.privacy_relation()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.alpha"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.alpha</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.threshold_fraction"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.threshold_fraction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.count_column"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.count_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.rank_column"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.rank_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_domain"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.input_metric"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.output_measure"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.output_measure</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.is_interactive"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.is_interactive</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__init__"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_function"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.privacy_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.call"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.call()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.__call__"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.measurements.spark_measurements.SparseVectorPrefixSums.privacy_relation"><code class="docutils literal notranslate"><span class="pre">SparseVectorPrefixSums.privacy_relation()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1427,7 +1726,7 @@ mitigations we apply here.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2024 -->
-Built from 9bd72b61 at 2024-12-16 18:44.</div>
+Built from dd264ab4 at 2024-12-20 18:31.</div>
       
     </div>
   

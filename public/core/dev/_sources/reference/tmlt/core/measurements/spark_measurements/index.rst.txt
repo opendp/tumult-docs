@@ -37,6 +37,8 @@ Classes
      - Applies a pandas dataframe aggregation to each group in a GroupedDataFrame.
    * - :class:`.GeometricPartitionSelection`
      - Discovers the distinct rows in a DataFrame, suppressing infrequent rows.
+   * - :class:`.SparseVectorPrefixSums`
+     - Find the rank of the row causing the prefix sum to exceed the threshold.
 
    
 .. py:class:: SparkMeasurement(input_domain, input_metric, output_measure, is_interactive)
@@ -129,6 +131,7 @@ Classes
 
    ..
        >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
        >>> from tmlt.core.measurements.noise_mechanisms import (
        ...     AddLaplaceNoise,
        ... )
@@ -179,7 +182,7 @@ Classes
    ... )
    >>> # Apply measurement to data
    >>> noisy_spark_dataframe = add_laplace_noise_to_column(spark_dataframe)
-   >>> print_sdf(noisy_spark_dataframe) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+   >>> print_sdf(noisy_spark_dataframe)  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
        A   B   count
    0  a1  b1 ...
    1  a1  b2 ...
@@ -381,6 +384,7 @@ Classes
 
    ..
        >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
        >>> from tmlt.core.utils.misc import print_sdf
        >>> spark = SparkSession.builder.getOrCreate()
        >>> spark_dataframe = spark.createDataFrame(
@@ -427,7 +431,7 @@ Classes
    ...     threshold=50,
    ...     alpha=1,
    ... )
-   >>> noisy_spark_dataframe = measurement(spark_dataframe) # doctest: +SKIP
+   >>> noisy_spark_dataframe = measurement(spark_dataframe)  # doctest: +SKIP
    >>> print_sdf(noisy_spark_dataframe)  # doctest: +NORMALIZE_WHITESPACE
        A   B  count
    0  a2  b2    106
@@ -537,6 +541,201 @@ Classes
    .. py:method:: call(val)
 
       Return the noisy counts for common rows.
+
+
+   .. py:method:: __call__(val)
+
+      Performs measurement and returns a DataFrame with additional protections.
+
+      See :ref:`pseudo-side-channel-mitigations` for more details on the specific
+      mitigations we apply here.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Return True if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under ``input_metric``.
+      :param d_out: Distance between outputs under ``output_measure``.
+
+
+
+   
+.. py:class:: SparseVectorPrefixSums(input_domain, count_column, rank_column, alpha, grouping_columns = None, threshold_fraction = 0.95)
+
+   Bases: :class:`SparkMeasurement`
+
+   Find the rank of the row causing the prefix sum to exceed the threshold.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "grouping": ["A"] * 10 + ["B"] * 10,
+       ...             "rank": list(range(10)) + list(range(-5, 5)),
+       ...             "count": [1] * 10 + [2] * 4 + [1000] + [2] * 5,
+       ...         }
+       ...     )
+       ... )
+       >>> noisy_spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "grouping": ["A", "B"],
+       ...             "rank": [8, -1],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+      grouping  rank  count
+   0         A     0      1
+   1         A     1      1
+   2         A     2      1
+   3         A     3      1
+   4         A     4      1
+   5         A     5      1
+   6         A     6      1
+   7         A     7      1
+   8         A     8      1
+   9         A     9      1
+   10        B    -5      2
+   11        B    -4      2
+   12        B    -3      2
+   13        B    -2      2
+   14        B    -1   1000
+   15        B     0      2
+   16        B     1      2
+   17        B     2      2
+   18        B     3      2
+   19        B     4      2
+
+   >>> measurement = SparseVectorPrefixSums(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         schema={
+   ...             "grouping": SparkStringColumnDescriptor(),
+   ...             "rank": SparkIntegerColumnDescriptor(),
+   ...             "count": SparkIntegerColumnDescriptor(),
+   ...         },
+   ...     ),
+   ...     count_column="count",
+   ...     rank_column="rank",
+   ...     alpha=1,
+   ...     grouping_columns=["grouping"],
+   ...     threshold_fraction=0.90,
+   ... )
+   >>> noisy_spark_dataframe = measurement(spark_dataframe)  # doctest: +SKIP
+   >>> print_sdf(noisy_spark_dataframe)  # doctest: +NORMALIZE_WHITESPACE
+     grouping  rank
+   0        A     8
+   1        B    -1
+
+   Measurement Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output type - Spark DataFrame
+       * Input metric - :class:`~.OnColumn` (with inner metric
+           ``SumOf(AbsoluteDifference())``) on the ``count_column``).
+       * Output measure - :class:`~.PureDP`
+
+       >>> measurement.input_domain
+       SparkDataFrameDomain(schema={'grouping': SparkStringColumnDescriptor(allow_null=False), 'rank': SparkIntegerColumnDescriptor(allow_null=False, size=64), 'count': SparkIntegerColumnDescriptor(allow_null=False, size=64)})
+       >>> measurement.input_metric
+       OnColumn(column='count', metric=SumOf(inner_metric=AbsoluteDifference()))
+       >>> measurement.output_measure
+       PureDP()
+
+       Privacy Guarantee:
+           For :math:`d_{in} = 0`, returns :math:`0`
+
+           For :math:`d_{in} \ge 1`, returns
+           :math:`(4 / \alpha) \cdot d_{in}`
+
+           where:
+
+           * :math:`\alpha` is :attr:`~.alpha`
+
+           >>> measurement.privacy_function(1)
+           4
+           >>> measurement.privacy_function(2)
+           8
+
+
+
+
+
+
+   .. py:property:: alpha
+      :type: tmlt.core.utils.exact_number.ExactNumber
+
+
+      Returns the alpha.
+
+   .. py:property:: threshold_fraction
+      :type: float
+
+
+      Returns the threshold.
+
+   .. py:property:: count_column
+      :type: str
+
+
+      Returns the count column.
+
+   .. py:property:: rank_column
+      :type: str
+
+
+      Returns the rank column.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      See `the architecture guide
+      <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_ for more
+      information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: call(val)
+
+      Return row causing prefix sum to exceed the threshold.
 
 
    .. py:method:: __call__(val)
