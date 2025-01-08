@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Tumult Labs 2024 -->
+<!-- Copyright Tumult Labs 2025 -->
 
 <!DOCTYPE html>
 
@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css?v=4c774bc9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css?v=790cdede" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
@@ -57,7 +57,7 @@
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
         DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
         </script>
-    <script src="../../../../../_static/js/version-banner.js?v=2f4196b0"></script>
+    <script src="../../../../../_static/js/version-banner.js?v=1dba2d8c"></script>
     <link rel="icon" href="../../../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -351,7 +351,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Tumult Labs 2024 -->
+<!-- Copyright Tumult Labs 2025 -->
 <h3>Tumult Core</h3></div>
         <div class="sidebar-primary-item">
 <script>
@@ -377,7 +377,7 @@ document.write(`
 `);
 </script></div>
         <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Tumult Labs 2024 -->
+<!-- Copyright Tumult Labs 2025 -->
 
 <nav class="bd-docs-nav bd-links">
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
@@ -518,7 +518,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.join.columns_after_join">
-<span class="sig-name descname"><span class="pre">columns_after_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.join.columns_after_join" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">columns_after_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inner'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.join.columns_after_join" title="Link to this definition">#</a></dt>
 <dd><p>Return the expected output columns and their origin from joining two dataframes.</p>
 <p>The keys are the names of the output columns in the order they will appear in the
 output dataframe. The values are tuples of the form (left_column, right_column),
@@ -539,36 +539,11 @@ last in the input order. (excluding join columns)</p></li>
 </div></blockquote>
 <p>_left and _right are appended to output column names if they are in both
 <code class="docutils literal notranslate"><span class="pre">left_columns</span></code> and <code class="docutils literal notranslate"><span class="pre">right_columns</span></code>, but are not joined on.</p>
-<p>Also does input validation. Checks:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>The join involves at least one column.</p></li>
-<li><p>Join columns are in both tables.</p></li>
-<li><p>None of the column names are duplicated in any of the inputs.</p></li>
-<li><p>No name collisions when adding _left or _right to a column name.</p></li>
-</ul>
-</div></blockquote>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">])</span>
 <span class="go">{&#39;b&#39;: (&#39;b&#39;, &#39;b&#39;), &#39;c&#39;: (&#39;c&#39;, &#39;c&#39;), &#39;a&#39;: (&#39;a&#39;, None), &#39;d&#39;: (None, &#39;d&#39;)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
 <span class="go">{&#39;b&#39;: (&#39;b&#39;, &#39;b&#39;), &#39;a&#39;: (&#39;a&#39;, None), &#39;c_left&#39;: (&#39;c&#39;, None), &#39;c_right&#39;: (None, &#39;c&#39;), &#39;d&#39;: (None, &#39;d&#39;)}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">])</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Join must involve at least one column.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Join column &#39;d&#39; not in the left table.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Join columns (`on`) contain duplicates.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">columns_after_join</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b_right&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Name collision, &#39;b_right&#39; would appear more than once in the output.</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -578,6 +553,8 @@ last in the input order. (excluding join columns)</p></li>
 <li><p><strong>right_columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – Columns of the right dataframe.</p></li>
 <li><p><strong>on</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em><em>]</em>) – Columns to join on. If None, join on all columns with the same
 name.</p></li>
+<li><p><strong>how</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Join type. Must be one of “left”, “right”, “inner”, “outer”, “left_anti”.
+This defaults to “inner”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -728,15 +705,15 @@ defaults to “inner”.</p></li>
 
   <p class="copyright">
     
-      © Copyright 2024 Tumult Labs.
+      © Copyright 2025 Tumult Labs.
       <br/>
     
   </p>
 </div>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Tumult Labs 2024 -->
-Built from dd264ab4 at 2024-12-20 18:31.</div>
+<!-- Copyright Tumult Labs 2025 -->
+Built from 9684dd4e at 2025-01-08 15:32.</div>
       
     </div>
   

@@ -58,7 +58,7 @@ Functions
 
 
 
-.. py:function:: columns_after_join(left_columns, right_columns, on = None)
+.. py:function:: columns_after_join(left_columns, right_columns, on = None, how = 'inner')
 
    Return the expected output columns and their origin from joining two dataframes.
 
@@ -81,40 +81,19 @@ Functions
    _left and _right are appended to output column names if they are in both
    ``left_columns`` and ``right_columns``, but are not joined on.
 
-   Also does input validation. Checks:
-
-       - The join involves at least one column.
-       - Join columns are in both tables.
-       - None of the column names are duplicated in any of the inputs.
-       - No name collisions when adding _left or _right to a column name.
-
    .. rubric:: Examples
 
    >>> columns_after_join(["a", "b", "c"], ["b", "c", "d"])
    {'b': ('b', 'b'), 'c': ('c', 'c'), 'a': ('a', None), 'd': (None, 'd')}
    >>> columns_after_join(["a", "b", "c"], ["b", "c", "d"], ["b"])
    {'b': ('b', 'b'), 'a': ('a', None), 'c_left': ('c', None), 'c_right': (None, 'c'), 'd': (None, 'd')}
-   >>> columns_after_join(["a", "b", "c"], ["d", "e", "f"])
-   Traceback (most recent call last):
-   ...
-   ValueError: Join must involve at least one column.
-   >>> columns_after_join(["a", "b", "c"], ["a", "b", "c"], ["d"])
-   Traceback (most recent call last):
-   ...
-   ValueError: Join column 'd' not in the left table.
-   >>> columns_after_join(["a", "b", "c"], ["a", "b", "c"], ["a", "a"])
-   Traceback (most recent call last):
-   ...
-   ValueError: Join columns (`on`) contain duplicates.
-   >>> columns_after_join(["a", "b"], ["a", "b", "b_right"], ["a"])
-   Traceback (most recent call last):
-   ...
-   ValueError: Name collision, 'b_right' would appear more than once in the output.
 
    :param left_columns: Columns of the left dataframe.
    :param right_columns: Columns of the right dataframe.
    :param on: Columns to join on. If None, join on all columns with the same
               name.
+   :param how: Join type. Must be one of "left", "right", "inner", "outer", "left_anti".
+               This defaults to "inner".
 
 
 
