@@ -1,0 +1,263 @@
+
+
+
+**************
+persist
+**************
+
+.. py:module:: tmlt.core.transformations.spark_transformations.persist
+
+.. autoapi-nested-parse::
+
+   Transformations for persisting and un-persisting Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Persist`
+     - Persists a Spark DataFrame.
+   * - :class:`.Unpersist`
+     - Unpersists a Spark DataFrame.
+   * - :class:`.SparkAction`
+     - Triggers an action on a Spark DataFrame.
+
+   
+.. py:class:: Persist(domain, metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Persists a Spark DataFrame.
+
+   This is an identity transformation that marks the input Spark DataFrame to be
+   stored when evaluated by Spark.
+
+   .. note::
+
+      This transformation does not eagerly evaluate and store the input DataFrame.
+      Spark only stores it when an action (like collect) is performed. If you want
+      to persist eagerly, chain this transformation with a :class:`~.SparkAction`.
+
+
+
+
+
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is d_in.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(data)
+
+      Returns input DataFrame.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: Unpersist(domain, metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Unpersists a Spark DataFrame.
+
+   This is an identity transformation that marks a persisted DataFrame to
+   be evicted. If the input DataFrame is not persisted, this has no effect.
+
+
+
+
+
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is d_in.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(data)
+
+      Returns input DataFrame.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+   
+.. py:class:: SparkAction(domain, metric)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Triggers an action on a Spark DataFrame.
+
+   This is intended to be used after :class:`~.Persist` to eagerly
+   evaluate and store a :class:`~.Transformation`\ 's output.
+
+
+
+
+
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      The returned d_out is d_in.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(data)
+
+      Returns input DataFrame.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+

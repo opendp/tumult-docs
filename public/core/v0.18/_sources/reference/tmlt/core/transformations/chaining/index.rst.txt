@@ -1,0 +1,135 @@
+
+
+
+***************
+chaining
+***************
+
+.. py:module:: tmlt.core.transformations.chaining
+
+.. autoapi-nested-parse::
+
+   Transformations constructed by chaining other transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ChainTT`
+     - Transformation constructed by chaining two transformations.
+
+   
+.. py:class:: ChainTT(transformation1, transformation2, hint = None)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Transformation constructed by chaining two transformations.
+
+
+
+
+
+
+   .. py:property:: transformation1
+      :type: tmlt.core.transformations.base.Transformation
+
+
+      Returns the first transformation being applied.
+
+   .. py:property:: transformation2
+      :type: tmlt.core.transformations.base.Transformation
+
+
+      Returns the second transformation being applied.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      Returns M.privacy_function(T.stability_function(d_in)).
+
+      where:
+
+      * T1 is the first transformation applied (:attr:`~.transformation1`)
+      * T2 is the second transformation applied (:attr:`~.transformation2`)
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If T2.stability_function(T1.stability_function(d_in))
+          raises :class:`NotImplementedError`.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if outputs are close under close inputs.
+
+      Let d_mid = T1.stability_function(d_in), or hint(d_in, d_out) if
+      T1.stability_function raises :class:`NotImplementedError`.
+
+      This returns True only if the following hold:
+
+      (1) T1.stability_relation(d_in, d_mid)
+      (2) T2.stability_relation(d_mid, d_out)
+
+      where:
+
+      * T1 is the first transformation applied (:attr:`~.transformation1`)
+      * T2 is the second transformation applied (:attr:`~.transformation2`)
+      * hint is the hint passed to the constructor.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __call__(data)
+
+      Performs transformation1 followed by transformation2.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+
