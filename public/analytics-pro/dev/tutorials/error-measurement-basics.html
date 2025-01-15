@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -481,12 +481,12 @@ document.write(`
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>First, let’s import the Python packages we will use and download some sample data.</p>
 <p>Throughout this tutorial section, we will use two tables: <code class="docutils literal notranslate"><span class="pre">members</span></code> contains information about the members of our fictional public library, and <code class="docutils literal notranslate"><span class="pre">nc-zip-codes</span></code> lists all the ZIP codes in North Carolina, where our library is located.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AddOneRow</span><span class="p">,</span>
     <span class="n">KeySet</span><span class="p">,</span>
     <span class="n">PureDPBudget</span><span class="p">,</span>
@@ -494,7 +494,7 @@ document.write(`
     <span class="n">Session</span><span class="p">,</span>
     <span class="n">SessionProgram</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
@@ -538,8 +538,8 @@ document.write(`
 </pre></div>
 </div>
 <p>If we run this program, we get a DataFrame with noisy sums and we can use a visualization library to plot this into a nice map. Let’s consider only the top ten ZIP codes in which the most books have been borrowed and display the noisy sums as a graph.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">top_10_zipcodes</span> <span class="o">=</span> <span class="n">books_by_zip_code</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;books_borrowed_sum&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -562,15 +562,15 @@ document.write(`
 <section id="from-session-to-sessionprogram">
 <h2>From Session to SessionProgram<a class="headerlink" href="#from-session-to-sessionprogram" title="Link to this heading">#</a></h2>
 <p>To get an error report, we must first convert our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> into a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>. In particular, we will create a subclass of <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, which defines both the structure of our <a class="reference internal" href="../reference/api/tmlt.analytics.Session.html#tmlt.analytics.Session" title="tmlt.analytics.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> and the logic for evaluating queries within the Session.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
         <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">UnprotectedInputs</span><span class="p">:</span>
         <span class="n">nc_zip_codes</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
         <span class="n">books_by_zip_code</span><span class="p">:</span> <span class="n">DataFrame</span>
 
-    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">public_source_dataframes</span><span class="p">[</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">]</span>
         <span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
@@ -662,9 +662,9 @@ document.write(`
 In particular, we will write a subclass of <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, and pass our <code class="docutils literal notranslate"><span class="pre">BooksByZipCodeProgram</span></code> as a class argument.
 We will also specify a set of error metrics in the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> class variable to measure how accurate our output is.
 For example, we will use the built-in metric <a class="reference internal" href="../reference/api/tmlt.tune.MedianRelativeError.html#tmlt.tune.MedianRelativeError" title="tmlt.tune.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a> to measure the program’s median relative error.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">MedianRelativeError</span>
 
-<span class="k">class</span> <span class="nc">BooksTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BooksTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MedianRelativeError</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
@@ -810,7 +810,7 @@ For example, we will use the built-in metric <a class="reference internal" href=
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

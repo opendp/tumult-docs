@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -502,25 +502,25 @@ defines the interface for tuning <a class="reference internal" href="api/tmlt.an
 <p>To tune a specific program, users should subclass
 <a class="reference internal" href="api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a>, passing their
 <a class="reference internal" href="api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> as the <code class="docutils literal notranslate"><span class="pre">program</span></code> class argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Program</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">b_sum</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Parameters</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Parameters</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">low</span><span class="p">:</span> <span class="nb">int</span>
 <span class="gp">... </span>        <span class="n">high</span><span class="p">:</span> <span class="nb">int</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="n">a_values</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]})</span>
 <span class="gp">... </span>        <span class="n">sum_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;protected_df&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">a_values</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="n">b_sum</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">sum_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_budget</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;b_sum&quot;</span><span class="p">:</span> <span class="n">b_sum</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nd">@joined_output_metric</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;root_mean_squared_error&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;b_sum&quot;</span><span class="p">,</span> <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span>
 <span class="gp">... </span>    <span class="nd">@staticmethod</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">compute_rmse</span><span class="p">(</span><span class="n">joined_output</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">compute_rmse</span><span class="p">(</span><span class="n">joined_output</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">err</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;b_sum_dp&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">sf</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;b_sum_baseline&quot;</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="n">rmse</span> <span class="o">=</span> <span class="n">joined_output</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">sf</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="mi">2</span><span class="p">))))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">))</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="n">rmse</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;rmse&quot;</span><span class="p">]</span>
@@ -826,7 +826,7 @@ Users should generally not use the <a class="reference internal" href="api/tmlt.
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

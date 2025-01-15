@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -476,11 +476,11 @@ document.write(`
 </div>
 <p>In the previous tutorial, we wrote a <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that calculated the total number of books borrowed by library members, sliced by ZIP code. We then wrapped this in a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and showed how to evaluate its error report using a single built-in error metric, <a class="reference internal" href="../reference/api/tmlt.tune.MedianRelativeError.html#tmlt.tune.MedianRelativeError" title="tmlt.tune.MedianRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeError</span></code></a>. In this tutorial we are going to build on this example, so let’s re-create it below:</p>
 <p>As usual, we first import our packages…</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
-<span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">sf</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">SparkSession</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AddOneRow</span><span class="p">,</span>
     <span class="n">KeySet</span><span class="p">,</span>
     <span class="n">PureDPBudget</span><span class="p">,</span>
@@ -488,7 +488,7 @@ document.write(`
     <span class="n">Session</span><span class="p">,</span>
     <span class="n">SessionProgram</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
 </pre></div>
 </div>
 <p>… and download the datasets, in case we haven’t already done so.</p>
@@ -518,15 +518,15 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p>The following code is identical to the previous tutorial. If you already have it in your environment, feel free to skip to the next section.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
         <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">UnprotectedInputs</span><span class="p">:</span>
         <span class="n">nc_zip_codes</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
         <span class="n">books_by_zip_code</span><span class="p">:</span> <span class="n">DataFrame</span>
 
-    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unprotected_inputs</span><span class="p">[</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">]</span>
         <span class="n">nc_zip_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
@@ -539,9 +539,9 @@ document.write(`
 </pre></div>
 </div>
 <p>Next, we create our tuner by subclassing <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> and defining the error metric we want to compute.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">MedianRelativeError</span>
 
-<span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MedianRelativeError</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
@@ -586,9 +586,9 @@ and show how to generate error reports using custom metrics that you write yours
 <h2>Exploring built-in metrics<a class="headerlink" href="#exploring-built-in-metrics" title="Link to this heading">#</a></h2>
 <p>Tumult Analytics provides other built-in metrics that we can use to measure the error of our program. You can find a full list in the API reference.</p>
 <p>Let’s add three more metrics <a class="reference internal" href="../reference/api/tmlt.tune.QuantileRelativeError.html#tmlt.tune.QuantileRelativeError" title="tmlt.tune.QuantileRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileRelativeError</span></code></a>, <a class="reference internal" href="../reference/api/tmlt.tune.SpuriousRate.html#tmlt.tune.SpuriousRate" title="tmlt.tune.SpuriousRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpuriousRate</span></code></a> and <a class="reference internal" href="../reference/api/tmlt.tune.SuppressionRate.html#tmlt.tune.SuppressionRate" title="tmlt.tune.SuppressionRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuppressionRate</span></code></a> to our <code class="docutils literal notranslate"><span class="pre">metrics</span></code> list from earlier.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantileRelativeError</span><span class="p">,</span> <span class="n">SpuriousRate</span><span class="p">,</span> <span class="n">SuppressionRate</span>
 
-<span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MedianRelativeError</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
@@ -664,7 +664,7 @@ includes fewer ZIP codes (for example, only those that are close enough to our f
 library). In this tutorial, we will assume we want to publish data for all ZIP codes in
 North Carolina, so we will leave the KeySet as-is. However, we can modify <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method
 to the suppress the ZIP codes with relatively small counts.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
 
     <span class="c1"># ... same as before</span>
 
@@ -705,9 +705,9 @@ is concentrated around the location of the library.</p>
 <h2>Using custom metrics<a class="headerlink" href="#using-custom-metrics" title="Link to this heading">#</a></h2>
 <p>What if we need to measure our program’s error in a way that cannot be described using built-in metrics? Say that we want to compare the total number of books published by our program to the true value. We can do this by defining a fully custom metric using the <a class="reference internal" href="../reference/api/tmlt.tune.joined_output_metric.html#tmlt.tune.joined_output_metric" title="tmlt.tune.joined_output_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;joined_output_metric</span> <span class="pre">decorator</span></code></a> and defining a method that computes our metric.</p>
 <p>The custom metric method takes a <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> which contains the DP data joined to the baseline data, and should return either a single value (if there are no grouping columns), or (if grouped) a DataFrame that has a column named with the <code class="docutils literal notranslate"><span class="pre">result_column_name</span></code> variable that contains the metric’s result values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.tune</span> <span class="kn">import</span> <span class="n">joined_output_metric</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">joined_output_metric</span>
 
-<span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
 
     <span class="nd">@joined_output_metric</span><span class="p">(</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relative_change_total_books_borrowed&quot;</span><span class="p">,</span>
@@ -718,7 +718,7 @@ is concentrated around the location of the library.</p>
         <span class="n">join_how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">total_borrowed_books</span><span class="p">(</span><span class="n">joined_output</span><span class="p">,</span> <span class="n">result_column_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_borrowed_books</span><span class="p">(</span><span class="n">joined_output</span><span class="p">,</span> <span class="n">result_column_name</span><span class="p">):</span>
         <span class="n">relative_change</span> <span class="o">=</span> <span class="n">joined_output</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
             <span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed_sum_dp&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">sf</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;books_borrowed_sum_baseline&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">result_column_name</span><span class="p">))</span>
@@ -879,7 +879,7 @@ is concentrated around the location of the library.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -505,12 +505,12 @@ metrics using <a class="reference internal" href="api/tmlt.tune.JoinedOutputMetr
 <a class="reference internal" href="api/tmlt.tune.SingleOutputMetric.html#tmlt.tune.SingleOutputMetric" title="tmlt.tune.SingleOutputMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleOutputMetric</span></code></a>, or <a class="reference internal" href="api/tmlt.tune.Metric.html#tmlt.tune.Metric" title="tmlt.tune.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a>.</p>
 <p>Suppose we have a <a class="reference internal" href="api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a> that has one protected input
 and produces one output that is a count of the number of rows in the protected input.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MinimalProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MinimalProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>  <span class="c1"># DataFrame type annotation is required</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">count_per_a</span><span class="p">:</span> <span class="n">DataFrame</span>  <span class="c1"># required here too</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">a_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
 <span class="gp">... </span>        <span class="n">count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;protected_df&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">a_keyset</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="n">budget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_budget</span>  <span class="c1">#  session.remaining_privacy_budget also works</span>
@@ -529,7 +529,7 @@ metric using a <a class="reference internal" href="tuners.html#defining-metrics"
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">protected_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}))</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">MinimalProgram</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Tuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">MinimalProgram</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>        <span class="n">MedianAbsoluteError</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s2">&quot;count_per_a&quot;</span><span class="p">,</span> <span class="n">measure_column</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]),</span>
 <span class="gp">... </span>    <span class="p">]</span>
@@ -538,7 +538,7 @@ metric using a <a class="reference internal" href="tuners.html#defining-metrics"
 <span class="gp">... </span>            <span class="n">output</span><span class="o">=</span><span class="s2">&quot;count_per_a&quot;</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Root mean squared error for column count of count_per_a&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">compute_rmse</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">compute_rmse</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">joined_output</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">result_column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">):</span>
@@ -769,7 +769,7 @@ results obtained when computing a metric on a single run of the program.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

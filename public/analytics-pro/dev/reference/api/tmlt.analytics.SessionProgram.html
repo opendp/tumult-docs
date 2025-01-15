@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -479,7 +479,7 @@ document.write(`
                   
   <section id="sessionprogram">
 <h1>SessionProgram<a class="headerlink" href="#sessionprogram" title="Link to this heading">#</a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tmlt.analytics</span> <span class="kn">import</span> <span class="n">SessionProgram</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionProgram</span>
 </pre></div>
 </div>
 <dl class="py class">
@@ -513,12 +513,12 @@ budget provided in the builder.</p>
 accessible in the <a class="reference internal" href="#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> method as a
 private source with the same name in the given Session.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ProgramWithProtectedInputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ProgramWithProtectedInputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">total_count</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Private sources:&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="n">count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;protected_df&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">count_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_budget</span><span class="p">)</span>
@@ -552,14 +552,14 @@ accessible in the <a class="reference internal" href="#tmlt.analytics.SessionPro
 public source with the same name in the given session, or through the
 <a class="reference internal" href="tmlt.analytics.SessionProgram.unprotected_inputs.html#tmlt.analytics.SessionProgram.unprotected_inputs" title="tmlt.analytics.SessionProgram.unprotected_inputs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unprotected_inputs</span></code></a> property.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ProgramWithUnprotectedInputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ProgramWithUnprotectedInputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">UnprotectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">public_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">total_count</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Public sources:&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">public_sources</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">public_source_dataframes</span> <span class="o">==</span> <span class="p">{</span>
 <span class="gp">... </span>            <span class="s2">&quot;public_df&quot;</span><span class="p">:</span> <span class="n">public_df</span>
@@ -599,15 +599,15 @@ etc.</p>
 use in the <a class="reference internal" href="#tmlt.analytics.SessionProgram.session_interaction" title="tmlt.analytics.SessionProgram.session_interaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">session_interaction()</span></code></a> through the
 <a class="reference internal" href="tmlt.analytics.SessionProgram.parameters.html#tmlt.analytics.SessionProgram.parameters" title="tmlt.analytics.SessionProgram.parameters"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parameters</span></code></a> property.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ProgramWithParameters</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ProgramWithParameters</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">a_sum</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Parameters</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Parameters</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">low</span><span class="p">:</span> <span class="nb">int</span>
 <span class="gp">... </span>        <span class="n">high</span><span class="p">:</span> <span class="nb">int</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="n">sum_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;protected_df&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
@@ -638,12 +638,12 @@ use in the <a class="reference internal" href="#tmlt.analytics.SessionProgram.se
 keys are the names of the outputs and the values are the corresponding
 DataFrames.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ProgramWithOutputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ProgramWithOutputs</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">protected_df</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">total_count</span><span class="p">:</span> <span class="n">DataFrame</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;protected_df&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">count_query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_budget</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;total_count&quot;</span><span class="p">:</span> <span class="n">total_count</span><span class="p">}</span>
@@ -800,7 +800,7 @@ protected and unprotected DataFrames as well as the privacy budget.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

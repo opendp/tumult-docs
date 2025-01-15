@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -478,19 +478,19 @@ document.write(`
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>As in earlier tutorials, we import the necessary packages and download the data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkFiles</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">DataFrame</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.keyset</span> <span class="kn">import</span> <span class="n">KeySet</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.privacy_budget</span> <span class="kn">import</span> <span class="n">PureDPBudget</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.protected_change</span> <span class="kn">import</span> <span class="n">AddOneRow</span><span class="p">,</span> <span class="n">AddMaxRows</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.session</span> <span class="kn">import</span> <span class="n">Session</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.program</span> <span class="kn">import</span> <span class="n">SessionProgram</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.tuner</span> <span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
-<span class="kn">from</span> <span class="nn">tmlt.analytics.metrics</span> <span class="kn">import</span> <span class="n">MedianRelativeError</span><span class="p">,</span> <span class="n">QuantileRelativeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkFiles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">DataFrame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.keyset</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeySet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.privacy_budget</span><span class="w"> </span><span class="kn">import</span> <span class="n">PureDPBudget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.protected_change</span><span class="w"> </span><span class="kn">import</span> <span class="n">AddOneRow</span><span class="p">,</span> <span class="n">AddMaxRows</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.query_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">QueryBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.session</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.program</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionProgram</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.tuner</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">Tunable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">MedianRelativeError</span><span class="p">,</span> <span class="n">QuantileRelativeError</span>
 
 <span class="c1"># Analytics&#39; multi-error reports, which we will see in this tutorial,</span>
 <span class="c1"># have a built-in progress bar that requires Spark&#39;s native progress bar</span>
@@ -535,17 +535,17 @@ document.write(`
 </pre></div>
 </div>
 <p>The upper clamping bound of 500 was chosen arbitrarily. To tune this value, we must first <em>parametrize</em> it. To do this, we must declare this parameter as part of our <a class="reference internal" href="../reference/api/tmlt.analytics.SessionProgram.html#tmlt.analytics.SessionProgram" title="tmlt.analytics.SessionProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgram</span></code></a>, and then use it in our query.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
-    <span class="k">class</span> <span class="nc">ProtectedInputs</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BooksByZipCodeProgram</span><span class="p">(</span><span class="n">SessionProgram</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">ProtectedInputs</span><span class="p">:</span>
         <span class="n">members</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">UnprotectedInputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">UnprotectedInputs</span><span class="p">:</span>
         <span class="n">nc_zip_codes</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Outputs</span><span class="p">:</span>
         <span class="n">books_by_zip_code</span><span class="p">:</span> <span class="n">DataFrame</span>
-    <span class="k">class</span> <span class="nc">Parameters</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Parameters</span><span class="p">:</span>
         <span class="n">upper_clamping_bound</span><span class="p">:</span> <span class="nb">int</span>
 
-    <span class="k">def</span> <span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">session_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">):</span>
         <span class="n">nc_zip_codes_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unprotected_inputs</span><span class="p">[</span><span class="s2">&quot;nc_zip_codes&quot;</span><span class="p">]</span>
         <span class="n">nc_zip_code_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">nc_zip_codes_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;zip_code&quot;</span><span class="p">))</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
@@ -580,7 +580,7 @@ document.write(`
 <section id="running-multiple-error-reports-at-once">
 <h2>Running multiple error reports at once<a class="headerlink" href="#running-multiple-error-reports-at-once" title="Link to this heading">#</a></h2>
 <p>Let’s define a <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.html#tmlt.tune.SessionProgramTuner" title="tmlt.tune.SessionProgramTuner"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionProgramTuner</span></code></a> with our program class to compute two metrics: the median and 75th percentile relative error. We’ve already seen similar metrics, but this time we are giving them a short name.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleTuner</span><span class="p">(</span><span class="n">SessionProgramTuner</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">BooksByZipCodeProgram</span><span class="p">):</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MedianRelativeError</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="s2">&quot;books_by_zip_code&quot;</span><span class="p">,</span>
@@ -826,7 +826,7 @@ Done!
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   

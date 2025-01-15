@@ -30,7 +30,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
@@ -472,7 +472,7 @@ As long as Spark has an active session, any calls that “create” new Spark
 sessions use that active session.</p>
 <p>If you want Tumult Analytics to use Spark sessions with any <em>specific</em> properties,
 then before running Tumult Analytics code, you should create that Spark session:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.&lt;</span><span class="n">your</span> <span class="n">options</span> <span class="n">here</span><span class="o">&gt;.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -484,7 +484,7 @@ then before running Tumult Analytics code, you should create that Spark session:
 Tumult Analytics will often perform many Spark computations, so this per-computation progress bar is not very useful.
 For long-running operations like <a class="reference internal" href="../reference/api/tmlt.tune.SessionProgramTuner.multi_error_report.html#tmlt.tune.SessionProgramTuner.multi_error_report" title="tmlt.tune.SessionProgramTuner.multi_error_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SessionProgramTuner.multi_error_report</span></code></a>, Tumult Analytics provides a more useful progress bar instead.
 Enabling it requires disabling Spark’s native progress bar by setting <code class="docutils literal notranslate"><span class="pre">spark.ui.showConsoleProgress</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your Spark configuration.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.ui.showConsoleProgress&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -493,7 +493,7 @@ Enabling it requires disabling Spark’s native progress bar by setting <code cl
 <h3>Connecting to Hive<a class="headerlink" href="#connecting-to-hive" title="Link to this heading">#</a></h3>
 <p id="hive-tips">If you want to connect Spark to an existing <a class="reference external" href="https://hive.apache.org/">Hive</a>
 database, you should use the following options when creating a Spark session:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.&lt;</span><span class="n">your</span> <span class="n">options</span> <span class="n">here</span><span class="o">&gt;</span>
     <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s1">&#39;spark.sql.warehouse.dir&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Hive warehouse directory&gt;&#39;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">enableHiveSupport</span><span class="p">()</span>
@@ -596,8 +596,8 @@ to file, instead of using
 <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrame.toPandas.html#pyspark.sql.DataFrame.toPandas" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame.toPandas()</span></code></a> and then saving the Pandas
 dataframe.</p>
 <p>For example, to save a dataframe as CSV, you can do this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(),</span> <span class="s1">&#39;data&#39;</span><span class="p">))</span>
 </pre></div>
@@ -701,7 +701,7 @@ dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 49455413 at 2025-01-15 16:19.</div>
+Built from 63df6306 at 2025-01-15 21:00.</div>
       
     </div>
   
