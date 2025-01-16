@@ -1,7 +1,8 @@
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2025
-.. _analytics-changelog:
+
+.. _changelog:
 
 Changelog
 =========
@@ -12,7 +13,8 @@ Unreleased
 Changed
 ~~~~~~~
 
-- The :ref:`API reference<api>` is now organized into semantically-grouped subpages, and no longer follows the internal module structure. 
+- The documentation is now split in three distinct product-level documentation pages, for :ref:`Tumult Analytics<analytics>`, :ref:`Tumult Synthetics<synthetics>`, and :ref:`Tumult Tune<tune>`.
+- The API reference is now organized into semantically-grouped subpages and no longer follows the internal module structure. 
 - All Python objects should now be imported directly from ``tmlt.analytics``, ``tmlt.synthetics``, and ``tmlt.tune``. The documentation and demos have been updated accordingly. Existing import paths still work but will be removed in a future release, so users should switch to the new import statements.
 - Numpy arrays can now be used when initializing a :class:`~tmlt.analytics.binning_spec.BinningSpec`.
 - |PRO| Renamed ``CountReleasedRows`` to :class:`~tmlt.tune.CountDPRows` and ``HighRelativeErrorFraction`` to :class:`~tmlt.tune.HighRelativeErrorRate`.
@@ -51,7 +53,6 @@ This release adds an initial version of Tumult Synthetics, Tumult Labs' new diff
 The :ref:`API for this generator<synthetics-api>` is still under development and may undergo significant changes.
 
 Additionally, this release increases the minimum supported Python version to 3.9, and the minimum supported PySpark version to 3.3.1.
-
 
 Added
 ~~~~~
@@ -275,7 +276,7 @@ Fixed
 This release introduces support in the query language for suppressing aggregates below a certain threshold, providing an easier and clearer way to express queries where small values must be dropped due to potentially-high noise.
 
 For macOS users, it also introduces native support for Apple silicon, allowing Tumult Analytics to be used on ARM-based Macs without the need for Rosetta.
-Take a look at the updated :ref:`installation guide <Installation instructions>` for more information about this.
+Take a look at the updated :ref:`installation guide <installation>` for more information about this.
 If you have an existing installation that uses Rosetta, ensure that you are using a supported native Python installation when switching over.
 Users with Intel-based Macs should not be affected.
 
@@ -506,12 +507,12 @@ For example, this may be used to protect each user of a service when every row i
 
 Privacy identifiers are set up using the new :class:`~tmlt.analytics.AddRowsWithID` protected change.
 A number of features have been added to the API to support this, including alternative behaviors for various query transformations when working with IDs and the new concept of :ref:`constraints`.
-To get started with these features, take a look at the new :ref:`Working with privacy IDs <Working with privacy IDs>` and :ref:`Doing more with privacy IDs <Advanced IDs features>` tutorials.
+To get started with these features, take a look at the new :ref:`Working with privacy IDs <privacy-id-basics>` and :ref:`Doing more with privacy IDs <advanced-privacy-ids>` tutorials.
 
 Added
 ~~~~~
 - A new :class:`~tmlt.analytics.AddRowsWithID` protected change has been added, which protects the addition or removal of all rows with the same value in a specified column.
-  See the documentation for :class:`~tmlt.analytics.AddRowsWithID` and the :ref:`Doing more with privacy IDs <Advanced IDs features>` tutorial for more information.
+  See the documentation for :class:`~tmlt.analytics.AddRowsWithID` and the :ref:`Doing more with privacy IDs <advanced-privacy-ids>` tutorial for more information.
 
   - When creating a Session with :class:`~tmlt.analytics.AddRowsWithID` using a :class:`Session.Builder<tmlt.analytics.Session.Builder>`, you must use the new :meth:`~tmlt.analytics.Session.Builder.with_id_space` method to specify the identifier space(s) of tables using this protected change.
   - When creating a Session with :meth:`Session.from_dataframe()<tmlt.analytics.Session.from_dataframe>`, specifying an ID space is not necessary.

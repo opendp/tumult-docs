@@ -1,0 +1,190 @@
+..
+    Copyright Tumult Labs 2025. All rights reserved.
+    This file is part of Tumult Analytics Pro.
+    It may only be used, reproduced, modified or distributed pursuant to
+    Tumult Labs' Enterprise License Agreement or another commercial license
+    agreement entered into between you and Tumult Labs.
+    No other rights are granted to use this file in any way.
+
+.. _metrics:
+
+Measuring accuracy
+==================
+
+.. note::
+
+    |PRO_NOTE|
+
+Metrics are used as part of a :class:`~tmlt.tune.SessionProgramTuner` to evaluate the
+accuracy of differentially private programs.
+
+A number of pre-built metrics are provided, for example
+:class:`~tmlt.tune.QuantileAbsoluteError`,
+:class:`~tmlt.tune.HighRelativeErrorRate`, and
+:class:`~tmlt.tune.SpuriousRate`. Users can also define their own custom
+metrics using :class:`~tmlt.tune.JoinedOutputMetric`,
+:class:`~tmlt.tune.SingleOutputMetric`, or :class:`~tmlt.tune.Metric`.
+
+Suppose we have a :class:`~tmlt.analytics.SessionProgram` that has one protected input
+and produces one output that is a count of the number of rows in the protected input.
+
+..
+    >>> import math
+    >>> from typing import Dict, List
+    >>> import pandas as pd
+    >>> from pyspark.sql import DataFrame, SparkSession
+    >>> import pyspark.sql.functions as sf
+    >>> from tmlt.analytics import (
+    ...     AddOneRow,
+    ...     KeySet,
+    ...     PureDPBudget,
+    ...     QueryBuilder,
+    ...     Session,
+    ...     SessionProgram,
+    ... )
+    >>> from tmlt.tune import (
+    ...     MedianAbsoluteError,
+    ...     SessionProgramTuner,
+    ...     joined_output_metric,
+    ... )
+    >>> spark = SparkSession.builder.getOrCreate()
+
+>>> class MinimalProgram(SessionProgram):
+...     class ProtectedInputs:
+...         protected_df: DataFrame  # DataFrame type annotation is required
+...     class Outputs:
+...         count_per_a: DataFrame  # required here too
+...     def session_interaction(self, session: Session):
+...         a_keyset = KeySet.from_dict({"A": [1, 2, 3, 4]})
+...         count_query = QueryBuilder("protected_df").groupby(a_keyset).count()
+...         budget = self.privacy_budget  #  session.remaining_privacy_budget also works
+...         count_per_a = session.evaluate(count_query, budget)
+...         return {"count_per_a": count_per_a}
+
+We can pass this information to the :class:`~tmlt.tune.SessionProgramTuner` class, which
+is what gives us access to error reports.
+
+We can measure the error of the program by comparing the program output to a *baseline*,
+which is usually chosen to be the true answer to each query. Suppose we want to use a
+built-in metric: the median absolute error :class:`~tmlt.tune.MedianAbsoluteError` and a
+custom metric: root mean squared error. We need to include the built-in metric in the
+:attr:`~tmlt.tune.SessionProgramTuner.metrics` class variable, and define our custom
+metric using a :ref:`decorated method<defining-metrics>`.
+
+>>> protected_df = spark.createDataFrame(pd.DataFrame({"A": [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]}))
+
+>>> class Tuner(SessionProgramTuner, program=MinimalProgram):
+...     metrics = [
+...         MedianAbsoluteError(output="count_per_a", measure_column="count", join_columns=["A"]),
+...     ]
+...
+...     @joined_output_metric(name="root_mean_squared_error",
+...             output="count_per_a",
+...             join_columns=["A"],
+...             description="Root mean squared error for column count of count_per_a")
+...     def compute_rmse(
+...         joined_output: DataFrame,
+...         result_column_name: str,
+...     ):
+...         err = sf.col("count_dp") - sf.col("count_baseline")
+...         rmse = joined_output.agg(
+...             sf.sqrt(sf.avg(sf.pow(err, sf.lit(2)))).alias(result_column_name))
+...         return rmse.head(1)[0][result_column_name]
+>>> tuner = (
+...    Tuner.Builder()
+...    .with_privacy_budget(PureDPBudget(epsilon=1))
+...    .with_private_dataframe("protected_df", protected_df, AddOneRow())
+...    .build()
+... )
+
+Now that our SessionProgramTuner is initialized, we can get our very first error
+report by calling the :meth:`~tmlt.tune.SessionProgramTuner.error_report` method.
+
+>>> error_report = tuner.error_report()
+>>> error_report.dp_outputs["count_per_a"].show()  # doctest: +SKIP
++---+-----+
+|  A|count|
++---+-----+
+|  1|    2|
+|  2|    2|
+|  3|    5|
+|  4|    3|
++---+-----+
+>>> error_report.baseline_outputs["default"]["count_per_a"].show()  # doctest: +SKIP
++---+-----+
+|  A|count|
++---+-----+
+|  1|    1|
+|  2|    2|
+|  3|    3|
+|  4|    4|
++---+-----+
+>>> error_report.show()  # doctest: +SKIP
+Error report ran with budget PureDPBudget(epsilon=1) and no tunable parameters and no additional parameters
+<BLANKLINE>
+Metric results:
++---------+-------------------------+------------+-------------------------------------------------------------+
+|   Value | Metric                  | Baseline   | Description                                                 |
++=========+=========================+============+=============================================================+
+|       0 | mae                     | default    | Median absolute error for column count of table count_per_a |
++---------+-------------------------+------------+-------------------------------------------------------------+
+|       0 | root_mean_squared_error | default    | Root mean squared error                                     |
++---------+-------------------------+------------+-------------------------------------------------------------+
+
+More illustrated examples of how to define and use metrics can be found in the
+:ref:`Basics of error measurement<error-measurement-basics>` and
+:ref:`Specifying error metrics<specifying-error-metrics>` tutorials.
+
+.. currentmodule:: tmlt.tune
+
+Built-in metrics
+----------------
+Built-in metrics implement commonly-used ways to measure accuracy. They only
+require users to specify their constructor arguments to be used in a
+:class:`~tmlt.tune.SessionProgramTuner`.
+
+.. autosummary::
+   :toctree: api/
+
+   QuantileAbsoluteError
+   MedianAbsoluteError
+   QuantileRelativeError
+   MedianRelativeError
+   HighRelativeErrorRate
+   HighRelativeErrorCount
+   SpuriousRate
+   SpuriousCount
+   SuppressionRate
+   SuppressionCount
+   CountDPRows
+   CountBaselineRows
+
+Custom metrics
+--------------
+Custom metrics allows users to implement arbitrary error measurement logic. They can be
+specified in a :class:`~tmlt.tune.SessionProgramTuner` using decorated methods, or the
+:attr:`~tmlt.tune.SessionProgramTuner.metrics` class variable using custom metric
+classes.
+
+.. autosummary::
+   :toctree: api/
+
+   metric
+   single_output_metric
+   joined_output_metric
+   Metric
+   SingleOutputMetric
+   JoinedOutputMetric
+
+Metric results
+--------------
+These classes, common between built-in metrics and custom metrics, contain the
+results obtained when computing a metric on a single run of the program.
+
+.. autosummary::
+   :toctree: api/
+   :nosignatures:
+
+   MetricResult
+   SingleOutputMetricResult
+   JoinedOutputMetricResult

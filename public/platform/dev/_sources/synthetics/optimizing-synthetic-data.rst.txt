@@ -1,0 +1,208 @@
+..
+    Copyright Tumult Labs 2025. All rights reserved.
+    This file is part of Tumult Analytics Pro.
+    It may only be used, reproduced, modified or distributed pursuant to
+    Tumult Labs' Enterprise License Agreement or another commercial license
+    agreement entered into between you and Tumult Labs.
+    No other rights are granted to use this file in any way.
+
+.. _synthetic-data-optimization:
+
+Synthetic data optimization guide
+=================================
+
+.. note:: 
+
+    |PRO_NOTE|
+
+In this topic guide, we will outline a few common strategies to optimize the
+privacy-utility trade-off when using Tumult Synthetics to generate differentially
+private synthetic data.
+
+Choosing the measurement strategy
+---------------------------------
+
+The measurement strategy passed in the ``measurement_strategy`` argument of
+:meth:`~tmlt.synthetics.generate_synthetic_data` is one of the key
+choices that impacts the utility of the generated synthetic data. Put simply,
+the measurement strategy determines what distributional properties of the
+original dataset will be best captured.
+
+Single-column vs. multi-columns marginals
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The simplest option, useful when building a first prototype, is to measure
+the column-wise distribution of all categorical columns. This is done using
+:class:`~tmlt.synthetics.FixedMarginals` with one
+:class:`~tmlt.synthetics.Count` marginal for each column. This will
+preserve the distribution of values within individual columns, but not between 
+groups of columns.
+
+Depending on the use case for synthetic data, it is often desirable to preserve
+correlations between pairs of columns. Using a
+:class:`~tmlt.synthetics.Count` marginal initialized with categorical
+columns ``col_a`` and ``col_b`` will preserve the correlations between these
+columns. Similarly, computing the marginal distribution across more columns will
+attempt to preserve the correlations between all these columns at once.
+
+It can thus be tempting to measure all the columns at once, or all pairs of
+columns in the input dataset. However, there are two fundamental trade-offs that
+mean that such naive strategies are rarely optimal.
+
+1. When measuring a marginal distribution across a large number of columns, more (if not
+   almost all) combinations of column values will be associated with very few distinct
+   data points. When adding differentially private noise to this count, the noise will
+   tend to overwhelm the signal, leading to poor utility. We discuss this more in detail
+   in the :ref:`next section<synthetic-sparsity>`.
+2. The privacy budget is split across all the marginals that are being measured.
+   Therefore, if there are a very large number of marginals, the privacy budget
+   associated with each will be very small, leading to very noisy results: the
+   distributions and correlations will be captured inaccurately. We discuss this
+   in more detail in a :ref:`follow-up section<synthetic-budget-split>`.
+
+Generally, it is a good practice to start with a simple strategy, and
+iteratively add more complex marginals as needed.
+
+.. _synthetic-sparsity:
+
+The impact of sparsity
+^^^^^^^^^^^^^^^^^^^^^^
+
+When computing a :class:`~tmlt.synthetics.Count` marginal, for a fixed
+privacy budget, the noise added to the count of each combination of column
+values will have a fixed variance. Therefore, it will have a small impact if the
+real counts are large, but can lead to significant inaccuracy if the real counts
+are very small. When deciding whether or not a marginal is worth including, it
+is worth considering its sparsity: if most combinations of column values appear
+only a few times in the dataset, the additional marginal will likely not bring a
+significant gain in utility.
+
+A common way to deal with sparsity issues is to use binning: if a categorical
+column is a date, a timestamp, or a numeric value, the ``binning_specs``
+argument from :meth:`~tmlt.synthetics.generate_synthetic_data` can be
+used to specify how the data is binned. Increasing the binning size can be
+helpful to group more values together, reducing sparsity at the cost of more
+granular measurements. Trying out different binning strategies can be a good way
+of iteratively improving the utility of the synthetic data.
+
+.. _synthetic-budget-split:
+
+Splitting the privacy budget
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the privacy budget will be split evenly across all marginals. This
+is a good first choice when prototyping, but rarely an optimal strategy. Instead
+of using this default splitting strategy, users may specify the ``weight``
+argument in each marginal: then, the budget is split proportionally to this
+parameter, so marginals with larger weights will be measured more accurately.
+This can be useful to preserve certain particularly important correlations with
+a higher accuracy, at the cost of lower accuracy of less-important marginals.
+This can also be used to counterbalance the effects of sparsity, by using more
+budget on the marginals where each combination of column values is associated
+with only a few records.
+
+Choosing clamping and truncation bounds
+---------------------------------------
+
+To generate synthetic data with numeric columns, it is necessary to specify clamping
+bounds using the :class:`~tmlt.synthetics.ClampingBounds` class. All input records whose
+value for the numeric column is outside of these bounds will be modified to fit within
+these bounds, as explained in the
+:ref:`tutorial about numerical aggregations<clamping-bounds>`. And the trade-off
+described in this tutorial also applies for synthetic data generation: larger clamping
+bounds will lead to more noise added to the corresponding :class:`~tmlt.synthetics.Sum`
+marginal, but tighter bounds can also bring bias if too many values are clamped.
+
+As a rule of thumb, clamping bounds should generally cover about 95% of the
+input values, or more if there are no large outliers. When it is impossible to
+determine clamping bounds a priori, the
+:meth:`~tmlt.analytics.query_builder.QueryBuilder.get_bounds` aggregation can be
+used on the :class:`~tmlt.analytics.session.Session` aggregation before calling
+:meth:`~tmlt.synthetics.generate_synthetic_data` to automatically
+determine reasonable values of clamping bounds, at a small cost in privacy
+budget. Afterwards, it can be worthwhile to try different values of clamping
+bounds to see which one provides the best trade-off between accuracy and bias.
+
+When generating synthetic data on a table initialized with
+:ref:`privacy IDs<privacy-id-basics>`, using the
+:class:`~tmlt.analytics.protected_change.AddRowsWithID` protected change, the
+``max_rows_per_id`` argument must be used when calling
+:meth:`~tmlt.synthetics.generate_synthetic_data`. This argument
+determines how many rows per privacy ID are kept in the original data prior to
+measurement, and involves a similar trade-off as clamping bounds: larger values
+will lead to more noise but keep more data, while smaller values will reduce the
+noise but might introduce bias when dropping records. The same 95% rule of thumb
+applies, and it is also valuable to experiment with different values to
+determine an optimal choice.
+
+Using public data
+-----------------
+
+Sensitive datasets frequently contain columns with data that is not sensitive in
+nature, and can be derived from other columns. For example, a dataset could have
+a column containing ZIP codes and another containing U.S. states: the latter can
+be determined from the former using a public (non-sensitive) lookup table.
+
+In such situations, it is often simpler to use only the most granular column (or
+the foreign key to the public table) as a categorical column during synthetic
+data generation, and re-add all other attributes using the public lookup table
+afterwards.
+
+
+Resolving inconsistencies
+-------------------------
+
+Synthetic data generated with a simple strategy might have *inconsistencies*:
+values or combination of values that cannot exist in the original data. These
+inconsistencies can be of various kinds, and there are multiple ways to resolve
+them.
+
+Removing null values
+^^^^^^^^^^^^^^^^^^^^
+
+When using binning on a column, values that are not covered by the specified
+bins will be converted to ``null`` values during the measurement stage. Due to
+differentially private noise, this can lead to ``null`` values appearing in the
+output, even if there are none in the input data. To remove these values, the
+simplest option is to modify the synthetic data to convert nulls into random
+values instead, or remove the corresponding records entirely.
+
+Post-processing numeric columns
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Clamping bounds specified in the ``clamping_bounds`` argument of
+:meth:`~tmlt.synthetics.generate_synthetic_data` are used to clamp the
+values of the input data before performing differentially private measurements,
+but they are not used during the generation stage. Therefore, it is possible
+that values outside the clamping bounds appear in the output data, and these
+values might be nonsensical (e.g. ``age`` values above 150). Just like null
+values, such inconsistencies can be removed after synthetic data generation, by
+clamping these values to fixed bounds, or removing corresponding records
+entirely. Note that this may add bias to the statistical properties of the
+synthetic data, so it is important to evalute the impact of this step by
+measuring utility afterwards.
+
+Preventing impossible combination of values
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Depending on how the metadata was specified, the synthetic data might contain
+combinations of categorical column values that cannot appear in the original
+data. There are two main ways to prevent this:
+
+* The :class:`~tmlt.analytics.keyset.KeySet` used to specify possible column
+  values can be initialized with only some combinations of values. Only these
+  combinations will then be present in the output. More information can be found
+  in the tutorial about
+  :ref:`group-by queries with multiple columns<keysets-multiple-columns>`.
+* The ``count_structural_zeroes`` argument of 
+  :meth:`~tmlt.synthetics.generate_synthetic_data` can be used to
+  specify combination of categorical columns that *cannot* appear in the data.
+  Using this argument has the same effect as removing the corresponding
+  combinations from the input KeySet, but it can be simpler and more efficient
+  when there are a small number of impossible combinations.
+
+Similarly, :meth:`~tmlt.synthetics.generate_synthetic_data` also
+accepts a ``sum_structural_zeroes`` argument, which ensures that certain
+combinations of categorical values are always associated to a 0 value in the
+specified numeric column.
+  
