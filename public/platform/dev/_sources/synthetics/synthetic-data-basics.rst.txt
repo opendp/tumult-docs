@@ -11,7 +11,7 @@
 Basics of synthetic data generation
 ===================================
 
-.. note:: 
+.. note::
 
     |PRO_NOTE|
 
@@ -23,7 +23,7 @@ Setup
 
 The setup process is very similar to other tutorials: we import necessary
 objects from Tumult Analytics and Tumult Synthetics, and download the data we
-will use as input for synthetic data generation. 
+will use as input for synthetic data generation.
 
 .. testcode::
 
@@ -144,7 +144,7 @@ Categorical columns
 ^^^^^^^^^^^^^^^^^^^
 
 For categorical columns, we need to specify the possible values that these columns can
-take, using the :class:`~tmlt.analytics.keyset.KeySet` class. For more information about
+take, using the :class:`.KeySet` class. For more information about
 KeySets, you can consult the :ref:`Group-by queries<group-by-queries>` tutorial.
 
 For some columns, we can simply enumerate these values.
@@ -179,7 +179,7 @@ all the dates from the same year and month together using a
 :class:`~tmlt.analytics.binning_spec.BinningSpec`.
 
 .. testcode::
-  
+
    # Our data has values ranging from early 2012 to late 2021.
    date_bin_edges = [
      datetime.date(year, month, 1)
@@ -319,7 +319,7 @@ contain the ``id`` column. We can simply create a new column and fill it with
 random data.
 
 .. testcode::
-  
+
    synthetic_data = synthetic_data.withColumn('id', sf.round(sf.rand()*1000000).cast('int'))
    columns = ["id", "age", "gender", "education_level", "zip_code", "books_borrowed"]
    synthetic_data.toPandas()[columns].sample(n=10)

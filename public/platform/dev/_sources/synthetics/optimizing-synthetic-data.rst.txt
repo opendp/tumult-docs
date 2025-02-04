@@ -11,7 +11,7 @@
 Synthetic data optimization guide
 =================================
 
-.. note:: 
+.. note::
 
     |PRO_NOTE|
 
@@ -35,7 +35,7 @@ The simplest option, useful when building a first prototype, is to measure
 the column-wise distribution of all categorical columns. This is done using
 :class:`~tmlt.synthetics.FixedMarginals` with one
 :class:`~tmlt.synthetics.Count` marginal for each column. This will
-preserve the distribution of values within individual columns, but not between 
+preserve the distribution of values within individual columns, but not between
 groups of columns.
 
 Depending on the use case for synthetic data, it is often desirable to preserve
@@ -187,22 +187,10 @@ Preventing impossible combination of values
 
 Depending on how the metadata was specified, the synthetic data might contain
 combinations of categorical column values that cannot appear in the original
-data. There are two main ways to prevent this:
+data. To prevent this, remove these values from the provided :class:`~.KeySet`,
+for example using :meth:`.KeySet.__sub__`.
 
-* The :class:`~tmlt.analytics.keyset.KeySet` used to specify possible column
-  values can be initialized with only some combinations of values. Only these
-  combinations will then be present in the output. More information can be found
-  in the tutorial about
-  :ref:`group-by queries with multiple columns<keysets-multiple-columns>`.
-* The ``count_structural_zeroes`` argument of 
-  :meth:`~tmlt.synthetics.generate_synthetic_data` can be used to
-  specify combination of categorical columns that *cannot* appear in the data.
-  Using this argument has the same effect as removing the corresponding
-  combinations from the input KeySet, but it can be simpler and more efficient
-  when there are a small number of impossible combinations.
-
-Similarly, :meth:`~tmlt.synthetics.generate_synthetic_data` also
-accepts a ``sum_structural_zeroes`` argument, which ensures that certain
-combinations of categorical values are always associated to a 0 value in the
-specified numeric column.
-  
+:meth:`~tmlt.synthetics.generate_synthetic_data` also accepts a
+``sum_structural_zeroes`` argument, which ensures that certain combinations of
+categorical values are always associated to a 0 value in the specified numeric
+column.

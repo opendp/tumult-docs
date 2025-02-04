@@ -832,24 +832,12 @@ measuring utility afterwards.</p>
 <h3>Preventing impossible combination of values<a class="headerlink" href="#preventing-impossible-combination-of-values" title="Link to this heading">#</a></h3>
 <p>Depending on how the metadata was specified, the synthetic data might contain
 combinations of categorical column values that cannot appear in the original
-data. There are two main ways to prevent this:</p>
-<ul class="simple">
-<li><p>The <a class="reference internal" href="../analytics/reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a> used to specify possible column
-values can be initialized with only some combinations of values. Only these
-combinations will then be present in the output. More information can be found
-in the tutorial about
-<a class="reference internal" href="../analytics/tutorials/groupby-queries.html#keysets-multiple-columns"><span class="std std-ref">group-by queries with multiple columns</span></a>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">count_structural_zeroes</span></code> argument of
-<a class="reference internal" href="reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> can be used to
-specify combination of categorical columns that <em>cannot</em> appear in the data.
-Using this argument has the same effect as removing the corresponding
-combinations from the input KeySet, but it can be simpler and more efficient
-when there are a small number of impossible combinations.</p></li>
-</ul>
-<p>Similarly, <a class="reference internal" href="reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> also
-accepts a <code class="docutils literal notranslate"><span class="pre">sum_structural_zeroes</span></code> argument, which ensures that certain
-combinations of categorical values are always associated to a 0 value in the
-specified numeric column.</p>
+data. To prevent this, remove these values from the provided <a class="reference internal" href="../analytics/reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>,
+for example using <a class="reference internal" href="../analytics/reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.__sub__" title="tmlt.analytics.KeySet.__sub__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KeySet.__sub__()</span></code></a>.</p>
+<p><a class="reference internal" href="reference/api/tmlt.synthetics.generate_synthetic_data.html#tmlt.synthetics.generate_synthetic_data" title="tmlt.synthetics.generate_synthetic_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_synthetic_data()</span></code></a> also accepts a
+<code class="docutils literal notranslate"><span class="pre">sum_structural_zeroes</span></code> argument, which ensures that certain combinations of
+categorical values are always associated to a 0 value in the specified numeric
+column.</p>
 </section>
 </section>
 </section>
@@ -951,7 +939,7 @@ specified numeric column.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from ad56a1f6 at 2025-01-30 16:00.</div>
+Built from 801c74de at 2025-02-04 23:19.</div>
       
     </div>
   
