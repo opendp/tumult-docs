@@ -1,0 +1,899 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using Tumult Analytics on Databricks &#8212; Tumult Platform 0.20.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=853ffba2" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b52c616d"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deployment/databricks';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/platform/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.20';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../_static/js/version-banner.js?v=de523189"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spark configuration and performance" href="spark.html" />
+    <link rel="prev" title="Creating a Docker image for GCP" href="bigquery/docker-image.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v0.20" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform 0.20.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Platform 0.20.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../analytics/index.html">
+    Tumult Analytics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../synthetics/index.html">
+    Tumult Synthetics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tune/index.html">
+    Tumult Tune
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../analytics/index.html">
+    Tumult Analytics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../synthetics/index.html">
+    Tumult Synthetics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tune/index.html">
+    Tumult Tune
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/analytics" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tmlt.dev/slack" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+<h3>Tumult Platform</h3></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+<nav class="bd-links bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../analytics/index.html">Tumult Analytics</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../analytics/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/first-steps.html">First steps with Tumult Analytics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/privacy-budget-basics.html">Working with privacy budgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/clamping-bounds.html">Numerical aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/groupby-queries.html">Group-by queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/simple-transformations.html">Simple transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/privacy-id-basics.html">Working with privacy IDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/tutorials/more-with-privacy-ids.html">Doing more with privacy IDs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../analytics/topic-guides/index.html">Topic guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/topic-guides/privacy-promise.html">Tumult Analytics’ privacy promise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/topic-guides/working-with-sessions.html">Working with Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/topic-guides/privacy-budgets.html">Privacy budget fundamentals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/topic-guides/understanding-sensitivity.html">Understanding sensitivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../analytics/topic-guides/nulls-nans-infinities.html">Nulls, NaNs, and infinite values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../analytics/reference/index.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../analytics/reference/privacy-guarantees.html">Specifying privacy guarantees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.html">Session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.from_dataframe.html">Session.from_dataframe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.Builder.html">Session.Builder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.ProtectedChange.html">ProtectedChange</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AddOneRow.html">AddOneRow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AddMaxRows.html">AddMaxRows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AddMaxRowsInMaxGroups.html">AddMaxRowsInMaxGroups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AddRowsWithID.html">AddRowsWithID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.PrivacyBudget.html">PrivacyBudget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.PureDPBudget.html">PureDPBudget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.ApproxDPBudget.html">ApproxDPBudget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.RhoZCDPBudget.html">RhoZCDPBudget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.private_sources.html">Session.private_sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.public_sources.html">Session.public_sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.public_source_dataframes.html">Session.public_source_dataframes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.remaining_privacy_budget.html">Session.remaining_privacy_budget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.describe.html">Session.describe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.get_schema.html">Session.get_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.get_column_types.html">Session.get_column_types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.get_grouping_column.html">Session.get_grouping_column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.get_id_column.html">Session.get_id_column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.get_id_space.html">Session.get_id_space</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../analytics/reference/queries.html">Building queries</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.html">QueryBuilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.select.html">QueryBuilder.select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.rename.html">QueryBuilder.rename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.replace_null_and_nan.html">QueryBuilder.replace_null_and_nan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.drop_null_and_nan.html">QueryBuilder.drop_null_and_nan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.replace_infinity.html">QueryBuilder.replace_infinity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.drop_infinity.html">QueryBuilder.drop_infinity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.filter.html">QueryBuilder.filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.map.html">QueryBuilder.map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.flat_map.html">QueryBuilder.flat_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.flat_map_by_id.html">QueryBuilder.flat_map_by_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.bin_column.html">QueryBuilder.bin_column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.BinningSpec.html">BinningSpec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.enforce.html">QueryBuilder.enforce</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Constraint.html">Constraint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.MaxRowsPerID.html">MaxRowsPerID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.MaxGroupsPerID.html">MaxGroupsPerID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html">MaxRowsPerGroupPerID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.join_public.html">QueryBuilder.join_public</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.join_private.html">QueryBuilder.join_private</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.groupby.html">QueryBuilder.groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.KeySet.html">KeySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.GroupedQueryBuilder.html">GroupedQueryBuilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.count.html">QueryBuilder.count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.count_distinct.html">QueryBuilder.count_distinct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.sum.html">QueryBuilder.sum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.average.html">QueryBuilder.average</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.variance.html">QueryBuilder.variance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.stdev.html">QueryBuilder.stdev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.quantile.html">QueryBuilder.quantile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.median.html">QueryBuilder.median</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.min.html">QueryBuilder.min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.max.html">QueryBuilder.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.histogram.html">QueryBuilder.histogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.get_groups.html">QueryBuilder.get_groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.QueryBuilder.get_bounds.html">QueryBuilder.get_bounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Query.html">Query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.GroupbyCountQuery.html">GroupbyCountQuery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.GroupbyCountQuery.suppress.html">GroupbyCountQuery.suppress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.evaluate.html">Session.evaluate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.create_view.html">Session.create_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.delete_view.html">Session.delete_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.add_public_dataframe.html">Session.add_public_dataframe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.partition_and_create.html">Session.partition_and_create</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Session.stop.html">Session.stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.ColumnType.html">ColumnType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.ColumnDescriptor.html">ColumnDescriptor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AnalyticsDefault.html">AnalyticsDefault</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../analytics/reference/programs.html">Defining and using programs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.html">SessionProgram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.Builder.html">SessionProgram.Builder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.privacy_budget.html">SessionProgram.privacy_budget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.unprotected_inputs.html">SessionProgram.unprotected_inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.parameters.html">SessionProgram.parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.output_types.html">SessionProgram.output_types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.SessionProgram.run.html">SessionProgram.run</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../analytics/reference/config.html">Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.Config.html">Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.FeatureFlag.html">FeatureFlag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.cfg.analytics.license_file_path_override.html">license_file_path_override</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../analytics/reference/utils.html">Utility functions and exceptions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.utils.check_installation.html">check_installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.utils.cleanup.html">cleanup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.utils.remove_all_temp_tables.html">remove_all_temp_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analytics/reference/api/tmlt.analytics.AnalyticsInternalError.html">AnalyticsInternalError</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../synthetics/index.html">Tumult Synthetics</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../synthetics/synthetic-data-basics.html">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../synthetics/optimizing-synthetic-data.html">Optimization guide</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../synthetics/reference/index.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.ClampingBounds.html">ClampingBounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.AutomaticBounds.html">AutomaticBounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.PerGroupClampingBounds.html">PerGroupClampingBounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.MeasurementStrategy.html">MeasurementStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.FixedMarginals.html">FixedMarginals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.AdaptiveMarginals.html">AdaptiveMarginals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.WeightedMarginal.html">WeightedMarginal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.Count.html">Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.Sum.html">Sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.generate_synthetic_data.html">generate_synthetic_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.KeySetsRepository.html">KeySetsRepository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../synthetics/reference/api/tmlt.synthetics.MarginalAnswer.html">MarginalAnswer</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tune/index.html">Tumult Tune</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tune/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tune/tutorials/error-measurement-basics.html">Basics of error measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tune/tutorials/specifying-error-metrics.html">Specifying error metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tune/tutorials/tuning-parameters.html">Tuning parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tune/reference/index.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tune/reference/tuners.html">Tuning programs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.html">SessionProgramTuner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.baseline_options.html">SessionProgramTuner.baseline_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.baseline.html">baseline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.views.html">SessionProgramTuner.views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.View.html">View</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.view.html">view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.metrics.html">SessionProgramTuner.metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.Builder.html">SessionProgramTuner.Builder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.Tunable.html">Tunable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.program.html">SessionProgramTuner.program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.get_baselines.html">SessionProgramTuner.get_baselines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.tunables.html">SessionProgramTuner.tunables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.get_concrete_program.html">SessionProgramTuner.get_concrete_program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.NamedValue.html">NamedValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.run.html">SessionProgramTuner.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.error_report.html">SessionProgramTuner.error_report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SessionProgramTuner.multi_error_report.html">SessionProgramTuner.multi_error_report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.RunOutputs.html">RunOutputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.ProtectedInput.html">ProtectedInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.UnprotectedInput.html">UnprotectedInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.ErrorReport.html">ErrorReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.MultiErrorReport.html">MultiErrorReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.NoPrivacySession.html">NoPrivacySession</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tune/reference/metrics.html">Measuring accuracy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.QuantileAbsoluteError.html">QuantileAbsoluteError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.MedianAbsoluteError.html">MedianAbsoluteError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.QuantileRelativeError.html">QuantileRelativeError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.MedianRelativeError.html">MedianRelativeError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.HighRelativeErrorRate.html">HighRelativeErrorRate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.HighRelativeErrorCount.html">HighRelativeErrorCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SpuriousRate.html">SpuriousRate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SpuriousCount.html">SpuriousCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SuppressionRate.html">SuppressionRate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SuppressionCount.html">SuppressionCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.CountDPRows.html">CountDPRows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.CountBaselineRows.html">CountBaselineRows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.metric.html">metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.single_output_metric.html">single_output_metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.joined_output_metric.html">joined_output_metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.Metric.html">Metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SingleOutputMetric.html">SingleOutputMetric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.JoinedOutputMetric.html">JoinedOutputMetric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.MetricResult.html">MetricResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.SingleOutputMetricResult.html">SingleOutputMetricResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tune/reference/api/tmlt.tune.JoinedOutputMetricResult.html">JoinedOutputMetricResult</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Deployment</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aws-glue.html">Using Tumult Analytics on AWS Glue</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="bigquery/index.html">Using Tumult Analytics on BigQuery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/setup.html">GCP setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/bigquery-setup.html">Introduction to BigQuery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/inputs-outputs.html">BigQuery inputs and outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/running-the-program.html">Calling Tumult Analytics from a BigQuery stored procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/parameters.html">Passing parameters to a stored procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bigquery/docker-image.html">Creating a Docker image for GCP</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Using Tumult Analytics on Databricks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">Spark configuration and performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release notes</a></li>
+</ul>
+
+  </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Deployment &amp; troubleshooting</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Using Tumult Analytics on Databricks</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="using-tumult-analytics-on-databricks">
+<h1>Using Tumult Analytics on Databricks<a class="headerlink" href="#using-tumult-analytics-on-databricks" title="Link to this heading">#</a></h1>
+<p>This guide covers installing and running Tumult Analytics in notebooks on <a class="reference external" href="https://www.databricks.com/">Databricks</a>.
+It assumes that you have an existing Databricks workspace with a compatible compute cluster available.
+Tumult Analytics is currently compatible with versions 7.3 LTS through 12.2 LTS of the <a class="reference external" href="https://docs.databricks.com/release-notes/runtime/releases.html">Databricks runtime</a>.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>Python packages can be installed on Databricks in two ways, either on a per-notebook level or at the cluster level.
+To get started, let’s install Tumult Analytics in a notebook.</p>
+<p>Create a new notebook, and connect it to a cluster using any supported version of the Databricks runtime.
+Installing packages is straightforward using the <a class="reference external" href="https://docs.databricks.com/libraries/notebooks-python-libraries.html#manage-libraries-with-pip-commands"><code class="docutils literal notranslate"><span class="pre">%pip</span></code> directive</a>: add</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">tmlt</span><span class="o">.</span><span class="n">analytics</span>
+</pre></div>
+</div>
+<p>as the first code block in the notebook, and execute it.
+This will install Tumult Analytics and all of its dependencies, but only for use in this notebook.
+It will need to be reinstalled each time the notebook is connected to a cluster, or the cluster is rebooted.</p>
+<p>Alternatively, packages can be installed on a compute cluster, automatically making them available to all notebooks using that cluster.
+This is likely the more convenient way to install packages that will be used frequently.
+To install Tumult Analytics this way, navigate to the Databricks compute view in the left sidebar.
+Select the cluster you wish to modify, go to the “Libraries” tab, and click “Install new”.
+Use “PyPI” as the library source, enter <code class="docutils literal notranslate"><span class="pre">tmlt.analytics</span></code> as the package, and hit “Install”.
+After a few moments, the package will show as installed, and you can begin using Tumult Analytics in any notebooks attached to this cluster.
+Python version specifiers, e.g. <code class="docutils literal notranslate"><span class="pre">tmlt.analytics&gt;=0.7.0,&lt;0.8</span></code>, are also supported if you wish to install a particular version.</p>
+<p>Regardless of which installation process you used, the installation check described in the <a class="reference internal" href="../installation.html#installation"><span class="std std-ref">local installation instructions</span></a> can be run by adding a new cell to your notebook with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_installation</span>
+<span class="n">check_installation</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and then running it.
+If you encounter an error at this stage, please <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">let us know</a>!</p>
+</section>
+<section id="loading-and-saving-data-in-databricks">
+<h2>Loading and Saving Data in Databricks<a class="headerlink" href="#loading-and-saving-data-in-databricks" title="Link to this heading">#</a></h2>
+<p>Running a query with Tumult Analytics in a Databricks notebook is essentially identical to doing so anywhere else, the only difference being how tables are loaded and saved.
+To begin, let’s initialize a Databricks table by loading a dataset from S3 and saving it as a table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library;&#39;</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library_output;&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;main.library.members&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates two new Databricks schemas in the default <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog, <code class="docutils literal notranslate"><span class="pre">library</span></code> and <code class="docutils literal notranslate"><span class="pre">library_output</span></code>, which are used respectively for inputs and outputs in this guide.
+It then writes the library members dataset from our <a class="reference external" href="https://docs.sympy.org/latest/tutorials/index.html#tutorials" title="(in SymPy v1.13.3)"><span class="xref std std-ref">tutorials</span></a> into Databricks as the <code class="docutils literal notranslate"><span class="pre">members</span></code> table in the <code class="docutils literal notranslate"><span class="pre">library</span></code> schema.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Specifying the catalog to be used in this way is only supported in environments and on versions of the Databricks runtime that support <a class="reference external" href="https://docs.databricks.com/data-governance/unity-catalog/index.html">Unity Catalog</a>.
+Otherwise, only the schema and table name may be given.
+For example, with versions of the Databricks runtime prior to 10 the above code block would instead be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library;&#39;</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library_output;&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;library.members&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, the <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog would be used by default.</p>
+</div>
+<p>Once this is done, the <a class="reference external" href="https://archive.apache.org/dist/spark/docs/3.1.1/api/python/reference/api/pyspark.sql.DataFrameReader.table.html#pyspark.sql.DataFrameReader.table" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spark.table.read</span></code></a> function can be used to read the data from Databricks, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;main.library.members&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we are loading the library members dataset that we just saved to Databricks, but if the table was already in Databricks this read would allow accessing it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As with <code class="docutils literal notranslate"><span class="pre">saveAsTable</span></code> above, specifying the catalog to read from is only supported when using Unity Catalog.
+If you are not, pass only the schema and table name (e.g. <code class="docutils literal notranslate"><span class="pre">library.members</span></code>).</p>
+</div>
+<p>Once this dataset is loaded, queries can be evaluated as normal.
+For this example, let’s just count how many users have borrowed a book:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span>
+    <span class="n">AddOneRow</span><span class="p">,</span>
+    <span class="n">PureDPBudget</span><span class="p">,</span>
+    <span class="n">QueryBuilder</span><span class="p">,</span>
+    <span class="n">Session</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">dataframe</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;books_borrowed &gt; 0&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="n">budget</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we need to write out this data so that it can be used elsewhere, which works the same as saving the input data did above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s1">&#39;main.library_output.active_members&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This writes out the result of our query to the <code class="docutils literal notranslate"><span class="pre">active_members</span></code> table in the <code class="docutils literal notranslate"><span class="pre">output</span></code> schema of the <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog.</p>
+<p>Because Databricks <a class="reference external" href="https://docs.databricks.com/libraries/index.html">does not run</a> <code class="docutils literal notranslate"><span class="pre">atexit</span></code> functions, Analytics may leave behind some temporary tables.
+These can be removed by running the <a class="reference internal" href="../analytics/reference/api/tmlt.analytics.utils.cleanup.html#tmlt.analytics.utils.cleanup" title="tmlt.analytics.utils.cleanup"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup()</span></code></a> function when you are done with each notebook session:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup</span>
+<span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If many such temporary tables have accumulated over time, the <a class="reference internal" href="../analytics/reference/api/tmlt.analytics.utils.remove_all_temp_tables.html#tmlt.analytics.utils.remove_all_temp_tables" title="tmlt.analytics.utils.remove_all_temp_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_all_temp_tables()</span></code></a> function can be used to clean them all up, though this may erase query results for any active notebooks if they haven’t been saved elsewhere.</p>
+<p>As you can see, using Tumult Analytics on Databricks is very straightforward.
+If you encounter any unexpected issues, please let us know by <a class="reference external" href="https://gitlab.com/tumult-labs/analytics/-/issues">filing an issue</a> or reaching out on our <a class="reference external" href="https://tmlt.dev/slack">Slack server</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bigquery/docker-image.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Creating a Docker image for GCP</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="spark.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Spark configuration and performance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-data-in-databricks">Loading and Saving Data in Databricks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+Built from 30c1f838 at 2025-02-25 16:47.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
