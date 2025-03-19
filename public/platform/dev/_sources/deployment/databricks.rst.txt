@@ -9,6 +9,17 @@ This guide covers installing and running Tumult Analytics in notebooks on `Datab
 It assumes that you have an existing Databricks workspace with a compatible compute cluster available.
 Tumult Analytics is currently compatible with versions 7.3 LTS through 12.2 LTS of the `Databricks runtime <https://docs.databricks.com/release-notes/runtime/releases.html>`__.
 
+You'll also need out collection of `sample data <https://gitlab.com/tumult-labs/demo-data>` in an Amazon S3 bucket. This example snippet will copy the data to a bucket called ``tumult-public-data``:
+
+.. code-block::
+
+   tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+   git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
+   aws s3 sync $tmpdir/data s3://tumult-public-data/input-data/
+   rm -rf $tmpdir
+
+We will use the ``tumult-public-data`` bucket name throughout the rest of the guide.
+
 Installation
 ^^^^^^^^^^^^
 
@@ -58,7 +69,7 @@ To begin, let's initialize a Databricks table by loading a dataset from S3 and s
 
    spark.sql('CREATE DATABASE IF NOT EXISTS main.library;')
    spark.sql('CREATE DATABASE IF NOT EXISTS main.library_output;')
-   df = spark.read.csv("s3://tumult-public/library-members.csv", header=True, inferSchema=True)
+   df = spark.read.csv("s3://tumult-public-data/library-members.csv", header=True, inferSchema=True)
    df.write.saveAsTable("main.library.members")
 
 This creates two new Databricks schemas in the default ``main`` catalog, ``library`` and ``library_output``, which are used respectively for inputs and outputs in this guide.
@@ -74,7 +85,7 @@ It then writes the library members dataset from our :ref:`tutorials <Tutorials>`
 
       spark.sql('CREATE DATABASE IF NOT EXISTS library;')
       spark.sql('CREATE DATABASE IF NOT EXISTS library_output;')
-      df = spark.read.csv("s3://tumult-public/library-members.csv", header=True, inferSchema=True)
+      df = spark.read.csv("s3://tumult-public-data/library-members.csv", header=True, inferSchema=True)
       df.write.saveAsTable("library.members")
 
    In this case, the ``main`` catalog would be used by default.

@@ -677,7 +677,7 @@ The instructions use <a class="reference external" href="https://docs.aws.amazon
 <p>Before creating a Glue job, it may be necessary to set up some additional AWS resources for the pipeline to use.
 The job we will build requires two such resources:</p>
 <ul class="simple">
-<li><p>an S3 bucket for storing results, and</p></li>
+<li><p>an S3 bucket for storing input data and results, and</p></li>
 <li><p>an IAM role that provides permissions necessary for the Glue job to run.</p></li>
 </ul>
 <p>If your organization already has S3 buckets and IAM roles configured for Glue, you can use those, and skip the rest of this section.</p>
@@ -719,6 +719,16 @@ The JSON for an appropriate policy is given below; note that the <code class="do
 </li>
 </ol>
 </section>
+<section id="copying-input-data">
+<h2>Copying input data<a class="headerlink" href="#copying-input-data" title="Link to this heading">#</a></h2>
+<p>Our example job will use the same <cite>public data &lt;https://gitlab.com/tumult-labs/demo-data&gt;</cite> as the Tumult Analytics tutorials. Copy this data to S3 so Glue can read it. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tmpdir=$(mktemp -d 2&gt;/dev/null || mktemp -d -t &#39;mytmpdir&#39;)
+git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
+aws s3 sync $tmpdir/data s3://tumult-analytics-glue/input-data/
+rm -rf $tmpdir
+</pre></div>
+</div>
+</section>
 <section id="configuring-the-glue-job">
 <h2>Configuring the Glue job<a class="headerlink" href="#configuring-the-glue-job" title="Link to this heading">#</a></h2>
 <p>When using Tumult Analytics in an AWS Glue job, it is run as a single step in a pipeline, consuming the outputs from existing steps and having its output consumed like any other Glue transform.
@@ -747,8 +757,8 @@ This configures Spark to use a warehouse directory that all of the workers can a
 </ul>
 <p>Once all of the job settings are updated, return to the “Visual” tab and add the following nodes:</p>
 <ul class="simple">
-<li><p>An <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html">“Amazon S3” data source</a> named “checkouts” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-public/checkout-logs.csv</span></code> and CSV data format.</p></li>
-<li><p>An “Amazon S3” data source named “books” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-public/library_books.csv</span></code> and CSV data format.</p></li>
+<li><p>An <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html">“Amazon S3” data source</a> named “checkouts” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-analytics-glue/input-data/checkout-logs.csv</span></code> and CSV data format.</p></li>
+<li><p>An “Amazon S3” data source named “books” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-analytics-glue/input-data/library_books.csv</span></code> and CSV data format.</p></li>
 <li><p>A <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/transforms-custom.html">“Custom Transform” node</a> which has both of the data source nodes as parents.
 This will contain our Tumult Analytics program, which will be added shortly.</p></li>
 <li><p>A <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/transforms-configure-select-collection.html">“Select from Collection” node</a> whose parent is the custom transform node.
@@ -866,6 +876,7 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-requirements">Setting up requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-input-data">Copying input data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-the-glue-job">Configuring the Glue job</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-job">Running the job</a></li>
 </ul>
@@ -904,7 +915,7 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 1acd8957 at 2025-03-19 16:31.</div>
+Built from 2b6e6fce at 2025-03-19 19:24.</div>
       
     </div>
   
