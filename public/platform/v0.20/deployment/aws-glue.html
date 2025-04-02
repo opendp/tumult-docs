@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using Tumult Analytics on AWS Glue &#8212; Tumult Platform 0.20.0 documentation</title>
+    <title>Using Tumult Analytics on AWS Glue &#8212; Tumult Platform 0.20.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b52c616d"></script>
+    <script src="../_static/documentation_options.js?v=1154e574"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -64,7 +64,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Using Tumult Analytics on BigQuery" href="bigquery/index.html" />
+    <link rel="next" title="Using Tumult Analytics on Databricks" href="databricks.html" />
     <link rel="prev" title="Deployment &amp; troubleshooting" href="index.html" />
     <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
     
@@ -132,8 +132,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform 0.20.0 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Platform 0.20.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform 0.20.1 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Platform 0.20.1 documentation - Home"/>
   
   
 </a></div>
@@ -601,15 +601,6 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Deployment</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Using Tumult Analytics on AWS Glue</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="bigquery/index.html">Using Tumult Analytics on BigQuery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/setup.html">GCP setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/bigquery-setup.html">Introduction to BigQuery</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/inputs-outputs.html">BigQuery inputs and outputs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/running-the-program.html">Calling Tumult Analytics from a BigQuery stored procedure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/parameters.html">Passing parameters to a stored procedure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/docker-image.html">Creating a Docker image for GCP</a></li>
-</ul>
-</details></li>
 <li class="toctree-l2"><a class="reference internal" href="databricks.html">Using Tumult Analytics on Databricks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spark.html">Spark configuration and performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
@@ -686,7 +677,7 @@ The instructions use <a class="reference external" href="https://docs.aws.amazon
 <p>Before creating a Glue job, it may be necessary to set up some additional AWS resources for the pipeline to use.
 The job we will build requires two such resources:</p>
 <ul class="simple">
-<li><p>an S3 bucket for storing results, and</p></li>
+<li><p>an S3 bucket for storing input data and results, and</p></li>
 <li><p>an IAM role that provides permissions necessary for the Glue job to run.</p></li>
 </ul>
 <p>If your organization already has S3 buckets and IAM roles configured for Glue, you can use those, and skip the rest of this section.</p>
@@ -728,6 +719,16 @@ The JSON for an appropriate policy is given below; note that the <code class="do
 </li>
 </ol>
 </section>
+<section id="copying-input-data">
+<h2>Copying input data<a class="headerlink" href="#copying-input-data" title="Link to this heading">#</a></h2>
+<p>Our example job will use the same <cite>public data &lt;https://gitlab.com/tumult-labs/demo-data&gt;</cite> as the Tumult Analytics tutorials. Copy this data to S3 so Glue can read it. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tmpdir=$(mktemp -d 2&gt;/dev/null || mktemp -d -t &#39;mytmpdir&#39;)
+git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
+aws s3 sync $tmpdir/data s3://tumult-analytics-glue/input-data/
+rm -rf $tmpdir
+</pre></div>
+</div>
+</section>
 <section id="configuring-the-glue-job">
 <h2>Configuring the Glue job<a class="headerlink" href="#configuring-the-glue-job" title="Link to this heading">#</a></h2>
 <p>When using Tumult Analytics in an AWS Glue job, it is run as a single step in a pipeline, consuming the outputs from existing steps and having its output consumed like any other Glue transform.
@@ -756,8 +757,8 @@ This configures Spark to use a warehouse directory that all of the workers can a
 </ul>
 <p>Once all of the job settings are updated, return to the “Visual” tab and add the following nodes:</p>
 <ul class="simple">
-<li><p>An <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html">“Amazon S3” data source</a> named “checkouts” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-public/checkout-logs.csv</span></code> and CSV data format.</p></li>
-<li><p>An “Amazon S3” data source named “books” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-public/library_books.csv</span></code> and CSV data format.</p></li>
+<li><p>An <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html">“Amazon S3” data source</a> named “checkouts” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-analytics-glue/input-data/checkout-logs.csv</span></code> and CSV data format.</p></li>
+<li><p>An “Amazon S3” data source named “books” with S3 URL <code class="docutils literal notranslate"><span class="pre">s3://tumult-analytics-glue/input-data/library_books.csv</span></code> and CSV data format.</p></li>
 <li><p>A <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/transforms-custom.html">“Custom Transform” node</a> which has both of the data source nodes as parents.
 This will contain our Tumult Analytics program, which will be added shortly.</p></li>
 <li><p>A <a class="reference external" href="https://docs.aws.amazon.com/glue/latest/ug/transforms-configure-select-collection.html">“Select from Collection” node</a> whose parent is the custom transform node.
@@ -847,11 +848,11 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
       </div>
     </a>
     <a class="right-next"
-       href="bigquery/index.html"
+       href="databricks.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Using Tumult Analytics on BigQuery</p>
+        <p class="prev-next-title">Using Tumult Analytics on Databricks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -875,6 +876,7 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-requirements">Setting up requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-input-data">Copying input data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-the-glue-job">Configuring the Glue job</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-job">Running the job</a></li>
 </ul>
@@ -913,7 +915,7 @@ While the job shown here is relatively simple, you can also use Tumult Analytics
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 30c1f838 at 2025-02-25 16:47.</div>
+Built from 261afc2d at 2025-04-02 00:29.</div>
       
     </div>
   

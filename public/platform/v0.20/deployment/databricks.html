@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using Tumult Analytics on Databricks &#8212; Tumult Platform 0.20.0 documentation</title>
+    <title>Using Tumult Analytics on Databricks &#8212; Tumult Platform 0.20.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b52c616d"></script>
+    <script src="../_static/documentation_options.js?v=1154e574"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Spark configuration and performance" href="spark.html" />
-    <link rel="prev" title="Creating a Docker image for GCP" href="bigquery/docker-image.html" />
+    <link rel="prev" title="Using Tumult Analytics on AWS Glue" href="aws-glue.html" />
     <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
     
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -132,8 +132,8 @@
     
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform 0.20.0 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Platform 0.20.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Platform 0.20.1 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Platform 0.20.1 documentation - Home"/>
   
   
 </a></div>
@@ -601,15 +601,6 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Deployment</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="aws-glue.html">Using Tumult Analytics on AWS Glue</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="bigquery/index.html">Using Tumult Analytics on BigQuery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/setup.html">GCP setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/bigquery-setup.html">Introduction to BigQuery</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/inputs-outputs.html">BigQuery inputs and outputs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/running-the-program.html">Calling Tumult Analytics from a BigQuery stored procedure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/parameters.html">Passing parameters to a stored procedure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bigquery/docker-image.html">Creating a Docker image for GCP</a></li>
-</ul>
-</details></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Using Tumult Analytics on Databricks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spark.html">Spark configuration and performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
@@ -682,6 +673,14 @@
 <p>This guide covers installing and running Tumult Analytics in notebooks on <a class="reference external" href="https://www.databricks.com/">Databricks</a>.
 It assumes that you have an existing Databricks workspace with a compatible compute cluster available.
 Tumult Analytics is currently compatible with versions 7.3 LTS through 12.2 LTS of the <a class="reference external" href="https://docs.databricks.com/release-notes/runtime/releases.html">Databricks runtime</a>.</p>
+<p>You’ll also need out collection of <cite>sample data &lt;https://gitlab.com/tumult-labs/demo-data&gt;</cite> in an Amazon S3 bucket. This example snippet will copy the data to a bucket called <code class="docutils literal notranslate"><span class="pre">tumult-public-data</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tmpdir=$(mktemp -d 2&gt;/dev/null || mktemp -d -t &#39;mytmpdir&#39;)
+git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
+aws s3 sync $tmpdir/data s3://tumult-public-data/input-data/
+rm -rf $tmpdir
+</pre></div>
+</div>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">tumult-public-data</span></code> bucket name throughout the rest of the guide.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>Python packages can be installed on Databricks in two ways, either on a per-notebook level or at the cluster level.
@@ -715,7 +714,7 @@ If you encounter an error at this stage, please <a class="reference external" hr
 To begin, let’s initialize a Databricks table by loading a dataset from S3 and saving it as a table.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library;&#39;</span><span class="p">)</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library_output;&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public-data/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;main.library.members&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -728,7 +727,7 @@ Otherwise, only the schema and table name may be given.
 For example, with versions of the Databricks runtime prior to 10 the above code block would instead be:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library;&#39;</span><span class="p">)</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library_output;&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public-data/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;library.members&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -794,12 +793,12 @@ If you encounter any unexpected issues, please let us know by <a class="referenc
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="bigquery/docker-image.html"
+       href="aws-glue.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Creating a Docker image for GCP</p>
+        <p class="prev-next-title">Using Tumult Analytics on AWS Glue</p>
       </div>
     </a>
     <a class="right-next"
@@ -868,7 +867,7 @@ If you encounter any unexpected issues, please let us know by <a class="referenc
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from 30c1f838 at 2025-02-25 16:47.</div>
+Built from 261afc2d at 2025-04-02 00:29.</div>
       
     </div>
   
