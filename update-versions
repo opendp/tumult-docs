@@ -40,7 +40,7 @@ def classify_versions(versions):
     tag_versions = {
         v for v in versions if v.startswith("v") and split_version_tag(v) is not None
     }
-    dev_versions = set(versions) - tag_versions
+    dev_versions = set(versions) - tag_versions - {"latest"}
 
     tag_versions = sorted(tag_versions, key=split_version_tag, reverse=True)
     dev_versions = sorted(dev_versions)
@@ -78,7 +78,10 @@ def write_versions_json(docs_dir, tag_versions, dev_versions):
         latest_tag = tag_versions[0]
         print(f"Using {latest_tag} as latest version")
         sorted_versions.append("latest")
-        latest_link = (docs_dir / "latest").symlink_to(latest_tag)
+        latest_link = docs_dir / "latest"
+        latest_link.unlink(missing_ok=True)
+        latest_link.symlink_to(latest_tag)
+
     sorted_versions.extend(tag_versions)
     sorted_versions.extend(dev_versions)
 
