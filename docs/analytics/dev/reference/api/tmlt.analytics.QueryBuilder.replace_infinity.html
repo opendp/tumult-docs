@@ -1,0 +1,747 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>QueryBuilder.replace_infinity &#8212; Tumult Analytics main documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=853ffba2" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a8da1a53"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/api/tmlt.analytics.QueryBuilder.replace_infinity';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://opendp.github.io/tumult-docs/analytics/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'main';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../../_static/js/version-banner.js?v=de523189"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QueryBuilder.drop_infinity" href="tmlt.analytics.QueryBuilder.drop_infinity.html" />
+    <link rel="prev" title="QueryBuilder.drop_null_and_nan" href="tmlt.analytics.QueryBuilder.drop_null_and_nan.html" />
+    <script defer data-domain="tmlt.dev" src="https://plausible.io/js/plausible.exclusions.js", data-exclude="/-/analytics/**, /-/core/**"></script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="main" />
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Tumult Analytics main documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Analytics main documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../topic-guides/index.html">
+    Topic guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../deployment/index.html">
+    Deployment
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/opendp/tumult-analytics" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://join.slack.com/t/opendp/shared_invite/zt-1aca9bm7k-hG7olKz6CiGm8htI2lxE8w" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../topic-guides/index.html">
+    Topic guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../deployment/index.html">
+    Deployment
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/opendp/tumult-analytics" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://join.slack.com/t/opendp/shared_invite/zt-1aca9bm7k-hG7olKz6CiGm8htI2lxE8w" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+<h3>Tumult Analytics</h3></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Navigation">
+  <div class="bd-to-item active">
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/first-steps.html">First steps with Tumult Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/privacy-budget-basics.html">Working with privacy budgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/clamping-bounds.html">Numerical aggregations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/groupby-queries.html">Group-by queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/simple-transformations.html">Simple transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/privacy-id-basics.html">Working with privacy IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/more-with-privacy-ids.html">Doing more with privacy IDs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-guides/index.html">Topic guides</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-guides/privacy-promise.html">Tumult Analytics’ privacy promise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-guides/working-with-sessions.html">Working with Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-guides/privacy-budgets.html">Privacy budget fundamentals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-guides/understanding-sensitivity.html">Understanding sensitivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-guides/nulls-nans-infinities.html">Nulls, NaNs, and infinite values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/index.html">Deployment</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/aws-glue.html">Using Tumult Analytics on AWS Glue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/databricks.html">Using Tumult Analytics on Databricks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/spark.html">Spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../privacy-guarantees.html">Specifying privacy guarantees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.html">Session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.from_dataframe.html">Session.from_dataframe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.Builder.html">Session.Builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.ProtectedChange.html">ProtectedChange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AddOneRow.html">AddOneRow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AddMaxRows.html">AddMaxRows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AddMaxRowsInMaxGroups.html">AddMaxRowsInMaxGroups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AddRowsWithID.html">AddRowsWithID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.PrivacyBudget.html">PrivacyBudget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.PureDPBudget.html">PureDPBudget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.ApproxDPBudget.html">ApproxDPBudget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.RhoZCDPBudget.html">RhoZCDPBudget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.private_sources.html">Session.private_sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.public_sources.html">Session.public_sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.public_source_dataframes.html">Session.public_source_dataframes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.remaining_privacy_budget.html">Session.remaining_privacy_budget</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.describe.html">Session.describe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.get_schema.html">Session.get_schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.get_column_types.html">Session.get_column_types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.get_grouping_column.html">Session.get_grouping_column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.get_id_column.html">Session.get_id_column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.get_id_space.html">Session.get_id_space</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../queries.html">Building queries</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.html">QueryBuilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.select.html">QueryBuilder.select</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.rename.html">QueryBuilder.rename</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.replace_null_and_nan.html">QueryBuilder.replace_null_and_nan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.drop_null_and_nan.html">QueryBuilder.drop_null_and_nan</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">QueryBuilder.replace_infinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.drop_infinity.html">QueryBuilder.drop_infinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.filter.html">QueryBuilder.filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.map.html">QueryBuilder.map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.flat_map.html">QueryBuilder.flat_map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.flat_map_by_id.html">QueryBuilder.flat_map_by_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.bin_column.html">QueryBuilder.bin_column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.BinningSpec.html">BinningSpec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.enforce.html">QueryBuilder.enforce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Constraint.html">Constraint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.MaxRowsPerID.html">MaxRowsPerID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.MaxGroupsPerID.html">MaxGroupsPerID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.MaxRowsPerGroupPerID.html">MaxRowsPerGroupPerID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.join_public.html">QueryBuilder.join_public</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.join_private.html">QueryBuilder.join_private</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.groupby.html">QueryBuilder.groupby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.KeySet.html">KeySet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.GroupedQueryBuilder.html">GroupedQueryBuilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.count.html">QueryBuilder.count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.count_distinct.html">QueryBuilder.count_distinct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.sum.html">QueryBuilder.sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.average.html">QueryBuilder.average</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.variance.html">QueryBuilder.variance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.stdev.html">QueryBuilder.stdev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.quantile.html">QueryBuilder.quantile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.median.html">QueryBuilder.median</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.min.html">QueryBuilder.min</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.max.html">QueryBuilder.max</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.histogram.html">QueryBuilder.histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.get_groups.html">QueryBuilder.get_groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.QueryBuilder.get_bounds.html">QueryBuilder.get_bounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Query.html">Query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.GroupbyCountQuery.html">GroupbyCountQuery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.GroupbyCountQuery.suppress.html">GroupbyCountQuery.suppress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.evaluate.html">Session.evaluate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.create_view.html">Session.create_view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.delete_view.html">Session.delete_view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.add_public_dataframe.html">Session.add_public_dataframe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.partition_and_create.html">Session.partition_and_create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Session.stop.html">Session.stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.ColumnType.html">ColumnType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.ColumnDescriptor.html">ColumnDescriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AnalyticsDefault.html">AnalyticsDefault</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../config.html">Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.Config.html">Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.FeatureFlag.html">FeatureFlag</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils.html">Utility functions and exceptions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.utils.check_installation.html">check_installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.utils.cleanup.html">cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.utils.remove_all_temp_tables.html">remove_all_temp_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tmlt.analytics.AnalyticsInternalError.html">AnalyticsInternalError</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Release notes</a></li>
+</ul>
+
+  </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../queries.html" class="nav-link">Building queries</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">QueryBuilder.replace_infinity</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="querybuilder-replace-infinity">
+<h1>QueryBuilder.replace_infinity<a class="headerlink" href="#querybuilder-replace-infinity" title="Link to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="n">QueryBuilder</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.QueryBuilder.replace_infinity">
+<span class="sig-prename descclassname"><span class="pre">QueryBuilder.</span></span><span class="sig-name descname"><span class="pre">replace_infinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace_with</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.QueryBuilder.replace_infinity" title="Link to this definition">#</a></dt>
+<dd><p>Replaces +inf and -inf values in specified columns.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_private_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A    B    X</span>
+<span class="go">0  a1  0.0  0.0</span>
+<span class="go">1  a1  NaN -inf</span>
+<span class="go">2  a2  2.0  inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Building a query with a replace_infinity transformation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">replace_infinity</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">replace_with</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="s2">&quot;a2&quot;</span><span class="p">]}))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">    A  count</span>
+<span class="go">0  a1      2</span>
+<span class="go">1  a2      1</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>replace_with</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]]]</span>) – A dictionary mapping column names to values used to
+replace -inf and +inf.
+If None (or empty), all columns will have infinite
+values replaced with Analytics defaults; see <a class="reference internal" href="tmlt.analytics.AnalyticsDefault.html#tmlt.analytics.AnalyticsDefault" title="tmlt.analytics.AnalyticsDefault"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyticsDefault</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tmlt.analytics.QueryBuilder.html#tmlt.analytics.QueryBuilder" title="tmlt.analytics.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tmlt.analytics.QueryBuilder.drop_null_and_nan.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">QueryBuilder.drop_null_and_nan</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tmlt.analytics.QueryBuilder.drop_infinity.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">QueryBuilder.drop_infinity</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.QueryBuilder.replace_infinity"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.replace_infinity()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+Built from c017d7de at 2025-06-25 17:41.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
