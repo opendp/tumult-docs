@@ -92,7 +92,7 @@ def write_versions_json(docs_dir, tag_versions, dev_versions):
                 {
                     "version": v,
                     "name": get_release_name(docs_dir, v),
-                    "url": f"/tumult-docs/{path_prefix}/{v}/",
+                    "url": f"/{path_prefix}/{v}/",
                 }
                 for v in sorted_versions
             ],
