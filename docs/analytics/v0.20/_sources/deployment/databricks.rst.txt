@@ -1,24 +1,15 @@
-..
-    SPDX-License-Identifier: CC-BY-SA-4.0
-    Copyright Tumult Labs 2025
+.. _databricks:
 
 Using Tumult Analytics on Databricks
 ====================================
 
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2025
+
 This guide covers installing and running Tumult Analytics in notebooks on `Databricks <https://www.databricks.com/>`__.
 It assumes that you have an existing Databricks workspace with a compatible compute cluster available.
 Tumult Analytics is currently compatible with versions 7.3 LTS through 12.2 LTS of the `Databricks runtime <https://docs.databricks.com/release-notes/runtime/releases.html>`__.
-
-You'll also need out collection of `sample data <https://gitlab.com/tumult-labs/demo-data>` in an Amazon S3 bucket. This example snippet will copy the data to a bucket called ``tumult-public-data``:
-
-.. code-block::
-
-   tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-   git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
-   aws s3 sync $tmpdir/data s3://tumult-public-data/input-data/
-   rm -rf $tmpdir
-
-We will use the ``tumult-public-data`` bucket name throughout the rest of the guide.
 
 Installation
 ^^^^^^^^^^^^
@@ -56,7 +47,7 @@ Regardless of which installation process you used, the installation check descri
    check_installation()
 
 and then running it.
-If you encounter an error at this stage, please `let us know <https://gitlab.com/tumult-labs/analytics/-/issues>`__!
+If you encounter an error at this stage, please `let us know <https://github.com/opendp/tumult-analytics/issues>`__!
 
 
 Loading and Saving Data in Databricks
@@ -69,11 +60,11 @@ To begin, let's initialize a Databricks table by loading a dataset from S3 and s
 
    spark.sql('CREATE DATABASE IF NOT EXISTS main.library;')
    spark.sql('CREATE DATABASE IF NOT EXISTS main.library_output;')
-   df = spark.read.csv("s3://tumult-public-data/library-members.csv", header=True, inferSchema=True)
+   df = spark.read.csv("s3://tumult-public/library-members.csv", header=True, inferSchema=True)
    df.write.saveAsTable("main.library.members")
 
 This creates two new Databricks schemas in the default ``main`` catalog, ``library`` and ``library_output``, which are used respectively for inputs and outputs in this guide.
-It then writes the library members dataset from our :ref:`tutorials <Tutorials>` into Databricks as the ``members`` table in the ``library`` schema.
+It then writes the library members dataset from our :ref:`tutorials <tutorials>` into Databricks as the ``members`` table in the ``library`` schema.
 
 .. note::
 
@@ -85,7 +76,7 @@ It then writes the library members dataset from our :ref:`tutorials <Tutorials>`
 
       spark.sql('CREATE DATABASE IF NOT EXISTS library;')
       spark.sql('CREATE DATABASE IF NOT EXISTS library_output;')
-      df = spark.read.csv("s3://tumult-public-data/library-members.csv", header=True, inferSchema=True)
+      df = spark.read.csv("s3://tumult-public/library-members.csv", header=True, inferSchema=True)
       df.write.saveAsTable("library.members")
 
    In this case, the ``main`` catalog would be used by default.
@@ -146,4 +137,4 @@ These can be removed by running the :func:`~tmlt.analytics.utils.cleanup` functi
 If many such temporary tables have accumulated over time, the :func:`~tmlt.analytics.utils.remove_all_temp_tables` function can be used to clean them all up, though this may erase query results for any active notebooks if they haven't been saved elsewhere.
 
 As you can see, using Tumult Analytics on Databricks is very straightforward.
-If you encounter any unexpected issues, please let us know by `filing an issue <https://gitlab.com/tumult-labs/analytics/-/issues>`__ or reaching out on our `Slack server <https://tmlt.dev/slack>`__.
+If you encounter any unexpected issues, please let us know by reaching out on our `Slack server <https://github.com/opendp/tumult-analytics/commit/4ad8f09580bab60f4862167fac0bf3a7069aecd3>`__ or `filing an issue <https://github.com/opendp/tumult-analytics/issues>`__.
