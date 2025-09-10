@@ -1,27 +1,26 @@
+.. _installation:
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2025
 
-.. _installation:
-
 Installation instructions
 =========================
 
-This guide will help you set up the Tumult Platform on your local machine.
+This guide will help you set up |project| on your local machine.
 
 Prerequisites
 ^^^^^^^^^^^^^
 
-The Tumult Platform is built in `Python <https://www.python.org/>`__, so a Python installation is required to use it.
+|project| is built in `Python <https://www.python.org/>`__, so a Python installation is required to use it.
 It is compatible with Python 3.9 through 3.11, and has experimental support for Python 3.12.
-Because the Tumult Platform uses PySpark for computation, it also `requires Java 8 or 11 <https://archive.apache.org/dist/spark/docs/3.1.1/#downloading>`__, or Java 17 if PySpark 3.4 or later is used.
+Because Tumult Analytics uses PySpark for computation, it also `requires Java 8 or 11 <https://archive.apache.org/dist/spark/docs/3.1.1/#downloading>`__, or Java 17 if PySpark 3.4 or later is used.
 Java 21 is not currently supported.
 
-The Tumult Platform supports the ``x86_64`` processor architecture, as well as Apple silicon.
+Tumult Analytics supports the ``x86_64`` processor architecture, as well as Apple silicon.
 
 Below are instructions for installing these prerequisites on several common platforms.
-If none of these apply to you, install Python 3 and Java from your OS package manager or manually, then proceed with the ``pip`` installation.
-If you encounter any issues during the installation process, please `let us know <https://gitlab.com/tumult-labs/analytics/-/issues>`__!
+If none of these apply to you, install Python 3 and Java from your OS package manager or manually, then proceed with the `pip` installation.
+If you encounter any issues during the installation process, please `let us know <https://github.com/opendp/tumult-analytics/issues>`__!
 
 .. tab-set::
    .. tab-item:: Linux (Debian-based)
@@ -41,7 +40,7 @@ If you encounter any issues during the installation process, please `let us know
            apt install openjdk-17-jre-headless
 
        Note that some newer releases, for example Ubuntu 24.04, default to Java 21.
-       Java 21 *is not supported* by Spark or by the Tumult Platform, so on such systems you may need to explicitly install an older Java version and configure it to be the default using ``update-alternatives``.
+       Java 21 *is not supported* by Spark or by Tumult Analytics, so on such systems you may need to explicitly install an older Java version and configure it to be the default using ``update-alternatives``.
 
 
    .. tab-item:: Linux (Red Hat-based)
@@ -97,61 +96,38 @@ If you encounter any issues during the installation process, please `let us know
 
    .. tab-item:: Windows
 
-       The only supported way to install the Tumult Platform on Windows is using the `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about>`__.
-       Once you have installed your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get the Tumult Platform set up.
+       The only supported way to install |project| on Windows is using the `Windows Subsystem for Linux (WSL) <https://docs.microsoft.com/en-us/windows/wsl/about>`__.
+       Once you have installed your preferred Linux distribution with WSL, follow the corresponding Linux installation instructions to get Tumult Analytics set up.
+
 
 Installation
 ^^^^^^^^^^^^
 
 .. note::
 
-    It is **strongly recommended**, though not required, to install the Tumult Platform in a `virtual environment <https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments>`__
+    It is **strongly recommended**, though not required, to install Tumult Analytics in a `virtual environment <https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments>`__
     to minimize interactions with your system Python environment.
 
-Once the above prerequisites are installed, follow the installation steps for either version of the Tumult Platform.
 
-.. tab-set::
-   .. tab-item:: Open-source version
+Once the above prerequisites are installed, Tumult Analytics can be installed using ``pip`` with:
 
-      Install the open-source version of the Tumult Platform along with all its Python dependencies with the following ``pip3`` command.
+.. code-block:: bash
 
-      .. code-block:: bash
+  pip install tmlt.analytics
 
-           pip3 install tmlt.analytics
+This will automatically install all of its Python dependencies as well.
 
-   .. tab-item:: Pro version
 
-      First, if you already have the open-source version of the Tumult Platform installed on your machine, it will not interact well with the Pro version. We recommend you either:
 
-      1. Install the Pro version in a new `virtual environment <https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments>`__ to minimize interactions with your system Python environment.
-      2. Uninstall the open-source version before installing the Pro version, using
-
-      .. code-block:: bash
-
-          python3 -m pip uninstall tmlt.analytics
-
-      Then, you should have obtained an ``INDEX_URL`` from Tumult Labs.
-      Insert it in the following command, then install the Pro version of the Tumult Platform using ``pip3``.
-
-      .. code-block:: bash
-
-        INDEX_URL=<Insert Tumult provided URL>
-        pip3 install tmlt.analytics-pro --index-url $INDEX_URL
-
-      Once installed, you will need to download the license file (also provided by Tumult Labs) onto your machine, for example to ``~/.config/tmlt/analytics-pro-license.json``.
-      Then, set your ``TMLT_ANALYTICS_PRO_LICENSE`` environment variable to the path where you saved the license file.
-      This can be done by, for example, adding ``export TMLT_ANALYTICS_PRO_LICENSE="~/.config/tmlt/analytics-pro-license.json"`` to ``~/.bashrc`` for Bash or to ``~/.zshrc`` for Zsh.
-      You will likely need to restart any IDEs or other development tools so they can pick up the environment variable.
-
-      If you are unable to set environment variables for any reason, you can instead configure the license path programmatically via the :data:`tmlt.cfg.analytics.license_file_path_override` variable.
 
 Optional: checking your installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once you've installed the Tumult Platform, you can run this command to check that basic functionality works:
+Once you've installed |project|, you can run this command to
+check that basic functionality works:
 
 .. code-block:: bash
 
     python3 -c "from tmlt.analytics.utils import check_installation; check_installation()"
 
-If the Tumult Platform has been installed correctly, this command should finish successfully.
+If |project| has been installed correctly, this command should finish successfully.

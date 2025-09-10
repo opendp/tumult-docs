@@ -1,9 +1,11 @@
-..
-    SPDX-License-Identifier: CC-BY-SA-4.0
-    Copyright Tumult Labs 2025
+.. _aws-glue:
 
 Using Tumult Analytics on AWS Glue
 ==================================
+
+..
+    SPDX-License-Identifier: CC-BY-SA-4.0
+    Copyright Tumult Labs 2025
 
 This guide covers using Tumult Analytics as part of an `AWS Glue <https://aws.amazon.com/glue/>`__ data pipeline.
 The instructions use `AWS Glue Studio <https://docs.aws.amazon.com/glue/latest/ug/what-is-glue-studio.html>`__, Glue's visual job editor and management interface, but the general steps apply to other ways of configuring Glue jobs as well.
@@ -14,7 +16,7 @@ Setting up requirements
 Before creating a Glue job, it may be necessary to set up some additional AWS resources for the pipeline to use.
 The job we will build requires two such resources:
 
-* an S3 bucket for storing input data and results, and
+* an S3 bucket for storing results, and
 * an IAM role that provides permissions necessary for the Glue job to run.
 
 If your organization already has S3 buckets and IAM roles configured for Glue, you can use those, and skip the rest of this section.
@@ -58,17 +60,6 @@ Next, create an `IAM role <https://console.aws.amazon.com/iamv2/home>`__ for Glu
 
    Hit "Next", give the policy a name, and then click "Create policy".
 
-Copying input data
-^^^^^^^^^^^^^^^^^^
-
-Our example job will use the same `public data <https://gitlab.com/tumult-labs/demo-data>` as the Tumult Analytics tutorials. Copy this data to S3 so Glue can read it. For example:
-
-.. code-block::
-
-   tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
-   git clone git@gitlab.com:tumult-labs/demo-data.git $tmpdir/data
-   aws s3 sync $tmpdir/data s3://tumult-analytics-glue/input-data/
-   rm -rf $tmpdir
 
 Configuring the Glue job
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -104,9 +95,9 @@ Last and most importantly, open the "Advanced properties" section and add two jo
 
 Once all of the job settings are updated, return to the "Visual" tab and add the following nodes:
 
-* An `"Amazon S3" data source <https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html>`__ named "checkouts" with S3 URL ``s3://tumult-analytics-glue/input-data/checkout-logs.csv`` and CSV data format.
+* An `"Amazon S3" data source <https://docs.aws.amazon.com/glue/latest/ug/edit-jobs-source-s3-files.html>`__ named "checkouts" with S3 URL ``s3://tumult-public/checkout-logs.csv`` and CSV data format.
 
-* An "Amazon S3" data source named "books" with S3 URL ``s3://tumult-analytics-glue/input-data/library_books.csv`` and CSV data format.
+* An "Amazon S3" data source named "books" with S3 URL ``s3://tumult-public/library_books.csv`` and CSV data format.
 
 * A `"Custom Transform" node <https://docs.aws.amazon.com/glue/latest/ug/transforms-custom.html>`__ which has both of the data source nodes as parents.
   This will contain our Tumult Analytics program, which will be added shortly.
@@ -187,4 +178,4 @@ It will take a couple of minutes to start up, but should then succeed and write 
 As you can see, Tumult Analytics provides a convenient way to integrate differential privacy into your AWS Glue ETL jobs.
 While the job shown here is relatively simple, you can also use Tumult Analytics as part of larger and more complex jobs that involve many inputs and outputs and use other Glue features for post-processing or other transformations.
 
-If you encounter any unexpected issues, please let us know by reaching out on our `Slack server <https://tmlt.dev/slack>`__ or `filing an issue <https://gitlab.com/tumult-labs/analytics/-/issues>`__.
+If you encounter any unexpected issues, please let us know by reaching out on our `Slack server <https://github.com/opendp/tumult-analytics/commit/4ad8f09580bab60f4862167fac0bf3a7069aecd3>`__ or `filing an issue <https://github.com/opendp/tumult-analytics/issues>`__.
