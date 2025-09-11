@@ -1,48 +1,33 @@
+.. _spark:
+
+Spark
+=====
+
 ..
     SPDX-License-Identifier: CC-BY-SA-4.0
     Copyright Tumult Labs 2025
 
-.. _spark:
-
-Spark configuration and performance
-===================================
-
-The Tumult Platform uses Spark as its underlying data processing framework. This topic
-guide covers relevant information about Spark for users of the Tumult Platform.
+Tumult Analytics uses Spark as its underlying data processing
+framework. This topic guide covers relevant information about Spark
+for Tumult Analytics users.
 
 Configuring Spark sessions
 --------------------------
 
-The Tumult Platform uses :class:`Spark sessions <pyspark.sql.SparkSession>` to do all
-data processing operations. As long as Spark has an active session, any calls that
-"create" new Spark sessions use that active session.
+Tumult Analytics uses :class:`Spark sessions <pyspark.sql.SparkSession>` to do all data processing operations.
+As long as Spark has an active session, any calls that "create" new Spark
+sessions use that active session.
 
-If you want the Tumult Platform to use Spark sessions with any *specific* properties,
-then you should create a Spark session before running any Tumult code:
+If you want Tumult Analytics to use Spark sessions with any *specific* properties,
+then before running Tumult Analytics code, you should create that Spark session:
 
 .. code-block::
 
     from pyspark.sql import SparkSession
     spark = SparkSession.builder.<your options here>.getOrCreate()
 
-As long as this session is active, the Tumult Platform will use it.
+As long as this session is active, Tumult Analytics will use it.
 
-.. _progress-bar:
-
-Disabling Spark's progress bar
-------------------------------
-
-By default, Spark displays a progress bar when running computations.
-The Tumult Platform often needs to perform many Spark computations, so this per-computation progress bar is not very useful.
-For long-running operations like :py:meth:`SessionProgramTuner.multi_error_report <tmlt.tune.SessionProgramTuner.multi_error_report>`, the Tumult Platform provides a more useful progress bar instead.
-Enabling it requires disabling Spark's native progress bar by setting ``spark.ui.showConsoleProgress`` to ``false`` in your Spark configuration.
-
-.. code-block::
-
-    from pyspark.sql import SparkSession
-    spark = SparkSession.builder.config("spark.ui.showConsoleProgress", "false").getOrCreate()
-
-This must be done the **first time** the Spark session is initialized; doing it later on has no effect.
 
 Connecting to Hive
 ^^^^^^^^^^^^^^^^^^
@@ -140,11 +125,11 @@ RAM usage
 
 By default, Spark allocates itself 1GB of RAM
 (see `Spark's configuration documentation <https://spark.apache.org/docs/latest/configuration.html#application-properties>`_).
-Programs that use the Tumult Platform programs often need more RAM than this.
+Tumult Analytics programs often need more RAM than this.
 Usually, a program needs more RAM because:
 
 * the input data is large (10M rows or more)
-* a :class:`~tmlt.analytics.KeySet` used for a grouping operation is large (10k rows or more)
+* a keyset used for a grouping operation is large (10k rows or more)
 * the output data is large (10M rows or more)
 
 You can adjust the amount of memory available to Spark when creating your
