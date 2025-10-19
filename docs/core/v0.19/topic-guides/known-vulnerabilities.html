@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Known Vulnerabilities &#8212; Tumult Core HEAD documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=790cdede" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b8774606"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'topic-guides/known-vulnerabilities';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/core/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'HEAD';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../_static/js/version-banner.js?v=1dba2d8c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NaNs, nulls, and infs" href="special-values.html" />
+    <link rel="prev" title="Tumult Core Privacy Guarantee" href="privacy-guarantee.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="HEAD" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Tumult Core HEAD documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Core HEAD documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Topic Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/tmlt/core/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../additional-resources/index.html">
+    Additional Resources
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Topic Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/tmlt/core/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../additional-resources/index.html">
+    Additional Resources
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+<h3>Tumult Core</h3></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+
+<nav class="bd-docs-nav bd-links">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Tumult Core Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="real-numbers.html">Handling Real Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="privacy-guarantee.html">Tumult Core Privacy Guarantee</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Known Vulnerabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="special-values.html">NaNs, nulls, and infs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Spark</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Topic Guides</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Known Vulnerabilities</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="known-vulnerabilities">
+<span id="id1"></span><h1>Known Vulnerabilities<a class="headerlink" href="#known-vulnerabilities" title="Link to this heading">#</a></h1>
+<p>This page describes known vulnerabilities in Tumult Core that we intend to fix.</p>
+<section id="stability-imprecision-bug">
+<h2>Stability imprecision bug<a class="headerlink" href="#stability-imprecision-bug" title="Link to this heading">#</a></h2>
+<p>Tumult Core is susceptible to the class of vulnerabilities described in Section
+6 of <span id="id2">[<a class="reference internal" href="../zcitations.html#id8" title="Ilya Mironov. On significance of the least significant bits for differential privacy. In Ting Yu, George Danezis, and Virgil D. Gligor, editors, the ACM Conference on Computer and Communications Security, CCS'12, Raleigh, NC, USA, October 16-18, 2012, 650–661. ACM, 2012. URL: https://doi.org/10.1145/2382196.2382264, doi:10.1145/2382196.2382264.">Mir12</a>]</span>. In particular, when summing floating point numbers, the
+claimed sensitivity may be smaller than the true sensitivity. This vulnerability
+affects the <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.Sum" title="tmlt.core.transformations.spark_transformations.agg.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> transformation when the domain of the
+<cite>measure_column</cite> is <a class="reference internal" href="../reference/tmlt/core/domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor" title="tmlt.core.domains.spark_domains.SparkFloatColumnDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkFloatColumnDescriptor</span></code></a>. Measurements that
+involve a <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.Sum" title="tmlt.core.transformations.spark_transformations.agg.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> transformation on floating point numbers may have a
+privacy loss that is larger than the claimed privacy loss.</p>
+</section>
+<section id="floating-point-overflow-underflow">
+<h2>Floating point overflow/underflow<a class="headerlink" href="#floating-point-overflow-underflow" title="Link to this heading">#</a></h2>
+<p>Tumult Core is susceptible to privacy leakage from floating point overflow and
+underflow. Users should not perform operations that may cause
+overflow/underflow.</p>
+<p>Tumult Core does have some basic measures to protect users from certain
+floating point overflow and underflow vulnerabilities: for <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/agg/index.html#tmlt.core.transformations.spark_transformations.agg.Sum" title="tmlt.core.transformations.spark_transformations.agg.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a>
+aggregations, values must be clamped to <span class="math notranslate nohighlight">\([-2^{970}, 2^{970}]\)</span>, so an overflow
+or underflow can only happen when the number of values summed is more than
+<span class="math notranslate nohighlight">\(2^{52}\)</span>. We expect users to hit performance bottlenecks before this
+happens.</p>
+</section>
+<section id="parallel-composition">
+<h2>Parallel composition<a class="headerlink" href="#parallel-composition" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>s in Tumult Core provide privacy guarantees in the form of privacy
+functions and relations (See <a class="reference internal" href="privacy-guarantee.html#privacy-guarantee"><span class="std std-ref">Tumult Core Privacy Guarantee</span></a> for more details). Let <span class="math notranslate nohighlight">\(M\)</span> be
+a Core measurement and <span class="math notranslate nohighlight">\(f\)</span> be its privacy function. If <span class="math notranslate nohighlight">\(f(k) = \epsilon\)</span> then for any pair of inputs that are
+at most <span class="math notranslate nohighlight">\(k\)</span>-apart under the input metric, the distance between the outputs of the measurement
+under the output measure is at most <span class="math notranslate nohighlight">\(\epsilon\)</span>. Crucially, this is the exclusive guarantee provided
+by a Core measurement; because of the generality of the Core privacy framework, it is possible to construct measurements with certain combinations of input domain, input metric, and output measure where this guarantee does not extend to group privacy. In particular, it is possible to construct a measurement for
+inputs that are <span class="math notranslate nohighlight">\(c*k\)</span> apart, the outputs are more than <span class="math notranslate nohighlight">\(c*\epsilon\)</span> apart.</p>
+<p>The <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a> measurement allows different <a class="reference internal" href="../reference/tmlt/core/measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>s to be evaluated on different
+partitions of an input. Given a list <span class="math notranslate nohighlight">\(M_1, M_2, ..., M_n\)</span> of measurements, the privacy function <span class="math notranslate nohighlight">\(F(d)\)</span> for the
+parallel composition, <span class="math notranslate nohighlight">\(M\)</span>, of these measurements is evaluated as the max of the privacy functions for
+each of the <span class="math notranslate nohighlight">\(n\)</span> measurements evaluated at <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F(d) = \max_{i=1}^n F_i(d)\]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> corresponds to the privacy function of <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(F_i\)</span> corresponds to the privacy function of <span class="math notranslate nohighlight">\(M_i\)</span>.</p>
+<p>An implicit assumption is made in this privacy function:
+privacy functions for all <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.PureDP" title="tmlt.core.measures.PureDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">PureDP</span></code></a> measurements are linear (or quadratic for <a class="reference internal" href="../reference/tmlt/core/measures/index.html#tmlt.core.measures.RhoZCDP" title="tmlt.core.measures.RhoZCDP"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhoZCDP</span></code></a> measurements).</p>
+<p>While this assumption holds for standard notions of pure differential privacy and zCDP – where the domain is the domain of all datasets with some schema and neighboring datasets are obtained by adding or removing a record – as a result of group privacy, this not true of privacy functions for Core measurements in general. Consider the following example.
+Let <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span> denote 2 core measurements composed together in a ParallelComposition measurement
+<span class="math notranslate nohighlight">\(M\)</span>. To verify that inputs that differ in 2 records produce outputs that are <span class="math notranslate nohighlight">\(\epsilon\)</span>-indistinguishable
+under PureDP, we need to verify that
+<span class="math notranslate nohighlight">\(F(2) \leq \epsilon\)</span> holds. The parallel composition measurement verifies this by checking that:
+<span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(2) \leq \epsilon\)</span>.
+Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(X'\)</span> be two inputs to <span class="math notranslate nohighlight">\(M\)</span> that differ in 2 records. Let <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> be the partitions
+of <span class="math notranslate nohighlight">\(X\)</span> corresponding to <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span>, and let <span class="math notranslate nohighlight">\(x_1'\)</span> and <span class="math notranslate nohighlight">\(x_2'\)</span> be the corresponding partitions of <span class="math notranslate nohighlight">\(X'\)</span>.
+Consider the possible combinations of distances between the corresponding partitions:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 0\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 1\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d(x_1, x_1') = 2\)</span> and <span class="math notranslate nohighlight">\(d(x_2, x_2') = 0\)</span></p></li>
+</ol>
+<p>In order to verify that <span class="math notranslate nohighlight">\(F(2) \leq \epsilon\)</span> holds, we need to verify that all of the following hold:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(F_1(0) \leq 0 \wedge F_2(2) \leq \epsilon\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(F_1(1) \leq \epsilon_1 \wedge F_2(1) \leq \epsilon_2\)</span> for some <span class="math notranslate nohighlight">\(\epsilon_1, \epsilon_2 \geq 0\)</span> such that <span class="math notranslate nohighlight">\(\epsilon_1 + \epsilon_2 = \epsilon\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(0) \leq 0\)</span></p></li>
+</ol>
+<p>Currently, <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>‘s privacy function assumes that the privacy functions of PureDP measurements are
+linear, and infers all 3 of these from <span class="math notranslate nohighlight">\(F_1(2) \leq \epsilon \wedge F_2(2) \leq \epsilon\)</span>. However, it is possible to
+add new Core measurements whose privacy functions violate this assumption of linearity. When composing such measurements, <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>
+will not actually provide the privacy guarantee it claims. Note that no existing Core component violates the implicit assumption made by
+the privacy function of <a class="reference internal" href="../reference/tmlt/core/measurements/interactive_measurements/index.html#tmlt.core.measurements.interactive_measurements.ParallelComposition" title="tmlt.core.measurements.interactive_measurements.ParallelComposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParallelComposition</span></code></a>.</p>
+</section>
+<section id="evaluating-privacy-and-stability-relations-using-sympy">
+<h2>Evaluating privacy and stability relations using SymPy<a class="headerlink" href="#evaluating-privacy-and-stability-relations-using-sympy" title="Link to this heading">#</a></h2>
+<p>Tumult Core uses <a class="reference external" href="https://www.sympy.org/">SymPy</a> to evaluate privacy and stability
+relations for all measurements and transformations. Real numbers are represented using symbolic expressions,
+and inequalities relevant to evaluating the privacy relation of a measurement for a given
+pair of inputs are solved using SymPy. In most cases, these inequalities are evaluated analytically;
+however, this isn’t always possible and SymPy occassionally resorts to numerical methods of
+approximating the expressions. In such cases, SymPy does not provide any correctness guarantees.
+In some cases, SymPy may fail to solve the inequality altogether, making it
+impossible to verify the privacy properties of Core measurements.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="privacy-guarantee.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tumult Core Privacy Guarantee</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="special-values.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NaNs, nulls, and infs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stability-imprecision-bug">Stability imprecision bug</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#floating-point-overflow-underflow">Floating point overflow/underflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-composition">Parallel composition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-privacy-and-stability-relations-using-sympy">Evaluating privacy and stability relations using SymPy</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+Built from unknown version at 2025-10-19 01:18.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

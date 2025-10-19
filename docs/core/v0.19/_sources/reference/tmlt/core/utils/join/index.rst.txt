@@ -1,0 +1,146 @@
+
+
+
+***********
+join
+***********
+
+.. py:module:: tmlt.core.utils.join
+
+.. autoapi-nested-parse::
+
+   Utilities related to joining dataframes.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.natural_join_columns`
+     - Returns the columns to join on to perform a natural join.
+   * - :func:`.columns_after_join`
+     - Return the expected output columns and their origin from joining two dataframes.
+   * - :func:`.domain_after_join`
+     - Returns the domain of the join of two dataframes.
+   * - :func:`.join`
+     - Returns the join of two dataframes.
+
+.. py:function:: natural_join_columns(left_columns, right_columns)
+
+   Returns the columns to join on to perform a natural join.
+
+   The columns to join on are the ones that are in both ``left_columns`` and
+   ``right_columns``, in the order they appear in ``left_columns``.
+
+   .. note::
+
+       Returns an empty list if there are no common columns.
+
+   .. rubric:: Examples
+
+   >>> natural_join_columns(["a", "b", "c"], ["b", "c", "d"])
+   ['b', 'c']
+   >>> natural_join_columns(["a", "b", "c"], ["d", "e", "f"])
+   []
+
+   :param left_columns: Columns of the left dataframe.
+   :param right_columns: Columns of the right dataframe.
+
+
+
+.. py:function:: columns_after_join(left_columns, right_columns, on = None, how = 'inner')
+
+   Return the expected output columns and their origin from joining two dataframes.
+
+   The keys are the names of the output columns in the order they will appear in the
+   output dataframe. The values are tuples of the form (left_column, right_column),
+   where left_column and right_column are the names of the columns in the left and
+   right dataframes that the output column is derived from. If the output column is
+   not derived from a column in the left or right dataframe, the corresponding value
+   is None.
+
+   The output columns are ordered as follows:
+
+       - Join columns (in the order given by the user, or the order they are in the
+         left table if not provided) appear first.
+       - Columns of left table (with _left appended as required) appear
+         next in the input order. (excluding join columns)
+       - Columns of the right table (with _right appended as required) appear
+         last in the input order. (excluding join columns)
+
+   _left and _right are appended to output column names if they are in both
+   ``left_columns`` and ``right_columns``, but are not joined on.
+
+   .. rubric:: Examples
+
+   >>> columns_after_join(["a", "b", "c"], ["b", "c", "d"])
+   {'b': ('b', 'b'), 'c': ('c', 'c'), 'a': ('a', None), 'd': (None, 'd')}
+   >>> columns_after_join(["a", "b", "c"], ["b", "c", "d"], ["b"])
+   {'b': ('b', 'b'), 'a': ('a', None), 'c_left': ('c', None), 'c_right': (None, 'c'), 'd': (None, 'd')}
+
+   :param left_columns: Columns of the left dataframe.
+   :param right_columns: Columns of the right dataframe.
+   :param on: Columns to join on. If None, join on all columns with the same
+              name.
+   :param how: Join type. Must be one of "left", "right", "inner", "outer", "left_anti".
+               This defaults to "inner".
+
+
+
+.. py:function:: domain_after_join(left_domain, right_domain, on = None, how = 'inner', nulls_are_equal = False)
+
+   Returns the domain of the join of two dataframes.
+
+   Also does input validation. Checks:
+
+       - All checks from :func:`~.columns_after_join`.
+       - ``how`` is one of "left", "right", "inner", or "outer".
+       - Join columns have the same data type.
+       - Left and right domains are SparkDataFrameDomains.
+
+   .. note::
+
+       This takes into account extra metadata about the columns, such as whether nulls/
+       infs are allowed, and what kind of join is performed.
+
+       See :ref:`NaNs, nulls, and infs <special-values>` for more information about
+       comparisons involving special values.
+
+   :param left_domain: Domain of the left dataframe.
+   :param right_domain: Domain of the right dataframe.
+   :param on: Columns to join on. If None, join on all columns with the same
+              name.
+   :param how: Join type. Must be one of "left", "right", "inner", "outer". This
+               defaults to "inner".
+   :param nulls_are_equal: If True, treats null values as equal. Defaults to False.
+
+
+
+.. py:function:: join(left, right, on = None, how = 'inner', nulls_are_equal = False)
+
+   Returns the join of two dataframes.
+
+   :param left: Left dataframe.
+   :param right: Right dataframe.
+   :param on: Columns to join on. If None, join on all columns with the same
+              name.
+   :param how: Join type. Must be one of "left", "right", "inner", "outer". If None,
+               defaults to "inner".
+   :param nulls_are_equal: If True, treats null values as equal. Defaults to False.
+
+
+
+
+
+
+

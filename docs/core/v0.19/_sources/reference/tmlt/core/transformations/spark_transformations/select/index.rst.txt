@@ -1,0 +1,186 @@
+
+
+
+*************
+select
+*************
+
+.. py:module:: tmlt.core.transformations.spark_transformations.select
+
+.. autoapi-nested-parse::
+
+   Transformations for selecting columns from Spark DataFrames.
+
+   See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+   for more information.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Select`
+     - Keep a subset of columns from a Spark DataFrame.
+
+   
+.. py:class:: Select(input_domain, metric, columns)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Keep a subset of columns from a Spark DataFrame.
+
+   .. rubric:: Example
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3"],
+       ...             "B": ["b1", "b1", "b2", "b2"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   >>> drop_b = Select(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkStringColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     columns=["A"],
+   ...     metric=SymmetricDifference(),
+   ... )
+   >>> # Apply transformation to data
+   >>> spark_dataframe_without_b = drop_b(spark_dataframe)
+   >>> print_sdf(spark_dataframe_without_b)
+       A
+   0  a1
+   1  a2
+   2  a3
+   3  a3
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
+         or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
+         or :class:`~.IfGroupedBy`
+         (matches input metric)
+
+       >>> drop_b.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
+       >>> drop_b.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False)})
+       >>> drop_b.input_metric
+       SymmetricDifference()
+       >>> drop_b.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.Select`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> drop_b.stability_function(1)
+           1
+           >>> drop_b.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: columns
+      :type: List[str]
+
+
+      Returns columns being selected.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      See `the architecture overview <https://docs.tmlt.dev/core/latest/topic-guides/architecture.html>`_
+      for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Selects columns.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+
+
+
+

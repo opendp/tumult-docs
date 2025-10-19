@@ -1,0 +1,131 @@
+
+
+
+******************
+collections
+******************
+
+.. py:module:: tmlt.core.domains.collections
+
+.. autoapi-nested-parse::
+
+   Domains for common python collections such as lists and dictionaries.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ListDomain`
+     - Domain of lists of elements of a particular domain.
+   * - :class:`.DictDomain`
+     - Domain of dictionaries.
+
+   
+.. py:class:: ListDomain
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of lists of elements of a particular domain.
+
+
+
+
+
+   .. py:attribute:: element_domain
+      :type:  tmlt.core.domains.base.Domain
+
+      Domain of list elements.
+
+   .. py:attribute:: length
+      :type:  Optional[int]
+      :value: None
+
+
+      Number of elements in lists in the domain. If None, this is unrestricted.
+
+
+   .. py:property:: carrier_type
+      :type: type
+
+
+      Returns python list type.
+
+
+   .. py:method:: validate(value)
+
+      Raises error if value is not a row with matching schema.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+   
+.. py:class:: DictDomain(key_to_domain)
+
+   Bases: :class:`tmlt.core.domains.base.Domain`
+
+   Domain of dictionaries.
+
+
+
+
+
+
+   .. py:property:: key_to_domain
+      :type: Dict[Any, tmlt.core.domains.base.Domain]
+
+
+      Returns dictionary mapping each key in the domain with its domain.
+
+   .. py:property:: length
+      :type: int
+
+
+      Returns number of keys in the domain.
+
+   .. py:property:: carrier_type
+      :type: type
+
+
+      Returns the type of elements in the domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: __eq__(other)
+
+      Returns True if both domains are identical.
+
+
+   .. py:method:: __getitem__(key)
+
+      Returns domain associated with given key.
+
+
+   .. py:method:: validate(value)
+
+      Raises error if value is not in the domain.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if value is in the domain.
+
+
+
+
+
+

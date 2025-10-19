@@ -1,0 +1,1905 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>nan &#8212; Tumult Core HEAD documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.css?v=5c84f910" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/custom.css?v=790cdede" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../../../_static/documentation_options.js?v=b8774606"></script>
+    <script src="../../../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=ffc8af2d"></script>
+    <script src="../../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/tmlt/core/transformations/spark_transformations/nan/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.tmlt.dev/core/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'HEAD';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="../../../../../../_static/js/version-banner.js?v=1dba2d8c"></script>
+    <link rel="icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="partition" href="../partition/index.html" />
+    <link rel="prev" title="map" href="../map/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="HEAD" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../../../_static/logo.png" class="logo__image only-light" alt="Tumult Core HEAD documentation - Home"/>
+    <img src="../../../../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Tumult Core HEAD documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../topic-guides/index.html">
+    Topic Guides
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../additional-resources/index.html">
+    Additional Resources
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../topic-guides/index.html">
+    Topic Guides
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../additional-resources/index.html">
+    Additional Resources
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://gitlab.com/tumult-labs/core" title="GitLab" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-gitlab fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitLab</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+<h3>Tumult Core</h3></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+
+<nav class="bd-docs-nav bd-links">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../domains/index.html">domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions/index.html">exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ext/index.html">ext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../measurements/index.html">measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../measures/index.html">measures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../metrics/index.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../random/index.html">random</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../index.html">transformations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chaining/index.html">chaining</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../converters/index.html">converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dictionary/index.html">dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../identity/index.html">identity</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">spark_transformations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../add_remove_keys/index.html">add_remove_keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../agg/index.html">agg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filter/index.html">filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../groupby/index.html">groupby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../id/index.html">id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../join/index.html">join</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../map/index.html">map</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">nan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../partition/index.html">partition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../persist/index.html">persist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rename/index.html">rename</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../select/index.html">select</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../truncation/index.html">truncation</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils/index.html">utils</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">transformations</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">spark_transformations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">nan</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-tmlt.core.transformations.spark_transformations.nan">
+<span id="nan"></span><h1>nan<a class="headerlink" href="#module-tmlt.core.transformations.spark_transformations.nan" title="Link to this heading">#</a></h1>
+<p>Transformations to drop or replace NaNs, nulls, and infs in Spark DataFrames.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information on transformations.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs" title="tmlt.core.transformations.spark_transformations.nan.DropInfs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropInfs</span></code></a></p></td>
+<td><p>Drops rows containing +inf or -inf in one or more specified columns.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs" title="tmlt.core.transformations.spark_transformations.nan.DropNaNs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNaNs</span></code></a></p></td>
+<td><p>Drops rows containing NaNs in one or more specified columns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a></p></td>
+<td><p>Drops rows containing nulls in one or more specified columns.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs" title="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceInfs</span></code></a></p></td>
+<td><p>Replaces +inf and -inf in one or more specified columns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceNaNs</span></code></a></p></td>
+<td><p>Replaces NaNs in one or more specified columns.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaceNulls</span></code></a></p></td>
+<td><p>Replaces nulls in one or more specified columns.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropInfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Drops rows containing +inf or -inf in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A    B</span>
+<span class="go">0  a1  0.1</span>
+<span class="go">1  a2 -inf</span>
+<span class="go">2  a3  NaN</span>
+<span class="go">3  a4  inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span> <span class="o">=</span> <span class="n">DropInfs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_infs</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">output_dataframe</span><span class="p">)</span>
+<span class="go">    A    B</span>
+<span class="go">0  a1  0.1</span>
+<span class="go">1  a3  NaN</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SymmetricDifference()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs" title="tmlt.core.transformations.spark_transformations.nan.DropInfs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropInfs</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_function" title="tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.columns" title="Link to this definition">#</a></dt>
+<dd><p>Returns the columns to check for +inf and -inf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.
+If the metric is <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>, its inner metric must be
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>.</p></li>
+<li><p><strong>columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Columns to drop +inf and -inf from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Drops rows containing +inf or -inf in <code class="docutils literal notranslate"><span class="pre">self.columns</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropInfs.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropNaNs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Drops rows containing NaNs in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="go">    A    B</span>
+<span class="go">0  a1  0.1</span>
+<span class="go">1  a2  1.1</span>
+<span class="go">2  a3  NaN</span>
+<span class="go">3  a4  inf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span> <span class="o">=</span> <span class="n">DropNaNs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_nans</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">output_dataframe</span><span class="p">)</span>
+<span class="go">    A    B</span>
+<span class="go">0  a1  0.1</span>
+<span class="go">1  a2  1.1</span>
+<span class="go">2  a4  inf</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=False, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SymmetricDifference()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs" title="tmlt.core.transformations.spark_transformations.nan.DropNaNs"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNaNs</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_function" title="tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.columns" title="Link to this definition">#</a></dt>
+<dd><p>Returns the columns to check for NaNs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.
+If the metric is <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>, its inner metric must be
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> over
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>.</p></li>
+<li><p><strong>columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Columns to drop NaNs from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Drops rows containing NaNs in <code class="docutils literal notranslate"><span class="pre">self.columns</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNaNs.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropNulls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Drops rows containing nulls in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+----+</span>
+<span class="go">|   A|   B|</span>
+<span class="go">+----+----+</span>
+<span class="go">|NULL| NaN|</span>
+<span class="go">|  a1| 0.1|</span>
+<span class="go">|  a2|NULL|</span>
+<span class="go">+----+----+</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span> <span class="o">=</span> <span class="n">DropNulls</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_nulls</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+---+</span>
+<span class="go">|   A|  B|</span>
+<span class="go">+----+---+</span>
+<span class="go">|NULL|NaN|</span>
+<span class="go">|  a1|0.1|</span>
+<span class="go">+----+---+</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SymmetricDifference()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_function" title="tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.columns" title="Link to this definition">#</a></dt>
+<dd><p>Returns the columns to check for nulls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.
+If the metric is <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a>, its inner metric must be
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> over
+<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>.</p></li>
+<li><p><strong>columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Columns to drop nulls from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Drops rows containing nulls in <code class="docutils literal notranslate"><span class="pre">self.columns</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.DropNulls.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReplaceInfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Replaces +inf and -inf in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+---------+</span>
+<span class="go">|   A|        B|</span>
+<span class="go">+----+---------+</span>
+<span class="go">|NULL|      NaN|</span>
+<span class="go">|  a1| Infinity|</span>
+<span class="go">|  a2|     NULL|</span>
+<span class="go">|  a3|-Infinity|</span>
+<span class="go">+----+---------+</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span> <span class="o">=</span> <span class="n">ReplaceInfs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">)},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_infs</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+------+</span>
+<span class="go">|   A|     B|</span>
+<span class="go">+----+------+</span>
+<span class="go">|NULL|   NaN|</span>
+<span class="go">|  a1| 100.0|</span>
+<span class="go">|  a2|  NULL|</span>
+<span class="go">|  a3|-100.0|</span>
+<span class="go">+----+------+</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SymmetricDifference()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_function" title="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>replace_map</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.replace_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">replace_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.replace_map" title="Link to this definition">#</a></dt>
+<dd><p>Returns mapping used to replace infinite values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, Tuple[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.</p></li>
+<li><p><strong>replace_map</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]]</span>) – Dictionary mapping column names to a tuple. The first
+value in the tuple will be used to replace -inf in that column,
+and the second value in the tuple will be used to replace +inf
+in that column.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Returns DataFrame with +inf and -inf replaced in specified columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReplaceNaNs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Replaces NaNs in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+----+</span>
+<span class="go">|   A|   B|</span>
+<span class="go">+----+----+</span>
+<span class="go">|NULL| NaN|</span>
+<span class="go">|  a1| 0.1|</span>
+<span class="go">|  a2|NULL|</span>
+<span class="go">+----+----+</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span> <span class="o">=</span> <span class="n">ReplaceNaNs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_nans</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+----+</span>
+<span class="go">|   A|   B|</span>
+<span class="go">+----+----+</span>
+<span class="go">|NULL| 0.0|</span>
+<span class="go">|  a1| 0.1|</span>
+<span class="go">|  a2|NULL|</span>
+<span class="go">+----+----+</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=False, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">SymmetricDifference()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">SymmetricDifference()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_function" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>replace_map</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.replace_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">replace_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.replace_map" title="Link to this definition">#</a></dt>
+<dd><p>Returns mapping used to replace NaNs and nulls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.</p></li>
+<li><p><strong>replace_map</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – Dictionary mapping column names to value to be used for
+replacing NaNs in that column.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Returns DataFrame with NaNs replaced in specified columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReplaceNulls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
+<p>Replaces nulls in one or more specified columns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+----+----+</span>
+<span class="go">|   A|   B|</span>
+<span class="go">+----+----+</span>
+<span class="go">|NULL| NaN|</span>
+<span class="go">|  a1| 0.1|</span>
+<span class="go">|  a2|NULL|</span>
+<span class="go">+----+----+</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span> <span class="o">=</span> <span class="n">ReplaceNulls</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">HammingDistance</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;a0&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_nulls</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">+---+---+</span>
+<span class="go">|  A|  B|</span>
+<span class="go">+---+---+</span>
+<span class="go">| a0|NaN|</span>
+<span class="go">| a1|0.1|</span>
+<span class="go">| a2|0.0|</span>
+<span class="go">+---+---+</span>
+</pre></div>
+</div>
+<dl>
+<dt>Transformation Contract:</dt><dd><ul class="simple">
+<li><p>Input domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Output domain - <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a>, or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">input_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="go">HammingDistance()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="go">HammingDistance()</span>
+</pre></div>
+</div>
+<dl>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls" title="tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="xref py py-class docutils literal notranslate"><span class="pre">DropNulls</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_function" title="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
+<li><p><strong>metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><em>tmlt.core.metrics.HammingDistance</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
+<li><p><strong>replace_map</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.replace_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">replace_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.replace_map" title="Link to this definition">#</a></dt>
+<dd><p>Returns mapping used to replace nulls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return input domain for the measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain">tmlt.core.domains.base.Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_metric" title="Link to this definition">#</a></dt>
+<dd><p>Distance metric on input domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric">tmlt.core.metrics.Metric</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of the input Spark DataFrames.</p></li>
+<li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.HammingDistance" title="tmlt.core.metrics.HammingDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">HammingDistance</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for the input and output Spark DataFrames.</p></li>
+<li><p><strong>replace_map</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – Dictionary mapping column names to value to be used for
+replacing nulls in that column.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_function" title="Link to this definition">#</a></dt>
+<dd><p>Returns the smallest d_out satisfied by the transformation.</p>
+<p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
+for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d_in</strong> (<em>tmlt.core.utils.exact_number.ExactNumberInput</em>) – Distance between inputs under input_metric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../utils/exact_number/index.html#tmlt.core.utils.exact_number.ExactNumber" title="tmlt.core.utils.exact_number.ExactNumber">tmlt.core.utils.exact_number.ExactNumber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Returns DataFrame with nulls replaced in specified columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://spark.apache.org/docs/3.5.1/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_relation" title="Link to this definition">#</a></dt>
+<dd><p>Returns True only if close inputs produce close outputs.</p>
+<p>See the privacy and stability tutorial (add link?) for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> (<em>Any</em>) – Distance between inputs under input_metric.</p></li>
+<li><p><strong>d_out</strong> (<em>Any</em>) – Distance between outputs under output_metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
+<dd><p>Return this transformation chained with another component.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../map/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">map</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../partition/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">partition</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs"><code class="docutils literal notranslate"><span class="pre">DropInfs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.columns"><code class="docutils literal notranslate"><span class="pre">DropInfs.columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.input_domain"><code class="docutils literal notranslate"><span class="pre">DropInfs.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.input_metric"><code class="docutils literal notranslate"><span class="pre">DropInfs.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.output_domain"><code class="docutils literal notranslate"><span class="pre">DropInfs.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.output_metric"><code class="docutils literal notranslate"><span class="pre">DropInfs.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__init__"><code class="docutils literal notranslate"><span class="pre">DropInfs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_function"><code class="docutils literal notranslate"><span class="pre">DropInfs.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__call__"><code class="docutils literal notranslate"><span class="pre">DropInfs.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.stability_relation"><code class="docutils literal notranslate"><span class="pre">DropInfs.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropInfs.__or__"><code class="docutils literal notranslate"><span class="pre">DropInfs.__or__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs"><code class="docutils literal notranslate"><span class="pre">DropNaNs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.columns"><code class="docutils literal notranslate"><span class="pre">DropNaNs.columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_domain"><code class="docutils literal notranslate"><span class="pre">DropNaNs.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.input_metric"><code class="docutils literal notranslate"><span class="pre">DropNaNs.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_domain"><code class="docutils literal notranslate"><span class="pre">DropNaNs.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.output_metric"><code class="docutils literal notranslate"><span class="pre">DropNaNs.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__init__"><code class="docutils literal notranslate"><span class="pre">DropNaNs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_function"><code class="docutils literal notranslate"><span class="pre">DropNaNs.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__call__"><code class="docutils literal notranslate"><span class="pre">DropNaNs.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.stability_relation"><code class="docutils literal notranslate"><span class="pre">DropNaNs.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNaNs.__or__"><code class="docutils literal notranslate"><span class="pre">DropNaNs.__or__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls"><code class="docutils literal notranslate"><span class="pre">DropNulls</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.columns"><code class="docutils literal notranslate"><span class="pre">DropNulls.columns</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.input_domain"><code class="docutils literal notranslate"><span class="pre">DropNulls.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.input_metric"><code class="docutils literal notranslate"><span class="pre">DropNulls.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.output_domain"><code class="docutils literal notranslate"><span class="pre">DropNulls.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.output_metric"><code class="docutils literal notranslate"><span class="pre">DropNulls.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__init__"><code class="docutils literal notranslate"><span class="pre">DropNulls.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_function"><code class="docutils literal notranslate"><span class="pre">DropNulls.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__call__"><code class="docutils literal notranslate"><span class="pre">DropNulls.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.stability_relation"><code class="docutils literal notranslate"><span class="pre">DropNulls.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.DropNulls.__or__"><code class="docutils literal notranslate"><span class="pre">DropNulls.__or__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.replace_map"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.replace_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.input_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.output_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__init__"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_function"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__call__"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.stability_relation"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceInfs.__or__"><code class="docutils literal notranslate"><span class="pre">ReplaceInfs.__or__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.replace_map"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.replace_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.input_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.output_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__init__"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_function"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__call__"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.stability_relation"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNaNs.__or__"><code class="docutils literal notranslate"><span class="pre">ReplaceNaNs.__or__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.replace_map"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.replace_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.input_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_domain"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.output_metric"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__init__"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_function"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__call__"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.stability_relation"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.nan.ReplaceNulls.__or__"><code class="docutils literal notranslate"><span class="pre">ReplaceNulls.__or__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025 Tumult Labs.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Tumult Labs 2025 -->
+Built from unknown version at 2025-10-19 01:18.</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
