@@ -632,7 +632,7 @@ None, this column will be named “sum(&lt;measure_column&gt;)”.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.measurements.aggregations.create_average_measurement">
-<span class="sig-name descname"><span class="pre">create_average_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_average_measurement" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_average_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_average_measurement" title="Link to this definition">#</a></dt>
 <dd><p>Returns a noisy average measurement.</p>
 <p>This function constructs a measurement M with the following privacy contract -
 for any two inputs x, x’ that are <code class="docutils literal notranslate"><span class="pre">d_in</span></code>-close under the <code class="docutils literal notranslate"><span class="pre">input_metric</span></code>,
@@ -673,17 +673,18 @@ noisy averages for each group obtained from the groupby transformation.
 If None, this measurement outputs a single number - the noisy average.</p></li>
 <li><p><strong>average_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, this is the column
 name to be used for noisy average in the DataFrame output by the
-measurement. If None, this column will be named “avg(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>keep_intermediates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, intermediates (noisy sum of deviations and noisy
-count) will also be output in addition to the noisy average.</p></li>
-<li><p><strong>sum_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used
-for intermediate sums in the DataFrame output by the measurement. If
-None, this column will be named “sum(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>count_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used
-for intermediate counts in the DataFrame output by the
-measurement. If None, this column will be named “count”.</p></li>
+measurement. If no <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, but
+<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is set, this will be the key for the noisy average
+in the dictionary output by the measurement. If None, this column will be
+named “avg(&lt;measure_column&gt;)”.</p></li>
+<li><p><strong>keep_intermediates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, intermediates (noisy sum of deviations, noisy
+count, and midpoint) will also be output in addition to the noisy average.
+If a groupby transformation is provided, and the measurement returns a
+DataFrame, these values will be appended as extra columns. If there is no
+groupby transformation, the measurement will return a dictionary including
+result and the intermediate values. Key/column names are
+<code class="docutils literal notranslate"><span class="pre">average_column</span></code>, <code class="docutils literal notranslate"><span class="pre">sod(&lt;measure_column&gt;)</span></code>, <code class="docutils literal notranslate"><span class="pre">count</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">midpoint(&lt;measure_column&gt;)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -694,7 +695,7 @@ measurement. If None, this column will be named “count”.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.measurements.aggregations.create_variance_measurement">
-<span class="sig-name descname"><span class="pre">create_variance_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_of_deviations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_of_squared_deviations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_variance_measurement" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_variance_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_variance_measurement" title="Link to this definition">#</a></dt>
 <dd><p>Returns a noisy variance measurement.</p>
 <p>This function constructs a measurement M with the following privacy contract -
 for any two inputs x, x’ that are <code class="docutils literal notranslate"><span class="pre">d_in</span></code>-close under the <code class="docutils literal notranslate"><span class="pre">input_metric</span></code>,
@@ -733,25 +734,22 @@ apart for inputs that are <code class="docutils literal notranslate"><span class
 <li><p><strong>groupby_transformation</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../transformations/spark_transformations/groupby/index.html#tmlt.core.transformations.spark_transformations.groupby.GroupBy" title="tmlt.core.transformations.spark_transformations.groupby.GroupBy"><em>tmlt.core.transformations.spark_transformations.groupby.GroupBy</em></a><em>]</em>) – If provided, this measurement returns a DataFrame with
 a noisy variance for each group obtained from the groupby transformation.
 If None, this measurement outputs a single number - the noisy variance.</p></li>
-<li><p><strong>variance_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, this is
-the column name to be used for noisy variance in the DataFrame
-output by the measurement. If None, this column will be named
-“var(&lt;measure_column&gt;)”.</p></li>
+<li><p><strong>variance_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, this is the column
+name to be used for noisy variance in the DataFrame output by the
+measurement. If no <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, but
+<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is set, this will be the key for the noisy variance
+in the dictionary output by the measurement. If None, this column will be
+named “var(&lt;measure_column&gt;)”.</p></li>
 <li><p><strong>keep_intermediates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, intermediates (noisy sum of deviations, noisy sum
-of squared deviations and noisy count) will also be output in addition to
-the noisy variance.</p></li>
-<li><p><strong>sum_of_deviations_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used for
-intermediate sums of deviations in the DataFrame output by the measurement.
-If None, this column will be named “sod(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>sum_of_squared_deviations_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied
-and <code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used for
-intermediate sums of squared deviations in the DataFrame output by the
-measurement. If None, this column will be named “sos(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>count_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used
-for intermediate counts in the DataFrame output by the measurement.
-If None, this column will be named “count”.</p></li>
+of deviations of squares, noisy count, midpoint, and midpoint of squares)
+will also be output in addition to the noisy variance. If a groupby
+transformation is provided, and the measurement returns a DataFrame, these
+values will be appended as extra columns. If there is no groupby
+transformation, the measurement will return a dictionary including
+result and the intermediate values. Key/column names are
+<code class="docutils literal notranslate"><span class="pre">variance_column</span></code>, “sod(&lt;measure_column&gt;)”, “sos(&lt;measure_column&gt;)”
+“count”, “midpoint(&lt;measure_column&gt;)”, and
+“midpoint_of_squares(&lt;measure_column&gt;)”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -762,7 +760,7 @@ If None, this column will be named “count”.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.measurements.aggregations.create_standard_deviation_measurement">
-<span class="sig-name descname"><span class="pre">create_standard_deviation_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_of_deviations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_of_squared_deviations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_standard_deviation_measurement" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_standard_deviation_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_measure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_mechanism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_transformation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.measurements.aggregations.create_standard_deviation_measurement" title="Link to this definition">#</a></dt>
 <dd><p>Returns a noisy standard deviation measurement.</p>
 <p>This function constructs a measurement M with the following privacy contract -
 for any two inputs x, x’ that are <code class="docutils literal notranslate"><span class="pre">d_in</span></code>-close under the <code class="docutils literal notranslate"><span class="pre">input_metric</span></code>,
@@ -802,25 +800,22 @@ apart for inputs that are <code class="docutils literal notranslate"><span class
 noisy standard deviations for each group obtained by applying the groupby
 transformation. If None, this measurement outputs a single number - the
 noisy standard deviation of <code class="docutils literal notranslate"><span class="pre">measure_column</span></code>.</p></li>
-<li><p><strong>standard_deviation_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, this is
-the column name to be used for noisy standard deviation in the DataFrame
-output by the measurement. If None, this column will be named
-“stddev(&lt;measure_column&gt;)”.</p></li>
+<li><p><strong>standard_deviation_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied, this
+is the column name to be used for noisy standard deviation in the
+DataFrame output by the measurement. If no <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code>
+is supplied, but <code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is set, this will be the key for
+the noisy standar deviation in the dictionary output by the measurement.
+If None, this column will be named “std(&lt;measure_column&gt;)”.</p></li>
 <li><p><strong>keep_intermediates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, intermediates (noisy sum of deviations, noisy sum
-of squared deviations noisy count) will also be output in addition to the
-noisy standard deviation.</p></li>
-<li><p><strong>sum_of_deviations_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used for
-intermediate sums of deviations in the DataFrame output by the measurement.
-If None, this column will be named “sod(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>sum_of_squared_deviations_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied
-and <code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used for
-intermediate sums of squared_deviations in the DataFrame output by the
-measurement. If None, this column will be named “sos(&lt;measure_column&gt;)”.</p></li>
-<li><p><strong>count_column</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – If a <code class="docutils literal notranslate"><span class="pre">groupby_transformation</span></code> is supplied and
-<code class="docutils literal notranslate"><span class="pre">keep_intermediates</span></code> is True, this is the column name to be used
-for intermediate counts in the DataFrame output by the measurement.
-If None, this column will be named “count”.</p></li>
+of deviations of squares, noisy count, midpoint, and midpoint of squares)
+will also be output in addition to the noisy standard deviation. If a
+groupby transformation is provided, and the measurement returns a
+DataFrame, these values will be appended as extra columns. If there is no
+groupby transformation, the measurement will return a dictionary including
+result and the intermediate values. Key/column names are
+<code class="docutils literal notranslate"><span class="pre">standard_deviation_column</span></code>, “sod(&lt;measure_column&gt;)”,
+“sos(&lt;measure_column&gt;)”, “count”, “midpoint(&lt;measure_column&gt;)”, and
+“midpoint_of_squares(&lt;measure_column&gt;)”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1134,7 +1129,7 @@ output by the measurement. If None, this column will be named
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from unknown version at 2025-12-16 01:30.</div>
+Built from unknown version at 2025-12-21 03:00.</div>
       
     </div>
   
