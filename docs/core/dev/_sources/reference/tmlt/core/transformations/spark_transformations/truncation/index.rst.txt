@@ -34,7 +34,7 @@ Classes
      - For each group, limit k rows per key.
 
    
-.. py:class:: LimitRowsPerGroup(input_domain, output_metric, grouping_column, threshold)
+.. py:class:: LimitRowsPerGroup(input_domain, output_metric, grouping_columns, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -83,7 +83,7 @@ Classes
    ...         }
    ...     ),
    ...     output_metric=SymmetricDifference(),
-   ...     grouping_column="A",
+   ...     grouping_columns=["A"],
    ...     threshold=2,
    ... )
    >>> # Apply transformation to data
@@ -110,7 +110,7 @@ Classes
        >>> truncate.output_domain
        SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
        >>> truncate.input_metric
-       IfGroupedBy(column='A', inner_metric=SymmetricDifference())
+       IfGroupedBy(columns={'A'}, inner_metric=SymmetricDifference())
        >>> truncate.output_metric
        SymmetricDifference()
 
@@ -129,8 +129,8 @@ Classes
 
 
 
-   .. py:property:: grouping_column
-      :type: str
+   .. py:property:: grouping_columns
+      :type: frozenset[str]
 
 
       Returns the column defining the groups to truncate.
@@ -200,7 +200,7 @@ Classes
 
 
    
-.. py:class:: LimitKeysPerGroup(input_domain, output_metric, grouping_column, key_column, threshold)
+.. py:class:: LimitKeysPerGroup(input_domain, output_metric, grouping_columns, key_column, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -248,8 +248,8 @@ Classes
    ...             "B": SparkStringColumnDescriptor(),
    ...         }
    ...     ),
-   ...     output_metric=IfGroupedBy("B", SumOf(IfGroupedBy("A", SymmetricDifference()))),
-   ...     grouping_column="A",
+   ...     output_metric=IfGroupedBy({"B"}, SumOf(IfGroupedBy({"A"}, SymmetricDifference()))),
+   ...     grouping_columns=["A"],
    ...     key_column="B",
    ...     threshold=2,
    ... )
@@ -281,15 +281,15 @@ Classes
        >>> truncate.output_domain
        SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
        >>> truncate.input_metric
-       IfGroupedBy(column='A', inner_metric=SymmetricDifference())
+       IfGroupedBy(columns={'A'}, inner_metric=SymmetricDifference())
        >>> truncate.output_metric
-       IfGroupedBy(column='B', inner_metric=SumOf(inner_metric=IfGroupedBy(column='A', inner_metric=SymmetricDifference())))
+       IfGroupedBy(columns={'B'}, inner_metric=SumOf(inner_metric=IfGroupedBy(columns={'A'}, inner_metric=SymmetricDifference())))
 
        Stability Guarantee:
            :class:`~.LimitKeysPerGroup` 's :meth:`~.stability_function` returns
-           ``d_in`` if ``output_metric`` is ``IfGroupedBy(grouping_column, SymmetricDifference())``,
+           ``d_in`` if ``output_metric`` is ``IfGroupedBy(grouping_columns, SymmetricDifference())``,
            ``sqrt(threshold) * d_in`` if ``output_metric`` is
-           ``IfGroupedBy(key_column, RootSumOfSquared(IfGroupedBy(grouping_column, SymmetricDifference())))``,
+           ``IfGroupedBy({key_column}, RootSumOfSquared(IfGroupedBy(grouping_columns, SymmetricDifference())))``,
            and ``threshold * d_in`` otherwise.
 
            >>> truncate.stability_function(1)
@@ -302,8 +302,8 @@ Classes
 
 
 
-   .. py:property:: grouping_column
-      :type: str
+   .. py:property:: grouping_columns
+      :type: frozenset[str]
 
 
       Returns the column defining the groups to truncate.
@@ -379,7 +379,7 @@ Classes
 
 
    
-.. py:class:: LimitRowsPerKeyPerGroup(input_domain, input_metric, grouping_column, key_column, threshold)
+.. py:class:: LimitRowsPerKeyPerGroup(input_domain, input_metric, grouping_columns, key_column, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -427,8 +427,8 @@ Classes
    ...             "B": SparkStringColumnDescriptor(),
    ...         }
    ...     ),
-   ...     input_metric=IfGroupedBy("B", SumOf(IfGroupedBy("A", SymmetricDifference()))),
-   ...     grouping_column="A",
+   ...     input_metric=IfGroupedBy({"B"}, SumOf(IfGroupedBy({"A"}, SymmetricDifference()))),
+   ...     grouping_columns=["A"],
    ...     key_column="B",
    ...     threshold=2,
    ... )
@@ -463,13 +463,13 @@ Classes
        >>> truncate.output_domain
        SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False)})
        >>> truncate.input_metric
-       IfGroupedBy(column='B', inner_metric=SumOf(inner_metric=IfGroupedBy(column='A', inner_metric=SymmetricDifference())))
+       IfGroupedBy(columns={'B'}, inner_metric=SumOf(inner_metric=IfGroupedBy(columns={'A'}, inner_metric=SymmetricDifference())))
        >>> truncate.output_metric
        SymmetricDifference()
 
        Stability Guarantee:
            :class:`~.LimitRowsPerKeyPerGroup` 's :meth:`~.stability_function` returns
-           ``d_in`` if ``input_metric`` is ``IfGroupedBy(grouping_column, SymmetricDifference())``
+           ``d_in`` if ``input_metric`` is ``IfGroupedBy(grouping_columns, SymmetricDifference())``
            and ``threshold * d_in`` otherwise.
 
            >>> truncate.stability_function(1)
@@ -482,8 +482,8 @@ Classes
 
 
 
-   .. py:property:: grouping_column
-      :type: str
+   .. py:property:: grouping_columns
+      :type: frozenset[str]
 
 
       Returns the column defining the groups to truncate.

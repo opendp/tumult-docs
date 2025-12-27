@@ -1264,8 +1264,8 @@ error will occur when the transformation is applied.</p>
 <dt>Stability Guarantee:</dt><dd><p>For</p>
 <ul class="simple">
 <li><p>SymmetricDifference()</p></li>
-<li><p>IfGroupedBy(column, SumOf(SymmetricDifference()))</p></li>
-<li><p>IfGroupedBy(column, RootSumOfSquared(SymmetricDifference()))</p></li>
+<li><p>IfGroupedBy({column}, SumOf(SymmetricDifference()))</p></li>
+<li><p>IfGroupedBy({column}, RootSumOfSquared(SymmetricDifference()))</p></li>
 </ul>
 <p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns the <code class="docutils literal notranslate"><span class="pre">d_in</span></code>
 times <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a>. If <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a> is None, it returns infinity.</p>
@@ -1277,7 +1277,7 @@ times <a class="reference internal" href="#tmlt.core.transformations.spark_trans
 </div>
 <p>For</p>
 <ul class="simple">
-<li><p>IfGroupedBy(column, SymmetricDifference())</p></li>
+<li><p>IfGroupedBy({column}, SymmetricDifference())</p></li>
 </ul>
 <p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
 </dd>
@@ -1504,14 +1504,14 @@ error will occur when the transformation is applied.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_i_flat_map</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_i_flat_map</span><span class="o">.</span><span class="n">output_metric</span>
-<span class="go">IfGroupedBy(column=&#39;i&#39;, inner_metric=RootSumOfSquared(inner_metric=SymmetricDifference()))</span>
+<span class="go">IfGroupedBy(columns={&#39;i&#39;}, inner_metric=RootSumOfSquared(inner_metric=SymmetricDifference()))</span>
 </pre></div>
 </div>
 <dl>
 <dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.GroupingFlatMap" title="tmlt.core.transformations.spark_transformations.map.GroupingFlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupingFlatMap</span></code></a> supports two different output metrics:</p>
 <ul class="simple">
-<li><p>IfGroupedBy(column=’new_column’, inner_metric=SumOf(SummetricDifference()))</p></li>
-<li><p>IfGroupedBy(column=’new_column’, inner_metric=RootSumOfSquared(SymmetricDifference()))</p></li>
+<li><p>IfGroupedBy(columns={‘new_column’}, inner_metric=SumOf(SummetricDifference()))</p></li>
+<li><p>IfGroupedBy(columns={‘new_column’}, inner_metric=RootSumOfSquared(SymmetricDifference()))</p></li>
 </ul>
 <p>The meth:<cite>~.stability_function</cite> is different depending on the output
 metric:</p>
@@ -1912,7 +1912,7 @@ error will occur when the transformation is applied.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># sum_by_key_transformation is a RowsToRowsTransformation that sums column v</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># for each ID group.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span> <span class="o">=</span> <span class="n">FlatMapByKey</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">SymmetricDifference</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">()),</span>
 <span class="gp">... </span>    <span class="n">row_transformer</span><span class="o">=</span><span class="n">sum_by_key_transformation</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
@@ -1937,9 +1937,9 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;id&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;sum&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">IfGroupedBy(column=&#39;id&#39;, inner_metric=SymmetricDifference())</span>
+<span class="go">IfGroupedBy(columns={&#39;id&#39;}, inner_metric=SymmetricDifference())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">output_metric</span>
-<span class="go">IfGroupedBy(column=&#39;id&#39;, inner_metric=SymmetricDifference())</span>
+<span class="go">IfGroupedBy(columns={&#39;id&#39;}, inner_metric=SymmetricDifference())</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -2268,7 +2268,7 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from unknown version at 2025-12-21 03:00.</div>
+Built from unknown version at 2025-12-27 01:26.</div>
       
     </div>
   

@@ -473,7 +473,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitRowsPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitRowsPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Keep at most k rows per group.</p>
 <p>See <a class="reference internal" href="../../../utils/truncation/index.html#tmlt.core.utils.truncation.truncate_large_groups" title="tmlt.core.utils.truncation.truncate_large_groups"><code class="xref py py-func docutils literal notranslate"><span class="pre">truncate_large_groups()</span></code></a> for more information about truncation.</p>
@@ -498,7 +498,7 @@
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">output_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grouping_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
@@ -527,7 +527,7 @@ on the grouping column, with inner metric <a class="reference internal" href="..
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">IfGroupedBy(column=&#39;A&#39;, inner_metric=SymmetricDifference())</span>
+<span class="go">IfGroupedBy(columns={&#39;A&#39;}, inner_metric=SymmetricDifference())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_metric</span>
 <span class="go">SymmetricDifference()</span>
 </pre></div>
@@ -551,18 +551,18 @@ otherwise.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
 <li><p><strong>output_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>tmlt.core.metrics.SymmetricDifference</em></a><em>, </em><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a><em>]</em>)</p></li>
-<li><p><strong>grouping_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>grouping_columns</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
 <li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_column" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><span class="pre">frozenset</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_columns" title="Link to this definition">#</a></dt>
 <dd><p>Returns the column defining the groups to truncate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)">frozenset</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -624,7 +624,7 @@ otherwise.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -632,8 +632,8 @@ otherwise.</p>
 <li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of input DataFrame.</p></li>
 <li><p><strong>output_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for output DataFrames. This should be
 <code class="docutils literal notranslate"><span class="pre">SymmetricDifference()</span></code> or
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
-<li><p><strong>grouping_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column defining the groups to truncate.</p></li>
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
+<li><p><strong>grouping_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Collection" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Names of the columns defining the groups to truncate.</p></li>
 <li><p><strong>threshold</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of rows per group after truncation.</p></li>
 </ul>
 </dd>
@@ -700,7 +700,7 @@ for more information.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitKeysPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitKeysPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>Keep at most k keys per group.</p>
 <p>See <a class="reference internal" href="../../../utils/truncation/index.html#tmlt.core.utils.truncation.limit_keys_per_group" title="tmlt.core.utils.truncation.limit_keys_per_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">limit_keys_per_group()</span></code></a> for more information about truncation.</p>
@@ -724,8 +724,8 @@ for more information.</p>
 <span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">output_metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">SymmetricDifference</span><span class="p">()))),</span>
-<span class="gp">... </span>    <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">},</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">()))),</span>
+<span class="gp">... </span>    <span class="n">grouping_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">key_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -759,16 +759,16 @@ metric as a <a class="reference internal" href="../../../metrics/index.html#tmlt
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">IfGroupedBy(column=&#39;A&#39;, inner_metric=SymmetricDifference())</span>
+<span class="go">IfGroupedBy(columns={&#39;A&#39;}, inner_metric=SymmetricDifference())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_metric</span>
-<span class="go">IfGroupedBy(column=&#39;B&#39;, inner_metric=SumOf(inner_metric=IfGroupedBy(column=&#39;A&#39;, inner_metric=SymmetricDifference())))</span>
+<span class="go">IfGroupedBy(columns={&#39;B&#39;}, inner_metric=SumOf(inner_metric=IfGroupedBy(columns={&#39;A&#39;}, inner_metric=SymmetricDifference())))</span>
 </pre></div>
 </div>
 <dl>
 <dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup" title="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">LimitKeysPerGroup</span></code></a> ‘s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.stability_function" title="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns
-<code class="docutils literal notranslate"><span class="pre">d_in</span></code> if <code class="docutils literal notranslate"><span class="pre">output_metric</span></code> is <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_in</span></code> if <code class="docutils literal notranslate"><span class="pre">output_metric</span></code> is <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())</span></code>,
 <code class="docutils literal notranslate"><span class="pre">sqrt(threshold)</span> <span class="pre">*</span> <span class="pre">d_in</span></code> if <code class="docutils literal notranslate"><span class="pre">output_metric</span></code> is
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(key_column,</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())))</span></code>,
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy({key_column},</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())))</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">threshold</span> <span class="pre">*</span> <span class="pre">d_in</span></code> otherwise.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">2</span>
@@ -785,19 +785,19 @@ and <code class="docutils literal notranslate"><span class="pre">threshold</span
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
 <li><p><strong>output_metric</strong> (<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a>)</p></li>
-<li><p><strong>grouping_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>grouping_columns</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
 <li><p><strong>key_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
 <li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_column" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><span class="pre">frozenset</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_columns" title="Link to this definition">#</a></dt>
 <dd><p>Returns the column defining the groups to truncate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)">frozenset</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -870,17 +870,17 @@ and <code class="docutils literal notranslate"><span class="pre">threshold</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of input DataFrame.</p></li>
 <li><p><strong>output_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for output DataFrames. This should be
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(key_column,</span> <span class="pre">SumOf(IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())))</span></code> or
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(key_column,</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())))</span></code>
-or <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
-<li><p><strong>grouping_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column defining the groups to truncate.</p></li>
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy({key_column},</span> <span class="pre">SumOf(IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())))</span></code> or
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy({key_column},</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())))</span></code>
+or <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
+<li><p><strong>grouping_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Collection" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Names of columns defining the groups to truncate.</p></li>
 <li><p><strong>key_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column defining the keys.</p></li>
 <li><p><strong>threshold</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of keys per group after truncation.</p></li>
 </ul>
@@ -948,7 +948,7 @@ for more information.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitRowsPerKeyPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LimitRowsPerKeyPerGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
 <p>For each group, limit k rows per key.</p>
 <p>See <a class="reference internal" href="../../../utils/truncation/index.html#tmlt.core.utils.truncation.truncate_large_groups" title="tmlt.core.utils.truncation.truncate_large_groups"><code class="xref py py-func docutils literal notranslate"><span class="pre">truncate_large_groups()</span></code></a> for more information about truncation.</p>
@@ -972,8 +972,8 @@ for more information.</p>
 <span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">SymmetricDifference</span><span class="p">()))),</span>
-<span class="gp">... </span>    <span class="n">grouping_column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">},</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">()))),</span>
+<span class="gp">... </span>    <span class="n">grouping_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">key_column</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1010,14 +1010,14 @@ on the grouping column, with inner metric <a class="reference internal" href="..
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">IfGroupedBy(column=&#39;B&#39;, inner_metric=SumOf(inner_metric=IfGroupedBy(column=&#39;A&#39;, inner_metric=SymmetricDifference())))</span>
+<span class="go">IfGroupedBy(columns={&#39;B&#39;}, inner_metric=SumOf(inner_metric=IfGroupedBy(columns={&#39;A&#39;}, inner_metric=SymmetricDifference())))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">output_metric</span>
 <span class="go">SymmetricDifference()</span>
 </pre></div>
 </div>
 <dl>
 <dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup" title="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup</span></code></a> ‘s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.stability_function" title="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns
-<code class="docutils literal notranslate"><span class="pre">d_in</span></code> if <code class="docutils literal notranslate"><span class="pre">input_metric</span></code> is <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())</span></code>
+<code class="docutils literal notranslate"><span class="pre">d_in</span></code> if <code class="docutils literal notranslate"><span class="pre">input_metric</span></code> is <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())</span></code>
 and <code class="docutils literal notranslate"><span class="pre">threshold</span> <span class="pre">*</span> <span class="pre">d_in</span></code> otherwise.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">2</span>
@@ -1034,19 +1034,19 @@ and <code class="docutils literal notranslate"><span class="pre">threshold</span
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><em>tmlt.core.domains.spark_domains.SparkDataFrameDomain</em></a>)</p></li>
 <li><p><strong>input_metric</strong> (<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><em>tmlt.core.metrics.IfGroupedBy</em></a>)</p></li>
-<li><p><strong>grouping_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>grouping_columns</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
 <li><p><strong>key_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
 <li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_column" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouping_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><span class="pre">frozenset</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_columns" title="Link to this definition">#</a></dt>
 <dd><p>Returns the column defining the groups to truncate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)">frozenset</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1119,17 +1119,17 @@ and <code class="docutils literal notranslate"><span class="pre">threshold</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouping_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a></span>) – Domain of input DataFrame.</p></li>
 <li><p><strong>input_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for input DataFrames. This should be
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(key_column,</span> <span class="pre">SumOf(IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())))</span></code> or
-<code class="docutils literal notranslate"><span class="pre">IfGroupedBy(key_column,</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())))</span></code>
-or <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_column,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
-<li><p><strong>grouping_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column defining the groups to truncate.</p></li>
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy({key_column},</span> <span class="pre">SumOf(IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())))</span></code> or
+<code class="docutils literal notranslate"><span class="pre">IfGroupedBy({key_column},</span> <span class="pre">RootSumOfSquared(IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())))</span></code>
+or <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(grouping_columns,</span> <span class="pre">SymmetricDifference())</span></code>.</p></li>
+<li><p><strong>grouping_columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Collection" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Names of columns defining the groups to truncate.</p></li>
 <li><p><strong>key_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of column defining the keys.</p></li>
 <li><p><strong>threshold</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of rows each unique (key, grouping column value) pair may appear in after truncation.</p></li>
 </ul>
@@ -1247,7 +1247,7 @@ for more information.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_column"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup.grouping_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.grouping_columns"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup.grouping_columns</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.threshold"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup.threshold</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.input_domain"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup.input_domain</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerGroup.input_metric"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerGroup.input_metric</span></code></a></li>
@@ -1261,7 +1261,7 @@ for more information.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_column"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup.grouping_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.grouping_columns"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup.grouping_columns</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.key_column"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup.key_column</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.threshold"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup.threshold</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitKeysPerGroup.input_domain"><code class="docutils literal notranslate"><span class="pre">LimitKeysPerGroup.input_domain</span></code></a></li>
@@ -1276,7 +1276,7 @@ for more information.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_column"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup.grouping_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.grouping_columns"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup.grouping_columns</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.key_column"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup.key_column</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.threshold"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup.threshold</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.truncation.LimitRowsPerKeyPerGroup.input_domain"><code class="docutils literal notranslate"><span class="pre">LimitRowsPerKeyPerGroup.input_domain</span></code></a></li>
@@ -1328,7 +1328,7 @@ for more information.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from unknown version at 2025-12-21 03:00.</div>
+Built from unknown version at 2025-12-27 01:26.</div>
       
     </div>
   

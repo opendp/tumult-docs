@@ -464,7 +464,7 @@
 <td><p>A tuple containing the values of multiple OnColumn metrics.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></td>
-<td><p>Distance between two DataFrames that shall be grouped by a given attribute.</p></td>
+<td><p>Distance between two DataFrames that shall be grouped by a given set of columns.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></p></td>
 <td><p>Distance between two dictionaries with identical sets of keys.</p></td>
@@ -1830,13 +1830,13 @@ in <a class="reference internal" href="#tmlt.core.metrics.OnColumns.on_columns" 
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IfGroupedBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_metric</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IfGroupedBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_metric</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.core.metrics.ExactNumberMetric" title="tmlt.core.metrics.ExactNumberMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactNumberMetric</span></code></a></p>
-<p>Distance between two DataFrames that shall be grouped by a given attribute.</p>
+<p>Distance between two DataFrames that shall be grouped by a given set of columns.</p>
 <p>This metric is an upper bound on the distance for any fixed set of grouping keys.
 This assumes that the distance between two empty groups is zero, and the inner
 metric must satisfy this property.</p>
-<p>The grouping column cannot contain floating point values.</p>
+<p>The grouping columns cannot contain floating point values.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
@@ -1853,7 +1853,7 @@ metric must satisfy this property.</p>
 <span class="gp">... </span>        <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">RootSumOfSquared</span><span class="p">(</span><span class="n">SymmetricDifference</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">([</span><span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">RootSumOfSquared</span><span class="p">(</span><span class="n">SymmetricDifference</span><span class="p">()))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">value1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1862,7 +1862,7 @@ metric must satisfy this property.</p>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
 <span class="go">sqrt(5)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">SymmetricDifference</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">([</span><span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">SymmetricDifference</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">value1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1876,18 +1876,18 @@ metric must satisfy this property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>columns</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
 <li><p><strong>inner_metric</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><em>SumOf</em></a><em>, </em><a class="reference internal" href="#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><em>RootSumOfSquared</em></a><em>, </em><a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><em>SymmetricDifference</em></a><em>]</em>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.column" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><span class="pre">frozenset</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.columns" title="Link to this definition">#</a></dt>
 <dd><p>Column that DataFrame shall be grouped by.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)">frozenset</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1905,12 +1905,12 @@ metric must satisfy this property.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_metric</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_metric</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Column that the DataFrame shall be grouped by.</p></li>
+<li><p><strong>columns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Collection" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Columns that the DataFrame shall be grouped by.</p></li>
 <li><p><strong>inner_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tmlt.core.metrics.SumOf" title="tmlt.core.metrics.SumOf"><code class="xref py py-class docutils literal notranslate"><span class="pre">SumOf</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.RootSumOfSquared" title="tmlt.core.metrics.RootSumOfSquared"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code></a> | <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a></span>) – Metric to be applied to corresponding groups in
 the DataFrame.</p></li>
 </ul>
@@ -1987,7 +1987,7 @@ the DataFrame.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.metrics.IfGroupedBy.__eq__">
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.IfGroupedBy.__eq__" title="Link to this definition">#</a></dt>
-<dd><p>Return True if both metrics are equal.</p>
+<dd><p>We want to make sure column order is ignored when computing equality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>other</strong> (<em>Any</em>)</p>
@@ -2521,7 +2521,7 @@ key column in that dataframe.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy.column"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy.column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy.columns"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy.columns</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy.inner_metric"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy.inner_metric</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy.__init__"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy.__init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.IfGroupedBy.validate"><code class="docutils literal notranslate"><span class="pre">IfGroupedBy.validate()</span></code></a></li>
@@ -2591,7 +2591,7 @@ key column in that dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from unknown version at 2025-12-21 03:00.</div>
+Built from unknown version at 2025-12-27 01:26.</div>
       
     </div>
   
