@@ -32,7 +32,7 @@ Functions
    * - :func:`.create_count_aggregation`
      - Returns a :class:`~.Count` or :class:`~.CountGrouped` transformation.
    * - :func:`.create_count_distinct_aggregation`
-     - Returns a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped` transformation.
+     - Create a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped`.
    * - :func:`.create_sum_aggregation`
      - Returns a :class:`~.Sum` or :class:`~.SumGrouped` transformation.
 
@@ -51,7 +51,7 @@ Functions
 .. py:function:: create_count_distinct_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkDataFrameDomain, input_metric: Union[tmlt.core.metrics.SymmetricDifference, tmlt.core.metrics.HammingDistance], count_column: Optional[str]) -> CountDistinct
                  create_count_distinct_aggregation(input_domain: tmlt.core.domains.spark_domains.SparkGroupedDataFrameDomain, input_metric: Union[tmlt.core.metrics.SumOf, tmlt.core.metrics.RootSumOfSquared], count_column: Optional[str]) -> CountDistinctGrouped
 
-   Returns a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped` transformation.
+   Create a :class:`~.CountDistinct` or :class:`~.CountDistinctGrouped`.
 
    :param input_domain: Domain of input DataFrames or GroupedDataFrames.
    :param input_metric: Distance metric on inputs.
@@ -90,7 +90,7 @@ Classes
    * - :class:`.CountGrouped`
      - Counts the number of records in each group in a :class:`~.GroupedDataFrame`.
    * - :class:`.CountDistinctGrouped`
-     - Counts the number of distinct records in each group in a :class:`~.GroupedDataFrame`.
+     - Counts distinct records in each group of a :class:`~.GroupedDataFrame`.
    * - :class:`.Sum`
      - Returns the sum of a single numeric column in a spark DataFrame.
    * - :class:`.SumGrouped`
@@ -533,7 +533,7 @@ Classes
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
-   Counts the number of distinct records in each group in a :class:`~.GroupedDataFrame`.
+   Counts distinct records in each group of a :class:`~.GroupedDataFrame`.
 
    .. rubric:: Example
 
@@ -620,7 +620,8 @@ Classes
        OnColumn(column='count_distinct', metric=SumOf(inner_metric=AbsoluteDifference()))
 
        Stability Guarantee:
-           :class:`~.CountDistinctGrouped`'s :meth:`~.stability_function` returns ``d_in``.
+           :class:`~.CountDistinctGrouped`'s :meth:`~.stability_function` returns
+           ``d_in``.
 
            >>> count_distinct_by_A.stability_function(1)
            1
@@ -762,8 +763,8 @@ Classes
        AbsoluteDifference()
 
        Stability Guarantee:
-           :class:`~.Sum`'s :meth:`~.stability_function` returns ``d_in`` times sensitivity of
-           the sum. (See below for more information).
+           :class:`~.Sum`'s :meth:`~.stability_function` returns ``d_in`` times
+           sensitivity of the sum. (See below for more information.)
 
            >>> sum_X.stability_function(1)
            4
@@ -943,7 +944,8 @@ Classes
        OnColumn(column='sum(X)', metric=SumOf(inner_metric=AbsoluteDifference()))
 
        Stability Guarantee:
-           :class:`~.SumGrouped`'s :meth:`~.stability_function` returns ``d_in`` * sensitivity of the sum.
+           :class:`~.SumGrouped`'s :meth:`~.stability_function` returns ``d_in`` times
+           the sensitivity of the sum.
 
            >>> sum_X_by_A.stability_function(1)
            4

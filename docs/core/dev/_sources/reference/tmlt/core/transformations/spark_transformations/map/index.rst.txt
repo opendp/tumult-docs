@@ -642,7 +642,8 @@ Classes
            - IfGroupedBy({column}, RootSumOfSquared(SymmetricDifference()))
 
            :class:`~.FlatMap`'s :meth:`~.stability_function` returns the ``d_in``
-           times :attr:`.max_num_rows`. If :attr:`.max_num_rows` is None, it returns infinity.
+           times :attr:`.max_num_rows`. If :attr:`.max_num_rows` is None, it
+           returns infinity.
 
            >>> duplicate_flat_map.stability_function(1)
            2
@@ -859,12 +860,13 @@ Classes
 
                ``d_in * self.max_num_rows``
 
-           If the inner metric is ``RootSumOfSquared(SymmetricDifference())``, we
-           can use the added structure of the ``row_transformer`` to achieve a
-           tighter analysis. We know that for each input row, the function will
-           produce at most one output row per value of the new column, so in total
-           we can produce up to ``d_in`` rows for each of up to ``self.max_num_rows``
-           values of the new column. Therefore, under ``RootSumOfSquared``, ``d_out`` is
+           If the inner metric is ``RootSumOfSquared(SymmetricDifference())``,
+           we can use the added structure of the ``row_transformer`` to achieve
+           a tighter analysis. We know that for each input row, the function
+           will produce at most one output row per value of the new column, so
+           in total we can produce up to ``d_in`` rows for each of up to
+           ``self.max_num_rows`` values of the new column. Therefore, under
+           ``RootSumOfSquared``, ``d_out`` is
 
                ``d_in * sqrt(self.max_num_rows)``
 

@@ -1268,7 +1268,8 @@ error will occur when the transformation is applied.</p>
 <li><p>IfGroupedBy({column}, RootSumOfSquared(SymmetricDifference()))</p></li>
 </ul>
 <p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap" title="tmlt.core.transformations.spark_transformations.map.FlatMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMap</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMap.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns the <code class="docutils literal notranslate"><span class="pre">d_in</span></code>
-times <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a>. If <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a> is None, it returns infinity.</p>
+times <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a>. If <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows" title="tmlt.core.transformations.spark_transformations.map.FlatMap.max_num_rows"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_num_rows</span></code></a> is None, it
+returns infinity.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">duplicate_flat_map</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">duplicate_flat_map</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1368,10 +1369,10 @@ times <a class="reference internal" href="#tmlt.core.transformations.spark_trans
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> | <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for input and output DataFrames.</p></li>
 <li><p><strong>row_transformer</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowToRowsTransformation</span></code></a></span>) – Transformation to apply to each row.</p></li>
-<li><p><strong>max_num_rows</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The maximum number of rows to allow from <code class="docutils literal notranslate"><span class="pre">row_transformer</span></code>. If
-more rows are output, the additional rows are suppressed. If this value
-is None, the transformation will not impose a limit on the number of
-rows. None is only allowed if the metric is
+<li><p><strong>max_num_rows</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The maximum number of rows to allow from <code class="docutils literal notranslate"><span class="pre">row_transformer</span></code>.
+If more rows are output, the additional rows are suppressed. If this
+value is None, the transformation will not impose a limit on the number
+of rows. None is only allowed if the metric is
 <code class="docutils literal notranslate"><span class="pre">IfGroupedBy(SymmetricDifference())</span></code>.</p></li>
 </ul>
 </dd>
@@ -1519,12 +1520,13 @@ metric:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">d_in</span> <span class="pre">*</span> <span class="pre">self.max_num_rows</span></code></p>
 </div></blockquote>
-<p>If the inner metric is <code class="docutils literal notranslate"><span class="pre">RootSumOfSquared(SymmetricDifference())</span></code>, we
-can use the added structure of the <code class="docutils literal notranslate"><span class="pre">row_transformer</span></code> to achieve a
-tighter analysis. We know that for each input row, the function will
-produce at most one output row per value of the new column, so in total
-we can produce up to <code class="docutils literal notranslate"><span class="pre">d_in</span></code> rows for each of up to <code class="docutils literal notranslate"><span class="pre">self.max_num_rows</span></code>
-values of the new column. Therefore, under <code class="docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code>, <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is</p>
+<p>If the inner metric is <code class="docutils literal notranslate"><span class="pre">RootSumOfSquared(SymmetricDifference())</span></code>,
+we can use the added structure of the <code class="docutils literal notranslate"><span class="pre">row_transformer</span></code> to achieve
+a tighter analysis. We know that for each input row, the function
+will produce at most one output row per value of the new column, so
+in total we can produce up to <code class="docutils literal notranslate"><span class="pre">d_in</span></code> rows for each of up to
+<code class="docutils literal notranslate"><span class="pre">self.max_num_rows</span></code> values of the new column. Therefore, under
+<code class="docutils literal notranslate"><span class="pre">RootSumOfSquared</span></code>, <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">d_in</span> <span class="pre">*</span> <span class="pre">sqrt(self.max_num_rows)</span></code></p>
 </div></blockquote>
@@ -2268,7 +2270,7 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-01-19 21:33.</div>
+Built from unknown version at 2026-02-04 03:56.</div>
       
     </div>
   
