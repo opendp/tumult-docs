@@ -816,6 +816,25 @@ the data.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tmlt.analytics.KeySet.union">
+<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.KeySet.union" title="Link to this definition">#</a></dt>
+<dd><p>Compute the union of this KeySet with another KeySet.</p>
+<p>The two KeySets must have exactly the same columns. The result contains
+all unique rows that appear in either KeySet.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">keyset1</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyset2</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">union_result</span> <span class="o">=</span> <span class="n">keyset1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">keyset2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">union_result</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<span class="go">   A  B</span>
+<span class="go">0  1  a</span>
+<span class="go">1  2  b</span>
+<span class="go">2  3  c</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tmlt.analytics.KeySet.columns">
 <span class="sig-name descname"><span class="pre">columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.KeySet.columns" title="Link to this definition">#</a></dt>
 <dd><p>Returns the list of columns used in this KeySet.</p>
@@ -1003,6 +1022,7 @@ columns; the rows and columns may appear in any order.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.__getitem__"><code class="docutils literal notranslate"><span class="pre">KeySet.__getitem__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.join"><code class="docutils literal notranslate"><span class="pre">KeySet.join()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.filter"><code class="docutils literal notranslate"><span class="pre">KeySet.filter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.union"><code class="docutils literal notranslate"><span class="pre">KeySet.union()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.columns"><code class="docutils literal notranslate"><span class="pre">KeySet.columns()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.schema"><code class="docutils literal notranslate"><span class="pre">KeySet.schema()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.analytics.KeySet.dataframe"><code class="docutils literal notranslate"><span class="pre">KeySet.dataframe()</span></code></a></li>
@@ -1050,7 +1070,7 @@ columns; the rows and columns may appear in any order.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2025 -->
-Built from e24cbd05 at 2026-03-03 02:27.</div>
+Built from b7cefe71 at 2026-03-04 06:34.</div>
       
     </div>
   
