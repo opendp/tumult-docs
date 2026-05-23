@@ -1,0 +1,132 @@
+
+
+
+***************
+chaining
+***************
+
+.. py:module:: tmlt.core.measurements.chaining
+
+.. autoapi-nested-parse::
+
+   Measurements constructed by chaining other measurements and transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.ChainTM`
+     - Measurement constructed by chaining a transformation and a measurement.
+
+   
+.. py:class:: ChainTM(transformation, measurement, hint = None)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Measurement constructed by chaining a transformation and a measurement.
+
+
+
+
+
+
+   .. py:property:: measurement
+      :type: tmlt.core.measurements.base.Measurement
+
+
+      Returns measurement being chained.
+
+   .. py:property:: transformation
+      :type: tmlt.core.transformations.base.Transformation
+
+
+      Returns transformation being chained.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
+   .. py:method:: privacy_function(d_in)
+
+      Returns the smallest d_out satisfied by the measurement.
+
+      Returns M.privacy_function(T.stability_function(d_in)).
+
+      where:
+
+      * T is the transformation applied (:attr:`~ChainTM.transformation`)
+      * M is the measurement applied (:attr:`~ChainTM.measurement`)
+
+      :param d_in: Distance between inputs under input_metric.
+
+      :raises NotImplementedError: If M.privacy_function(T.stability_function(d_in))
+          raises :class:`NotImplementedError`.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Returns True only if outputs are close under close inputs.
+
+      Let d_mid = T.stability_function(d_in), or hint(d_in, d_out) if
+      T.stability_function raises :class:`NotImplementedError`.
+
+      This returns True only if the following hold:
+
+      (1) T.stability_relation(d_in, d_mid)
+      (2) M.privacy_relation(d_mid, d_out)
+
+      where:
+
+      * T is the transformation applied (:attr:`~ChainTM.transformation`)
+      * M is the measurement applied (:attr:`~ChainTM.measurement`)
+      * hint is the hint passed to the constructor.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_measure.
+
+      :raises ValueError: If a hint is not provided and T.stability_function raises
+          :class:`NotImplementedError`.
+
+
+   .. py:method:: __call__(data)
+
+      Computes measurement after applying transformation on input data.
+
+
+
+
+
+

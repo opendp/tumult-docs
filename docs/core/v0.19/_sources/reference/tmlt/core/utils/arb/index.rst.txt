@@ -1,0 +1,471 @@
+
+
+
+**********
+arb
+**********
+
+.. py:module:: tmlt.core.utils.arb
+
+.. autoapi-nested-parse::
+
+   Arblib wrapper using ctypes.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.arb_sub`
+     - Returns ``x - y``.
+   * - :func:`.arb_add`
+     - Returns sum of ``x`` and ``y``.
+   * - :func:`.arb_mul`
+     - Returns product of ``x`` and ``y``.
+   * - :func:`.arb_div`
+     - Returns quotient of ``x`` divided by ``y``.
+   * - :func:`.arb_log`
+     - Returns ``log(x)``.
+   * - :func:`.arb_max`
+     - Returns max of ``x`` and ``y``.
+   * - :func:`.arb_exp`
+     - Returns ``exp(x)``.
+   * - :func:`.arb_pow`
+     - Returns ``x^y``.
+   * - :func:`.arb_min`
+     - Returns min of ``x`` and ``y``.
+   * - :func:`.arb_abs`
+     - Returns absolute value of x.
+   * - :func:`.arb_neg`
+     - Returns -x.
+   * - :func:`.arb_sgn`
+     - Sign function.
+   * - :func:`.arb_erf`
+     - Error function.
+   * - :func:`.arb_erfc`
+     - Complementary error function.
+   * - :func:`.arb_erfinv`
+     - Inverse error function.
+   * - :func:`.arb_sqrt`
+     - Returns square root of ``x``.
+   * - :func:`.arb_const_pi`
+     - Returns pi.
+   * - :func:`.arb_union`
+     - Returns union of ``x`` and ``y``.
+   * - :func:`.arb_sum`
+     - Sum of elements in xs.
+   * - :func:`.arb_product`
+     - Product of elements in xs.
+   * - :func:`.arb_lambertw`
+     - Lambert W function.
+
+.. py:function:: arb_sub(x, y, prec)
+
+   Returns ``x - y``.
+
+
+
+.. py:function:: arb_add(x, y, prec)
+
+   Returns sum of ``x`` and ``y``.
+
+
+
+.. py:function:: arb_mul(x, y, prec)
+
+   Returns product of ``x`` and ``y``.
+
+
+
+.. py:function:: arb_div(x, y, prec)
+
+   Returns quotient of ``x`` divided by ``y``.
+
+
+
+.. py:function:: arb_log(x, prec)
+
+   Returns ``log(x)``.
+
+
+
+.. py:function:: arb_max(x, y, prec)
+
+   Returns max of ``x`` and ``y``.
+
+   If ``x`` and ``y`` represent intervals ``[x_l, x_u]`` and ``[y_l, y_u]``,
+   this returns an interval containing ``[max(x_l, y_l), max(x_u, y_u)]``.
+
+
+
+.. py:function:: arb_exp(x, prec)
+
+   Returns ``exp(x)``.
+
+   If ``x`` represents an interval ``[x_l, x_u]``, this returns an
+   interval containing ``[exp(x_l), exp(x_u)]``.
+
+
+
+.. py:function:: arb_pow(x, y, prec)
+
+   Returns ``x^y``.
+
+
+
+.. py:function:: arb_min(x, y, prec)
+
+   Returns min of ``x`` and ``y``.
+
+   If ``x`` and ``y`` represent intervals ``[x_l, x_u]`` and ``[y_l, y_u]``,
+   this returns an interval containing ``[min(x_l, y_l), min(x_u, y_u)]``.
+
+
+
+.. py:function:: arb_abs(x)
+
+   Returns absolute value of x.
+
+
+
+.. py:function:: arb_neg(x)
+
+   Returns -x.
+
+
+
+.. py:function:: arb_sgn(x)
+
+   Sign function.
+
+   If x contains both zero and nonzero numbers, this returns an Arb with mid=0
+   and rad=1.
+
+
+
+.. py:function:: arb_erf(x, prec)
+
+   Error function.
+
+
+
+.. py:function:: arb_erfc(x, prec)
+
+   Complementary error function.
+
+
+
+.. py:function:: arb_erfinv(x, prec)
+
+   Inverse error function.
+
+
+
+.. py:function:: arb_sqrt(x, prec)
+
+   Returns square root of ``x``.
+
+
+
+.. py:function:: arb_const_pi(prec)
+
+   Returns pi.
+
+
+
+.. py:function:: arb_union(x, y, prec)
+
+   Returns union of ``x`` and ``y``.
+
+   If ``x`` and ``y`` represent intervals ``[x_l, x_u]`` and ``[y_l, y_u]``,
+   this returns an interval containing ``[min(x_l, y_l), max(x_u, y_u)]``.
+
+
+
+.. py:function:: arb_sum(xs, prec)
+
+   Sum of elements in xs.
+
+
+
+.. py:function:: arb_product(xs, prec)
+
+   Product of elements in xs.
+
+
+
+.. py:function:: arb_lambertw(x, branch, prec)
+
+   Lambert W function.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Arb`
+     - An interval on the real line represented by a midpoint and a radius.
+
+   
+.. py:class:: Arb(ptr)
+
+   An interval on the real line represented by a midpoint and a radius.
+
+   Note: Arbs with radius=0 are referred to as *exact* arbs.
+
+
+
+   .. list-table:: Methods
+
+      * - :meth:`.from_midpoint_radius`
+        - Constructs an Arb by specifying its midpoint and radius.
+      * - :meth:`.from_int`
+        - Constructs an exact Arb with midpoint ``val``.
+      * - :meth:`.from_float`
+        - Construct an exact Arb with midpoint ``val``.
+      * - :meth:`.from_man_exp`
+        - Constructs an exact arb with midpoint specified as mantissa and exponent.
+      * - :meth:`.one`
+        - Returns an exact Arb with midpoint 1 and radius 0.
+      * - :meth:`.positive_infinity`
+        - Returns an Arb representing positive infinity.
+      * - :meth:`.negative_infinity`
+        - Returns an Arb representing negative infinity.
+      * - :meth:`.__lt__`
+        - Returns True if self is less than other.
+      * - :meth:`.__le__`
+        - Returns True if self is less than or equal to other.
+      * - :meth:`.__ne__`
+        - Returns True if self is not equal to other.
+      * - :meth:`.__gt__`
+        - Returns True if self is greater than other.
+      * - :meth:`.__ge__`
+        - Returns True if self is greater than or equal to other.
+      * - :meth:`.__eq__`
+        - Returns True if self is equal to other.
+      * - :meth:`.__neg__`
+        - Returns -1 * ``self``.
+      * - :meth:`.is_exact`
+        - Returns True if radius is 0.
+      * - :meth:`.is_finite`
+        - Returns True if self is finite.
+      * - :meth:`.is_nan`
+        - Returns True if midpoint is NaN.
+      * - :meth:`.__float__`
+        - Returns a float approximating the midpoint of ``self``.
+      * - :meth:`.to_float`
+        - Returns the only floating point number contained in ``self``.
+      * - :meth:`.man_exp`
+        - Returns a pair (Mantissa, Exponent) if exact.
+      * - :meth:`.lower`
+        - Returns an exact Arb representing the smallest value in ``self``.
+      * - :meth:`.upper`
+        - Returns an exact Arb representing the largest value in ``self``.
+      * - :meth:`.midpoint`
+        - Returns the midpoint of ``self``.
+      * - :meth:`.radius`
+        - Returns the radius of ``self``.
+      * - :meth:`.__contains__`
+        - Returns True if the interval represented by ``self`` contains ``value``.
+      * - :meth:`.__del__`
+        - Cleanup.
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: from_midpoint_radius(mid, rad)
+      :staticmethod:
+
+
+      Constructs an Arb by specifying its midpoint and radius.
+
+
+   .. py:method:: from_int(val)
+      :staticmethod:
+
+
+      Constructs an exact Arb with midpoint ``val``.
+
+
+   .. py:method:: from_float(val)
+      :staticmethod:
+
+
+      Construct an exact Arb with midpoint ``val``.
+
+
+   .. py:method:: from_man_exp(man, exp)
+      :staticmethod:
+
+
+      Constructs an exact arb with midpoint specified as mantissa and exponent.
+
+
+   .. py:method:: one()
+      :staticmethod:
+
+
+      Returns an exact Arb with midpoint 1 and radius 0.
+
+
+   .. py:method:: positive_infinity()
+      :staticmethod:
+
+
+      Returns an Arb representing positive infinity.
+
+
+   .. py:method:: negative_infinity()
+      :staticmethod:
+
+
+      Returns an Arb representing negative infinity.
+
+
+   .. py:method:: __lt__(other)
+
+      Returns True if self is less than other.
+
+      This returns True if each value in the interval represented by ``self`` is less
+      than every value in ``other``.
+
+      Note: If the midpoint is NaN, this returns False.
+
+
+   .. py:method:: __le__(other)
+
+      Returns True if self is less than or equal to other.
+
+      This returns True if each value in the interval represented by ``self`` is less
+      than or equal to every value in ``other``.
+
+      Note: If the midpoint is NaN, this returns False.
+
+
+   .. py:method:: __ne__(other)
+
+      Returns True if self is not equal to other.
+
+      This returns True if no value in the interval represented by ``self`` is equal
+      to a value in ``other``.
+
+      Note: If the midpoint is NaN, this returns False.
+
+
+   .. py:method:: __gt__(other)
+
+      Returns True if self is greater than other.
+
+      This returns True if each value in the interval represented by ``self`` is
+      greater than every value in ``other``.
+
+      Note: If the midpoint is NaN, this returns False.
+
+
+   .. py:method:: __ge__(other)
+
+      Returns True if self is greater than or equal to other.
+
+      This returns True if each value in the interval represented by ``self`` is
+      greater than or equal to every value in ``other``.
+
+      Note: If the midpoint is NaN, this returns False.
+
+
+   .. py:method:: __eq__(other)
+
+      Returns True if self is equal to other.
+
+      This returns True if each value in the interval represented by ``self`` is
+      greater than every value in ``other``. If midpoint is NaN, this returns False.
+
+
+   .. py:method:: __neg__()
+
+      Returns -1 * ``self``.
+
+
+   .. py:method:: is_exact()
+
+      Returns True if radius is 0.
+
+
+   .. py:method:: is_finite()
+
+      Returns True if self is finite.
+
+
+   .. py:method:: is_nan()
+
+      Returns True if midpoint is NaN.
+
+
+   .. py:method:: __float__()
+
+      Returns a float approximating the midpoint of ``self``.
+
+
+   .. py:method:: to_float(prec = 64)
+
+      Returns the only floating point number contained in ``self``.
+
+      If more than one float lies in the interval represented by ``self``,
+      this raises an error.
+
+
+   .. py:method:: man_exp()
+
+      Returns a pair (Mantissa, Exponent) if exact.
+
+      If ``self`` is not exact, this raises an error.
+
+
+   .. py:method:: lower(prec)
+
+      Returns an exact Arb representing the smallest value in ``self``.
+
+
+   .. py:method:: upper(prec)
+
+      Returns an exact Arb representing the largest value in ``self``.
+
+
+   .. py:method:: midpoint()
+
+      Returns the midpoint of ``self``.
+
+
+   .. py:method:: radius()
+
+      Returns the radius of ``self``.
+
+
+   .. py:method:: __contains__(value)
+
+      Returns True if the interval represented by ``self`` contains ``value``.
+
+
+   .. py:method:: __del__()
+
+      Cleanup.
+
+
+
+
+
+

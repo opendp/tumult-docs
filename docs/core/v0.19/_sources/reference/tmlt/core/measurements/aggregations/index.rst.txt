@@ -1,0 +1,499 @@
+
+
+
+*******************
+aggregations
+*******************
+
+.. py:module:: tmlt.core.measurements.aggregations
+
+.. autoapi-nested-parse::
+
+   Derived measurements for computing noisy aggregates on spark DataFrames.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.create_count_measurement`
+     - Returns a noisy count measurement.
+   * - :func:`.create_count_distinct_measurement`
+     - Returns a noisy count_distinct measurement.
+   * - :func:`.create_sum_measurement`
+     - Returns a noisy sum measurement.
+   * - :func:`.create_average_measurement`
+     - Returns a noisy average measurement.
+   * - :func:`.create_variance_measurement`
+     - Returns a noisy variance measurement.
+   * - :func:`.create_standard_deviation_measurement`
+     - Returns a noisy standard deviation measurement.
+   * - :func:`.create_quantile_measurement`
+     - Returns a noisy quantile measurement.
+   * - :func:`.get_midpoint`
+     - Returns the midpoint of lower and upper.
+   * - :func:`.create_partition_selection_measurement`
+     - Returns a partition selection measurement.
+   * - :func:`.create_bounds_measurement`
+     - Returns a bounds measurement.
+
+.. py:function:: create_count_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, d_in = 1, groupby_transformation = None, count_column = None)
+
+   Returns a noisy count measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``. Noise scale is computed appropriately for the specified
+   ``noise_mechanism`` such that the stated privacy property is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input spark DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to apply to count(s).
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy counts for each group obtained by applying the groupby transformation
+                                  . Otherwise, this measurement outputs a single number - the noisy count.
+   :param count_column: If a ``groupby_transformation`` is provided, this is the column
+                        name to be used for counts in the dataframe output by the measurement. If
+                        None, this column will be named "count".
+
+
+
+.. py:function:: create_count_distinct_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, d_in = 1, groupby_transformation = None, count_column = None)
+
+   Returns a noisy count_distinct measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart
+   under the ``output_measure``. Noise scale is computed appropriately for the
+   specified ``noise_mechanism`` such that the stated privacy property
+   is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input spark DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to apply to count(s).
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are
+                ``d_out`` apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame
+                                  with noisy counts for each group obtained by applying the groupby
+                                  transformation. Otherwise, this measurement outputs a single number -
+                                  the noisy count of distinct items.
+   :param count_column: If a ``groupby_transformation`` is provided, this is the
+                        column name to be used for counts in the dataframe output by the
+                        measurement. If None, this column will be named "count_distinct".
+
+
+
+.. py:function:: create_sum_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, measure_column, lower, upper, d_in = 1, groupby_transformation = None, sum_column = None)
+
+   Returns a noisy sum measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``. Noise scale is computed appropriately for the specified
+   ``noise_mechanism`` such that the stated privacy property is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input spark DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to be applied to the sum(s).
+   :param measure_column: Column to be summed.
+   :param lower: Lower clipping bound on ``measure_column``.
+   :param upper: Upper clipping bound on ``measure_column``.
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy sums for each group obtained by applying the groupby transformation.
+                                  If None, this measurement outputs a single number - the noisy sum.
+   :param sum_column: If a ``groupby_transformation`` is supplied, this is the column
+                      name to be used for sums in the DataFrame output by the measurement. If
+                      None, this column will be named "sum(<measure_column>)".
+
+
+
+.. py:function:: create_average_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, measure_column, lower, upper, d_in = 1, groupby_transformation = None, average_column = None, keep_intermediates = False)
+
+   Returns a noisy average measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``. Noise scale is computed appropriately for the specified
+   ``noise_mechanism`` such that the stated privacy property is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to apply.
+   :param measure_column: Name to column to compute average of.
+   :param lower: Lower clipping bound for ``measure_column``.
+   :param upper: Upper clipping bound for ``measure_column``.
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy averages for each group obtained from the groupby transformation.
+                                  If None, this measurement outputs a single number - the noisy average.
+   :param average_column: If a ``groupby_transformation`` is supplied, this is the column
+                          name to be used for noisy average in the DataFrame output by the
+                          measurement. If no ``groupby_transformation`` is supplied, but
+                          ``keep_intermediates`` is set, this will be the key for the noisy average
+                          in the dictionary output by the measurement. If None, this column will be
+                          named "avg(<measure_column>)".
+   :param keep_intermediates: If True, intermediates (noisy sum of deviations, noisy
+                              count, and midpoint) will also be output in addition to the noisy average.
+                              If a groupby transformation is provided, and the measurement returns a
+                              DataFrame, these values will be appended as extra columns. If there is no
+                              groupby transformation, the measurement will return a dictionary including
+                              result and the intermediate values. Key/column names are
+                              ``average_column``, ``sod(<measure_column>)``, ``count``, and
+                              ``midpoint(<measure_column>)``.
+
+
+
+.. py:function:: create_variance_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, measure_column, lower, upper, d_in = 1, groupby_transformation = None, variance_column = None, keep_intermediates = False)
+
+   Returns a noisy variance measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``. Noise scale is computed appropriately for the specified
+   ``noise_mechanism`` such that the stated privacy property is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to apply.
+   :param measure_column: Name to column to compute variance of.
+   :param lower: Lower clipping bound for ``measure_column``.
+   :param upper: Upper clipping bound for ``measure_column``.
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  a noisy variance for each group obtained from the groupby transformation.
+                                  If None, this measurement outputs a single number - the noisy variance.
+   :param variance_column: If a ``groupby_transformation`` is supplied, this is the column
+                           name to be used for noisy variance in the DataFrame output by the
+                           measurement. If no ``groupby_transformation`` is supplied, but
+                           ``keep_intermediates`` is set, this will be the key for the noisy variance
+                           in the dictionary output by the measurement. If None, this column will be
+                           named "var(<measure_column>)".
+   :param keep_intermediates: If True, intermediates (noisy sum of deviations, noisy sum
+                              of deviations of squares, noisy count, midpoint, and midpoint of squares)
+                              will also be output in addition to the noisy variance. If a groupby
+                              transformation is provided, and the measurement returns a DataFrame, these
+                              values will be appended as extra columns. If there is no groupby
+                              transformation, the measurement will return a dictionary including
+                              result and the intermediate values. Key/column names are
+                              ``variance_column``, "sod(<measure_column>)", "sos(<measure_column>)"
+                              "count", "midpoint(<measure_column>)", and
+                              "midpoint_of_squares(<measure_column>)".
+
+
+
+.. py:function:: create_standard_deviation_measurement(input_domain, input_metric, output_measure, d_out, noise_mechanism, measure_column, lower, upper, d_in = 1, groupby_transformation = None, standard_deviation_column = None, keep_intermediates = False)
+
+   Returns a noisy standard deviation measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``. Noise scale is computed appropriately for the specified
+   ``noise_mechanism`` such that the stated privacy property is guaranteed.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param noise_mechanism: Noise mechanism to apply.
+   :param measure_column: Name to column to compute standard deviation of.
+   :param lower: Lower clipping bound for ``measure_column``.
+   :param upper: Upper clipping bound for ``measure_column``.
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy standard deviations for each group obtained by applying the groupby
+                                  transformation. If None, this measurement outputs a single number - the
+                                  noisy standard deviation of ``measure_column``.
+   :param standard_deviation_column: If a ``groupby_transformation`` is supplied, this
+                                     is the column name to be used for noisy standard deviation in the
+                                     DataFrame output by the measurement. If no ``groupby_transformation``
+                                     is supplied, but ``keep_intermediates`` is set, this will be the key for
+                                     the noisy standar deviation in the dictionary output by the measurement.
+                                     If None, this column will be named "std(<measure_column>)".
+   :param keep_intermediates: If True, intermediates (noisy sum of deviations, noisy sum
+                              of deviations of squares, noisy count, midpoint, and midpoint of squares)
+                              will also be output in addition to the noisy standard deviation. If a
+                              groupby transformation is provided, and the measurement returns a
+                              DataFrame, these values will be appended as extra columns. If there is no
+                              groupby transformation, the measurement will return a dictionary including
+                              result and the intermediate values. Key/column names are
+                              ``standard_deviation_column``, "sod(<measure_column>)",
+                              "sos(<measure_column>)", "count", "midpoint(<measure_column>)", and
+                              "midpoint_of_squares(<measure_column>)".
+
+
+
+.. py:function:: create_quantile_measurement(input_domain, input_metric, output_measure, d_out, measure_column, quantile, lower, upper, d_in = 1, groupby_transformation = None, quantile_column = None)
+
+   Returns a noisy quantile measurement.
+
+   This function constructs a measurement M with the following privacy contract -
+   for any two inputs x, x' that are ``d_in``-close under the ``input_metric``,
+   M(x) and M(x') are sampled from distributions that are ``d_out`` apart under the
+   ``output_measure``.
+
+   .. note::
+
+      ``d_out`` is interpreted as the "epsilon" parameter if ``output_measure`` is
+      :class:`~.PureDP`, the "rho" parameter if ``output_measure`` is
+      :class:`~.RhoZCDP`, and ("epsilon", "delta") if ``output_measure`` is
+      :class:`~.ApproxDP`.
+
+   .. note:: :class:`~.ApproxDP` budgets with delta>0 are not yet supported.
+
+   :param input_domain: Domain of input DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee (one of :class:`~.PureDP`,
+                          :class:`~.RhoZCDP`, or :class:`~.ApproxDP`).
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param measure_column: Name to column to compute quantile of.
+   :param quantile: The quantile to produce.
+   :param lower: Lower clipping bound for ``measure_column``.
+   :param upper: Upper clipping bound for ``measure_column``.
+   :param d_in: Distance between inputs under the ``input_metric``. The returned
+                measurement is guaranteed to have output distributions that are ``d_out``
+                apart for inputs that are ``d_in`` apart. Defaults to 1.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy quantiles for each group obtained by applying groupby.
+                                  If None, this measurement outputs a single number - the noisy quantile.
+   :param quantile_column: If a ``groupby_transformation`` is supplied, this is
+                           the column name to be used for noisy quantile in the DataFrame
+                           output by the measurement. If None, this column will be named
+                           "q_(<quantile>)_(<measure_column>)".
+
+
+
+.. py:function:: get_midpoint(lower, upper, integer_midpoint = False)
+
+   Returns the midpoint of lower and upper.
+
+   If integer_midpoint is True, the midpoint is rounded to the nearest integer using
+   :func:`round`.
+
+   .. rubric:: Examples
+
+   >>> get_midpoint(1, 2)
+   (1.5, 3/2)
+   >>> get_midpoint(1, 5)
+   (3.0, 3)
+   >>> get_midpoint("0.2", "0.3")
+   (0.25, 1/4)
+   >>> get_midpoint(1, 9, integer_midpoint=True)
+   (5, 5)
+
+
+
+.. py:function:: create_partition_selection_measurement(input_domain, epsilon, delta, d_in = 1, count_column = None)
+
+   Returns a partition selection measurement.
+
+   A partition selection measurement created by this function will have a
+   privacy guarantee such that
+   ``measurement.privacy_function(d_in) = (epsilon, delta)``.
+
+   :param input_domain: Domain of the input Spark DataFrames. Input cannot contain
+                        floating point columns.
+   :param epsilon: The epsilon portion of the (epsilon, delta) privacy budget that
+                   you want this measurement to satisfy.
+   :param delta: The delta portion of the (epsilon, delta) privacy budget that
+                 you want this measurement to satisfy.
+   :param d_in: The given d_in such that
+                ``measurement.privacy_function(d_in) = (epsilon, delta)``.
+   :param count_column: Column name for output group counts. If None, output column
+                        will be named "count".
+
+
+
+.. py:function:: create_bounds_measurement(input_domain, input_metric, output_measure, d_out, measure_column, threshold, d_in = 1, groupby_transformation = None, upper_bound_column = None, lower_bound_column = None)
+
+   Returns a bounds measurement.
+
+   The bounds measurement returns either a tuple of `(lower bound, upper_bound)` if no
+   groupby transformation is provided, or a dataframe with one column for the lower
+   bound and one column for the upper bound if a groupby transformation is provided.
+
+   The bounds measurement created by this function will have a
+   privacy guarantee such that
+   ``measurement.privacy_function(d_in) = d_out``.
+
+   :param input_domain: Domain of the input Spark DataFrames.
+   :param input_metric: Distance metric on input DataFrames.
+   :param output_measure: Desired privacy guarantee.
+   :param d_out: Desired distance between output distributions w.r.t. ``d_in``. This is
+                 interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
+                 is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
+                 :class:`~.ApproxDP`.
+   :param measure_column: Column name to calculate the bounds for. The column
+                          must be an integer or floating point column.
+   :param threshold: The threshold for the bound selection measurement.
+   :param d_in: The given d_in such that
+                ``measurement.privacy_function(d_in) = epsilon``.
+   :param groupby_transformation: If provided, this measurement returns a DataFrame with
+                                  noisy bounds for each group obtained by applying groupby.
+                                  If None, this measurement outputs a single tuple - the noisy bounds.
+   :param upper_bound_column: If a `groupby_transformation` is supplied, this is
+                              the column name to be used for the upper bound in the DataFrame
+                              output by the measurement. If None, this column will be named
+                              "upper_bound(<measure_column>)".
+   :param lower_bound_column: If a `groupby_transformation` is supplied, this is
+                              the column name to be used for the lower bound in the DataFrame
+                              output by the measurement. If None, this column will be named
+                              "lower_bound(<measure_column>)".
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.NoiseMechanism`
+     - Enumerating noise mechanisms.
+
+   
+.. py:class:: NoiseMechanism
+
+   Bases: :class:`enum.Enum`
+
+   Enumerating noise mechanisms.
+
+
+
+
+
+
+
+   .. py:method:: check_output_measure(output_measure)
+
+      Checks if the specified output measure is supported.
+
+
+   .. py:method:: supported_output_measure()
+
+      Returns a list of output measures supported by this noise mechanism.
+
+
+
+
+
+
