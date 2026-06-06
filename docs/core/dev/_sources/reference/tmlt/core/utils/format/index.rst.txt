@@ -1,0 +1,146 @@
+
+
+
+*************
+format
+*************
+
+.. py:module:: tmlt.core.utils.format
+
+.. autoapi-nested-parse::
+
+   Helpers shared by component formatter functions.
+
+   Each transformation/measurement implements its own ``format`` (and a few
+   related hooks) on the class itself; the helpers here cover shared logic that
+   doesn't naturally belong on any single component.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.indent_block`
+     - Indent every line of ``block`` by ``n`` spaces.
+   * - :func:`.format_value`
+     - Format a scalar attribute value for inline display.
+   * - :func:`.default_format_attrs`
+     - Default ``_format_attrs`` implementation, walking public properties.
+   * - :func:`.get_child`
+     - Get any Transformation-/Measurement-valued property of a component.
+   * - :func:`.default_format_children`
+     - Format a component's children.
+   * - :func:`.get_chain_children`
+     - Produce a flat list of the chained children of a component.
+   * - :func:`.format_chain`
+     - Render a flattened chain as a multi-line block with the first line at col 0.
+   * - :func:`.format_siblings`
+     - Render a list of sibling children.
+   * - :func:`.format_labeled_siblings`
+     - Render labeled sibling children, e.g. for column-keyed aggregations.
+
+.. py:function:: indent_block(block, n)
+
+   Indent every line of ``block`` by ``n`` spaces.
+
+
+
+.. py:function:: format_value(value)
+
+   Format a scalar attribute value for inline display.
+
+   Callables are rendered as ``<function qualname>`` to avoid leaking
+   non-deterministic memory addresses into the output.
+
+
+
+.. py:function:: default_format_attrs(component, excluded)
+
+   Default ``_format_attrs`` implementation, walking public properties.
+
+   Returns ``(name, value_str)`` pairs for every public ``@property`` on the
+   component's class whose value is *not* a transformation or measurement
+   (those are considered children, not inline attributes). Properties in
+   ``excluded`` are skipped.
+
+
+
+.. py:function:: get_child(component)
+
+   Get any Transformation-/Measurement-valued property of a component.
+
+   Returns a nested transformation/measurement found on a public ``@property``
+   of the given component, if any. If more than one is found, raises
+   ValueError.
+
+
+
+.. py:function:: default_format_children(component)
+
+   Format a component's children.
+
+   Chain children are returned flush (no indent) so their leading markers
+   align with the parent's head column; non-chain children are indented by
+   two spaces so they sit visibly below the parent.
+
+   Components with multiple children cannot be formatted with this default
+   formatter; passing one in will raise :exc:`NotImplementedError`.
+
+
+
+.. py:function:: get_chain_children(component)
+
+   Produce a flat list of the chained children of a component.
+
+
+
+.. py:function:: format_chain(components)
+
+   Render a flattened chain as a multi-line block with the first line at col 0.
+
+   Each member's own ``format`` output is included in full. The first head
+   line opens the box with ``"┌ "``, intermediate head lines are ticked with
+   ``"├ "``, and the last head line closes the box with ``"└ "``. Body lines
+   of each non-last member are prefixed with ``"│ "`` so a continuous vertical
+   rule runs from the opening corner to the closing one; the last member's
+   body lines sit below the closing corner with plain two-space indent.
+
+
+
+.. py:function:: format_siblings(components)
+
+   Render a list of sibling children.
+
+   Used by components like ``Composition`` and ``ParallelComposition`` whose
+   children are run independently rather than composed into a chain. Each
+   member's first line is prefixed with ``"* "``; subsequent lines are
+   indented by two spaces to align past the marker.
+
+
+
+.. py:function:: format_labeled_siblings(items)
+
+   Render labeled sibling children, e.g. for column-keyed aggregations.
+
+   Like :func:`format_siblings`, but each component carries a ``label`` (such
+   as a column name) rendered as ``"label:"`` after the ``"* "`` marker. When
+   every component formats to a single line, the labels are padded so that the
+   member renderings line up in a column. Otherwise, each member's block is
+   placed on the lines below its label, indented two spaces past the marker.
+
+
+
+
+
+
+
