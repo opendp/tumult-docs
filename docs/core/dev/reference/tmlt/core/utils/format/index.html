@@ -453,10 +453,10 @@
                   
   <section id="module-tmlt.core.utils.format">
 <span id="format"></span><h1>format<a class="headerlink" href="#module-tmlt.core.utils.format" title="Link to this heading">#</a></h1>
-<p>Helpers shared by component formatter functions.</p>
-<p>Each transformation/measurement implements its own <code class="docutils literal notranslate"><span class="pre">format</span></code> (and a few
-related hooks) on the class itself; the helpers here cover shared logic that
-doesn’t naturally belong on any single component.</p>
+<p>Helpers shared by formatter functions on domains, transformations, and measurements.</p>
+<p>Domains, transformations, and measurements all inherit from <a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Formattable</span></code></a>,
+which provides a default multi-line <code class="docutils literal notranslate"><span class="pre">format()</span></code> rendering. The helpers here
+cover the shared logic that the mixin and its overrides build on.</p>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -468,24 +468,21 @@ doesn’t naturally belong on any single component.</p>
 <td><p>Format a scalar attribute value for inline display.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.default_format_attrs" title="tmlt.core.utils.format.default_format_attrs"><code class="xref py py-func docutils literal notranslate"><span class="pre">default_format_attrs()</span></code></a></p></td>
-<td><p>Default <code class="docutils literal notranslate"><span class="pre">_format_attrs</span></code> implementation, walking public properties.</p></td>
+<td><p>Default <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">value_str)</span></code> pairs for inline attribute rendering.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.format.get_child" title="tmlt.core.utils.format.get_child"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_child()</span></code></a></p></td>
-<td><p>Get any Transformation-/Measurement-valued property of a component.</p></td>
+<td><p>Return the single child-renderable attribute of <code class="docutils literal notranslate"><span class="pre">value</span></code>, or None.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.default_format_children" title="tmlt.core.utils.format.default_format_children"><code class="xref py py-func docutils literal notranslate"><span class="pre">default_format_children()</span></code></a></p></td>
-<td><p>Format a component’s children.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.format.get_chain_children" title="tmlt.core.utils.format.get_chain_children"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_chain_children()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.get_chain_children" title="tmlt.core.utils.format.get_chain_children"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_chain_children()</span></code></a></p></td>
 <td><p>Produce a flat list of the chained children of a component.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_chain" title="tmlt.core.utils.format.format_chain"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_chain()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_chain" title="tmlt.core.utils.format.format_chain"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_chain()</span></code></a></p></td>
 <td><p>Render a flattened chain as a multi-line block with the first line at col 0.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_siblings" title="tmlt.core.utils.format.format_siblings"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_siblings()</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_siblings" title="tmlt.core.utils.format.format_siblings"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_siblings()</span></code></a></p></td>
 <td><p>Render a list of sibling children.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_labeled_siblings" title="tmlt.core.utils.format.format_labeled_siblings"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_labeled_siblings()</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.utils.format.format_labeled_siblings" title="tmlt.core.utils.format.format_labeled_siblings"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_labeled_siblings()</span></code></a></p></td>
 <td><p>Render labeled sibling children, e.g. for column-keyed aggregations.</p></td>
 </tr>
 </tbody>
@@ -526,17 +523,20 @@ non-deterministic memory addresses into the output.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.format.default_format_attrs">
-<span class="sig-name descname"><span class="pre">default_format_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.default_format_attrs" title="Link to this definition">#</a></dt>
-<dd><p>Default <code class="docutils literal notranslate"><span class="pre">_format_attrs</span></code> implementation, walking public properties.</p>
-<p>Returns <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">value_str)</span></code> pairs for every public <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> on the
-component’s class whose value is <em>not</em> a transformation or measurement
-(those are considered children, not inline attributes). Properties in
-<code class="docutils literal notranslate"><span class="pre">excluded</span></code> are skipped.</p>
+<span class="sig-name descname"><span class="pre">default_format_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.default_format_attrs" title="Link to this definition">#</a></dt>
+<dd><p>Default <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">value_str)</span></code> pairs for inline attribute rendering.</p>
+<p>Walks public attributes of <code class="docutils literal notranslate"><span class="pre">value</span></code> – dataclass fields and
+<code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> descriptors – and returns each as a formatted pair.
+Attributes whose values are themselves child-renderable (any
+<a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Formattable</span></code></a>, or non-empty list/tuples thereof) are skipped,
+since those are rendered as nested blocks by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Formattable._format_children()</span></code>. Names in <code class="docutils literal notranslate"><span class="pre">excluded</span></code> are also
+skipped.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>component</strong> (<em>Any</em>)</p></li>
-<li><p><strong>excluded</strong> (<em>FrozenSet</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>value</strong> (<em>Any</em>)</p></li>
+<li><p><strong>excluded</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -547,36 +547,20 @@ component’s class whose value is <em>not</em> a transformation or measurement
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.format.get_child">
-<span class="sig-name descname"><span class="pre">get_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.get_child" title="Link to this definition">#</a></dt>
-<dd><p>Get any Transformation-/Measurement-valued property of a component.</p>
-<p>Returns a nested transformation/measurement found on a public <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code>
-of the given component, if any. If more than one is found, raises
-ValueError.</p>
+<span class="sig-name descname"><span class="pre">get_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.get_child" title="Link to this definition">#</a></dt>
+<dd><p>Return the single child-renderable attribute of <code class="docutils literal notranslate"><span class="pre">value</span></code>, or None.</p>
+<p>A “child” is any nested <a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Formattable</span></code></a>. Attributes named in
+<code class="docutils literal notranslate"><span class="pre">excluded</span></code> are skipped. If more than one child is found, raises
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>component</strong> (<a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><em>tmlt.core.transformations.base.Transformation</em></a><em> | </em><a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><em>tmlt.core.measurements.base.Measurement</em></a>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>Any</em>)</p></li>
+<li><p><strong>excluded</strong> (<em>Collection</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation">tmlt.core.transformations.base.Transformation</a> | <a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement">tmlt.core.measurements.base.Measurement</a> | None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tmlt.core.utils.format.default_format_children">
-<span class="sig-name descname"><span class="pre">default_format_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.default_format_children" title="Link to this definition">#</a></dt>
-<dd><p>Format a component’s children.</p>
-<p>Chain children are returned flush (no indent) so their leading markers
-align with the parent’s head column; non-chain children are indented by
-two spaces so they sit visibly below the parent.</p>
-<p>Components with multiple children cannot be formatted with this default
-formatter; passing one in will raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>component</strong> (<a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><em>tmlt.core.transformations.base.Transformation</em></a><em> | </em><a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><em>tmlt.core.measurements.base.Measurement</em></a>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable">Formattable</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -607,7 +591,7 @@ rule runs from the opening corner to the closing one; the last member’s
 body lines sit below the closing corner with plain two-space indent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>components</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><em>tmlt.core.transformations.base.Transformation</em></a><em> | </em><a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><em>tmlt.core.measurements.base.Measurement</em></a><em>]</em>)</p>
+<dd class="field-odd"><p><strong>components</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><em>Formattable</em></a><em>]</em>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
@@ -617,7 +601,7 @@ body lines sit below the closing corner with plain two-space indent.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.utils.format.format_siblings">
-<span class="sig-name descname"><span class="pre">format_siblings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.format_siblings" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">format_siblings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.format_siblings" title="Link to this definition">#</a></dt>
 <dd><p>Render a list of sibling children.</p>
 <p>Used by components like <code class="docutils literal notranslate"><span class="pre">Composition</span></code> and <code class="docutils literal notranslate"><span class="pre">ParallelComposition</span></code> whose
 children are run independently rather than composed into a chain. Each
@@ -625,7 +609,7 @@ member’s first line is prefixed with <code class="docutils literal notranslate
 indented by two spaces to align past the marker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>components</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><em>tmlt.core.transformations.base.Transformation</em></a><em> | </em><a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><em>tmlt.core.measurements.base.Measurement</em></a><em>]</em>)</p>
+<dd class="field-odd"><p><strong>values</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><em>Formattable</em></a><em>]</em>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
@@ -644,12 +628,50 @@ member renderings line up in a column. Otherwise, each member’s block is
 placed on the lines below its label, indented two spaces past the marker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>items</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference internal" href="../../transformations/base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><em>tmlt.core.transformations.base.Transformation</em></a><em> | </em><a class="reference internal" href="../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><em>tmlt.core.measurements.base.Measurement</em></a><em>]</em><em>]</em>)</p>
+<dd class="field-odd"><p><strong>items</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><em>Formattable</em></a><em>]</em><em>]</em>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.utils.format.Formattable" title="tmlt.core.utils.format.Formattable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Formattable</span></code></a></p></td>
+<td><p>Mixin providing a default multi-line <code class="docutils literal notranslate"><span class="pre">format()</span></code> rendering.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="tmlt.core.utils.format.Formattable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Formattable</span></span><a class="headerlink" href="#tmlt.core.utils.format.Formattable" title="Link to this definition">#</a></dt>
+<dd><p>Mixin providing a default multi-line <code class="docutils literal notranslate"><span class="pre">format()</span></code> rendering.</p>
+<p>Subclasses can override <a class="reference internal" href="#tmlt.core.utils.format.Formattable.FORMAT_EXCLUDED_ATTRS" title="tmlt.core.utils.format.Formattable.FORMAT_EXCLUDED_ATTRS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FORMAT_EXCLUDED_ATTRS</span></code></a> to hide attributes, or
+override <code class="xref py py-meth docutils literal notranslate"><span class="pre">_format_head()</span></code> / <code class="xref py py-meth docutils literal notranslate"><span class="pre">_format_children()</span></code> to customize how
+these sections are displayed. Alternatively, they can override
+<a class="reference internal" href="#tmlt.core.utils.format.Formattable.format" title="tmlt.core.utils.format.Formattable.format"><code class="xref py py-meth docutils literal notranslate"><span class="pre">format()</span></code></a> for complete control over rendering.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tmlt.core.utils.format.Formattable.FORMAT_EXCLUDED_ATTRS">
+<span class="sig-name descname"><span class="pre">FORMAT_EXCLUDED_ATTRS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><span class="pre">frozenset</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.utils.format.Formattable.FORMAT_EXCLUDED_ATTRS" title="Link to this definition">#</a></dt>
+<dd><p>Attributes hidden from the formatted output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tmlt.core.utils.format.Formattable.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.utils.format.Formattable.format" title="Link to this definition">#</a></dt>
+<dd><p>Return a human-readable multi-line description of this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -707,11 +729,18 @@ placed on the lines below its label, indented two spaces past the marker.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.format_value"><code class="docutils literal notranslate"><span class="pre">format_value()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.default_format_attrs"><code class="docutils literal notranslate"><span class="pre">default_format_attrs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.get_child"><code class="docutils literal notranslate"><span class="pre">get_child()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.default_format_children"><code class="docutils literal notranslate"><span class="pre">default_format_children()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.get_chain_children"><code class="docutils literal notranslate"><span class="pre">get_chain_children()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.format_chain"><code class="docutils literal notranslate"><span class="pre">format_chain()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.format_siblings"><code class="docutils literal notranslate"><span class="pre">format_siblings()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.format_labeled_siblings"><code class="docutils literal notranslate"><span class="pre">format_labeled_siblings()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.Formattable"><code class="docutils literal notranslate"><span class="pre">Formattable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.Formattable.FORMAT_EXCLUDED_ATTRS"><code class="docutils literal notranslate"><span class="pre">Formattable.FORMAT_EXCLUDED_ATTRS</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.utils.format.Formattable.format"><code class="docutils literal notranslate"><span class="pre">Formattable.format()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -750,7 +779,7 @@ placed on the lines below its label, indented two spaces past the marker.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-06-15 00:01.</div>
+Built from unknown version at 2026-06-15 13:59.</div>
       
     </div>
   

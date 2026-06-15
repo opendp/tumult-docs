@@ -9,11 +9,11 @@ format
 
 .. autoapi-nested-parse::
 
-   Helpers shared by component formatter functions.
+   Helpers shared by formatter functions on domains, transformations, and measurements.
 
-   Each transformation/measurement implements its own ``format`` (and a few
-   related hooks) on the class itself; the helpers here cover shared logic that
-   doesn't naturally belong on any single component.
+   Domains, transformations, and measurements all inherit from :class:`Formattable`,
+   which provides a default multi-line ``format()`` rendering. The helpers here
+   cover the shared logic that the mixin and its overrides build on.
 
 
 
@@ -35,11 +35,9 @@ Functions
    * - :func:`.format_value`
      - Format a scalar attribute value for inline display.
    * - :func:`.default_format_attrs`
-     - Default ``_format_attrs`` implementation, walking public properties.
+     - Default ``(name, value_str)`` pairs for inline attribute rendering.
    * - :func:`.get_child`
-     - Get any Transformation-/Measurement-valued property of a component.
-   * - :func:`.default_format_children`
-     - Format a component's children.
+     - Return the single child-renderable attribute of ``value``, or None.
    * - :func:`.get_chain_children`
      - Produce a flat list of the chained children of a component.
    * - :func:`.format_chain`
@@ -64,37 +62,27 @@ Functions
 
 
 
-.. py:function:: default_format_attrs(component, excluded)
+.. py:function:: default_format_attrs(value, excluded)
 
-   Default ``_format_attrs`` implementation, walking public properties.
+   Default ``(name, value_str)`` pairs for inline attribute rendering.
 
-   Returns ``(name, value_str)`` pairs for every public ``@property`` on the
-   component's class whose value is *not* a transformation or measurement
-   (those are considered children, not inline attributes). Properties in
-   ``excluded`` are skipped.
-
-
-
-.. py:function:: get_child(component)
-
-   Get any Transformation-/Measurement-valued property of a component.
-
-   Returns a nested transformation/measurement found on a public ``@property``
-   of the given component, if any. If more than one is found, raises
-   ValueError.
+   Walks public attributes of ``value`` -- dataclass fields and
+   ``@property`` descriptors -- and returns each as a formatted pair.
+   Attributes whose values are themselves child-renderable (any
+   :class:`Formattable`, or non-empty list/tuples thereof) are skipped,
+   since those are rendered as nested blocks by
+   :meth:`Formattable._format_children`. Names in ``excluded`` are also
+   skipped.
 
 
 
-.. py:function:: default_format_children(component)
+.. py:function:: get_child(value, excluded)
 
-   Format a component's children.
+   Return the single child-renderable attribute of ``value``, or None.
 
-   Chain children are returned flush (no indent) so their leading markers
-   align with the parent's head column; non-chain children are indented by
-   two spaces so they sit visibly below the parent.
-
-   Components with multiple children cannot be formatted with this default
-   formatter; passing one in will raise :exc:`NotImplementedError`.
+   A "child" is any nested :class:`Formattable`. Attributes named in
+   ``excluded`` are skipped. If more than one child is found, raises
+   :exc:`ValueError`.
 
 
 
@@ -117,7 +105,7 @@ Functions
 
 
 
-.. py:function:: format_siblings(components)
+.. py:function:: format_siblings(values)
 
    Render a list of sibling children.
 
@@ -138,6 +126,41 @@ Functions
    member renderings line up in a column. Otherwise, each member's block is
    placed on the lines below its label, indented two spaces past the marker.
 
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.Formattable`
+     - Mixin providing a default multi-line ``format()`` rendering.
+
+   
+.. py:class:: Formattable
+
+   Mixin providing a default multi-line ``format()`` rendering.
+
+   Subclasses can override :attr:`FORMAT_EXCLUDED_ATTRS` to hide attributes, or
+   override :meth:`_format_head` / :meth:`_format_children` to customize how
+   these sections are displayed. Alternatively, they can override
+   :meth:`format` for complete control over rendering.
+
+
+
+
+
+   .. py:attribute:: FORMAT_EXCLUDED_ATTRS
+      :type:  frozenset[str]
+
+      Attributes hidden from the formatted output.
+
+
+
+   .. py:method:: format()
+
+      Return a human-readable multi-line description of this object.
 
 
 
