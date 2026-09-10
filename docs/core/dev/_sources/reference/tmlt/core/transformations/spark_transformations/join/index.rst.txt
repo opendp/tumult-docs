@@ -35,8 +35,8 @@ Classes
      - Enumerating truncation strategies for PrivateJoin.
    * - :class:`.PrivateJoin`
      - Join two private SparkDataFrames.
-   * - :class:`.PrivateJoinOnKey`
-     - Join two private SparkDataFrames including a key column.
+   * - :class:`.PrivateJoinOnIDs`
+     - Join two private SparkDataFrames that include an ID column.
 
    
 .. py:class:: PublicJoin(input_domain, metric, public_df, public_df_domain = None, join_cols = None, join_on_nulls = False, how = 'inner')
@@ -661,11 +661,11 @@ Classes
 
 
    
-.. py:class:: PrivateJoinOnKey(input_domain, input_metric, left_key, right_key, new_key, join_cols = None, join_on_nulls = False)
+.. py:class:: PrivateJoinOnIDs(input_domain, input_metric, left_key, right_key, new_key, join_cols = None, join_on_nulls = False)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
-   Join two private SparkDataFrames including a key column.
+   Join two private SparkDataFrames that include an ID column.
 
    .. rubric:: Example
 
@@ -748,7 +748,7 @@ Classes
    ...     },
    ... )
    >>> assert ignored_dataframe in ignored_domain
-   >>> private_join = PrivateJoinOnKey(
+   >>> private_join = PrivateJoinOnIDs(
    ...     input_domain=DictDomain(
    ...         {
    ...             "left": left_domain,
@@ -756,7 +756,7 @@ Classes
    ...             "ignored": ignored_domain,
    ...         }
    ...     ),
-   ...     input_metric=AddRemoveKeys(
+   ...     input_metric=AddRemoveIDs(
    ...         {
    ...            "left": "B",
    ...            "right": "B",
@@ -796,28 +796,28 @@ Classes
        Unlike :class:`~.PrivateJoin`, this join allows for other dataframes to
        be present in the input dictionary, and will output a dictionary
        containing all of the input dataframes along with the joined dataframe.
-       This is because of the stability analysis for AddRemoveKeys. See
-       :mod:`~.add_remove_keys` for more details.
+       This is because of the stability analysis for AddRemoveIDs. See
+       :mod:`~.add_remove_ids` for more details.
 
    Transformation Contract:
        * Input domain - :class:`~.DictDomain` containing two or more
          SparkDataFrame domains.
        * Output domain - The same as the input :class:`~.DictDomain` with the addition
          of a new :class:`~.SparkDataFrameDomain` for the joined table.
-       * Input metric - :class:`~.AddRemoveKeys`
-       * Output metric - :class:`~.AddRemoveKeys`
+       * Input metric - :class:`~.AddRemoveIDs`
+       * Output metric - :class:`~.AddRemoveIDs`
 
    >>> private_join.input_domain
    DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)})})
    >>> private_join.output_domain
    DictDomain(key_to_domain={'left': SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64)}), 'right': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'C': SparkStringColumnDescriptor(allow_null=False)}), 'ignored': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'D': SparkStringColumnDescriptor(allow_null=False)}), 'joined': SparkDataFrameDomain(schema={'B': SparkStringColumnDescriptor(allow_null=False), 'A': SparkStringColumnDescriptor(allow_null=False), 'X': SparkIntegerColumnDescriptor(allow_null=False, size=64), 'C': SparkStringColumnDescriptor(allow_null=False)})})
    >>> private_join.input_metric
-   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B'})
+   AddRemoveIDs(df_to_id_column={'left': 'B', 'right': 'B', 'ignored': 'B'})
    >>> private_join.output_metric
-   AddRemoveKeys(df_to_key_column={'left': 'B', 'right': 'B', 'ignored': 'B', 'joined': 'B'})
+   AddRemoveIDs(df_to_id_column={'left': 'B', 'right': 'B', 'ignored': 'B', 'joined': 'B'})
 
    Stability Guarantee:
-       :class:`~.PrivateJoinOnKey`'s :meth:`~.stability_function` returns ``d_in``
+       :class:`~.PrivateJoinOnIDs`'s :meth:`~.stability_function` returns ``d_in``
 
        >>> private_join.stability_function(1)
        1

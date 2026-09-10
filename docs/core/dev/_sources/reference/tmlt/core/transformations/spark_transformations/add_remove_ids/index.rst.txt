@@ -1,25 +1,25 @@
 
 
 
-**********************
-add_remove_keys
-**********************
+*********************
+add_remove_ids
+*********************
 
-.. py:module:: tmlt.core.transformations.spark_transformations.add_remove_keys
+.. py:module:: tmlt.core.transformations.spark_transformations.add_remove_ids
 
 .. autoapi-nested-parse::
 
-   Transformations that transform dictionaries using :class:`~.AddRemoveKeys`.
+   Transformations that transform dictionaries using :class:`~.AddRemoveIDs`.
 
    Note that several of the transformations in :mod:`~.dictionary` also support
-   :class:`~.AddRemoveKeys`. In particular
+   :class:`~.AddRemoveIDs`. In particular
 
    * :class:`~.CreateDictFromValue`
    * :class:`~.GetValue`
    * :class:`~.Subset`
 
    The transformations defined in this module are required because
-   :class:`~.AugmentDictTransformation` is not stable under :class:`~.AddRemoveKeys` for
+   :class:`~.AugmentDictTransformation` is not stable under :class:`~.AddRemoveIDs` for
    all transformations.
 
    For example, consider the following example:
@@ -27,7 +27,7 @@ add_remove_keys
    ..
        >>> from pyspark.sql import SparkSession
        >>> from tmlt.core.transformations.spark_transformations.truncation import (
-       ...     LimitRowsPerGroup
+       ...     LimitRowsPerID
        ... )
        >>> from tmlt.core.domains.spark_domains import SparkStringColumnDescriptor
        >>> from tmlt.core.transformations.spark_transformations.id import AddUniqueColumn
@@ -42,10 +42,10 @@ add_remove_keys
    ...     }
    ... )
    >>> input_metric = IfGroupedBy({"A"}, SymmetricDifference())
-   >>> truncate = LimitRowsPerGroup(
+   >>> truncate = LimitRowsPerID(
    ...     input_domain=input_domain,
    ...     output_metric=SymmetricDifference(),
-   ...     grouping_columns=["A"],
+   ...     id_columns=["A"],
    ...     threshold=1,
    ... )
    >>> rename = Rename(
@@ -96,14 +96,14 @@ add_remove_keys
    >>> dict_y1 = {"start": x1, "end": y1}
    >>> dict_y2 = {"start": x2, "end": y2}
    >>> dict_input_domain = DictDomain({"start": input_domain})
-   >>> dict_input_metric = AddRemoveKeys({"start": "A"})
+   >>> dict_input_metric = AddRemoveIDs({"start": "A"})
    >>> dict_output_domain = DictDomain(
    ...     {
    ...         "start": input_domain,
    ...         "end": transformation.output_domain
    ...     }
    ... )
-   >>> dict_output_metric = AddRemoveKeys({"start": "A", "end": "A"})
+   >>> dict_output_metric = AddRemoveIDs({"start": "A", "end": "A"})
    >>> # Naively you would expect the stability to be 1, but in this example it is 2
    >>> dict_input_metric.distance(dict_x1, dict_x2, dict_input_domain)
    1
@@ -111,7 +111,7 @@ add_remove_keys
    2
 
    Conceptually, what is happening in the example above is that the transformation is
-   changing the meaning of the key column. The column "A" that is in the input data is
+   changing the meaning of the ID column. The column "A" that is in the input data is
    not the same as the column "A" that is in the output data, so removing one value, "a",
    in the input dictionary results in both "a" and "a,1" being removed in the output
    dictionary.
@@ -133,18 +133,18 @@ Classes
 
    * - :class:`.TransformValue`
      - Base class transforming a specified key using an existing transformation.
-   * - :class:`.LimitRowsPerGroupValue`
-     - Applies a :class:`~.LimitRowsPerGroup` to the specified key.
-   * - :class:`.LimitKeysPerGroupValue`
-     - Applies a :class:`~.LimitKeysPerGroup` to the specified key.
-   * - :class:`.LimitRowsPerKeyPerGroupValue`
-     - Applies a :class:`~.LimitRowsPerKeyPerGroup` to the specified key.
+   * - :class:`.LimitRowsPerIDValue`
+     - Applies a :class:`~.LimitRowsPerID` to the specified key.
+   * - :class:`.LimitGroupsPerIDValue`
+     - Applies a :class:`~.LimitGroupsPerID` to the specified key.
+   * - :class:`.LimitRowsPerGroupPerIDValue`
+     - Applies a :class:`~.LimitRowsPerGroupPerID` to the specified key.
    * - :class:`.FilterValue`
      - Applies a :class:`~.Filter` to create a new element from specified value.
    * - :class:`.PublicJoinValue`
      - Applies a :class:`~.PublicJoin` to create a new element from specified value.
-   * - :class:`.FlatMapByKeyValue`
-     - Applies a :class:`~.FlatMapByKey` to create a new element from specified value.
+   * - :class:`.FlatMapByIDValue`
+     - Applies a :class:`~.FlatMapByID` to create a new element from specified value.
    * - :class:`.FlatMapValue`
      - Applies a :class:`~.FlatMap` to create a new element from specified value.
    * - :class:`.MapValue`
@@ -182,7 +182,7 @@ Classes
    This class can be subclassed for the purposes of making a claim that a kind of
    Transformation (like :class:`~.Filter`) can be applied to a DataFrame and augment
    the input dictionary with the output without violating the closeness of neighboring
-   dataframes with :class:`~.AddRemoveKeys`.
+   dataframes with :class:`~.AddRemoveIDs`.
 
    NOTE: This class cannot be instantiated directly.
 
@@ -274,13 +274,13 @@ Classes
 
 
    
-.. py:class:: LimitRowsPerGroupValue(input_domain, input_metric, key, new_key, threshold)
+.. py:class:: LimitRowsPerIDValue(input_domain, input_metric, key, new_key, threshold)
 
    Bases: :class:`TransformValue`
 
-   Applies a :class:`~.LimitRowsPerGroup` to the specified key.
+   Applies a :class:`~.LimitRowsPerID` to the specified key.
 
-   See :class:`~.TransformValue` and :class:`~.LimitRowsPerGroup` for more
+   See :class:`~.TransformValue` and :class:`~.LimitRowsPerID` for more
    information.
 
 
@@ -371,13 +371,13 @@ Classes
 
 
    
-.. py:class:: LimitKeysPerGroupValue(input_domain, input_metric, key, new_key, key_column, threshold)
+.. py:class:: LimitGroupsPerIDValue(input_domain, input_metric, key, new_key, grouping_column, threshold)
 
    Bases: :class:`TransformValue`
 
-   Applies a :class:`~.LimitKeysPerGroup` to the specified key.
+   Applies a :class:`~.LimitGroupsPerID` to the specified key.
 
-   See :class:`~.TransformValue` and :class:`~.LimitKeysPerGroup` for more
+   See :class:`~.TransformValue` and :class:`~.LimitGroupsPerID` for more
    information.
 
 
@@ -468,13 +468,13 @@ Classes
 
 
    
-.. py:class:: LimitRowsPerKeyPerGroupValue(input_domain, input_metric, key, new_key, key_column, threshold)
+.. py:class:: LimitRowsPerGroupPerIDValue(input_domain, input_metric, key, new_key, grouping_column, threshold)
 
    Bases: :class:`TransformValue`
 
-   Applies a :class:`~.LimitRowsPerKeyPerGroup` to the specified key.
+   Applies a :class:`~.LimitRowsPerGroupPerID` to the specified key.
 
-   See :class:`~.TransformValue` and :class:`~.LimitRowsPerKeyPerGroup` for more
+   See :class:`~.TransformValue` and :class:`~.LimitRowsPerGroupPerID` for more
    information.
 
 
@@ -757,13 +757,13 @@ Classes
 
 
    
-.. py:class:: FlatMapByKeyValue(input_domain, input_metric, key, new_key, row_transformer)
+.. py:class:: FlatMapByIDValue(input_domain, input_metric, key, new_key, row_transformer)
 
    Bases: :class:`TransformValue`
 
-   Applies a :class:`~.FlatMapByKey` to create a new element from specified value.
+   Applies a :class:`~.FlatMapByID` to create a new element from specified value.
 
-   See :class:`~.TransformValue` and :class:`~.FlatMapByKey` for more information.
+   See :class:`~.TransformValue` and :class:`~.FlatMapByID` for more information.
 
 
 

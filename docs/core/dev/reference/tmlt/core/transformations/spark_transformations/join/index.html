@@ -377,7 +377,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dictionary/index.html">dictionary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../identity/index.html">identity</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">spark_transformations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../add_remove_keys/index.html">add_remove_keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../add_remove_ids/index.html">add_remove_ids</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../agg/index.html">agg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../filter/index.html">filter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../groupby/index.html">groupby</a></li>
@@ -479,8 +479,8 @@ for more information on transformations.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoin" title="tmlt.core.transformations.spark_transformations.join.PrivateJoin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoin</span></code></a></p></td>
 <td><p>Join two private SparkDataFrames.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoinOnKey</span></code></a></p></td>
-<td><p>Join two private SparkDataFrames including a key column.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoinOnIDs</span></code></a></p></td>
+<td><p>Join two private SparkDataFrames that include an ID column.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1303,10 +1303,10 @@ for more information.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivateJoinOnKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_nulls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivateJoinOnIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_nulls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
-<p>Join two private SparkDataFrames including a key column.</p>
+<p>Join two private SparkDataFrames that include an ID column.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">left_spark_dataframe</span><span class="p">)</span>
@@ -1350,7 +1350,7 @@ for more information.</p>
 <span class="gp">... </span>    <span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">ignored_dataframe</span> <span class="ow">in</span> <span class="n">ignored_domain</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span> <span class="o">=</span> <span class="n">PrivateJoinOnKey</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span> <span class="o">=</span> <span class="n">PrivateJoinOnIDs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">DictDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
 <span class="gp">... </span>            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="n">left_domain</span><span class="p">,</span>
@@ -1358,7 +1358,7 @@ for more information.</p>
 <span class="gp">... </span>            <span class="s2">&quot;ignored&quot;</span><span class="p">:</span> <span class="n">ignored_domain</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">AddRemoveKeys</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">AddRemoveIDs</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
 <span class="gp">... </span>           <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
 <span class="gp">... </span>           <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
@@ -1398,8 +1398,8 @@ for more information.</p>
 SparkDataFrame domains.</p></li>
 <li><p>Output domain - The same as the input <a class="reference internal" href="../../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a> with the addition
 of a new <a class="reference internal" href="../../../domains/spark_domains/index.html#tmlt.core.domains.spark_domains.SparkDataFrameDomain" title="tmlt.core.domains.spark_domains.SparkDataFrameDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparkDataFrameDomain</span></code></a> for the joined table.</p></li>
-<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></p></li>
-<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></p></li>
+<li><p>Input metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveIDs" title="tmlt.core.metrics.AddRemoveIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveIDs</span></code></a></p></li>
+<li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveIDs" title="tmlt.core.metrics.AddRemoveIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveIDs</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -1408,13 +1408,13 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 <span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">DictDomain(key_to_domain={&#39;left&#39;: SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)}), &#39;right&#39;: SparkDataFrameDomain(schema={&#39;B&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;C&#39;: SparkStringColumnDescriptor(allow_null=False)}), &#39;ignored&#39;: SparkDataFrameDomain(schema={&#39;B&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;D&#39;: SparkStringColumnDescriptor(allow_null=False)}), &#39;joined&#39;: SparkDataFrameDomain(schema={&#39;B&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;X&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64), &#39;C&#39;: SparkStringColumnDescriptor(allow_null=False)})})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">AddRemoveKeys(df_to_key_column={&#39;left&#39;: &#39;B&#39;, &#39;right&#39;: &#39;B&#39;, &#39;ignored&#39;: &#39;B&#39;})</span>
+<span class="go">AddRemoveIDs(df_to_id_column={&#39;left&#39;: &#39;B&#39;, &#39;right&#39;: &#39;B&#39;, &#39;ignored&#39;: &#39;B&#39;})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span><span class="o">.</span><span class="n">output_metric</span>
-<span class="go">AddRemoveKeys(df_to_key_column={&#39;left&#39;: &#39;B&#39;, &#39;right&#39;: &#39;B&#39;, &#39;ignored&#39;: &#39;B&#39;, &#39;joined&#39;: &#39;B&#39;})</span>
+<span class="go">AddRemoveIDs(df_to_id_column={&#39;left&#39;: &#39;B&#39;, &#39;right&#39;: &#39;B&#39;, &#39;ignored&#39;: &#39;B&#39;, &#39;joined&#39;: &#39;B&#39;})</span>
 </pre></div>
 </div>
 <dl>
-<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoinOnKey</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_function" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code></p>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivateJoinOnIDs</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_function" title="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">private_join</span><span class="o">.</span><span class="n">stability_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1427,7 +1427,7 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<a class="reference internal" href="../../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><em>tmlt.core.domains.collections.DictDomain</em></a>)</p></li>
-<li><p><strong>input_metric</strong> (<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><em>tmlt.core.metrics.AddRemoveKeys</em></a>)</p></li>
+<li><p><strong>input_metric</strong> (<a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveIDs" title="tmlt.core.metrics.AddRemoveIDs"><em>tmlt.core.metrics.AddRemoveIDs</em></a>)</p></li>
 <li><p><strong>left_key</strong> (<em>Any</em>)</p></li>
 <li><p><strong>right_key</strong> (<em>Any</em>)</p></li>
 <li><p><strong>new_key</strong> (<em>Any</em>)</p></li>
@@ -1437,8 +1437,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.left_key">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.left_key" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.left_key">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.left_key" title="Link to this definition">#</a></dt>
 <dd><p>Returns key to left DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1448,8 +1448,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.right_key">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.right_key" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.right_key">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.right_key" title="Link to this definition">#</a></dt>
 <dd><p>Returns key to right DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1459,8 +1459,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.new_key">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.new_key" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.new_key">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.new_key" title="Link to this definition">#</a></dt>
 <dd><p>Returns key to output DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1470,8 +1470,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_cols">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_cols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_cols" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_cols">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_cols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_cols" title="Link to this definition">#</a></dt>
 <dd><p>Returns list of column names to join on.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1481,8 +1481,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_on_nulls">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_on_nulls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_on_nulls" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_on_nulls">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_on_nulls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_on_nulls" title="Link to this definition">#</a></dt>
 <dd><p>Returns whether to consider null equal to null.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1492,8 +1492,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_domain">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_domain" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_domain" title="Link to this definition">#</a></dt>
 <dd><p>Return input domain for the measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1503,8 +1503,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_metric" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_metric" title="Link to this definition">#</a></dt>
 <dd><p>Distance metric on input domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1514,8 +1514,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_domain">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_domain" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_domain" title="Link to this definition">#</a></dt>
 <dd><p>Return input domain for the measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1525,8 +1525,8 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_metric" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_metric" title="Link to this definition">#</a></dt>
 <dd><p>Distance metric on input domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1536,16 +1536,16 @@ of a new <a class="reference internal" href="../../../domains/spark_domains/inde
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_nulls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_nulls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../domains/collections/index.html#tmlt.core.domains.collections.DictDomain" title="tmlt.core.domains.collections.DictDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictDomain</span></code></a></span>) – Domain of the input dictionaries. Must contain <code class="docutils literal notranslate"><span class="pre">left_key</span></code>
 and <code class="docutils literal notranslate"><span class="pre">right_key</span></code>, but may also contain other keys.</p></li>
-<li><p><strong>input_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></span>) – AddRemoveKeys metric for the input dictionaries. The left and
-right dataframes must use the same key column.</p></li>
+<li><p><strong>input_metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.AddRemoveIDs" title="tmlt.core.metrics.AddRemoveIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveIDs</span></code></a></span>) – AddRemoveIDs metric for the input dictionaries. The left and
+right dataframes must use the same ID column.</p></li>
 <li><p><strong>left_key</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Key for the left DataFrame.</p></li>
 <li><p><strong>right_key</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Key for the right DataFrame.</p></li>
 <li><p><strong>new_key</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Key for the output DataFrame.</p></li>
@@ -1559,8 +1559,8 @@ both dataframes will be considered to be equal.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_function">
-<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_function" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_function" title="Link to this definition">#</a></dt>
 <dd><p>Returns the smallest d_out satisfied by the transformation.</p>
 <p>See <a class="reference external" href="https://docs.tmlt.dev/core/latest/topic-guides/architecture.html">the architecture overview</a>
 for more information on transformations.</p>
@@ -1575,8 +1575,8 @@ for more information on transformations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__call__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__call__" title="Link to this definition">#</a></dt>
 <dd><p>Perform join.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1589,8 +1589,8 @@ for more information on transformations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_relation">
-<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_relation" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_relation" title="Link to this definition">#</a></dt>
 <dd><p>Returns True only if close inputs produce close outputs.</p>
 <p>See the privacy and stability tutorial (add link?) for more information.</p>
 <dl class="field-list simple">
@@ -1607,16 +1607,16 @@ for more information on transformations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__or__">
-<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__or__" title="Link to this definition">#</a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
 <dd><p>Return this transformation chained with another component.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.format">
-<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.format" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.format" title="Link to this definition">#</a></dt>
 <dd><p>Return a human-readable multi-line description of this object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1724,22 +1724,22 @@ for more information on transformations.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoin.format"><code class="docutils literal notranslate"><span class="pre">PrivateJoin.format()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.left_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.left_key</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.right_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.right_key</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.new_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.new_key</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_cols"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.join_cols</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.join_on_nulls"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.join_on_nulls</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_domain"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.input_domain</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.input_metric"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.input_metric</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_domain"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.output_domain</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.output_metric"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.output_metric</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__init__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_function"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.stability_function()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__call__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.__call__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.stability_relation"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.stability_relation()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.__or__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.__or__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnKey.format"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnKey.format()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.left_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.left_key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.right_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.right_key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.new_key"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.new_key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_cols"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.join_cols</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.join_on_nulls"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.join_on_nulls</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_domain"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.input_metric"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_domain"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.output_metric"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__init__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_function"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__call__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.stability_relation"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.__or__"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.__or__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.join.PrivateJoinOnIDs.format"><code class="docutils literal notranslate"><span class="pre">PrivateJoinOnIDs.format()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1780,7 +1780,7 @@ for more information on transformations.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-09-09 21:25.</div>
+Built from unknown version at 2026-09-10 17:49.</div>
       
     </div>
   

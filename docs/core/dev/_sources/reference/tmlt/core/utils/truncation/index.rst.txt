@@ -30,8 +30,8 @@ Functions
      - Order rows by a hash function and keep at most ``threshold`` rows for each group.
    * - :func:`.drop_large_groups`
      - Drop all rows for groups that have more than ``threshold`` rows.
-   * - :func:`.limit_keys_per_group`
-     - Order keys by a hash function and keep at most ``threshold`` keys for each group.
+   * - :func:`.limit_groups_per_id`
+     - Order groups by a hash function and keep at most ``threshold`` groups per ID.
 
 .. py:function:: truncate_large_groups(df, grouping_columns, threshold)
 
@@ -139,14 +139,14 @@ Functions
 
 
 
-.. py:function:: limit_keys_per_group(df, grouping_columns, key_columns, threshold)
+.. py:function:: limit_groups_per_id(df, id_columns, grouping_columns, threshold)
 
-   Order keys by a hash function and keep at most ``threshold`` keys for each group.
+   Order groups by a hash function and keep at most ``threshold`` groups per ID.
 
    .. note::
 
-       After truncation there may still be an unbounded number of rows per key, but
-       at most ``threshold`` keys per group
+       After truncation there may still be an unbounded number of rows per group, but
+       at most ``threshold`` groups per ID.
 
    .. rubric:: Example
 
@@ -177,10 +177,10 @@ Functions
    6  a4  b2
    7  a4  b3
    >>> print_sdf(
-   ...     limit_keys_per_group(
+   ...     limit_groups_per_id(
    ...         df=spark_dataframe,
-   ...         grouping_columns=["A"],
-   ...         key_columns=["B"],
+   ...         id_columns=["A"],
+   ...         grouping_columns=["B"],
    ...         threshold=2,
    ...     )
    ... )
@@ -193,10 +193,10 @@ Functions
    5  a4  b2
    6  a4  b3
    >>> print_sdf(
-   ...     limit_keys_per_group(
+   ...     limit_groups_per_id(
    ...         df=spark_dataframe,
-   ...         grouping_columns=["A"],
-   ...         key_columns=["B"],
+   ...         id_columns=["A"],
+   ...         grouping_columns=["B"],
    ...         threshold=1,
    ...     )
    ... )
@@ -207,8 +207,8 @@ Functions
    3  a4  b3
 
    :param df: DataFrame to truncate.
-   :param grouping_columns: Columns defining the groups.
-   :param key_columns: Column defining the keys.
+   :param id_columns: Columns defining the ID.
+   :param grouping_columns: Column defining the groups.
    :param threshold: Maximum number of keys to include for each group.
 
 

@@ -52,8 +52,8 @@ Classes
      - Distance between two DataFrames that shall be grouped by a given set of columns.
    * - :class:`.DictMetric`
      - Distance between two dictionaries with identical sets of keys.
-   * - :class:`.AddRemoveKeys`
-     - The number of keys that dictionaries of dataframe differ by.
+   * - :class:`.AddRemoveIDs`
+     - The number of IDs that dictionaries of dataframe differ by.
 
    
 .. py:class:: Metric
@@ -1254,27 +1254,31 @@ Classes
 
 
    
-.. py:class:: AddRemoveKeys(df_to_key_column)
+.. py:class:: AddRemoveIDs(df_to_id_column)
 
    Bases: :class:`Metric`
 
-   The number of keys that dictionaries of dataframe differ by.
+   The number of IDs that dictionaries of dataframe differ by.
+
+   The metric compares dictionaries of dataframes where each row has an associated
+   ID. It compares the set of IDs across all dataframes in the dictionary, and
+   computes the symmetric difference.
 
    This metric can be thought of as a extension of :class:`IfGroupedBy` with inner
    metric :class:`~SymmetricDifference`, except it is applied to a dictionary of
    dataframes, instead of a single dataframe.
 
-   ``AddRemoveKeys(X)`` can be described in the following way:
+   ``AddRemoveIDs(X)`` can be described in the following way:
 
-   Sum over each key that appears in the key column in either
-   neighbor, where the key column for dataframe df is given by ``X[df]``.
+   Sum over each ID that appears in the ID column in either
+   neighbor, where the ID column for dataframe df is given by ``X[df]``.
 
-   - 0 if both neighbors "match" for ``X[df] = key``
-   - 1 if only one neighbor has records for ``X[df] = key``
-   - 2 if both neighbor have records for ``X[df] = key``, but they don't "match"
+   - 0 if both neighbors "match" for ``X[df] = ID``
+   - 1 if only one neighbor has records for ``X[df] = ID``
+   - 2 if both neighbor have records for ``X[df] = ID``, but they don't "match"
 
-   The key column cannot contain floating point values, and all dataframes must have
-   the same type for the key column. The key columns for the different dataframes may
+   The ID column cannot contain floating point values, and all dataframes must have
+   the same type for the ID column. The ID columns for the different dataframes may
    have different names.
 
    .. rubric:: Examples
@@ -1302,8 +1306,8 @@ Classes
    ...         ),
    ...     }
    ... )
-   >>> metric = AddRemoveKeys({1: "A", 2: "C"})
-   >>> # key=1 matches, key=2 is only in value1, key=3 is only in value2, key=4
+   >>> metric = AddRemoveIDs({1: "A", 2: "C"})
+   >>> # ID=1 matches, ID=2 is only in value1, ID=3 is only in value2, ID=4
    >>> # differs
    >>> value1 = {
    ...     1: spark.createDataFrame(
@@ -1349,7 +1353,7 @@ Classes
 
 
 
-   .. py:property:: df_to_key_column
+   .. py:property:: df_to_id_column
       :type: Dict[Any, str]
 
 

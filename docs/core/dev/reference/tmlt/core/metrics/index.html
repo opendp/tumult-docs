@@ -477,8 +477,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.metrics.DictMetric" title="tmlt.core.metrics.DictMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictMetric</span></code></a></p></td>
 <td><p>Distance between two dictionaries with identical sets of keys.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.metrics.AddRemoveKeys" title="tmlt.core.metrics.AddRemoveKeys"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a></p></td>
-<td><p>The number of keys that dictionaries of dataframe differ by.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.metrics.AddRemoveIDs" title="tmlt.core.metrics.AddRemoveIDs"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRemoveIDs</span></code></a></p></td>
+<td><p>The number of IDs that dictionaries of dataframe differ by.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2398,23 +2398,26 @@ metric</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddRemoveKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_to_key_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddRemoveIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_to_id_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></p>
-<p>The number of keys that dictionaries of dataframe differ by.</p>
+<p>The number of IDs that dictionaries of dataframe differ by.</p>
+<p>The metric compares dictionaries of dataframes where each row has an associated
+ID. It compares the set of IDs across all dataframes in the dictionary, and
+computes the symmetric difference.</p>
 <p>This metric can be thought of as a extension of <a class="reference internal" href="#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a> with inner
 metric <a class="reference internal" href="#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a>, except it is applied to a dictionary of
 dataframes, instead of a single dataframe.</p>
-<p><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys(X)</span></code> can be described in the following way:</p>
-<p>Sum over each key that appears in the key column in either
-neighbor, where the key column for dataframe df is given by <code class="docutils literal notranslate"><span class="pre">X[df]</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs(X)</span></code> can be described in the following way:</p>
+<p>Sum over each ID that appears in the ID column in either
+neighbor, where the ID column for dataframe df is given by <code class="docutils literal notranslate"><span class="pre">X[df]</span></code>.</p>
 <ul class="simple">
-<li><p>0 if both neighbors “match” for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">key</span></code></p></li>
-<li><p>1 if only one neighbor has records for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">key</span></code></p></li>
-<li><p>2 if both neighbor have records for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">key</span></code>, but they don’t “match”</p></li>
+<li><p>0 if both neighbors “match” for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">ID</span></code></p></li>
+<li><p>1 if only one neighbor has records for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">ID</span></code></p></li>
+<li><p>2 if both neighbor have records for <code class="docutils literal notranslate"><span class="pre">X[df]</span> <span class="pre">=</span> <span class="pre">ID</span></code>, but they don’t “match”</p></li>
 </ul>
-<p>The key column cannot contain floating point values, and all dataframes must have
-the same type for the key column. The key columns for the different dataframes may
+<p>The ID column cannot contain floating point values, and all dataframes must have
+the same type for the ID column. The ID columns for the different dataframes may
 have different names.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -2440,8 +2443,8 @@ have different names.</p>
 <span class="gp">... </span>        <span class="p">),</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">AddRemoveKeys</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># key=1 matches, key=2 is only in value1, key=3 is only in value2, key=4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">AddRemoveIDs</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ID=1 matches, ID=2 is only in value1, ID=3 is only in value2, ID=4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># differs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">value1</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">... </span>    <span class="mi">1</span><span class="p">:</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
@@ -2485,12 +2488,12 @@ have different names.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df_to_key_column</strong> (<em>Mapping</em><em>[</em><em>Any</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p>
+<dd class="field-odd"><p><strong>df_to_id_column</strong> (<em>Mapping</em><em>[</em><em>Any</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.df_to_key_column">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_to_key_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.df_to_key_column" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.df_to_id_column">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df_to_id_column</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.df_to_id_column" title="Link to this definition">#</a></dt>
 <dd><p>Returns the key column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2500,20 +2503,20 @@ have different names.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_to_key_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_to_id_column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df_to_key_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – A dictionary mapping dataframe names to the name of the
-key column in that dataframe.</p>
+<dd class="field-odd"><p><strong>df_to_id_column</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – A dictionary mapping dataframe names to the name of the
+ID column in that dataframe.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.validate">
-<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.validate" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.validate" title="Link to this definition">#</a></dt>
 <dd><p>Raises an error if <code class="docutils literal notranslate"><span class="pre">value</span></code> not a valid distance.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> must be a nonnegative real or infinite</p></li>
@@ -2529,8 +2532,8 @@ key column in that dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.compare">
-<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.compare" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.compare" title="Link to this definition">#</a></dt>
 <dd><p>Returns True if <code class="docutils literal notranslate"><span class="pre">value1</span></code> is less than or equal to <code class="docutils literal notranslate"><span class="pre">value2</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2546,8 +2549,8 @@ key column in that dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.supports_domain">
-<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.supports_domain">
+<span class="sig-name descname"><span class="pre">supports_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.supports_domain" title="Link to this definition">#</a></dt>
 <dd><p>Return True if the metric is implemented for the passed domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2560,8 +2563,8 @@ key column in that dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.distance" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.distance" title="Link to this definition">#</a></dt>
 <dd><p>Return the metric distance between two elements of a supported domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2578,8 +2581,8 @@ key column in that dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.__eq__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.__eq__" title="Link to this definition">#</a></dt>
 <dd><p>Return True if both metrics are equal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2592,8 +2595,8 @@ key column in that dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveKeys.format">
-<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveKeys.format" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.metrics.AddRemoveIDs.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.metrics.AddRemoveIDs.format" title="Link to this definition">#</a></dt>
 <dd><p>Return a human-readable multi-line description of this object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2802,15 +2805,15 @@ key column in that dataframe.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.DictMetric.format"><code class="docutils literal notranslate"><span class="pre">DictMetric.format()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.df_to_key_column"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.df_to_key_column</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.__init__"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.validate"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.validate()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.compare"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.compare()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.supports_domain"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.supports_domain()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.distance"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.distance()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.__eq__"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.__eq__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveKeys.format"><code class="docutils literal notranslate"><span class="pre">AddRemoveKeys.format()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.df_to_id_column"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.df_to_id_column</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.__init__"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.validate"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.validate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.compare"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.compare()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.supports_domain"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.supports_domain()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.distance"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.distance()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.__eq__"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.__eq__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.metrics.AddRemoveIDs.format"><code class="docutils literal notranslate"><span class="pre">AddRemoveIDs.format()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2851,7 +2854,7 @@ key column in that dataframe.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-09-09 21:25.</div>
+Built from unknown version at 2026-09-10 17:49.</div>
       
     </div>
   

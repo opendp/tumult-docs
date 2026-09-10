@@ -376,7 +376,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dictionary/index.html">dictionary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../identity/index.html">identity</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">spark_transformations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../add_remove_keys/index.html">add_remove_keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../add_remove_ids/index.html">add_remove_ids</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../agg/index.html">agg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../filter/index.html">filter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../groupby/index.html">groupby</a></li>
@@ -487,8 +487,8 @@ for more information on transformations.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.Map" title="tmlt.core.transformations.spark_transformations.map.Map"><code class="xref py py-class docutils literal notranslate"><span class="pre">Map</span></code></a></p></td>
 <td><p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowToRowTransformation" title="tmlt.core.transformations.spark_transformations.map.RowToRowTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowToRowTransformation</span></code></a> to each row in a Spark DataFrame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey" title="tmlt.core.transformations.spark_transformations.map.FlatMapByKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMapByKey</span></code></a></p></td>
-<td><p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowsToRowsTransformation</span></code></a> to rows, grouped by key.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID" title="tmlt.core.transformations.spark_transformations.map.FlatMapByID"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMapByID</span></code></a></p></td>
+<td><p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowsToRowsTransformation</span></code></a> to rows, grouped by ID.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1965,10 +1965,10 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FlatMapByKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FlatMapByID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
-<p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowsToRowsTransformation</span></code></a> to rows, grouped by key.</p>
+<p>Applies a <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowsToRowsTransformation</span></code></a> to rows, grouped by ID.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The transformation function must not contain any objects that
@@ -1985,14 +1985,14 @@ error will occur when the transformation is applied.</p>
 <span class="go">1  b  2</span>
 <span class="go">2  c  3</span>
 <span class="go">3  c  4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># sum_by_key_transformation is a RowsToRowsTransformation that sums column v</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># sum_by_id_transformation is a RowsToRowsTransformation that sums column v</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># for each ID group.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span> <span class="o">=</span> <span class="n">FlatMapByKey</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_id</span> <span class="o">=</span> <span class="n">FlatMapByID</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">()),</span>
-<span class="gp">... </span>    <span class="n">row_transformer</span><span class="o">=</span><span class="n">sum_by_key_transformation</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">row_transformer</span><span class="o">=</span><span class="n">sum_by_id_transformation</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed_spark_dataframe</span> <span class="o">=</span> <span class="n">sum_by_key</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed_spark_dataframe</span> <span class="o">=</span> <span class="n">sum_by_id</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">transformed_spark_dataframe</span><span class="p">)</span>
 <span class="go">  id  sum</span>
 <span class="go">0  a    1</span>
@@ -2008,18 +2008,18 @@ error will occur when the transformation is applied.</p>
 inner metric <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a></p></li>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a> (matches input metric)</p></li>
 </ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">input_domain</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_id</span><span class="o">.</span><span class="n">input_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;id&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;v&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_id</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="go">SparkDataFrameDomain(schema={&#39;id&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;sum&#39;: SparkIntegerColumnDescriptor(allow_null=False, size=64)})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">input_metric</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_id</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">IfGroupedBy(columns={&#39;id&#39;}, inner_metric=SymmetricDifference())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_key</span><span class="o">.</span><span class="n">output_metric</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sum_by_id</span><span class="o">.</span><span class="n">output_metric</span>
 <span class="go">IfGroupedBy(columns={&#39;id&#39;}, inner_metric=SymmetricDifference())</span>
 </pre></div>
 </div>
 <dl class="simple">
-<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey" title="tmlt.core.transformations.spark_transformations.map.FlatMapByKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMapByKey</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<dt>Stability Guarantee:</dt><dd><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID" title="tmlt.core.transformations.spark_transformations.map.FlatMapByID"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatMapByID</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_function" title="tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -2033,8 +2033,8 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.row_transformer">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">row_transformer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><span class="pre">RowsToRowsTransformation</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.row_transformer" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.row_transformer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">row_transformer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><span class="pre">RowsToRowsTransformation</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.row_transformer" title="Link to this definition">#</a></dt>
 <dd><p>Returns transformation object used for mapping rows to lists of rows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2044,8 +2044,8 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_domain">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_domain" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_domain" title="Link to this definition">#</a></dt>
 <dd><p>Return input domain for the measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2055,8 +2055,8 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_metric" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_metric" title="Link to this definition">#</a></dt>
 <dd><p>Distance metric on input domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2066,8 +2066,8 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_domain">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_domain" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../domains/base/index.html#tmlt.core.domains.base.Domain" title="tmlt.core.domains.base.Domain"><span class="pre">tmlt.core.domains.base.Domain</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_domain" title="Link to this definition">#</a></dt>
 <dd><p>Return input domain for the measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2077,8 +2077,8 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_metric">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_metric" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_metric">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_metric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.Metric" title="tmlt.core.metrics.Metric"><span class="pre">tmlt.core.metrics.Metric</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_metric" title="Link to this definition">#</a></dt>
 <dd><p>Distance metric on input domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2088,24 +2088,24 @@ inner metric <a class="reference internal" href="../../../metrics/index.html#tml
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metric</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></span>) – Distance metric for input and output DataFrames.</p></li>
 <li><p><strong>row_transformer</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation" title="tmlt.core.transformations.spark_transformations.map.RowsToRowsTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowsToRowsTransformation</span></code></a></span>) – Transformation to apply to each group of rows. This
-transformation should have the key column in its input domain,
-but it must <em>not</em> include the key column in its output domain.</p></li>
+transformation should have the ID column in its input domain,
+but it must <em>not</em> include the ID column in its output domain.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_function">
-<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_function" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_function">
+<span class="sig-name descname"><span class="pre">stability_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_function" title="Link to this definition">#</a></dt>
 <dd><p>Returns the smallest <code class="docutils literal notranslate"><span class="pre">d_out</span></code> satisfied by the transformation.</p>
 <p>See <a class="reference internal" href="../../../../../../topic-guides/architecture.html"><span class="doc">Tumult Core Architecture</span></a> for more information.</p>
 <dl class="field-list simple">
@@ -2119,8 +2119,8 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__call__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__call__" title="Link to this definition">#</a></dt>
 <dd><p>Apply transformation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2133,8 +2133,8 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_relation">
-<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_relation" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_relation">
+<span class="sig-name descname"><span class="pre">stability_relation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_relation" title="Link to this definition">#</a></dt>
 <dd><p>Returns True only if close inputs produce close outputs.</p>
 <p>See the privacy and stability tutorial (add link?) for more information.</p>
 <dl class="field-list simple">
@@ -2151,16 +2151,16 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__or__">
-<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__or__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><span class="pre">Transformation</span></a></span></span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__or__" title="Link to this definition">#</a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../measurements/base/index.html#tmlt.core.measurements.base.Measurement" title="tmlt.core.measurements.base.Measurement"><span class="pre">tmlt.core.measurements.base.Measurement</span></a></span></span></dt>
 <dd><p>Return this transformation chained with another component.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByKey.format">
-<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.format" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.map.FlatMapByID.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.format" title="Link to this definition">#</a></dt>
 <dd><p>Return a human-readable multi-line description of this object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2310,18 +2310,18 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.Map.format"><code class="docutils literal notranslate"><span class="pre">Map.format()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.row_transformer"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.row_transformer</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_domain"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.input_domain</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.input_metric"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.input_metric</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_domain"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.output_domain</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.output_metric"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.output_metric</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__init__"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_function"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.stability_function()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__call__"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.__call__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.stability_relation"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.stability_relation()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.__or__"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.__or__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByKey.format"><code class="docutils literal notranslate"><span class="pre">FlatMapByKey.format()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID"><code class="docutils literal notranslate"><span class="pre">FlatMapByID</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.row_transformer"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.row_transformer</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_domain"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.input_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.input_metric"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.input_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_domain"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.output_domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.output_metric"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.output_metric</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__init__"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_function"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.stability_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__call__"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.__call__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.stability_relation"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.stability_relation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.__or__"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.__or__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tmlt.core.transformations.spark_transformations.map.FlatMapByID.format"><code class="docutils literal notranslate"><span class="pre">FlatMapByID.format()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2362,7 +2362,7 @@ but it must <em>not</em> include the key column in its output domain.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-09-09 21:25.</div>
+Built from unknown version at 2026-09-10 17:49.</div>
       
     </div>
   
