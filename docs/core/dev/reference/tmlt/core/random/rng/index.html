@@ -450,7 +450,7 @@
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.random.rng.prng" title="tmlt.core.random.rng.prng"><code class="xref py py-func docutils literal notranslate"><span class="pre">prng()</span></code></a></p></td>
-<td><p>Getter for prng.</p></td>
+<td><p>Getter for prng. Always call this rather than caching the returned generator.</p></td>
 </tr>
 </tbody>
 </table>
@@ -458,7 +458,12 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="tmlt.core.random.rng.prng">
 <span class="sig-name descname"><span class="pre">prng</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.random.rng.prng" title="Link to this definition">#</a></dt>
-<dd><p>Getter for prng.</p>
+<dd><p>Getter for prng. Always call this rather than caching the returned generator.</p>
+<p>RDRAND keeps a buffer of random words in user space. A process created by <code class="docutils literal notranslate"><span class="pre">fork()</span></code>
+inherits a copy of that buffer, so by default the parent and every child would
+produce the same noise until the buffer is exhausted. To avoid this, we compare the
+current process ID with the one the generator was created in and build a fresh
+generator on a mismatch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/1.18/reference/random/generator.html#numpy.random.Generator" title="(in NumPy v1.18)">numpy.random.Generator</a></p>
@@ -611,7 +616,7 @@
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-09-14 15:40.</div>
+Built from unknown version at 2026-09-24 12:37.</div>
       
     </div>
   

@@ -27,11 +27,17 @@ Functions
 .. list-table::
 
    * - :func:`.prng`
-     - Getter for prng.
+     - Getter for prng. Always call this rather than caching the returned generator.
 
 .. py:function:: prng()
 
-   Getter for prng.
+   Getter for prng. Always call this rather than caching the returned generator.
+
+   RDRAND keeps a buffer of random words in user space. A process created by ``fork()``
+   inherits a copy of that buffer, so by default the parent and every child would
+   produce the same noise until the buffer is exhausted. To avoid this, we compare the
+   current process ID with the one the generator was created in and build a fresh
+   generator on a mismatch.
 
 
 
