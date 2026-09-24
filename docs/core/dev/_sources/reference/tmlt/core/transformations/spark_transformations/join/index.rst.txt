@@ -30,7 +30,7 @@ Classes
 .. list-table::
 
    * - :class:`.PublicJoin`
-     - Join a Spark DataFrame with a public Pandas DataFrame.
+     - Join a Spark DataFrame with a public Spark DataFrame.
    * - :class:`.TruncationStrategy`
      - Enumerating truncation strategies for PrivateJoin.
    * - :class:`.PrivateJoin`
@@ -43,7 +43,7 @@ Classes
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
-   Join a Spark DataFrame with a public Pandas DataFrame.
+   Join a Spark DataFrame with a public Spark DataFrame.
 
    Performs an inner join. By default, this mimics the behavior of a PySpark join, but
    it can also be set to consider null values equal to each other (unlike PySpark).
@@ -214,7 +214,9 @@ Classes
 
            :class:`~.PublicJoin`'s :meth:`~.stability_function` returns the ``d_in``
            times the maximum count of any combination of values in the join columns of
-           ``public_df``.
+           ``public_df``. The one exception is left joins with a public table that has
+           no valid join keys; in this case, :meth:`~.stability_function` returns 1 and
+           not 0.
 
            >>> # Both example transformations had a stability of 2
            >>> natural_join.join_cols
@@ -263,28 +265,25 @@ Classes
       :type: List[str]
 
 
-      Returns list of columns to be joined on.
+      Returns the list of columns that are joined on.
 
    .. py:property:: public_df
       :type: pyspark.sql.DataFrame
 
 
-      Returns Pandas DataFrame being joined with.
+      Returns the Spark DataFrame being joined with.
 
    .. py:property:: how
       :type: str
 
 
-      Returns type of join to perform.
+      Returns the type of join to perform.
 
    .. py:property:: stability
       :type: int
 
 
-      Returns stability of public join.
-
-      The stability is the maximum count of any combination of values in the join
-      columns.
+      Returns the stability of the public join.
 
    .. py:property:: input_domain
       :type: tmlt.core.domains.base.Domain
@@ -323,7 +322,7 @@ Classes
 
    .. py:method:: __call__(sdf)
 
-      Perform public join.
+      Performs the public join.
 
       :param sdf: Private DataFrame to join public DataFrame with.
 

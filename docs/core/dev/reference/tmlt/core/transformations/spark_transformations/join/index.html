@@ -471,7 +471,7 @@ for more information on transformations.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin" title="tmlt.core.transformations.spark_transformations.join.PublicJoin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PublicJoin</span></code></a></p></td>
-<td><p>Join a Spark DataFrame with a public Pandas DataFrame.</p></td>
+<td><p>Join a Spark DataFrame with a public Spark DataFrame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.TruncationStrategy" title="tmlt.core.transformations.spark_transformations.join.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a></p></td>
 <td><p>Enumerating truncation strategies for PrivateJoin.</p></td>
@@ -489,7 +489,7 @@ for more information on transformations.</p>
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PublicJoin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_df_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_nulls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inner'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../base/index.html#tmlt.core.transformations.base.Transformation" title="tmlt.core.transformations.base.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">tmlt.core.transformations.base.Transformation</span></code></a></p>
-<p>Join a Spark DataFrame with a public Pandas DataFrame.</p>
+<p>Join a Spark DataFrame with a public Spark DataFrame.</p>
 <p>Performs an inner join. By default, this mimics the behavior of a PySpark join, but
 it can also be set to consider null values equal to each other (unlike PySpark).</p>
 <p class="rubric">Examples</p>
@@ -636,7 +636,9 @@ it can also be set to consider null values equal to each other (unlike PySpark).
 </ul>
 <p><a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin" title="tmlt.core.transformations.spark_transformations.join.PublicJoin"><code class="xref py py-class docutils literal notranslate"><span class="pre">PublicJoin</span></code></a>’s <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.stability_function" title="tmlt.core.transformations.spark_transformations.join.PublicJoin.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns the <code class="docutils literal notranslate"><span class="pre">d_in</span></code>
 times the maximum count of any combination of values in the join columns of
-<code class="docutils literal notranslate"><span class="pre">public_df</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">public_df</span></code>. The one exception is left joins with a public table that has
+no valid join keys; in this case, <a class="reference internal" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.stability_function" title="tmlt.core.transformations.spark_transformations.join.PublicJoin.stability_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stability_function()</span></code></a> returns 1 and
+not 0.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Both example transformations had a stability of 2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">natural_join</span><span class="o">.</span><span class="n">join_cols</span>
 <span class="go">[&#39;B&#39;]</span>
@@ -701,7 +703,7 @@ times the maximum count of any combination of values in the join columns of
 <dl class="py property">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin.join_cols">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_cols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.join_cols" title="Link to this definition">#</a></dt>
-<dd><p>Returns list of columns to be joined on.</p>
+<dd><p>Returns the list of columns that are joined on.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
@@ -712,7 +714,7 @@ times the maximum count of any combination of values in the join columns of
 <dl class="py property">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin.public_df">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_df</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://downloads.apache.org/spark/docs/3.5.7/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><span class="pre">pyspark.sql.DataFrame</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.public_df" title="Link to this definition">#</a></dt>
-<dd><p>Returns Pandas DataFrame being joined with.</p>
+<dd><p>Returns the Spark DataFrame being joined with.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://downloads.apache.org/spark/docs/3.5.7/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)">pyspark.sql.DataFrame</a></p>
@@ -723,7 +725,7 @@ times the maximum count of any combination of values in the join columns of
 <dl class="py property">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin.how">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">how</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.how" title="Link to this definition">#</a></dt>
-<dd><p>Returns type of join to perform.</p>
+<dd><p>Returns the type of join to perform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
@@ -734,9 +736,7 @@ times the maximum count of any combination of values in the join columns of
 <dl class="py property">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin.stability">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.stability" title="Link to this definition">#</a></dt>
-<dd><p>Returns stability of public join.</p>
-<p>The stability is the maximum count of any combination of values in the join
-columns.</p>
+<dd><p>Returns the stability of the public join.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a></p>
@@ -832,7 +832,7 @@ and “left” joins are supported.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tmlt.core.transformations.spark_transformations.join.PublicJoin.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.core.transformations.spark_transformations.join.PublicJoin.__call__" title="Link to this definition">#</a></dt>
-<dd><p>Perform public join.</p>
+<dd><p>Performs the public join.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sdf</strong> (<a class="reference external" href="https://downloads.apache.org/spark/docs/3.5.7/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html#pyspark.sql.DataFrame" title="(in PySpark vmaster)"><em>pyspark.sql.DataFrame</em></a>) – Private DataFrame to join public DataFrame with.</p>
@@ -1780,7 +1780,7 @@ for more information on transformations.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2026 -->
-Built from unknown version at 2026-09-24 12:37.</div>
+Built from unknown version at 2026-09-24 18:06.</div>
       
     </div>
   
