@@ -439,9 +439,9 @@ session and read in the data:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">spark_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span> <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">())]</span>
+    <span class="p">[</span><span class="n">StructField</span><span class="p">(</span><span class="s2">"Name"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span> <span class="n">StructField</span><span class="p">(</span><span class="s2">"Age"</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">())]</span>
 <span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)],</span> <span class="n">schema</span><span class="o">=</span><span class="n">spark_schema</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s2">"Alice"</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Bob"</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Carlos"</span><span class="p">,</span> <span class="mi">50</span><span class="p">)],</span> <span class="n">schema</span><span class="o">=</span><span class="n">spark_schema</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We build queries out of basic <em>transformations</em> and <em>measurements</em>.
@@ -476,13 +476,13 @@ process.</p>
 
 <span class="n">tumult_schema</span> <span class="o">=</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span><span class="n">convert_spark_schema</span><span class="p">(</span><span class="n">spark_schema</span><span class="p">))</span>
 <span class="n">over_18_measurement</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Filter</span><span class="p">(</span><span class="n">filter_expr</span><span class="o">=</span><span class="s2">&quot;Age &gt;= 18&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
+    <span class="n">Filter</span><span class="p">(</span><span class="n">filter_expr</span><span class="o">=</span><span class="s2">"Age &gt;= 18"</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
     <span class="o">|</span> <span class="n">Count</span><span class="p">(</span><span class="n">input_domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
     <span class="o">|</span> <span class="n">AddGeometricNoise</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Noisy count of records with age &gt;= 18:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Noisy count of records with age &gt;= 18:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">over_18_measurement</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Privacy loss (epsilon):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Privacy loss (epsilon):"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">over_18_measurement</span><span class="o">.</span><span class="n">privacy_function</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -494,7 +494,7 @@ Privacy loss (epsilon):
 </div>
 <p>The first step is to construct the <a class="reference internal" href="../reference/tmlt/core/transformations/spark_transformations/filter/index.html#tmlt.core.transformations.spark_transformations.filter.Filter" title="tmlt.core.transformations.spark_transformations.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">filter</span></code></a> component.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tumult_schema</span> <span class="o">=</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span><span class="n">convert_spark_schema</span><span class="p">(</span><span class="n">spark_schema</span><span class="p">))</span>
-<span class="nb">filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">filter_expr</span><span class="o">=</span><span class="s2">&quot;Age &gt;= 18&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
+<span class="nb">filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">filter_expr</span><span class="o">=</span><span class="s2">"Age &gt;= 18"</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">tumult_schema</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>This component also requires a schema, but the format is slightly
@@ -648,7 +648,7 @@ member.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Core Contributors 2025-present -->
-Built from unknown version at 2026-10-02 12:50.</div>
+Built from unknown version at 2026-10-02 19:31.</div>
       
     </div>
   

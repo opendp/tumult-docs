@@ -477,33 +477,33 @@ all transformations.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transformation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_domain</span> <span class="o">=</span> <span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
-<span class="gp">... </span>        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span> <span class="o">=</span> <span class="n">IfGroupedBy</span><span class="p">({</span><span class="s2">"A"</span><span class="p">},</span> <span class="n">SymmetricDifference</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">truncate</span> <span class="o">=</span> <span class="n">LimitRowsPerID</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">input_domain</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">output_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">id_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">id_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"A"</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rename</span> <span class="o">=</span> <span class="n">Rename</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">input_domain</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">rename_mapping</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">rename_mapping</span><span class="o">=</span><span class="p">{</span><span class="s2">"A"</span><span class="p">:</span> <span class="s2">"C"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">:</span> <span class="s2">"D"</span><span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">create_unique_column</span> <span class="o">=</span> <span class="n">AddUniqueColumn</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">rename</span><span class="o">.</span><span class="n">output_domain</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">column</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column</span><span class="o">=</span><span class="s2">"A"</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transformation</span> <span class="o">=</span> <span class="n">truncate</span> <span class="o">|</span> <span class="n">rename</span> <span class="o">|</span> <span class="n">create_unique_column</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"b"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"c"</span><span class="p">,</span> <span class="s2">"3"</span><span class="p">]],</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="s2">"b"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"c"</span><span class="p">,</span> <span class="s2">"3"</span><span class="p">]],</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">print_sdf</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
 <span class="go">   A  B</span>
@@ -531,19 +531,19 @@ all transformations.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">transformation</span><span class="o">.</span><span class="n">output_domain</span><span class="p">)</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check stability as if it was Augmented using AugmentDictTransformation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x1</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x2</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x1</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">y1</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">x2</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">y2</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_metric</span> <span class="o">=</span> <span class="n">AddRemoveIDs</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"start"</span><span class="p">:</span> <span class="n">x1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_x2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"start"</span><span class="p">:</span> <span class="n">x2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"start"</span><span class="p">:</span> <span class="n">x1</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">:</span> <span class="n">y1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_y2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"start"</span><span class="p">:</span> <span class="n">x2</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">:</span> <span class="n">y2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">({</span><span class="s2">"start"</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_metric</span> <span class="o">=</span> <span class="n">AddRemoveIDs</span><span class="p">({</span><span class="s2">"start"</span><span class="p">:</span> <span class="s2">"A"</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_domain</span> <span class="o">=</span> <span class="n">DictDomain</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">transformation</span><span class="o">.</span><span class="n">output_domain</span>
+<span class="gp">... </span>        <span class="s2">"start"</span><span class="p">:</span> <span class="n">input_domain</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"end"</span><span class="p">:</span> <span class="n">transformation</span><span class="o">.</span><span class="n">output_domain</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_metric</span> <span class="o">=</span> <span class="n">AddRemoveIDs</span><span class="p">({</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dict_output_metric</span> <span class="o">=</span> <span class="n">AddRemoveIDs</span><span class="p">({</span><span class="s2">"start"</span><span class="p">:</span> <span class="s2">"A"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">:</span> <span class="s2">"A"</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Naively you would expect the stability to be 1, but in this example it is 2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dict_input_metric</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">dict_x1</span><span class="p">,</span> <span class="n">dict_x2</span><span class="p">,</span> <span class="n">dict_input_domain</span><span class="p">)</span>
 <span class="go">1</span>
@@ -4747,7 +4747,7 @@ be in the input domain.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Core Contributors 2025-present -->
-Built from unknown version at 2026-10-02 12:50.</div>
+Built from unknown version at 2026-10-02 19:31.</div>
       
     </div>
   

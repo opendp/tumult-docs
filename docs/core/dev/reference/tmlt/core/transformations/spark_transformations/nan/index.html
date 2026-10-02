@@ -506,12 +506,12 @@ for more information on transformations.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span> <span class="o">=</span> <span class="n">DropInfs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"B"</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_infs</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
@@ -529,9 +529,9 @@ for more information on transformations.</p>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_infs</span><span class="o">.</span><span class="n">output_metric</span>
@@ -716,12 +716,12 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span> <span class="o">=</span> <span class="n">DropNaNs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"B"</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_nans</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
@@ -740,9 +740,9 @@ for more information.</p>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=False, allow_inf=True, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=False, allow_inf=True, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nans</span><span class="o">.</span><span class="n">output_metric</span>
@@ -919,7 +919,7 @@ for more information.</p>
 <p>Drops rows containing nulls in one or more specified columns.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+----+</span>
 <span class="go">|   A|   B|</span>
 <span class="go">+----+----+</span>
@@ -931,16 +931,16 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span> <span class="o">=</span> <span class="n">DropNulls</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"B"</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">drop_b_nulls</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+---+</span>
 <span class="go">|   A|  B|</span>
 <span class="go">+----+---+</span>
@@ -957,9 +957,9 @@ for more information.</p>
 <li><p>Output metric - <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.SymmetricDifference" title="tmlt.core.metrics.SymmetricDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymmetricDifference</span></code></a> or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_b_nulls</span><span class="o">.</span><span class="n">output_metric</span>
@@ -1136,7 +1136,7 @@ for more information.</p>
 <p>Replaces +inf and -inf in one or more specified columns.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+---------+</span>
 <span class="go">|   A|        B|</span>
 <span class="go">+----+---------+</span>
@@ -1149,16 +1149,16 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span> <span class="o">=</span> <span class="n">ReplaceInfs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">)},</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">"B"</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">)},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_infs</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+------+</span>
 <span class="go">|   A|     B|</span>
 <span class="go">+----+------+</span>
@@ -1179,9 +1179,9 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
 or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=True, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_infs</span><span class="o">.</span><span class="n">output_metric</span>
@@ -1358,7 +1358,7 @@ for more information.</p>
 <p>Replaces NaNs in one or more specified columns.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+----+</span>
 <span class="go">|   A|   B|</span>
 <span class="go">+----+----+</span>
@@ -1370,16 +1370,16 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span> <span class="o">=</span> <span class="n">ReplaceNaNs</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">"B"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_nans</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+----+</span>
 <span class="go">|   A|   B|</span>
 <span class="go">+----+----+</span>
@@ -1399,9 +1399,9 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
 or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=False, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=False, allow_inf=False, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">SymmetricDifference()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nans</span><span class="o">.</span><span class="n">output_metric</span>
@@ -1576,7 +1576,7 @@ for more information.</p>
 <p>Replaces nulls in one or more specified columns.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example input</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spark_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+----+----+</span>
 <span class="go">|   A|   B|</span>
 <span class="go">+----+----+</span>
@@ -1588,16 +1588,16 @@ for more information.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span> <span class="o">=</span> <span class="n">ReplaceNulls</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkFloatColumnDescriptor</span><span class="p">(</span><span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">metric</span><span class="o">=</span><span class="n">HammingDistance</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;a0&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">replace_map</span><span class="o">=</span><span class="p">{</span><span class="s2">"A"</span><span class="p">:</span> <span class="s2">"a0"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply transformation to data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span> <span class="o">=</span> <span class="n">replace_nulls</span><span class="p">(</span><span class="n">spark_dataframe</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dataframe</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="go">+---+---+</span>
 <span class="go">|  A|  B|</span>
 <span class="go">+---+---+</span>
@@ -1617,9 +1617,9 @@ or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.met
 or <a class="reference internal" href="../../../metrics/index.html#tmlt.core.metrics.IfGroupedBy" title="tmlt.core.metrics.IfGroupedBy"><code class="xref py py-class docutils literal notranslate"><span class="pre">IfGroupedBy</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=True), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=True), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=True, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">output_domain</span>
-<span class="go">SparkDataFrameDomain(schema={&#39;A&#39;: SparkStringColumnDescriptor(allow_null=False), &#39;B&#39;: SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
+<span class="go">SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=True, allow_inf=False, allow_null=False, size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">input_metric</span>
 <span class="go">HammingDistance()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">replace_nulls</span><span class="o">.</span><span class="n">output_metric</span>
@@ -1960,7 +1960,7 @@ for more information.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Core Contributors 2025-present -->
-Built from unknown version at 2026-10-02 12:50.</div>
+Built from unknown version at 2026-10-02 19:31.</div>
       
     </div>
   

@@ -1810,8 +1810,8 @@ this should not be None.</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">measurement</span> <span class="o">=</span> <span class="n">SequentialComposition</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">SparkDataFrameDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
-<span class="gp">... </span>            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">SparkIntegerColumnDescriptor</span><span class="p">(),</span>
+<span class="gp">... </span>            <span class="s2">"B"</span><span class="p">:</span> <span class="n">SparkStringColumnDescriptor</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">SymmetricDifference</span><span class="p">(),</span>
@@ -1892,17 +1892,17 @@ its stability function on this <a class="reference internal" href="#tmlt.core.me
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transformation</span> <span class="o">=</span> <span class="n">CreateDictFromValue</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">NumpyIntegerDomain</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">AbsoluteDifference</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">key</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">key</span><span class="o">=</span><span class="s2">"A"</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">transform_in_place</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">DictDomain(key_to_domain={&#39;A&#39;: NumpyIntegerDomain(size=64)})</span>
+<span class="go">DictDomain(key_to_domain={'A': NumpyIntegerDomain(size=64)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">DictMetric(key_to_metric={&#39;A&#39;: AbsoluteDifference()})</span>
+<span class="go">DictMetric(key_to_metric={'A': AbsoluteDifference()})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">output_measure</span>
 <span class="go">PureDP()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">d_in</span>
-<span class="go">{&#39;A&#39;: 2}</span>
+<span class="go">{'A': 2}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">privacy_budget</span>
 <span class="go">5</span>
 </pre></div>
@@ -2084,13 +2084,13 @@ to WAITING_FOR_CHILDREN until the children are all RETIRED.</p>
 </div>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">DictDomain(key_to_domain={&#39;A&#39;: ListDomain(element_domain=NumpyIntegerDomain(size=64), length=3)})</span>
+<span class="go">DictDomain(key_to_domain={'A': ListDomain(element_domain=NumpyIntegerDomain(size=64), length=3)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">DictMetric(key_to_metric={&#39;A&#39;: SumOf(inner_metric=AbsoluteDifference())})</span>
+<span class="go">DictMetric(key_to_metric={'A': SumOf(inner_metric=AbsoluteDifference())})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">output_measure</span>
 <span class="go">PureDP()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">d_in</span>
-<span class="go">{&#39;A&#39;: 2}</span>
+<span class="go">{'A': 2}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">privacy_budget</span>
 <span class="go">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">state</span>
@@ -2098,29 +2098,29 @@ to WAITING_FOR_CHILDREN until the children are all RETIRED.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">splitting_transformation</span> <span class="o">=</span> <span class="n">GetValue</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">input_domain</span><span class="o">=</span><span class="n">DictDomain</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">key_to_domain</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ListDomain</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="s2">"A"</span><span class="p">:</span> <span class="n">ListDomain</span><span class="p">(</span>
 <span class="gp">... </span>                <span class="n">element_domain</span><span class="o">=</span><span class="n">NumpyIntegerDomain</span><span class="p">(),</span>
 <span class="gp">... </span>                <span class="n">length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="p">),</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span>    <span class="n">input_metric</span><span class="o">=</span><span class="n">DictMetric</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">key_to_metric</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">inner_metric</span><span class="o">=</span><span class="n">AbsoluteDifference</span><span class="p">())}</span>
+<span class="gp">... </span>        <span class="n">key_to_metric</span><span class="o">=</span><span class="p">{</span><span class="s2">"A"</span><span class="p">:</span> <span class="n">SumOf</span><span class="p">(</span><span class="n">inner_metric</span><span class="o">=</span><span class="n">AbsoluteDifference</span><span class="p">())}</span>
 <span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">key</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">key</span><span class="o">=</span><span class="s2">"A"</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">children</span> <span class="o">=</span> <span class="n">privacy_accountant</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">splitting_transformation</span><span class="o">=</span><span class="n">splitting_transformation</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_domain</span>
-<span class="go">DictDomain(key_to_domain={&#39;A&#39;: ListDomain(element_domain=NumpyIntegerDomain(size=64), length=3)})</span>
+<span class="go">DictDomain(key_to_domain={'A': ListDomain(element_domain=NumpyIntegerDomain(size=64), length=3)})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">input_metric</span>
-<span class="go">DictMetric(key_to_metric={&#39;A&#39;: SumOf(inner_metric=AbsoluteDifference())})</span>
+<span class="go">DictMetric(key_to_metric={'A': SumOf(inner_metric=AbsoluteDifference())})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">output_measure</span>
 <span class="go">PureDP()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">d_in</span>
-<span class="go">{&#39;A&#39;: 2}</span>
+<span class="go">{'A': 2}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">privacy_budget</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">privacy_accountant</span><span class="o">.</span><span class="n">state</span>
@@ -2490,7 +2490,7 @@ and the accountant is not ACTIVE.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Core Contributors 2025-present -->
-Built from unknown version at 2026-10-02 12:50.</div>
+Built from unknown version at 2026-10-02 19:31.</div>
       
     </div>
   
