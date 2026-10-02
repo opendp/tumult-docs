@@ -199,7 +199,8 @@ Functions
                  interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
                  is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
                  :class:`~.ApproxDP`.
-   :param noise_mechanism: Noise mechanism to apply.
+   :param noise_mechanism: Noise mechanism to apply. Must be
+                           :attr:`~.NoiseMechanism.LAPLACE` or :attr:`~.NoiseMechanism.GAUSSIAN`.
    :param measure_column: Name to column to compute average of.
    :param lower: Lower clipping bound for ``measure_column``.
    :param upper: Upper clipping bound for ``measure_column``.
@@ -253,7 +254,8 @@ Functions
                  interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
                  is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
                  :class:`~.ApproxDP`.
-   :param noise_mechanism: Noise mechanism to apply.
+   :param noise_mechanism: Noise mechanism to apply. Must be
+                           :attr:`~.NoiseMechanism.LAPLACE` or :attr:`~.NoiseMechanism.GAUSSIAN`.
    :param measure_column: Name to column to compute variance of.
    :param lower: Lower clipping bound for ``measure_column``.
    :param upper: Upper clipping bound for ``measure_column``.
@@ -309,7 +311,8 @@ Functions
                  interpreted as "epsilon" if output_measure is :class:`~.PureDP`, "rho" if it
                  is :class:`~.RhoZCDP`, and ("epsilon", "delta") if it is
                  :class:`~.ApproxDP`.
-   :param noise_mechanism: Noise mechanism to apply.
+   :param noise_mechanism: Noise mechanism to apply. Must be
+                           :attr:`~.NoiseMechanism.LAPLACE` or :attr:`~.NoiseMechanism.GAUSSIAN`.
    :param measure_column: Name to column to compute standard deviation of.
    :param lower: Lower clipping bound for ``measure_column``.
    :param upper: Upper clipping bound for ``measure_column``.
@@ -382,12 +385,9 @@ Functions
 
 
 
-.. py:function:: get_midpoint(lower, upper, integer_midpoint = False)
+.. py:function:: get_midpoint(lower, upper)
 
    Returns the midpoint of lower and upper.
-
-   If integer_midpoint is True, the midpoint is rounded to the nearest integer using
-   :func:`round`.
 
    .. rubric:: Examples
 
@@ -397,8 +397,6 @@ Functions
    (3.0, 3)
    >>> get_midpoint("0.2", "0.3")
    (0.25, 1/4)
-   >>> get_midpoint(1, 9, integer_midpoint=True)
-   (5, 5)
 
 
 
@@ -480,6 +478,30 @@ Classes
 
 
 
+
+   .. py:attribute:: LAPLACE
+      :value: 1
+
+
+      Continuous Laplace noise.
+
+   .. py:attribute:: GEOMETRIC
+      :value: 2
+
+
+      Geometric noise.
+
+   .. py:attribute:: DISCRETE_GAUSSIAN
+      :value: 3
+
+
+      Discrete Gaussian noise.
+
+   .. py:attribute:: GAUSSIAN
+      :value: 4
+
+
+      Continuous Gaussian noise.
 
 
 
