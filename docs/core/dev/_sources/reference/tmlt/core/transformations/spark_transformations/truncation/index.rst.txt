@@ -205,7 +205,7 @@ Classes
 
 
    
-.. py:class:: LimitGroupsPerID(input_domain, output_metric, id_columns, grouping_column, threshold)
+.. py:class:: LimitGroupsPerID(input_domain, output_metric, id_columns, grouping_columns, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -255,7 +255,7 @@ Classes
    ...     ),
    ...     output_metric=IfGroupedBy({"B"}, SumOf(IfGroupedBy({"A"}, SymmetricDifference()))),
    ...     id_columns=["A"],
-   ...     grouping_column="B",
+   ...     grouping_columns=["B"],
    ...     threshold=2,
    ... )
    >>> # Apply transformation to data
@@ -294,7 +294,7 @@ Classes
            :class:`~.LimitGroupsPerID` 's :meth:`~.stability_function` returns
            ``d_in`` if ``output_metric`` is ``IfGroupedBy(id_columns, SymmetricDifference())``,
            ``sqrt(threshold) * d_in`` if ``output_metric`` is
-           ``IfGroupedBy({grouping_column}, RootSumOfSquared(IfGroupedBy(id_columns, SymmetricDifference())))``,
+           ``IfGroupedBy(grouping_columns, RootSumOfSquared(IfGroupedBy(id_columns, SymmetricDifference())))``,
            and ``threshold * d_in`` otherwise.
 
            >>> truncate.stability_function(1)
@@ -313,11 +313,11 @@ Classes
 
       Returns the column defining the IDs.
 
-   .. py:property:: grouping_column
-      :type: str
+   .. py:property:: grouping_columns
+      :type: frozenset[str]
 
 
-      Returns the column defining the groups to truncate.
+      Returns the columns defining the groups to truncate.
 
    .. py:property:: threshold
       :type: int
@@ -389,7 +389,7 @@ Classes
 
 
    
-.. py:class:: LimitRowsPerGroupPerID(input_domain, input_metric, id_columns, grouping_column, threshold)
+.. py:class:: LimitRowsPerGroupPerID(input_domain, input_metric, id_columns, grouping_columns, threshold)
 
    Bases: :class:`tmlt.core.transformations.base.Transformation`
 
@@ -439,7 +439,7 @@ Classes
    ...     ),
    ...     input_metric=IfGroupedBy({"B"}, SumOf(IfGroupedBy({"A"}, SymmetricDifference()))),
    ...     id_columns=["A"],
-   ...     grouping_column="B",
+   ...     grouping_columns=["B"],
    ...     threshold=2,
    ... )
    >>> # Apply transformation to data
@@ -499,11 +499,11 @@ Classes
 
       Returns the columns defining the ID.
 
-   .. py:property:: grouping_column
-      :type: str
+   .. py:property:: grouping_columns
+      :type: frozenset[str]
 
 
-      Returns the column defining the groups to truncate.
+      Returns the columns defining the groups to truncate.
 
    .. py:property:: threshold
       :type: int

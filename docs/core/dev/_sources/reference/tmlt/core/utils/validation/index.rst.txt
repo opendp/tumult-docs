@@ -28,6 +28,8 @@ Functions
 
    * - :func:`.validate_groupby_domains`
      - Raises error if groupby domains are invalid.
+   * - :func:`.validate_column_set`
+     - Raises a :class:`ValueError` if ``columns`` is not a valid set of column names.
    * - :func:`.validate_exact_number`
      - Raises a :class:`ValueError` if ``value`` fails the specified conditions.
 
@@ -41,6 +43,34 @@ Functions
        - for each column, all values in its domain are valid values w.r.t the
          input domain AND
        - for each column, each value in its domain is distinct.
+
+
+
+.. py:function:: validate_column_set(columns, name)
+
+   Raises a :class:`ValueError` if ``columns`` is not a valid set of column names.
+
+   ``columns`` must be a non-empty collection of column names with no duplicates.
+   A single string is rejected, even though it is technically a collection of
+   strings, because it is almost certainly a mistake for a list containing that
+   string.
+
+   .. rubric:: Examples
+
+   >>> validate_column_set(["A", "B"], "columns")
+   >>> validate_column_set("A", "columns")
+   Traceback (most recent call last):
+   ValueError: columns must be a collection of column names, not a single string, but got: 'A'
+   >>> validate_column_set([], "columns")
+   Traceback (most recent call last):
+   ValueError: columns must contain at least one column
+   >>> validate_column_set(["A", "B", "A"], "columns")
+   Traceback (most recent call last):
+   ValueError: columns cannot contain duplicate column names, but these appear multiple times: ['A']
+
+   :param columns: The column names to validate.
+   :param name: How to refer to ``columns`` in error messages, such as the name of
+                the argument they were passed as.
 
 
 
