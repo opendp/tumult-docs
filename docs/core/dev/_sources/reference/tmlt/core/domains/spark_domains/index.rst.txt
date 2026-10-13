@@ -68,9 +68,9 @@ Classes
    * - :class:`.SparkColumnDescriptor`
      - Base class for describing Spark column types.
    * - :class:`.SparkIntegerColumnDescriptor`
-     - Describes an integer attribute in Spark.
+     - Describes a 64-bit integer attribute in Spark.
    * - :class:`.SparkFloatColumnDescriptor`
-     - Describes a float attribute in Spark.
+     - Describes a 64-bit float attribute in Spark.
    * - :class:`.SparkStringColumnDescriptor`
      - Describes a string attribute in Spark.
    * - :class:`.SparkDateColumnDescriptor`
@@ -142,21 +142,11 @@ Classes
 
    Bases: :class:`SparkColumnDescriptor`
 
-   Describes an integer attribute in Spark.
+   Describes a 64-bit integer attribute in Spark.
 
 
 
 
-
-   .. py:attribute:: SIZE_TO_TYPE
-      :type:  ClassVar
-
-      Mapping from size to Spark type.
-
-   .. py:attribute:: SIZE_TO_MIN_MAX
-      :type:  ClassVar
-
-      Mapping from size to tuple of minimum and maximum value allowed.
 
    .. py:attribute:: allow_null
       :type:  bool
@@ -164,13 +154,6 @@ Classes
 
 
       If True, null values are permitted in the domain.
-
-   .. py:attribute:: size
-      :type:  int
-      :value: 64
-
-
-      Number of bits a member of the domain occupies. Must be 32 or 64.
 
 
    .. py:property:: data_type
@@ -209,16 +192,11 @@ Classes
 
    Bases: :class:`SparkColumnDescriptor`
 
-   Describes a float attribute in Spark.
+   Describes a 64-bit float attribute in Spark.
 
 
 
 
-
-   .. py:attribute:: SIZE_TO_TYPE
-      :type:  ClassVar
-
-      Mapping from size to Spark type.
 
    .. py:attribute:: allow_nan
       :type:  bool
@@ -242,13 +220,6 @@ Classes
       If True, null values are permitted in the domain.
 
       .. note:: Nulls aren't supported in pd.
-
-   .. py:attribute:: size
-      :type:  int
-      :value: 64
-
-
-      Number of bits a member of the domain occupies. Must be 32 or 64.
 
 
    .. py:property:: data_type
@@ -279,7 +250,7 @@ Classes
 
       - val is ``float("nan")`` and NaN is allowed.
       - val is ``float("inf")`` or ``float("-inf")``, and inf values are allowed.
-      - val is a float that can be represented in ``size`` bits.
+      - val is a finite float.
       - val is None and nulls are allowed in the domain.
 
 
