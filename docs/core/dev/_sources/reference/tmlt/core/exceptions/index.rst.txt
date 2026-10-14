@@ -51,6 +51,8 @@ Exceptions
      - Error raised when the given noise mechanism is not supported.
    * - :exc:`.UnsupportedSympyExprError`
      - Error raised when trying to use an unsupported Sympy expression.
+   * - :exc:`.InvalidComponentError`
+     - Error raised when a custom component is defined incorrectly.
 
    
 .. py:exception:: OutOfDomainError(domain, value, msg)
@@ -240,6 +242,29 @@ Exceptions
    .. attribute:: expr
 
       the invalid Sympy expression.
+
+
+
+
+   
+.. py:exception:: InvalidComponentError(component, msg)
+
+   Bases: :class:`Exception`
+
+   Error raised when a custom component is defined incorrectly.
+
+   This error is indicates that a component is defined in a way that violates
+   the expectations of its parent class, for example by failing to initialize
+   expected fields. It reflects an error in the component's definition, not a
+   problem with the parameters passed to its constructor.
+
+   .. attribute:: component
+
+      The component class object.
+
+   .. attribute:: msg
+
+      The error message.
 
 
 

@@ -1,0 +1,135 @@
+
+
+
+**************
+derived
+**************
+
+.. py:module:: tmlt.core.measurements.derived
+
+.. autoapi-nested-parse::
+
+   Base class for named, composite measurements.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.DerivedMeasurement`
+     - Base class for wrapping composite measurements.
+
+   
+.. py:class:: DerivedMeasurement(wrapped_measurement)
+
+   Bases: :class:`tmlt.core.measurements.base.Measurement`
+
+   Base class for wrapping composite measurements.
+
+   Subclassing :class:`.DerivedMeasurement` allows the creation of new
+   measurements that encapsulate a chain of existing components. These can be
+   used to treat complex measurements as single units, rather than as an
+   assembly of simpler components.
+
+   Subclasses of :class:`.DerivedMeasurement` must implement a constructor that
+   builds a :class:`.Measurement` and passes it to ``super().__init__``. The
+   execution and privacy properties of the subclass are delegated to that
+   measurement. The subclass may define additional attributes or methods, but
+   they do not affect its privacy properties; only the measurement passed to
+   the :class:`.DerivedMeasurement` constructor is considered.
+
+   ..
+       >>> from tmlt.core.domains.numpy_domains import NumpyFloatDomain
+       >>> from tmlt.core.measurements.noise_mechanisms import AddLaplaceNoise
+       >>> from tmlt.core.measurements.postprocess import PostProcess
+       >>> import doctest
+       >>> doctest.ELLIPSIS_MARKER = '-0.3224'
+
+   .. rubric:: Example
+
+   >>> class AddRoundedLaplaceNoise(DerivedMeasurement):
+   ...     def __init__(self, scale, ndigits: int = 2):
+   ...         super().__init__(
+   ...             PostProcess(
+   ...                 AddLaplaceNoise(NumpyFloatDomain(), scale),
+   ...                 lambda v: round(v, ndigits=ndigits)
+   ...             )
+   ...         )
+   >>> AddRoundedLaplaceNoise(scale=2).privacy_function(1)
+   1/2
+   >>> AddRoundedLaplaceNoise(scale=2)(0.0) # doctest: +SKIP
+   0.88
+   >>> AddRoundedLaplaceNoise(scale=2, ndigits=4)(0.0)
+   -0.3224
+
+
+
+
+
+
+   .. py:property:: wrapped_measurement
+      :type: tmlt.core.measurements.base.Measurement
+
+
+      The measurement defining the derived measurement's behavior.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_measure
+      :type: tmlt.core.measures.Measure
+
+
+      Distance measure on output.
+
+   .. py:property:: is_interactive
+      :type: bool
+
+
+      Returns true iff the measurement is interactive.
+
+
+   .. automethod:: __init__
+   .. py:method:: privacy_function(d_in)
+
+      Return the wrapped measurement's privacy function at ``d_in``.
+
+
+   .. py:method:: privacy_relation(d_in, d_out)
+
+      Evaluate the wrapped measurement's privacy relation.
+
+
+   .. py:method:: __call__(data)
+
+      Run the wrapped measurement.
+
+
+   .. py:method:: format()
+
+      Return a human-readable multi-line description of this object.
+
+
+
+
+
+
