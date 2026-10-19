@@ -1,0 +1,188 @@
+
+
+
+***********
+cast
+***********
+
+.. py:module:: tmlt.core.transformations.spark_transformations.cast
+
+.. autoapi-nested-parse::
+
+   Transformations for casting Spark DataFrame columns to other types.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.CastToFloat`
+     - Casts one or more integer columns of a Spark DataFrame to floats.
+
+   
+.. py:class:: CastToFloat(input_domain, metric, columns)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Casts one or more integer columns of a Spark DataFrame to floats.
+
+   The grouping columns of an :class:`~.IfGroupedBy` metric cannot be cast, since
+   Tumult Core does not support grouping by floating-point columns.
+
+   :class:`~.CastToFloat` may lose precision for sufficiently large integers; this
+   does not impact the stability guarantees under the metrics that this component
+   supports. Do not use the same logic for transformations that depend on
+   preserving the distance between numeric values, like
+   :class:`~.AbsoluteDifference`.
+
+   .. rubric:: Example
+
+   ..
+       >>> from pyspark.sql import SparkSession
+       >>> import pandas as pd
+       >>> from tmlt.core.domains.spark_domains import (
+       ...     SparkDataFrameDomain,
+       ...     SparkIntegerColumnDescriptor,
+       ...     SparkStringColumnDescriptor,
+       ... )
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3"],
+       ...             "B": [1, 2, 3],
+       ...         }
+       ...     )
+       ... )
+
+   >>> print_sdf(spark_dataframe)
+       A  B
+   0  a1  1
+   1  a2  2
+   2  a3  3
+   >>> cast_b = CastToFloat(
+   ...     input_domain=SparkDataFrameDomain(
+   ...         {
+   ...             "A": SparkStringColumnDescriptor(),
+   ...             "B": SparkIntegerColumnDescriptor(),
+   ...         }
+   ...     ),
+   ...     metric=SymmetricDifference(),
+   ...     columns=["B"],
+   ... )
+   >>> print_sdf(cast_b(spark_dataframe))
+       A    B
+   0  a1  1.0
+   1  a2  2.0
+   2  a3  3.0
+
+   Transformation Contract:
+       * Input domain - :class:`~.SparkDataFrameDomain`
+       * Output domain - :class:`~.SparkDataFrameDomain`
+       * Input metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
+         or :class:`~.IfGroupedBy`
+       * Output metric - :class:`~.SymmetricDifference`, :class:`~.HammingDistance`,
+         or :class:`~.IfGroupedBy` (matches input metric)
+
+       >>> cast_b.input_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkIntegerColumnDescriptor(allow_null=False)})
+       >>> cast_b.output_domain
+       SparkDataFrameDomain(schema={'A': SparkStringColumnDescriptor(allow_null=False), 'B': SparkFloatColumnDescriptor(allow_nan=False, allow_inf=False, allow_null=False)})
+       >>> cast_b.input_metric
+       SymmetricDifference()
+       >>> cast_b.output_metric
+       SymmetricDifference()
+
+       Stability Guarantee:
+           :class:`~.CastToFloat`'s :meth:`~.stability_function` returns ``d_in``.
+
+           >>> cast_b.stability_function(1)
+           1
+           >>> cast_b.stability_function(2)
+           2
+
+
+
+
+
+
+   .. py:property:: columns
+      :type: frozenset[str]
+
+
+      Returns the columns to cast to floats.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Returns the smallest d_out satisfied by the transformation.
+
+      :param d_in: Distance between inputs under input_metric.
+
+
+   .. py:method:: __call__(sdf)
+
+      Casts ``self.columns`` to floats.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Returns True only if close inputs produce close outputs.
+
+      See the privacy and stability tutorial (add link?) for more information.
+
+      :param d_in: Distance between inputs under input_metric.
+      :param d_out: Distance between outputs under output_metric.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+   .. py:method:: format()
+
+      Return a human-readable multi-line description of this object.
+
+
+
+
+
+
