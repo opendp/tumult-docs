@@ -1,0 +1,219 @@
+
+
+
+*****************
+truncation
+*****************
+
+.. py:module:: tmlt.core.utils.truncation
+
+.. autoapi-nested-parse::
+
+   Functions for truncating Spark DataFrames.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.truncate_large_groups`
+     - Order rows by a hash function and keep at most ``threshold`` rows for each group.
+   * - :func:`.drop_large_groups`
+     - Drop all rows for groups that have more than ``threshold`` rows.
+   * - :func:`.limit_groups_per_id`
+     - Order groups by a hash function and keep at most ``threshold`` groups per ID.
+
+.. py:function:: truncate_large_groups(df, grouping_columns, threshold)
+
+   Order rows by a hash function and keep at most ``threshold`` rows for each group.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import SparkStringColumnDescriptor
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3", "a3"],
+       ...             "B": ["b1", "b1", "b2", "b2", "b3"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   >>> print_sdf(truncate_large_groups(spark_dataframe, ["A"], 3))
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   >>> print_sdf(truncate_large_groups(spark_dataframe, ["A"], 2))
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   >>> print_sdf(truncate_large_groups(spark_dataframe, ["A"], 1))
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+
+   :param df: DataFrame to truncate.
+   :param grouping_columns: Columns defining the groups.
+   :param threshold: Maximum number of rows to include for each group.
+
+
+
+.. py:function:: drop_large_groups(df, grouping_columns, threshold)
+
+   Drop all rows for groups that have more than ``threshold`` rows.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import SparkStringColumnDescriptor
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3", "a3"],
+       ...             "B": ["b1", "b1", "b2", "b2", "b3"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   >>> print_sdf(drop_large_groups(spark_dataframe, ["A"], 3))
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   >>> print_sdf(drop_large_groups(spark_dataframe, ["A"], 2))
+       A   B
+   0  a1  b1
+   1  a2  b1
+   >>> print_sdf(drop_large_groups(spark_dataframe, ["A"], 1))
+       A   B
+   0  a1  b1
+   1  a2  b1
+
+   :param df: DataFrame to truncate.
+   :param grouping_columns: Columns defining the groups.
+   :param threshold: Threshold for dropping groups. If more than ``threshold`` rows belong
+                     to the same group, all rows in that group are dropped.
+
+
+
+.. py:function:: limit_groups_per_id(df, id_columns, grouping_columns, threshold)
+
+   Order groups by a hash function and keep at most ``threshold`` groups per ID.
+
+   .. note::
+
+       After truncation there may still be an unbounded number of rows per group, but
+       at most ``threshold`` groups per ID.
+
+   .. rubric:: Example
+
+   ..
+       >>> import pandas as pd
+       >>> from pyspark.sql import SparkSession
+       >>> from tmlt.core.domains.spark_domains import SparkStringColumnDescriptor
+       >>> from tmlt.core.utils.misc import print_sdf
+       >>> spark = SparkSession.builder.getOrCreate()
+       >>> spark_dataframe = spark.createDataFrame(
+       ...     pd.DataFrame(
+       ...         {
+       ...             "A": ["a1", "a2", "a3", "a3", "a3", "a4", "a4", "a4"],
+       ...             "B": ["b1", "b1", "b2", "b2", "b3", "b1", "b2", "b3"],
+       ...         }
+       ...     )
+       ... )
+
+   >>> # Example input
+   >>> print_sdf(spark_dataframe)
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   5  a4  b1
+   6  a4  b2
+   7  a4  b3
+   >>> print_sdf(
+   ...     limit_groups_per_id(
+   ...         df=spark_dataframe,
+   ...         id_columns=["A"],
+   ...         grouping_columns=["B"],
+   ...         threshold=2,
+   ...     )
+   ... )
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b2
+   3  a3  b2
+   4  a3  b3
+   5  a4  b2
+   6  a4  b3
+   >>> print_sdf(
+   ...     limit_groups_per_id(
+   ...         df=spark_dataframe,
+   ...         id_columns=["A"],
+   ...         grouping_columns=["B"],
+   ...         threshold=1,
+   ...     )
+   ... )
+       A   B
+   0  a1  b1
+   1  a2  b1
+   2  a3  b3
+   3  a4  b3
+
+   :param df: DataFrame to truncate.
+   :param id_columns: Columns defining the ID.
+   :param grouping_columns: Column defining the groups.
+   :param threshold: Maximum number of keys to include for each group.
+
+
+
+
+
+
+

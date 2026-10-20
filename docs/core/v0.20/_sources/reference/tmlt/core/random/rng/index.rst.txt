@@ -1,0 +1,75 @@
+
+
+
+**********
+rng
+**********
+
+.. py:module:: tmlt.core.random.rng
+
+.. autoapi-nested-parse::
+
+   Tumult Core's random number generator.
+
+
+
+
+
+
+
+
+
+
+
+Functions
+=========
+
+.. list-table::
+
+   * - :func:`.prng`
+     - Getter for prng. Always call this rather than caching the returned generator.
+
+.. py:function:: prng()
+
+   Getter for prng. Always call this rather than caching the returned generator.
+
+   RDRAND keeps a buffer of random words in user space. A process created by ``fork()``
+   inherits a copy of that buffer, so by default the parent and every child would
+   produce the same noise until the buffer is exhausted. To avoid this, we compare the
+   current process ID with the one the generator was created in and build a fresh
+   generator on a mismatch.
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.RNGWrapper`
+     - Mimics Python ``random`` interface for discrete Gaussian sampling.
+
+   
+.. py:class:: RNGWrapper(rng)
+
+   Mimics Python ``random`` interface for discrete Gaussian sampling.
+
+
+
+
+
+
+
+   .. automethod:: __init__
+   .. py:method:: randrange(stop)
+
+      Returns a random integer between 0 (inclusive) and ``stop`` (exclusive).
+
+      :param stop: upper bound for random integer range.
+
+
+
+
+
+

@@ -1,0 +1,143 @@
+
+
+
+**************
+derived
+**************
+
+.. py:module:: tmlt.core.transformations.derived
+
+.. autoapi-nested-parse::
+
+   Base class for named, composite transformations.
+
+
+
+
+
+
+
+
+
+
+
+Classes
+=======
+
+.. list-table::
+
+   * - :class:`.DerivedTransformation`
+     - Base class for wrapping composite transformations.
+
+   
+.. py:class:: DerivedTransformation(wrapped_transformation)
+
+   Bases: :class:`tmlt.core.transformations.base.Transformation`
+
+   Base class for wrapping composite transformations.
+
+   Subclassing :class:`.DerivedTransformation` allows the creation of new
+   transformations that encapsulate a chain of existing components. These can
+   be used to treat complex transformations as single units, rather than as an
+   assembly of simpler components.
+
+   Subclasses of :class:`.DerivedTransformation` must implement a constructor
+   that builds a :class:`.Transformation` and passes it to
+   ``super().__init__``. The execution and privacy properties of the subclass
+   are delegated to that transformation. The subclass may define additional
+   attributes or methods, but they do not affect its privacy properties; only
+   the transformation passed to the :class:`.DerivedTransformation` constructor
+   is considered.
+
+   ..
+       >>> from tmlt.core.domains.collections import DictDomain
+       >>> from tmlt.core.domains.numpy_domains import NumpyIntegerDomain
+       >>> from tmlt.core.metrics import AbsoluteDifference, DictMetric
+       >>> from tmlt.core.transformations.identity import Identity
+       >>> from tmlt.core.transformations.dictionary import GetValue
+
+   .. rubric:: Example
+
+   >>> class GetNestedValue(DerivedTransformation):
+   ...     def __init__(self, input_domain, input_metric, keys):
+   ...         xf = Identity(input_metric, input_domain)
+   ...         for key in keys:
+   ...             xf = xf | GetValue(xf.output_domain, xf.output_metric, key)
+   ...         super().__init__(xf)
+   >>> xf = GetNestedValue(
+   ...     DictDomain({"a": DictDomain({"b": NumpyIntegerDomain()})}),
+   ...     DictMetric({"a": DictMetric({"b": AbsoluteDifference()})}),
+   ...     keys=("a","b"),
+   ... )
+   >>> xf.output_domain
+   NumpyIntegerDomain()
+   >>> xf({"a": {"b": 5}})
+   5
+
+
+
+
+
+
+   .. py:property:: wrapped_transformation
+      :type: tmlt.core.transformations.base.Transformation
+
+
+      The transformation defining the derived transformation's behavior.
+
+   .. py:property:: input_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: input_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+   .. py:property:: output_domain
+      :type: tmlt.core.domains.base.Domain
+
+
+      Return input domain for the measurement.
+
+   .. py:property:: output_metric
+      :type: tmlt.core.metrics.Metric
+
+
+      Distance metric on input domain.
+
+
+   .. automethod:: __init__
+   .. py:method:: stability_function(d_in)
+
+      Return the wrapped transformation's stability function at ``d_in``.
+
+
+   .. py:method:: stability_relation(d_in, d_out)
+
+      Evaluate the wrapped transformation's stability relation.
+
+
+   .. py:method:: __call__(data)
+
+      Run the wrapped transformation.
+
+
+   .. py:method:: __or__(other: Transformation) -> Transformation
+                  __or__(other: tmlt.core.measurements.base.Measurement) -> tmlt.core.measurements.base.Measurement
+
+      Return this transformation chained with another component.
+
+
+   .. py:method:: format()
+
+      Return a human-readable multi-line description of this object.
+
+
+
+
+
+
