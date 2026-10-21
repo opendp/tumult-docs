@@ -590,14 +590,14 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">private_data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="p">{</span>
-<span class="gp">... </span>         <span class="s2">&quot;income_thousands&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">83</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s2">"income_thousands"</span><span class="p">:</span> <span class="p">[</span><span class="mi">83</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span>
 <span class="gp">... </span>                              <span class="mi">74</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">97</span><span class="p">]</span>
 <span class="gp">... </span>        <span class="p">}</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">"private_data"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -606,14 +606,14 @@
 <span class="gp">... </span>    <span class="n">include_both_endpoints</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binned_income_count_query</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;private_data&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s2">&quot;income_thousands&quot;</span><span class="p">,</span> <span class="n">income_binspec</span><span class="p">,</span> <span class="s2">&quot;income_binned&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"private_data"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="s2">"income_thousands"</span><span class="p">,</span> <span class="n">income_binspec</span><span class="p">,</span> <span class="s2">"income_binned"</span><span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binned_income_counts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">binned_income_count_query</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">binned_income_counts</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;income_binned&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">binned_income_counts</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"income_binned"</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">())</span>
 <span class="go">  income_binned  count</span>
 <span class="go">0      (70, 80]      3</span>
 <span class="go">1      (80, 90]      5</span>
@@ -725,7 +725,7 @@ the input column name with <code class="docutils literal notranslate"><span clas
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

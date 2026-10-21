@@ -587,35 +587,35 @@
 <dd><p>Creates a new view from a transformation and possibly cache it.</p>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span> 
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;X&#39;: ColumnType.INTEGER}</span>
+<span class="go">['my_private_data']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span> 
+<span class="go">{'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'X': ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">public_spark_data</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   A  C</span>
 <span class="go">0  0  0</span>
 <span class="go">1  0  1</span>
 <span class="go">2  1  1</span>
 <span class="go">3  1  2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">add_public_dataframe</span><span class="p">(</span><span class="s2">&quot;my_public_data&quot;</span><span class="p">,</span> <span class="n">public_spark_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">add_public_dataframe</span><span class="p">(</span><span class="s2">"my_public_data"</span><span class="p">,</span> <span class="n">public_spark_data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a view</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">join_query</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">join_public</span><span class="p">(</span><span class="s2">&quot;my_public_data&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">join_public</span><span class="p">(</span><span class="s2">"my_public_data"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">])</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">join_query</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;private_public_join&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">"private_public_join"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;private_public_join&#39;, &#39;my_private_data&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">&quot;private_public_join&quot;</span><span class="p">)</span> 
-<span class="go">{&#39;A&#39;: ColumnType.VARCHAR, &#39;B&#39;: ColumnType.INTEGER, &#39;C&#39;: ColumnType.INTEGER}</span>
+<span class="go">['private_public_join', 'my_private_data']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="s2">"private_public_join"</span><span class="p">)</span> 
+<span class="go">{'A': ColumnType.VARCHAR, 'B': ColumnType.INTEGER, 'C': ColumnType.INTEGER}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Delete the view</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">delete_view</span><span class="p">(</span><span class="s2">&quot;private_public_join&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">delete_view</span><span class="p">(</span><span class="s2">"private_public_join"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">private_sources</span>
-<span class="go">[&#39;my_private_data&#39;]</span>
+<span class="go">['my_private_data']</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -715,7 +715,7 @@
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

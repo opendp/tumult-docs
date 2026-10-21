@@ -609,10 +609,10 @@ If you encounter an error at this stage, please <a class="reference external" hr
 <h2>Loading and Saving Data in Databricks<a class="headerlink" href="#loading-and-saving-data-in-databricks" title="Link to this heading">#</a></h2>
 <p>Running a query with Tumult Analytics in a Databricks notebook is essentially identical to doing so anywhere else, the only difference being how tables are loaded and saved.
 To begin, let’s initialize a Databricks table by loading a dataset from S3 and saving it as a table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library;&#39;</span><span class="p">)</span>
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS main.library_output;&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;main.library.members&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'CREATE DATABASE IF NOT EXISTS main.library;'</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'CREATE DATABASE IF NOT EXISTS main.library_output;'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"s3://tumult-public/library-members.csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">"main.library.members"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This creates two new Databricks schemas in the default <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog, <code class="docutils literal notranslate"><span class="pre">library</span></code> and <code class="docutils literal notranslate"><span class="pre">library_output</span></code>, which are used respectively for inputs and outputs in this guide.
@@ -622,16 +622,16 @@ It then writes the library members dataset from our <a class="reference internal
 <p>Specifying the catalog to be used in this way is only supported in environments and on versions of the Databricks runtime that support <a class="reference external" href="https://docs.databricks.com/data-governance/unity-catalog/index.html">Unity Catalog</a>.
 Otherwise, only the schema and table name may be given.
 For example, with versions of the Databricks runtime prior to 10 the above code block would instead be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library;&#39;</span><span class="p">)</span>
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;CREATE DATABASE IF NOT EXISTS library_output;&#39;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3://tumult-public/library-members.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;library.members&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'CREATE DATABASE IF NOT EXISTS library;'</span><span class="p">)</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'CREATE DATABASE IF NOT EXISTS library_output;'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"s3://tumult-public/library-members.csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">"library.members"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In this case, the <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog would be used by default.</p>
 </div>
 <p>Once this is done, the <a class="reference external" href="https://downloads.apache.org/spark/docs/3.5.7/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameReader.table.html#pyspark.sql.DataFrameReader.table" title="(in PySpark vmaster)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">spark.table.read</span></code></a> function can be used to read the data from Databricks, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;main.library.members&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">'main.library.members'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Here, we are loading the library members dataset that we just saved to Databricks, but if the table was already in Databricks this read would allow accessing it.</p>
@@ -652,18 +652,18 @@ For this example, let’s just count how many users have borrowed a book:</p>
 <span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"members"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 <span class="n">output</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;books_borrowed &gt; 0&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">'books_borrowed &gt; 0'</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="n">budget</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, we need to write out this data so that it can be used elsewhere, which works the same as saving the input data did above:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s1">&#39;main.library_output.active_members&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s1">'main.library_output.active_members'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This writes out the result of our query to the <code class="docutils literal notranslate"><span class="pre">active_members</span></code> table in the <code class="docutils literal notranslate"><span class="pre">output</span></code> schema of the <code class="docutils literal notranslate"><span class="pre">main</span></code> catalog.</p>
@@ -764,7 +764,7 @@ If you encounter any unexpected issues, please let us know by reaching out on ou
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

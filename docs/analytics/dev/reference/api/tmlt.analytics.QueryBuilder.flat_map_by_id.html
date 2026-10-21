@@ -603,34 +603,34 @@ DECIMAL columns may contain NaN or infinite values).</p>
 <span class="go">1  1  0</span>
 <span class="go">2  1  1</span>
 <span class="go">3  1  4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_private_data"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">"id"</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using flat_map_by_id, each ID&#39;s records are pre-summed before</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using flat_map_by_id, each ID's records are pre-summed before</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># computing a total sum, allowing less data loss than truncating</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># and clamping each row individually without having to add</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># more noise.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">flat_map_by_id</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">rows</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;per_id_sum&quot;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">)}],</span>
+<span class="gp">... </span>        <span class="k">lambda</span> <span class="n">rows</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"per_id_sum"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">)}],</span>
 <span class="gp">... </span>        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;per_id_sum&quot;</span><span class="p">:</span> <span class="n">ColumnDescriptor</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="s2">"per_id_sum"</span><span class="p">:</span> <span class="n">ColumnDescriptor</span><span class="p">(</span>
 <span class="gp">... </span>                <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="p">)</span>
 <span class="gp">... </span>        <span class="p">},</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;per_id_sum&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">"per_id_sum"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"sum"</span><span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">query</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   sum</span>
@@ -751,7 +751,7 @@ rows from <code class="docutils literal notranslate"><span class="pre">f</span><
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

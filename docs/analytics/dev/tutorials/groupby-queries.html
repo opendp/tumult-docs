@@ -628,15 +628,15 @@ infinite privacy budget—not to be used in production!</p>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv&quot;</span>
+    <span class="s2">"https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv"</span>
 <span class="p">)</span>
 <span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
-    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"library-members.csv"</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
 <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)),</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"members"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -655,12 +655,12 @@ possible values for a given column, is to use
 KeySet enumerates all possible values for the categorical column
 <cite>education_level</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_levels</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
-    <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;masters-degree&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;doctorate-professional&quot;</span><span class="p">,</span>
+    <span class="s2">"education_level"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"up-to-high-school"</span><span class="p">,</span>
+        <span class="s2">"high-school-diploma"</span><span class="p">,</span>
+        <span class="s2">"bachelors-associate"</span><span class="p">,</span>
+        <span class="s2">"masters-degree"</span><span class="p">,</span>
+        <span class="s2">"doctorate-professional"</span><span class="p">,</span>
     <span class="p">]</span>
 <span class="p">})</span>
 </pre></div>
@@ -670,15 +670,15 @@ KeySet enumerates all possible values for the categorical column
 example, let us compute the average age of library members, grouped by education
 level.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_average_age_query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">edu_levels</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="s2">"age"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">edu_average_ages</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
     <span class="n">edu_average_age_query</span><span class="p">,</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">edu_average_ages</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;age_average&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">edu_average_ages</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"age_average"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------------+-----------+</span>
@@ -698,17 +698,17 @@ if you want to run it locally, you can install it with <code class="docutils lit
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">"whitegrid"</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;education_level&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;age_average&quot;</span><span class="p">,</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">edu_average_ages</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;age_average&quot;</span><span class="p">),</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"education_level"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"age_average"</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">edu_average_ages</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"age_average"</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"#1f77b4"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Average age of library members, by education level&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Education level&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Average age&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">"right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Average age of library members, by education level"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Education level"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Average age"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -720,9 +720,9 @@ example, in our fake dataset, all the age values are 6 or above: younger
 children cannot be members of our library. So, what happens if we compute counts
 for age values between <em>5</em> and 17?</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">young_ages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>  <span class="c1"># [5, 6, ..., 17]</span>
-<span class="n">young_age_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">young_ages</span><span class="p">})</span>
+<span class="n">young_age_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">"age"</span><span class="p">:</span> <span class="n">young_ages</span><span class="p">})</span>
 <span class="n">young_age_query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">young_age_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="p">)</span>
@@ -733,14 +733,14 @@ for age values between <em>5</em> and 17?</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">young_age_counts</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">),</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"age"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"count"</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">young_age_counts</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"age"</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"#1f77b4"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Count of younger library members, by age&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Count of younger library members, by age"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Age"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Count"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -756,13 +756,13 @@ What if we want to group by multiple columns? One simple way is to use a Python
 dictionary with multiple values. Let’s take an example, and compute counts by
 age (of teenagers and young adults) and education level.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
-    <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;masters-degree&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;doctorate-professional&quot;</span><span class="p">,</span>
+    <span class="s2">"age"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
+    <span class="s2">"education_level"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"up-to-high-school"</span><span class="p">,</span>
+        <span class="s2">"high-school-diploma"</span><span class="p">,</span>
+        <span class="s2">"bachelors-associate"</span><span class="p">,</span>
+        <span class="s2">"masters-degree"</span><span class="p">,</span>
+        <span class="s2">"doctorate-professional"</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">})</span>
 </pre></div>
@@ -772,7 +772,7 @@ age (of teenagers and young adults) and education level.</p>
 we can call its <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.dataframe" title="tmlt.analytics.KeySet.dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tmlt.analytics.KeySet.dataframe()</span></code></a> method, which
 will return the group-by keys it encapsulates, as a Spark DataFrame.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_df</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">dataframe</span><span class="p">()</span>
-<span class="n">teen_edu_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">teen_edu_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+---+----------------------+
@@ -796,7 +796,7 @@ only showing top 12 rows
 </div>
 <p>And we can use this KeySet to perform a group-by query on multiple columns.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">teen_edu_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="p">)</span>
@@ -805,7 +805,7 @@ only showing top 12 rows
     <span class="n">PureDPBudget</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
 <span class="p">)</span>
 
-<span class="n">teen_edu_counts</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">teen_edu_counts</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---+----------------------+-----+</span>
@@ -839,32 +839,32 @@ such a KeySet for our age range, making some assumptions about the minimum age a
 which certain education levels can be achieved.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
     <span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">],</span>
 <span class="p">)</span>
 <span class="n">teen_edu_subset_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">teen_edu_subset_keys_df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Once we have our KeySet, we can use it in the desired aggregation…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">teen_edu_subset_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="p">)</span>
@@ -875,19 +875,19 @@ which certain education levels can be achieved.</p>
 </pre></div>
 </div>
 <p>… and plot the results.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">edu_order</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">edu_order</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"up-to-high-school"</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">]</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
-    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;education_level&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"age"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"count"</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">"education_level"</span><span class="p">,</span>
     <span class="n">hue_order</span><span class="o">=</span><span class="n">edu_order</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="n">teen_edu_counts</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1300</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Count of teenage library members, by age and education level&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Count of teenage library members, by age and education level"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Age"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Count"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -910,13 +910,13 @@ generate the combination of values present in both KeySets. Consider, for
 example, the combination of teen ages and education levels that we started with
 in the previous section.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
-    <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;masters-degree&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;doctorate-professional&quot;</span><span class="p">,</span>
+    <span class="s2">"age"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
+    <span class="s2">"education_level"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"up-to-high-school"</span><span class="p">,</span>
+        <span class="s2">"high-school-diploma"</span><span class="p">,</span>
+        <span class="s2">"bachelors-associate"</span><span class="p">,</span>
+        <span class="s2">"masters-degree"</span><span class="p">,</span>
+        <span class="s2">"doctorate-professional"</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">})</span>
 </pre></div>
@@ -925,15 +925,15 @@ in the previous section.</p>
 each column, and taking the cross-product of both using the multiplication
 operator.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
+    <span class="s2">"age"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">)),</span> <span class="c1"># [13, 14, ..., 21]</span>
 <span class="p">})</span>
 <span class="n">edu_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
-    <span class="s2">&quot;education_level&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;masters-degree&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;doctorate-professional&quot;</span><span class="p">,</span>
+    <span class="s2">"education_level"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"up-to-high-school"</span><span class="p">,</span>
+        <span class="s2">"high-school-diploma"</span><span class="p">,</span>
+        <span class="s2">"bachelors-associate"</span><span class="p">,</span>
+        <span class="s2">"masters-degree"</span><span class="p">,</span>
+        <span class="s2">"doctorate-professional"</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">})</span>
 
@@ -952,7 +952,7 @@ this use case, you can use the
 <a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet.__getitem__" title="tmlt.analytics.KeySet.__getitem__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">projection</span> <span class="pre">operator</span></code></a>. For
 example, taking the two-column KeySet above and projecting it on a single column
 will retrieve the original one-column KeySet.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">"education_level"</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
@@ -964,13 +964,13 @@ in the data: <code class="docutils literal notranslate"><span class="pre">teen_e
 <code class="docutils literal notranslate"><span class="pre">&quot;up-to-high-school&quot;</span></code>, even though this value appears in multiple rows in the
 original KeySet.</p>
 <p>You can easily specify multiple columns using multiple parameters, or a list.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">]])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys</span> <span class="o">==</span> <span class="n">teen_edu_keys</span><span class="p">[[</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">]])</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
@@ -984,37 +984,37 @@ operation as Spark DataFrames. For example, consider the KeySet with specific
 combinations of age and education level from before.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_subset_keys_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;up-to-high-school&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;high-school-diploma&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;bachelors-associate&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"up-to-high-school"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"high-school-diploma"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s2">"bachelors-associate"</span><span class="p">),</span>
     <span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;education_level&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"age"</span><span class="p">,</span> <span class="s2">"education_level"</span><span class="p">],</span>
 <span class="p">)</span>
 <span class="n">teen_edu_subset_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">teen_edu_subset_keys_df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We could also have generated this KeySet using our larger KeySet with all
 possible combinations of the two columns, using a filter.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys_filtered</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    education_level != &#39;masters-degree&#39;</span>
-<span class="s2">    AND education_level != &#39;doctorate-professional&#39;</span>
-<span class="s2">    AND NOT (education_level = &#39;bachelors-associate&#39; AND age &lt; 19)</span>
-<span class="s2">    AND NOT (education_level = &#39;high-school-diploma&#39; AND age &lt; 17)</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">teen_edu_keys_filtered</span> <span class="o">=</span> <span class="n">teen_edu_keys</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">    education_level != 'masters-degree'</span>
+<span class="s2">    AND education_level != 'doctorate-professional'</span>
+<span class="s2">    AND NOT (education_level = 'bachelors-associate' AND age &lt; 19)</span>
+<span class="s2">    AND NOT (education_level = 'high-school-diploma' AND age &lt; 17)</span>
+<span class="s2">"""</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">teen_edu_keys_filtered</span> <span class="o">==</span> <span class="n">teen_edu_subset_keys</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1038,14 +1038,14 @@ names from the private data using Approx DP. Once we collect the names, we can u
 
 <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">ApproxDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">),</span>
-   <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+   <span class="n">source_id</span><span class="o">=</span><span class="s2">"members"</span><span class="p">,</span>
    <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
 
 <span class="n">names_query</span> <span class="o">=</span> <span class="p">(</span>
-   <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
-   <span class="o">.</span><span class="n">get_groups</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+   <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
+   <span class="o">.</span><span class="n">get_groups</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
 <span class="p">)</span>
 <span class="n">names_df</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
    <span class="n">names_query</span><span class="p">,</span>
@@ -1076,7 +1076,7 @@ earlier.</p>
 </div>
 <p>Now that we have the KeySet, we can use it in a group-by query.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">names_count_query</span> <span class="o">=</span> <span class="p">(</span>
-   <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
+   <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">names_keyset</span><span class="p">)</span>
    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="p">)</span>
@@ -1090,7 +1090,7 @@ earlier.</p>
 did <em>not</em> return every name in the dataset, but only those associated to
 sufficiently many people (with some randomization). To see this, we can
 look at the lowest counts returned by our count query.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">name_counts_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">name_counts_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"count"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------+-----+</span>
@@ -1110,15 +1110,15 @@ operation by comparing the number of names we published using <a class="referenc
 count of distinct names in the dataset.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_names_published</span> <span class="o">=</span> <span class="n">name_counts_df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
-<span class="n">distinct_names_count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_distinct</span><span class="p">([</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+<span class="n">distinct_names_count_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">count_distinct</span><span class="p">([</span><span class="s2">"name"</span><span class="p">])</span>
 <span class="n">distinct_names_in_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
    <span class="n">distinct_names_count_query</span><span class="p">,</span>
    <span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">distinct_names_in_data</span> <span class="o">=</span> <span class="n">distinct_names_in_data</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;count_distinct(name)&quot;</span><span class="p">]</span>
+<span class="n">distinct_names_in_data</span> <span class="o">=</span> <span class="n">distinct_names_in_data</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"count_distinct(name)"</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distinct names published with get_groups:&quot;</span><span class="p">,</span> <span class="n">total_names_published</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distinct names in the data:&quot;</span><span class="p">,</span> <span class="n">distinct_names_in_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Distinct names published with get_groups:"</span><span class="p">,</span> <span class="n">total_names_published</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Distinct names in the data:"</span><span class="p">,</span> <span class="n">distinct_names_in_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Distinct</span> <span class="n">names</span> <span class="n">published</span> <span class="k">with</span> <span class="n">get_groups</span><span class="p">:</span> <span class="mi">377</span>
@@ -1221,7 +1221,7 @@ count of distinct names in the dataset.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

@@ -602,7 +602,7 @@ For example, with a dataframe named <code class="code docutils literal notransla
 using <a class="reference internal" href="../reference/api/tmlt.analytics.Session.from_dataframe.html#tmlt.analytics.Session.from_dataframe" title="tmlt.analytics.Session.from_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dataframe()</span></code></a> as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session_from_dataframe</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_private_data"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -626,7 +626,7 @@ instead. First, create your Builder:</p>
 </div>
 <p>Next, add a private source to it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session_builder</span> <span class="o">=</span> <span class="n">session_builder</span><span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_private_data"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">spark_df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -645,7 +645,7 @@ data stored in a CSV file:</p>
 <p>First load the data into a Spark dataframe, then add it to the Session:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">salary_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">private_csv_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">session_builder</span> <span class="o">=</span> <span class="n">session_builder</span><span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_other_private_data&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_other_private_data"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">salary_df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -656,7 +656,7 @@ See the Spark <a class="reference external" href="https://spark.apache.org/docs/
 <p>A more common use case is to register public
 data with your Session (e.g., for use in join operations with the private source).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session_builder</span> <span class="o">=</span> <span class="n">session_builder</span><span class="o">.</span><span class="n">with_public_dataframe</span><span class="p">(</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_public_data&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_public_data"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">public_df</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -683,20 +683,20 @@ string identifiers of available private or public data sources using
 <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">public_sources</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;my_other_private_data&#39;, &#39;my_private_data&#39;]
-[&#39;my_public_data&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>['my_other_private_data', 'my_private_data']
+['my_public_data']
 </pre></div>
 </div>
 <p>These IDs will typically be used when constructing queries, to specify which data
 source a query refers to. They can also be used to access schema information about
 individual data sources, through
 <a class="reference internal" href="../reference/api/tmlt.analytics.Session.get_schema.html#tmlt.analytics.Session.get_schema" title="tmlt.analytics.Session.get_schema"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_schema()</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s1">&#39;my_private_data&#39;</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s1">'my_private_data'</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),
- &#39;age&#39;: ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False),
- &#39;grade&#39;: ColumnDescriptor(column_type=ColumnType.DECIMAL, allow_null=True, allow_nan=True, allow_inf=True)}
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{'name': ColumnDescriptor(column_type=ColumnType.VARCHAR, allow_null=True, allow_nan=False, allow_inf=False),
+ 'age': ColumnDescriptor(column_type=ColumnType.INTEGER, allow_null=True, allow_nan=False, allow_inf=False),
+ 'grade': ColumnDescriptor(column_type=ColumnType.DECIMAL, allow_null=True, allow_nan=True, allow_inf=True)}
 </pre></div>
 </div>
 <p>As you can see, Schemas contain information about what columns are in the data, what their types are, and whether each column can contain null, NaN, or infinite values.</p>
@@ -809,7 +809,7 @@ is the same as the total budget that we initialized the Session with earlier.</p
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

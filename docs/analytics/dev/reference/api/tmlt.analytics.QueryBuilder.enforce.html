@@ -596,24 +596,24 @@ constraints and what they are used for.</p>
 <span class="go">2  1  2  1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Session</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)))</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">with_id_space</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)))</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">with_id_space</span><span class="p">(</span><span class="s2">"a"</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"my_private_data"</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="n">my_private_data</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># No ID contributes more than 2 rows, so no rows are dropped when</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># enforcing the constraint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   count</span>
 <span class="go">0      3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># ID 1 contributes more than one row, so one of the rows with ID 1 will</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># be dropped when enforcing the constraint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span><span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   count</span>
 <span class="go">0      2</span>
@@ -715,7 +715,7 @@ constraints and what they are used for.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

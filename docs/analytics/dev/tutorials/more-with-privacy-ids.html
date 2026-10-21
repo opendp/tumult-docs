@@ -603,16 +603,16 @@ or without privacy IDs.</p>
 as well as the library members dataset used in all other tutorials:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
-    <span class="s2">&quot;https://media.githubusercontent.com/media/opendp/tumult-demo-data/refs/heads/main/checkout-logs.csv&quot;</span>
+    <span class="s2">"https://media.githubusercontent.com/media/opendp/tumult-demo-data/refs/heads/main/checkout-logs.csv"</span>
 <span class="p">)</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv&quot;</span>
+    <span class="s2">"https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv"</span>
 <span class="p">)</span>
 <span class="n">checkouts_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
-    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;checkout-logs.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"checkout-logs.csv"</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
-    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"library-members.csv"</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -627,29 +627,29 @@ same ID, <em>in both tables</em>. To do so, we have to use the
 <a class="reference internal" href="../reference/api/tmlt.analytics.AddRowsWithID.html#tmlt.analytics.AddRowsWithID" title="tmlt.analytics.AddRowsWithID"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddRowsWithID</span></code></a> protected change
 again, but we also have to indicate that both tables share the same <em>ID space</em>.
 This is done as follows.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span> <span class="c1"># infinite budget for the session</span>
-<span class="n">id_space</span> <span class="o">=</span> <span class="s2">&quot;member_id_space&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span> <span class="c1"># infinite budget for the session</span>
+<span class="n">id_space</span> <span class="o">=</span> <span class="s2">"member_id_space"</span>
 <span class="n">session</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">Session</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
     <span class="o">.</span><span class="n">with_privacy_budget</span><span class="p">(</span><span class="n">budget</span><span class="p">)</span>
     <span class="o">.</span><span class="n">with_id_space</span><span class="p">(</span><span class="n">id_space</span><span class="p">)</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
-        <span class="s2">&quot;checkouts&quot;</span><span class="p">,</span>
+        <span class="s2">"checkouts"</span><span class="p">,</span>
         <span class="n">checkouts_df</span><span class="p">,</span>
-        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">"member_id"</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="o">.</span><span class="n">with_private_dataframe</span><span class="p">(</span>
-        <span class="s2">&quot;members&quot;</span><span class="p">,</span>
+        <span class="s2">"members"</span><span class="p">,</span>
         <span class="n">members_df</span><span class="p">,</span>
-        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
+        <span class="n">protected_change</span><span class="o">=</span><span class="n">AddRowsWithID</span><span class="p">(</span><span class="n">id_column</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span> <span class="n">id_space</span><span class="o">=</span><span class="n">id_space</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: [&#39;members&#39;, &#39;checkouts&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: ['members', 'checkouts']
 </pre></div>
 </div>
 <p>The
@@ -691,18 +691,18 @@ we apply a
 <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.flat_map.html#tmlt.analytics.QueryBuilder.flat_map" title="tmlt.analytics.QueryBuilder.flat_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.flat_map</span></code></a>
 and save it as a view in our existing session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">genre</span><span class="p">}</span> <span class="k">for</span> <span class="n">genre</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)],</span>
-        <span class="p">{</span><span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">},</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"checkouts"</span><span class="p">)</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"genre"</span><span class="p">:</span> <span class="n">genre</span><span class="p">}</span> <span class="k">for</span> <span class="n">genre</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">"genres"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)],</span>
+        <span class="p">{</span><span class="s2">"genre"</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">},</span>
         <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">,</span>
+    <span class="s2">"checkouts_single_genre"</span><span class="p">,</span>
     <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: [&#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Private dataframes: ['checkouts_single_genre', 'members', 'checkouts']
 </pre></div>
 </div>
 <p>We now have an expanded version of our checkouts table that contains one
@@ -720,8 +720,8 @@ members data and get counts of books read, by genre, for members of each
 education level.</p>
 <p>First, we join the dataframes, and hold the result in another in-session view:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)),</span>
-    <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"checkouts_single_genre"</span><span class="p">)</span><span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)),</span>
+    <span class="s2">"checkouts_joined"</span><span class="p">,</span>
     <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -735,19 +735,19 @@ only possible when the ID columns of the two tables have the same name
 <p>To fix this, we can use the <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.rename.html#tmlt.analytics.QueryBuilder.rename" title="tmlt.analytics.QueryBuilder.rename"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QueryBuilder.rename</span></code></a>
 method to rename the ID column in the members table to match the ID column in the checkouts table:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_single_genre&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;member_id&quot;</span><span class="p">})),</span>
-    <span class="s2">&quot;checkouts_joined&quot;</span><span class="p">,</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"checkouts_single_genre"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"member_id"</span><span class="p">})),</span>
+    <span class="s2">"checkouts_joined"</span><span class="p">,</span>
     <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Private dataframes: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">private_sources</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Private dataframes: [&#39;checkouts_joined&#39;, &#39;checkouts_single_genre&#39;, &#39;members&#39;, &#39;checkouts&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Private dataframes: ['checkouts_joined', 'checkouts_single_genre', 'members', 'checkouts']
 </pre></div>
 </div>
 <p>Let’s inspect the result of the join to make sure it looks right:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">&quot;checkouts_joined&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">"checkouts_joined"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Column Name       Column Type    ID Col    ID Space         Nullable
@@ -784,14 +784,14 @@ groups and the subset of genres we’re interested in for the analysis…</p>
 <span class="n">age_binspec</span> <span class="o">=</span> <span class="n">BinningSpec</span><span class="p">(</span><span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span>
 <span class="n">binned_age_genre_keys</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;binned_age&quot;</span><span class="p">:</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">(),</span>
-        <span class="s2">&quot;genre&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;Mystery/thriller/crime&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;History&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Romance&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Fantasy&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Classics/Literature&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+        <span class="s2">"binned_age"</span><span class="p">:</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">(),</span>
+        <span class="s2">"genre"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"Mystery/thriller/crime"</span><span class="p">,</span>
+            <span class="s2">"History"</span><span class="p">,</span>
+            <span class="s2">"Romance"</span><span class="p">,</span>
+            <span class="s2">"Fantasy"</span><span class="p">,</span>
+            <span class="s2">"Classics/Literature"</span><span class="p">,</span>
+            <span class="s2">"Children"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">}</span>
 <span class="p">)</span>
@@ -799,8 +799,8 @@ groups and the subset of genres we’re interested in for the analysis…</p>
 </div>
 <p>… and use it to group the data and count:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">genre_by_age</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;checkouts_joined&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">bin_column</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">age_binspec</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"checkouts_joined"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bin_column</span><span class="p">(</span><span class="s2">"age"</span><span class="p">,</span> <span class="n">age_binspec</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"binned_age"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerID</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">binned_age_genre_keys</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">(),</span>
@@ -814,28 +814,28 @@ of wrangling and then visualize the result:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="c1"># convert binned_age to categorical for ease of plotting</span>
-<span class="n">genre_by_age</span><span class="p">[</span><span class="s2">&quot;binned_age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">genre_by_age</span><span class="p">[</span><span class="s2">&quot;binned_age&quot;</span><span class="p">],</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">())</span>
+<span class="n">genre_by_age</span><span class="p">[</span><span class="s2">"binned_age"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">genre_by_age</span><span class="p">[</span><span class="s2">"binned_age"</span><span class="p">],</span> <span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">())</span>
 <span class="n">age_counts</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">genre_by_age</span>
-    <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;genre&quot;</span><span class="p">])</span>
-    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"genre"</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"binned_age"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;age_count&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="s2">"age_count"</span><span class="p">})</span>
 <span class="p">)</span>
 <span class="c1"># compute percentage of each genre in each age group, replace negative values with 0</span>
-<span class="n">genre_by_age_pct</span> <span class="o">=</span> <span class="n">genre_by_age</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">age_counts</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">)</span>
-<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;age_count&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
-<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">&quot;pct&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">genre_by_age_pct</span> <span class="o">=</span> <span class="n">genre_by_age</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">age_counts</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"binned_age"</span><span class="p">)</span>
+<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">"pct"</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]</span> <span class="o">/</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">"age_count"</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">"pct"</span><span class="p">]</span> <span class="o">=</span> <span class="n">genre_by_age_pct</span><span class="p">[</span><span class="s2">"pct"</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;binned_age&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pct&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"binned_age"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"pct"</span><span class="p">,</span>
     <span class="n">order</span><span class="o">=</span><span class="n">age_binspec</span><span class="o">.</span><span class="n">bins</span><span class="p">(),</span>
-    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;genre&quot;</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">"genre"</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="n">genre_by_age_pct</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age Group&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Genre (%)&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reading Preferences by Age&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Genre&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Age Group"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Genre (%)"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Reading Preferences by Age"</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"upper left"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Genre"</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="A bar chart showing genre preferences for different age groups." class="align-center" src="../_images/chart_genres_by_age.png" />
@@ -957,7 +957,7 @@ truncation parameters for each.</p></li>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

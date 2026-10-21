@@ -612,27 +612,27 @@ privacy ID columns must have the same name, and be in the same ID space.</p>
 <span class="go">0  0  1  0</span>
 <span class="go">1  1  0  1</span>
 <span class="go">2  1  2  1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_private_data"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">dataframe</span><span class="o">=</span><span class="n">my_private_data</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="n">TruncationStrategy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">}),</span>
-<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;my_private_view&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"X"</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"X"</span><span class="p">:</span> <span class="s2">"C"</span><span class="p">}),</span>
+<span class="gp">... </span>    <span class="n">source_id</span><span class="o">=</span><span class="s2">"my_private_view"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">cache</span><span class="o">=</span><span class="kc">False</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where only one row with each join key is kept on the left</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># table, but two are kept on the right table.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_drop_excess</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_view&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_view"</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="n">truncation_strategy_left</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropExcess</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="p">)</span>
@@ -641,7 +641,7 @@ privacy ID columns must have the same name, and be in the same ID space.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">query_drop_excess</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   count</span>
@@ -649,9 +649,9 @@ privacy ID columns must have the same name, and be in the same ID space.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># A query where all rows that share a join key with another row in</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># their table are dropped, in both the left and right tables.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_drop_non_unique</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_data&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_data"</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="o">.</span><span class="n">join_private</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;my_private_view&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"my_private_view"</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="n">truncation_strategy_left</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropNonUnique</span><span class="p">(),</span>
 <span class="gp">... </span>        <span class="n">truncation_strategy_right</span><span class="o">=</span><span class="n">TruncationStrategy</span><span class="o">.</span><span class="n">DropNonUnique</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">)</span>
@@ -660,7 +660,7 @@ privacy ID columns must have the same name, and be in the same ID space.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Answering the query with infinite privacy budget</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">query_drop_non_unique</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">PureDPBudget</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">))</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="go">   count</span>
@@ -985,7 +985,7 @@ keys. In most cases, DropExcess is the preferred strategy.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   

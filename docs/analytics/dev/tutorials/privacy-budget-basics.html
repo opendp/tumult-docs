@@ -615,10 +615,10 @@ started!</p>
 <p>… and download the dataset, in case we haven’t already done so.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">addFile</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv&quot;</span>
+    <span class="s2">"https://raw.githubusercontent.com/opendp/tumult-demo-data/refs/heads/main/library-members.csv"</span>
 <span class="p">)</span>
 <span class="n">members_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
-    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;library-members.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SparkFiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"library-members.csv"</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -631,7 +631,7 @@ allocate a fixed privacy budget of <code class="docutils literal notranslate"><s
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">budget</span> <span class="o">=</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span> <span class="c1"># maximum budget consumed in the Session</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;members&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"members"</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="o">=</span><span class="n">members_df</span><span class="p">,</span>
     <span class="n">protected_change</span><span class="o">=</span><span class="n">AddOneRow</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -644,7 +644,7 @@ allocate a fixed privacy budget of <code class="docutils literal notranslate"><s
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>The session has a remaining privacy budget of PureDPBudget(epsilon=2.5).
 The following private tables are available:
-Table &#39;members&#39; (no constraints):
+Table 'members' (no constraints):
 Column Name      Column Type    Nullable
 ---------------  -------------  ----------
 id               INTEGER        True
@@ -677,7 +677,7 @@ consume. Let’s start with a simple example: how many minors are members of the
 library? We will answer that question using a simple
 <a class="reference internal" href="../reference/api/tmlt.analytics.QueryBuilder.filter.html#tmlt.analytics.QueryBuilder.filter" title="tmlt.analytics.QueryBuilder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> query,
 consuming <code class="docutils literal notranslate"><span class="pre">epsilon=1</span></code> out of our total budget.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minor_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;age &lt; 18&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minor_query</span> <span class="o">=</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">"age &lt; 18"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="n">minor_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
     <span class="n">minor_query</span><span class="p">,</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
@@ -704,8 +704,8 @@ we can consult the Session’s <code class="docutils literal notranslate"><span 
 another query: how many library members have a Master’s degree or a higher level
 of formal education?</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edu_query</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;education_level IN (&#39;masters-degree&#39;, &#39;doctorate-professional&#39;)&quot;</span><span class="p">)</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">"education_level IN ('masters-degree', 'doctorate-professional')"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="p">)</span>
 <span class="n">edu_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
@@ -731,7 +731,7 @@ of formal education?</p>
 </div>
 <p>Now, what happens if we try to consume <em>more</em> budget than what we have left?</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">PureDPBudget</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
@@ -760,7 +760,7 @@ answered more queries, or allocated more budget to answer previous queries more
 accurately. Here, let us simply modify the last query to use all the budget that
 we have left.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"members"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="n">privacy_budget</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">remaining_privacy_budget</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">total_count</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -866,7 +866,7 @@ queries? To learn more about this question, you can consult our longer
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from d32caf2c at 2026-10-21 09:20.</div>
+Built from 353c7162 at 2026-10-21 15:40.</div>
       
     </div>
   
