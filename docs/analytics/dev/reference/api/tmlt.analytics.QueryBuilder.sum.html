@@ -587,6 +587,12 @@
 <dd><p>Returns a sum query ready to be evaluated.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">column</span></code> has integer type and <code class="docutils literal notranslate"><span class="pre">low</span></code> or <code class="docutils literal notranslate"><span class="pre">high</span></code> is larger
+than <code class="docutils literal notranslate"><span class="pre">2**23</span></code> in absolute value, the sum is computed on floating-point
+values, and the output column has floating-point type.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Regarding the clamping bounds:</p>
 <ol class="arabic simple">
 <li><p>The values for <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> are a choice the caller must make.</p></li>
@@ -658,6 +664,12 @@ framework automatically selects an appropriate mechanism.</p></li>
 <dt class="sig sig-object py" id="tmlt.analytics.GroupedQueryBuilder.sum">
 <span class="sig-prename descclassname"><span class="pre">GroupedQueryBuilder.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmlt.analytics.GroupedQueryBuilder.sum" title="Link to this definition">#</a></dt>
 <dd><p>Returns a Query with a sum query.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">column</span></code> has integer type and <code class="docutils literal notranslate"><span class="pre">low</span></code> or <code class="docutils literal notranslate"><span class="pre">high</span></code> is larger
+than <code class="docutils literal notranslate"><span class="pre">2**23</span></code> in absolute value, the sum is computed on floating-point
+values, and the output column has floating-point type.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the column being measured contains NaN or null values, a
@@ -748,14 +760,14 @@ might change over time as additional optimizations are added to the library.</p>
 <dt class="sig sig-object py" id="tmlt.analytics.SumMechanism.LAPLACE">
 <span class="sig-name descname"><span class="pre">LAPLACE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#tmlt.analytics.SumMechanism.LAPLACE" title="Link to this definition">#</a></dt>
 <dd><p>Laplace and/or double-sided geometric noise is used, depending on the
-column type.</p>
+column type and clamping bounds.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tmlt.analytics.SumMechanism.GAUSSIAN">
 <span class="sig-name descname"><span class="pre">GAUSSIAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#tmlt.analytics.SumMechanism.GAUSSIAN" title="Link to this definition">#</a></dt>
-<dd><p>Discrete and/or continuous Gaussian noise is used, depending on the column type.
-Not compatible with pure DP.</p>
+<dd><p>Discrete and/or continuous Gaussian noise is used, depending on the column type
+and clamping bounds. Not compatible with pure DP.</p>
 </dd></dl>
 
 </dd></dl>
@@ -853,7 +865,7 @@ Not compatible with pure DP.</p>
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from 87e3a1de at 2026-10-28 19:17.</div>
+Built from 272e2db8 at 2026-10-30 13:53.</div>
       
     </div>
   
