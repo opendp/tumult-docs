@@ -597,6 +597,7 @@ books.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tmlt.analytics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AddRowsWithID</span><span class="p">,</span>
+    <span class="n">ColumnType</span><span class="p">,</span>
     <span class="n">MaxGroupsPerID</span><span class="p">,</span>
     <span class="n">MaxRowsPerGroupPerID</span><span class="p">,</span>
     <span class="n">MaxRowsPerID</span><span class="p">,</span>
@@ -828,6 +829,44 @@ Tumult Analytics understands that each ID can contribute at most once per group.
 </div>
 <img alt="A bar chart plotting the number of unique library members who have checked out each book. The most popular book (The Alchemist) has been checked out by about 750 people; each book after that has been checked out by fewer people, with the last book (Comfort Me With...) having been checked out by just under 500 people." class="align-center" src="../_images/chart_books_by_unique_members.png" />
 </section>
+<section id="grouping-on-multiple-columns">
+<h2>Grouping on multiple columns<a class="headerlink" href="#grouping-on-multiple-columns" title="Link to this heading">#</a></h2>
+<p>The groups used by <a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> and
+<a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> can also be defined by a
+combination of several columns. For example, suppose we want to know how many
+patrons checked out each of our top five books, separately for each year. A
+patron who borrowed the same book in two different years counts once for each
+year, so the groups are (ISBN, year) pairs.</p>
+<p>We first add a column containing the year of each checkout, and then limit each
+patron to 10 distinct (ISBN, year) pairs, and to one row in each pair. Since our
+data covers checkouts from 2020 to 2022, we use these years to build the
+<a class="reference internal" href="../reference/api/tmlt.analytics.KeySet.html#tmlt.analytics.KeySet" title="tmlt.analytics.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">isbn_year_keyset</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+    <span class="n">top_five</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"isbn"</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">*</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">"year"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">]})</span>
+<span class="n">count_by_year_query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">QueryBuilder</span><span class="p">(</span><span class="s2">"checkouts"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"year"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"checkout_date"</span><span class="p">]</span><span class="o">.</span><span class="n">year</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"checkout_date"</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="n">new_column_types</span><span class="o">=</span><span class="p">{</span><span class="s2">"year"</span><span class="p">:</span> <span class="n">ColumnType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">},</span>
+        <span class="n">augment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxGroupsPerID</span><span class="p">([</span><span class="s2">"isbn"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">enforce</span><span class="p">(</span><span class="n">MaxRowsPerGroupPerID</span><span class="p">([</span><span class="s2">"isbn"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">isbn_year_keyset</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">count_by_year_query</span><span class="p">,</span> <span class="n">PureDPBudget</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">result</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"isbn"</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Truncation is performed on each distinct combination of values of
+the grouping columns: here, a patron can contribute to at most 10 different
+(ISBN, year) pairs, regardless of how many distinct ISBNs or years those pairs
+contain.</p>
+</section>
 <section id="summary">
 <span id="flow-chart-truncation"></span><h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We’ve seen that when using privacy IDs, we need to truncate the data to limit
@@ -841,9 +880,10 @@ or using <a class="reference internal" href="../reference/api/tmlt.analytics.Max
 <li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerID.html#tmlt.analytics.MaxRowsPerID" title="tmlt.analytics.MaxRowsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerID</span></code></a> limits the number of rows
 associated with each privacy ID in a table.</p></li>
 <li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxGroupsPerID.html#tmlt.analytics.MaxGroupsPerID" title="tmlt.analytics.MaxGroupsPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxGroupsPerID</span></code></a> limits the number of distinct
-values of the grouping column that may appear for each privacy ID in a table.</p></li>
+values of the grouping column (or columns) that may appear for each
+privacy ID in a table.</p></li>
 <li><p><a class="reference internal" href="../reference/api/tmlt.analytics.MaxRowsPerGroupPerID.html#tmlt.analytics.MaxRowsPerGroupPerID" title="tmlt.analytics.MaxRowsPerGroupPerID"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxRowsPerGroupPerID</span></code></a> limits the number of rows
-associated with each (privacy ID, grouping column value) pair in a table.</p></li>
+associated with each (privacy ID, group) pair in a table.</p></li>
 </ul>
 <p>To understand the impact of the various constraints in more detail,
 you can consult our <a class="reference internal" href="../topic-guides/understanding-sensitivity.html#understanding-sensitivity"><span class="std std-ref">topic guide about sensitivity</span></a>.
@@ -903,6 +943,7 @@ privacy IDs, you can proceed to the <a class="reference internal" href="more-wit
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-session-with-privacy-ids">Creating a Session with privacy IDs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-query-with-privacy-ids">A simple query with privacy IDs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-constraints">More constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-on-multiple-columns">Grouping on multiple columns</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
   </nav></div>
@@ -940,7 +981,7 @@ privacy IDs, you can proceed to the <a class="reference internal" href="more-wit
       
         <div class="footer-item"><!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright Tumult Labs 2022-2025, and the Tumult Analytics Contributors 2025-present -->
-Built from 272e2db8 at 2026-10-30 13:53.</div>
+Built from f43437de at 2026-11-06 00:27.</div>
       
     </div>
   
